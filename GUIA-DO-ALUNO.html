@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia do Aluno — Cohort de Marketing · Aula 01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;600;700&family=Rajdhani:wght@600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --background: #0A0A0A;
+    --card: #0F0F0F;
+    --raised: #262626;
+    --border: #262626;
+    --foreground: #E5E5E5;
+    --muted-foreground: #999999;
+    --primary: #C9B298;
+    --primary-light: #D9CBB9;
+    --primary-deep: #8D7556;
+    --primary-foreground: #1A1A1A;
+    --status-success: #23E169;
+    --font-body: 'Source Serif 4', Georgia, serif;
+    --font-ui: Inter, 'Source Sans Pro', system-ui, sans-serif;
+    --font-display: Rajdhani, Inter, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body);
+    font-size: 19px;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+  :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px; width: 0;
+    background: var(--primary);
+    box-shadow: 0 0 15px rgba(201, 178, 152, 0.6);
+    z-index: 100;
+  }
+
+  .wrap { max-width: 920px; margin: 0 auto; padding: 64px 32px 96px; }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 32px 0 56px;
+    border-bottom: 1px solid var(--raised);
+    margin-bottom: 56px;
+  }
+  .hero .kicker {
+    display: inline-block;
+    font-family: var(--font-ui); font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--primary);
+    padding: 6px 16px;
+    border: 1px solid var(--primary-deep);
+    border-radius: 9999px;
+    margin-bottom: 32px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+  }
+  .hero h1 em {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--primary);
+  }
+  .hero .subtitle {
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    color: var(--muted-foreground);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 0 0 24px;
+  }
+  .hero .lead {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--foreground);
+    max-width: 65ch;
+    margin: 0 auto;
+  }
+
+  /* Nav lateral fixa */
+  .toc {
+    position: sticky;
+    top: 32px;
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 0.75rem;
+    padding: 20px 24px;
+    margin: 48px auto;
+    max-width: 720px;
+  }
+  .toc-label {
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    margin-bottom: 12px;
+  }
+  .toc ol {
+    margin: 0;
+    padding-left: 20px;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    line-height: 1.8;
+  }
+  .toc ol li {
+    color: var(--muted-foreground);
+  }
+  .toc ol li a {
+    color: var(--foreground);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .toc ol li a:hover {
+    color: var(--primary);
+  }
+
+  /* Section */
+  section {
+    margin: 80px 0;
+    scroll-margin-top: 32px;
+  }
+  .section-num {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  section h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0 0 24px;
+  }
+  section h2 em {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--primary);
+  }
+  section h3 {
+    font-family: var(--font-ui);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 32px 0 12px;
+  }
+  section p { margin: 16px 0; }
+  section strong { color: var(--primary-light); font-weight: 600; }
+
+  /* Steps */
+  .step {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 24px;
+    margin: 32px 0;
+    padding: 24px;
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 1rem;
+    transition: border-color 0.2s ease;
+  }
+  .step:hover { border-color: var(--primary-deep); }
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .step-content h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+  .step-content p {
+    margin: 8px 0;
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    color: var(--muted-foreground);
+  }
+  .step-content code {
+    font-family: var(--font-mono);
+    background: var(--raised);
+    color: var(--primary-light);
+    padding: 2px 8px;
+    border-radius: 0.25rem;
+    font-size: 0.85em;
+  }
+
+  /* Bloco command */
+  .command-block {
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 0.75rem;
+    padding: 20px 24px;
+    margin: 16px 0;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--foreground);
+    overflow-x: auto;
+    position: relative;
+  }
+  .command-block::before {
+    content: "$";
+    color: var(--primary);
+    margin-right: 12px;
+    font-weight: 700;
+  }
+  .command-block.slash::before {
+    content: "/";
+  }
+
+  /* Cards de skills */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 32px 0;
+  }
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-left: 2px solid var(--primary);
+    border-radius: 0.75rem;
+    padding: 24px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .skill-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-light);
+  }
+  .skill-card .skill-name {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .skill-card .skill-what {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    color: var(--foreground);
+    margin: 0 0 12px;
+    line-height: 1.5;
+  }
+  .skill-card .skill-out {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    color: var(--muted-foreground);
+    padding-top: 12px;
+    border-top: 1px solid var(--raised);
+    margin: 0;
+  }
+  .skill-card .skill-out strong {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  /* Blocos da aula */
+  .bloco {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 28px;
+    margin: 24px 0;
+  }
+  .bloco .bloco-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--raised);
+  }
+  .bloco .bloco-num {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .bloco .bloco-time {
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    color: var(--muted-foreground);
+    letter-spacing: 0.06em;
+  }
+  .bloco h3 {
+    margin: 0 0 16px;
+    font-size: 1.4rem;
+  }
+  .bloco .bloco-action {
+    background: rgba(201, 178, 152, 0.06);
+    border: 1px solid var(--primary-deep);
+    border-radius: 0.5rem;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+  .bloco .bloco-result {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    color: var(--muted-foreground);
+    margin: 12px 0 0;
+  }
+  .bloco .bloco-result strong {
+    color: var(--primary);
+  }
+
+  /* Regras */
+  .rule {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 20px;
+    background: var(--card);
+    border-left: 2px solid var(--primary);
+    border-radius: 0.5rem;
+    margin: 16px 0;
+  }
+  .rule-icon {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .rule h3 {
+    margin: 0 0 4px;
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  .rule p {
+    margin: 4px 0 0;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    color: var(--muted-foreground);
+    line-height: 1.5;
+  }
+
+  /* Aula context */
+  .cohort-map {
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 1rem;
+    padding: 28px;
+    margin: 32px 0;
+  }
+  .cohort-map .aula {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    border-radius: 0.5rem;
+    margin: 6px 0;
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    transition: background 0.2s ease;
+  }
+  .cohort-map .aula.atual {
+    background: rgba(201, 178, 152, 0.08);
+    border: 1px solid var(--primary-deep);
+  }
+  .cohort-map .aula-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--primary);
+    min-width: 60px;
+  }
+  .cohort-map .aula-name {
+    flex: 1;
+    color: var(--foreground);
+    font-weight: 600;
+  }
+  .cohort-map .aula-status {
+    font-size: 0.7rem;
+    color: var(--muted-foreground);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .cohort-map .aula.atual .aula-status {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* CTA final */
+  .cta-final {
+    text-align: center;
+    margin: 96px 0 32px;
+    padding: 48px 32px;
+    background: var(--card);
+    border: 1px solid var(--primary-deep);
+    border-radius: 1.5rem;
+  }
+  .cta-final h2 {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    margin: 0 0 16px;
+  }
+  .cta-final h2 em {
+    font-family: var(--font-body);
+    font-style: italic;
+    color: var(--primary);
+    font-weight: 400;
+  }
+  .cta-final p {
+    font-family: var(--font-body);
+    font-style: italic;
+    color: var(--muted-foreground);
+    max-width: 50ch;
+    margin: 16px auto 24px;
+  }
+  .cta-final .command-block {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="kicker">Cohort de Marketing · Aula 01</span>
+    <h1>Guia do <em>Aluno</em></h1>
+    <p class="subtitle">Academia Lendária · Squad Marketing</p>
+    <p class="lead">Tudo o que você precisa saber antes de começar. Cinco minutos de leitura para 4 horas de aula com clareza total.</p>
+  </header>
+
+  <nav class="toc">
+    <div class="toc-label">Você vai ler aqui</div>
+    <ol>
+      <li><a href="#secao-1">O que você vai sair construindo</a></li>
+      <li><a href="#secao-2">Onde você está no cohort</a></li>
+      <li><a href="#secao-3">Setup em 5 minutos</a></li>
+      <li><a href="#secao-4">As 5 skills do squad</a></li>
+      <li><a href="#secao-5">Fluxo da aula (4 horas, 4 blocos)</a></li>
+      <li><a href="#secao-6">As 5 regras de ouro</a></li>
+      <li><a href="#secao-7">O que entregar no fim</a></li>
+    </ol>
+  </nav>
+
+  <section id="secao-1">
+    <div class="section-num">Parte 1</div>
+    <h2>O que você vai sair <em>construindo</em></h2>
+    <p>Esta aula entrega um squad inteiro pronto: o <strong>Research Analyst</strong>. Você sai com cinco artefatos concretos que alimentam diretamente a Aula 02 (Arquiteto de Funil).</p>
+    <p>Não é teoria. Cada hora desta aula produz um documento que vai parar nas mãos do próximo especialista do cohort.</p>
+
+    <h3>Os 5 entregáveis</h3>
+    <ol style="font-family: var(--font-ui); line-height: 1.9; padding-left: 28px;">
+      <li><strong>ICP completo</strong> em formato A-G validado (com top 5 dores, top 5 desejos, top 10 palavras obrigatórias, 3 crenças copy-ready, 5 frases literais)</li>
+      <li><strong>Dossiê de 3-5 concorrentes</strong> mapeados em 4 vetores com brecha competitiva apontada</li>
+      <li><strong>Relatório de tendências</strong> com 3-5 padrões emergentes e variações prontas para teste</li>
+      <li><strong>Swipe file organizado</strong> com 10-15 criativos winners categorizados</li>
+      <li><strong>Offerbook completo</strong> em 7 blocos preenchidos com voz da marca</li>
+    </ol>
+  </section>
+
+  <section id="secao-2">
+    <div class="section-num">Parte 2</div>
+    <h2>Onde você está <em>no cohort</em></h2>
+    <p>O Cohort de Marketing entrega um squad por aula. Cada squad é responsabilidade de um especialista. Você está começando pela base: pesquisa.</p>
+
+    <div class="cohort-map">
+      <div class="aula atual">
+        <span class="aula-num">01</span>
+        <span class="aula-name">Research Analyst</span>
+        <span class="aula-status">Você está aqui</span>
+      </div>
+      <div class="aula">
+        <span class="aula-num">02</span>
+        <span class="aula-name">Arquiteto de Funil</span>
+        <span class="aula-status">Próxima</span>
+      </div>
+      <div class="aula">
+        <span class="aula-num">03</span>
+        <span class="aula-name">Tráfego Pago · Media Buyer</span>
+        <span class="aula-status">Depois</span>
+      </div>
+      <div class="aula">
+        <span class="aula-num">04</span>
+        <span class="aula-name">Análise de Dados</span>
+        <span class="aula-status">Final</span>
+      </div>
+    </div>
+
+    <p>A Aula 02 <strong>depende</strong> dos artefatos que você produzir aqui. Sem ICP, sem dossiê, sem offerbook, o Arquiteto de Funil não tem matéria-prima para trabalhar. Por isso esta aula vem primeiro.</p>
+  </section>
+
+  <section id="secao-3">
+    <div class="section-num">Parte 3</div>
+    <h2>Setup em <em>5 minutos</em></h2>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>Instale o Claude Code</h3>
+        <p>Se ainda não tem, baixe em <code>docs.claude.com/claude-code</code>. Aplicativo de terminal, gratuito durante a janela de avaliação.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>Clone este repositório</h3>
+        <p>Abra o terminal e rode:</p>
+        <div class="command-block">git clone https://github.com/fran-lendaria/cohort-de-marketing.git</div>
+        <div class="command-block">cd cohort-de-marketing</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>Abra o Claude Code no diretório</h3>
+        <div class="command-block">claude</div>
+        <p>As 5 skills em <code>.claude/skills/</code> são carregadas automaticamente pelo Claude Code.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h3>Teste que está funcionando</h3>
+        <p>No Claude Code, digite:</p>
+        <div class="command-block slash">pesquisa-icp</div>
+        <p>Se aparecer o menu da skill com as 10 perguntas, está tudo certo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="secao-4">
+    <div class="section-num">Parte 4</div>
+    <h2>As 5 skills do <em>squad</em></h2>
+    <p>Cada skill é independente e tem propósito específico. Elas se conectam: o output de uma alimenta a próxima.</p>
+
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-name">/pesquisa-icp</div>
+        <p class="skill-what">Pesquisa estruturada de cliente ideal em 10 módulos. Faz perguntas guiadas sobre seu negócio e seus dados reais.</p>
+        <p class="skill-out"><strong>Sai com:</strong> ICP completo, formato A-G + Módulo 10 validado</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/competitor-analysis</div>
+        <p class="skill-what">Mapeia 3-5 concorrentes em 4 vetores (posicionamento, preço, promessa, ângulo) e aponta a brecha defensável.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Dossiê + briefing para offerbook</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/trend-hunting</div>
+        <p class="skill-what">Identifica tendências emergentes em 4 fontes (Twitter, Reels, TikTok, LinkedIn) antes da saturação.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Relatório + variações prontas para teste</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/swipe-file</div>
+        <p class="skill-what">Organiza criativos winners categorizados por tipo, formato, padrão e nicho. Biblioteca pesquisável.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Biblioteca + briefing para Copy</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/offerbook</div>
+        <p class="skill-what">Consolida tudo num Livro da Oferta de 7 blocos. Usa o squad de 3 mentes (Jobs, Musk, Hormozi).</p>
+        <p class="skill-out"><strong>Sai com:</strong> Offerbook pronto para alimentar o Funil</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="secao-5">
+    <div class="section-num">Parte 5</div>
+    <h2>Fluxo da aula <em>(4 horas)</em></h2>
+    <p>Cada bloco tem 50 minutos. Entre os blocos, intervalos planejados de 10 minutos.</p>
+
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Bloco 1</span>
+        <span class="bloco-time">50 minutos</span>
+      </div>
+      <h3>ICP com /pesquisa-icp</h3>
+      <p>A skill faz 10 módulos de perguntas. Você responde com dados reais (formulários, entrevistas, reviews). Pré-requisito: mínimo 10 fontes.</p>
+      <div class="bloco-action">/pesquisa-icp [nome do seu negócio]</div>
+      <p class="bloco-result"><strong>Resultado:</strong> 3 arquivos ICP (md, html, resumo) prontos para alimentar as próximas skills.</p>
+    </div>
+
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Bloco 2</span>
+        <span class="bloco-time">50 minutos</span>
+      </div>
+      <h3>Concorrentes e Tendências (em paralelo)</h3>
+      <p>Duas skills rodam ao mesmo tempo em abas separadas do Claude Code.</p>
+      <div class="bloco-action">/competitor-analysis [seu nicho]</div>
+      <div class="bloco-action">/trend-hunting [seu nicho]</div>
+      <p class="bloco-result"><strong>Resultado:</strong> Dossiê dos 3-5 concorrentes + relatório de tendências + 2 briefings (para swipe e offerbook).</p>
+    </div>
+
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Bloco 3</span>
+        <span class="bloco-time">50 minutos</span>
+      </div>
+      <h3>Swipe File organizado</h3>
+      <p>Usa os briefings do bloco anterior para capturar e categorizar criativos winners.</p>
+      <div class="bloco-action">/swipe-file capturar</div>
+      <p class="bloco-result"><strong>Resultado:</strong> 10-15 criativos organizados por tipo, formato, padrão e nicho. Biblioteca viva pronta para consultas futuras.</p>
+    </div>
+
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Bloco 4</span>
+        <span class="bloco-time">50 minutos</span>
+      </div>
+      <h3>Offerbook com squad 3 mentes</h3>
+      <p>A skill consolida ICP + dossiê + swipe file + as 3 mentes (Steve Jobs, Elon Musk, Alex Hormozi) em 7 blocos do offerbook.</p>
+      <div class="bloco-action">/offerbook [nome do seu produto]</div>
+      <p class="bloco-result"><strong>Resultado:</strong> Offerbook completo pronto para alimentar a Aula 02 (Arquiteto de Funil).</p>
+    </div>
+  </section>
+
+  <section id="secao-6">
+    <div class="section-num">Parte 6</div>
+    <h2>As 5 regras <em>de ouro</em></h2>
+    <p>Essas regras valem para a Aula 01 inteira e para todo o cohort. Decore.</p>
+
+    <div class="rule">
+      <span class="rule-icon">1</span>
+      <div>
+        <h3>Pesquisa antes da oferta</h3>
+        <p>A regra-mãe: pesquisa antes da oferta, oferta antes de copy, copy antes de ads. Pular essa ordem queima verba.</p>
+      </div>
+    </div>
+
+    <div class="rule">
+      <span class="rule-icon">2</span>
+      <div>
+        <h3>Voz do cliente, sempre verbatim</h3>
+        <p>Toda seção com dados reais precisa de citação literal. Sem citação, marcar [SUPOSIÇÃO]. Persona inventada vira oferta que não vende.</p>
+      </div>
+    </div>
+
+    <div class="rule">
+      <span class="rule-icon">3</span>
+      <div>
+        <h3>Brecha de ângulo > brecha de preço</h3>
+        <p>Preço é copiável em 30 dias. História (ângulo) não se copia. Quando o /competitor-analysis sugerir brecha, prefira ângulo.</p>
+      </div>
+    </div>
+
+    <div class="rule">
+      <span class="rule-icon">4</span>
+      <div>
+        <h3>Swipe file é inspiração, não cópia</h3>
+        <p>Você extrai o padrão (estrutura, formato, ângulo) e adapta ao seu ICP. Copiar literal é pena algorítmica e risco jurídico.</p>
+      </div>
+    </div>
+
+    <div class="rule">
+      <span class="rule-icon">5</span>
+      <div>
+        <h3>Offerbook antes de qualquer copy</h3>
+        <p>Nada de landing page, e-mail ou anúncio antes do offerbook aprovado pelo dono do negócio. Vai escutar essa várias vezes no cohort.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="secao-7">
+    <div class="section-num">Parte 7</div>
+    <h2>O que entregar <em>no fim</em></h2>
+    <p>Ao final das 4 horas, você terá uma pasta com tudo isso, pronta para virar input da Aula 02:</p>
+
+    <div class="bloco">
+      <ul style="font-family: var(--font-ui); list-style: none; padding: 0; margin: 0; line-height: 1.9;">
+        <li>📄 <strong>icp-{negocio}.md</strong> — ICP completo</li>
+        <li>📄 <strong>icp-{negocio}-resumo.md</strong> — resumo de 1 página</li>
+        <li>📄 <strong>icp-{negocio}.html</strong> — versão visual</li>
+        <li>📄 <strong>competidores-{nicho}.md</strong> — dossiê dos concorrentes</li>
+        <li>📄 <strong>trends-{nicho}-{data}.md</strong> — relatório de tendências</li>
+        <li>📄 <strong>briefing-swipe-file.md</strong> — briefing das capturas</li>
+        <li>📄 <strong>briefing-offerbook.md</strong> — input para offerbook</li>
+        <li>📁 <strong>swipe-file/</strong> — biblioteca de criativos categorizada</li>
+        <li>📄 <strong>offerbook-{produto}.md</strong> — o resultado final</li>
+        <li>📄 <strong>lacunas-aula-01.md</strong> — o que ficou pendente</li>
+      </ul>
+    </div>
+
+    <p>Esse pacote inteiro é o que o <strong>Arquiteto de Funil</strong> recebe na Aula 02 para estruturar funil, página de venda e bateria de criativos.</p>
+  </section>
+
+  <div class="cta-final">
+    <h2>Pronta para <em>começar</em>?</h2>
+    <p>Abra o Claude Code no terminal e rode o primeiro comando.</p>
+    <div class="command-block slash">pesquisa-icp [nome do seu negócio]</div>
+  </div>
+</div>
+
+<script>
+  const bar = document.getElementById('progress');
+  function updateBar() {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  document.addEventListener('scroll', updateBar);
+  updateBar();
+</script>
+
+</body>
+</html>
