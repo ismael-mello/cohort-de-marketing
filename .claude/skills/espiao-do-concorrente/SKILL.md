@@ -122,7 +122,9 @@ Cada brecha vira uma recomendação acionável para o usuário.
 
 ## Passo 3 — Entregar o dossiê
 
-Gere o dossiê no formato de `templates/dossie.md`, em português, preenchido com o material real. Para cada achado, indique a(s) fonte(s) de onde veio. Estrutura:
+**Nome do arquivo:** `dossie-{concorrente}.md` (slug do concorrente em minúsculas, sem espaço, sem acento). Ex.: `dossie-erico-rocha.md`, `dossie-hotmart.md`. Use `templates/dossie.md` como base — copie e salve com o nome correto no diretório atual.
+
+Preenchido com o material real, em português. Para cada achado, indique a(s) fonte(s) de onde veio. Estrutura:
 
 1. **Resumo executivo** (1 parágrafo: quem é, como vende, maior força, maior brecha).
 2. **Fontes consultadas** (quais frentes você cobriu e o que cada uma rendeu).
