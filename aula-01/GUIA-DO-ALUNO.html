@@ -927,11 +927,24 @@
         <li>📄 <strong>lacunas-aula-01.md</strong> — o que ficou pendente</li>
       </ul>
 
-      <details style="margin-top: 16px; padding: 12px 16px; background: rgba(255,255,255,0.03); border-radius: 0.5rem;">
-        <summary style="font-family: var(--font-ui); font-size: 0.85rem; cursor: pointer; color: var(--primary);">Como criar o lacunas-aula-01.md</summary>
-        <p style="font-family: var(--font-ui); font-size: 0.85rem; margin: 12px 0 8px; color: var(--foreground);">Tem template pronto em <code>aula-01/docs/template-lacunas-aula-01.md</code>. Copie pra raiz do seu projeto, renomeie pra <code>lacunas-aula-01.md</code> e preencha as 5 seções:</p>
+      <details style="margin-top: 16px; padding: 16px 20px; background: rgba(255,255,255,0.03); border-radius: 0.5rem;">
+        <summary style="font-family: var(--font-ui); font-size: 0.9rem; cursor: pointer; color: var(--primary); font-weight: 600;">Como criar o lacunas-aula-01.md (2 comandos no terminal)</summary>
+
+        <p style="font-family: var(--font-ui); font-size: 0.9rem; margin: 16px 0 8px; color: var(--foreground);"><strong>1.</strong> Na pasta do seu projeto (onde você clonou o repo), abra o terminal e cole:</p>
+        <div style="background: var(--background); border: 1px solid var(--border); border-left: 3px solid var(--primary); padding: 12px 16px; border-radius: 0.5rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--primary-light); margin-bottom: 16px; overflow-x: auto;">
+          cp aula-01/docs/template-lacunas-aula-01.md ./lacunas-aula-01.md
+        </div>
+
+        <p style="font-family: var(--font-ui); font-size: 0.9rem; margin: 0 0 8px; color: var(--foreground);"><strong>2.</strong> Abra o arquivo no editor padrão (Mac/Linux):</p>
+        <div style="background: var(--background); border: 1px solid var(--border); border-left: 3px solid var(--primary); padding: 12px 16px; border-radius: 0.5rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--primary-light); margin-bottom: 16px; overflow-x: auto;">
+          open lacunas-aula-01.md
+        </div>
+
+        <p style="font-family: var(--font-ui); font-size: 0.85rem; color: var(--muted-foreground); margin: 0 0 16px;">No Windows, use <code style="font-family: var(--font-mono);">copy</code> em vez de <code style="font-family: var(--font-mono);">cp</code> e <code style="font-family: var(--font-mono);">start</code> em vez de <code style="font-family: var(--font-mono);">open</code>.</p>
+
+        <p style="font-family: var(--font-ui); font-size: 0.9rem; margin: 16px 0 8px; color: var(--foreground);"><strong>3.</strong> Preencha as 5 seções (o template já vem com instrução em cada uma):</p>
         <ul style="font-family: var(--font-ui); font-size: 0.85rem; padding-left: 20px; line-height: 1.7; color: var(--muted-foreground);">
-          <li><strong>1. Lacunas de dado:</strong> onde a pesquisa marcou <code>[SUPOSIÇÃO]</code> ou faltou fonte</li>
+          <li><strong>1. Lacunas de dado:</strong> onde a pesquisa marcou <code style="font-family: var(--font-mono);">[SUPOSIÇÃO]</code> ou faltou fonte</li>
           <li><strong>2. Lacunas de decisão do dono:</strong> calls que travam o offerbook (preço, garantia, bônus)</li>
           <li><strong>3. Lacunas de validação:</strong> hipóteses que precisam ir pra rua antes de virar copy</li>
           <li><strong>4. Backlog:</strong> o que aparece mas não cabe agora</li>
