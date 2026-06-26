@@ -27,22 +27,15 @@
 
 ---
 
-## Aula 02 — Funil e Páginas
+## Apoio (brand do entregável, usada na Aula 01)
 
 | Nome canônico | Aliases | O que faz |
 |---|---|---|
-| `/metodo-funil` | `/funil`, `/funnel-method`, `/alan-nicolas` | Método de construção de funil (Alan Nicolas). |
-| `/pagina-vendas` | `/lp`, `/landing-page`, `/sales-page`, `/pagina-de-vendas` | Página de vendas estruturada. |
-| `/vsl-funil` | `/vsl`, `/video-sales-letter` | Video Sales Letter. |
-| `/copy-funil` | `/copy`, `/copywriting` | Copy específica pro funil. |
-| `/criativos-funil` | `/criativos`, `/anuncios`, `/ads` | Criativos para anúncios. |
-| `/email-funil` | `/email`, `/email-marketing`, `/sequencia-email` | Email marketing do funil. |
-| `/whatsapp-funil` | `/whatsapp`, `/wpp`, `/zap` | WhatsApp marketing do funil. |
-| `/recuperacao` | `/cart-recovery`, `/carrinho-abandonado`, `/recuperar-carrinho` | Recuperação de carrinho abandonado. |
-| `/cro-funil` | `/cro`, `/otimizacao-conversao`, `/conversion-optimization` | Otimização de conversão. |
-| `/back-end` | `/backend`, `/integracoes`, `/integrations` | Backend e integrações. |
-| `/conteudo-funil` | `/conteudo`, `/content` | Conteúdo para LP e VSL. |
-| `/design-md` | `/design`, `/brand`, `/visual` | Design system markdown que renderiza HTML com brand. |
+| `/design-md` | `/design`, `/brand`, `/visual` | Design system markdown que renderiza HTML com a brand do aluno (logo + cores + fontes). Opcional — se não rodar, o `/avatar-funil` e o `/offerbook` saem com a brand Academia Lendária. |
+
+## Aula 02 — Funil e Páginas
+
+Skills serão publicadas na semana da Aula 02. Não estão instaladas neste repo ainda.
 
 ---
 

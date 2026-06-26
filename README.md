@@ -16,7 +16,7 @@ cd cohort-de-marketing
 claude
 ```
 
-As skills em `.claude/skills/` carregam automaticamente. Digite `/` no Claude Code e veja as 16 skills disponíveis.
+As skills em `.claude/skills/` carregam automaticamente. Digite `/` no Claude Code e veja as 6 skills disponíveis da Aula 01.
 
 ---
 
@@ -33,26 +33,25 @@ Mapear mercado, ler concorrentes e desenhar uma oferta que sai da gaveta. Skills
 
 ### Aula 2 · Funil e Páginas
 
-**Status:** disponível
-**Onde:** [`aula-02/`](./aula-02/)
+**Status:** em breve (publicada na semana da aula)
 
-Estruturar o funil, gerar a página de venda e produzir uma bateria de criativos prontos para rodar. Skills usadas: `/metodo-funil`, `/pagina-vendas`, `/vsl-funil`, `/copy-funil`, `/criativos-funil`, `/email-funil`, `/whatsapp-funil`, `/recuperacao`, `/cro-funil`, `/back-end`, `/conteudo-funil`, `/design-md`.
+Estruturar o funil, gerar a página de venda e produzir uma bateria de criativos prontos para rodar.
 
 ### Aula 3 · Tráfego e Criativos
 
-**Status:** em breve (11/07)
+**Status:** em breve
 
 ### Aula 4 · Dados e Receita
 
-**Status:** em breve (18/07)
+**Status:** em breve
 
 ---
 
-## As 16 skills do cohort
+## As 6 skills da Aula 01
 
-Todas instaladas em `.claude/skills/` na raiz. Funcionam de qualquer aula.
+Instaladas em `.claude/skills/` na raiz. Carregam automaticamente.
 
-### Pesquisa e Oferta (Aula 1)
+### Pesquisa e Oferta
 
 | Skill | O que faz |
 |---|---|
@@ -62,22 +61,13 @@ Todas instaladas em `.claude/skills/` na raiz. Funcionam de qualquer aula.
 | `/swipe-file` | Organiza criativos winners categorizados por tipo/formato/padrão |
 | `/offerbook` | Livro da Oferta em 7 blocos (MD + DOCX usando template oficial) |
 
-### Funil e Páginas (Aula 2)
+### Apoio (brand do entregável)
 
 | Skill | O que faz |
 |---|---|
-| `/metodo-funil` | Método de construção de funil (Alan Nicolas) |
-| `/pagina-vendas` | Página de vendas estruturada |
-| `/vsl-funil` | Video Sales Letter |
-| `/copy-funil` | Copy específica para funil |
-| `/criativos-funil` | Criativos para anúncios |
-| `/email-funil` | Email marketing do funil |
-| `/whatsapp-funil` | WhatsApp marketing do funil |
-| `/recuperacao` | Recuperação de carrinho abandonado |
-| `/cro-funil` | Otimização de conversão |
-| `/back-end` | Backend e integrações |
-| `/conteudo-funil` | Conteúdo para LP e VSL |
-| `/design-md` | Design system markdown que renderiza HTML com brand |
+| `/design-md` | Gera DESIGN.md com a sua brand (logo + cores + fontes). `/avatar-funil` e `/offerbook` usam pra renderizar HTML com a sua identidade. Opcional — se não rodar, sai com brand Academia Lendária. |
+
+As skills da Aula 02 serão publicadas na semana da aula.
 
 ---
 
@@ -89,16 +79,12 @@ Todas instaladas em `.claude/skills/` na raiz. Funcionam de qualquer aula.
 ├── .env.example                 template de chaves de API (copie para .env)
 ├── .gitignore
 ├── .claude/
-│   └── skills/                  16 skills carregam automaticamente
-├── aula-01/                     Pesquisa, Concorrentes e Ofertas
-│   ├── README.md
-│   ├── GUIA-DO-ALUNO.html       leia primeiro
-│   ├── docs/                    workflow + handoff + SKILLS-INDEX (mapa de nomes)
-│   └── templates/               Template-Offerbook.docx
-└── aula-02/                     Funil e Páginas
+│   └── skills/                  6 skills carregam automaticamente (Aula 01)
+└── aula-01/                     Pesquisa, Concorrentes e Ofertas
     ├── README.md
-    ├── DESIGN.md
-    └── slides-aula-funil-claude-design.md
+    ├── GUIA-DO-ALUNO.html       leia primeiro
+    ├── docs/                    workflow + handoff + SKILLS-INDEX (mapa de nomes)
+    └── templates/               Template-Offerbook.docx
 ```
 
 ---
