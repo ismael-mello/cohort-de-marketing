@@ -6,6 +6,34 @@ user_invocable: true
 
 # Trend Hunting (Caca de Tendencias)
 
+## Posicao na Aula 01
+
+Esta e a **Skill 3 de 5** da Aula 01 do Cohort de Marketing.
+
+**Sequencia:** `/avatar-funil` -> `/espiao-do-concorrente` -> `/trend-hunting` (voce esta aqui) -> `/swipe-file` -> `/offerbook`.
+
+### Gate de pre-requisito (executar ANTES de qualquer coisa)
+
+Antes de comecar, **verifique no diretorio atual** se existe `relatorio-avatar.md`:
+
+```
+ls relatorio-avatar.md 2>/dev/null
+```
+
+**Se NAO existir**, exiba este aviso e pergunte:
+
+> Detectei que voce ainda nao rodou `/avatar-funil` neste projeto. Sem avatar, as variacoes de hook saem genericas (sem ancora no que o seu cliente realmente diz).
+>
+> Recomendo voltar e rodar `/avatar-funil` primeiro. Quer continuar mesmo assim? (s/n)
+
+Se o usuario responder `n`, encerre dizendo: *"Beleza. Rode `/avatar-funil [nicho]` e volte aqui depois."*
+
+Se responder `s`, prossiga mas marque no relatorio que as variacoes nao foram ancoradas em avatar real.
+
+**Se EXISTIR**, leia rapidamente o avatar (vocabulario do cliente, dor principal) e use essa linguagem nas variacoes de hook. Mencione: *"Encontrei seu avatar. Vou ancorar as variacoes na linguagem dele."*
+
+---
+
 Esta skill detecta **tendencias emergentes** no seu nicho ANTES de virarem saturadas. Mapeia formatos virais (Reels, carousels, threads, vsl curta), identifica timing de entrada e gera variacoes prontas para testar.
 
 A regra: voce nao quer pegar tendencia no pico (todo mundo ja fez). Quer pegar **na rampa de subida** (timing de 2-3 semanas antes da saturacao).
@@ -214,11 +242,26 @@ E recomende qual testar primeiro e por que.
 ## Conexao com outras skills
 
 ```
-/pesquisa-de-avatar (opcional, melhora as variacoes)
+/avatar-funil (pre-requisito recomendado)
     ↓
 /trend-hunting (esta skill)
-    ↓ variacoes-teste.md
+    ↓ trends-{nicho}-{data}.md + variacoes-teste-{data}.md + briefing-media-buyer.md
 /swipe-file (organiza criativos winners apos teste)
     ↓
-Media Buyer (Aula 03 do cohort)
+/offerbook
 ```
+
+## Anuncio de fechamento (proxima skill)
+
+Apos gerar os 3 arquivos (`trends-{nicho}-{data}.md` + `variacoes-teste-{data}.md` + `briefing-media-buyer.md`), **sempre** diga ao usuario em texto separado:
+
+> Skill 3/5 entregue. Voce tem agora 3 arquivos:
+> - trends-{nicho}-{data}.md
+> - variacoes-teste-{data}.md
+> - briefing-media-buyer.md
+>
+> **Proxima skill da Aula 01:** `/swipe-file capturar`
+>
+> Swipe file vai organizar os criativos vencedores do `/espiao` e do `/trend-hunting` numa biblioteca pesquisavel. Ela alimenta Copy e Media Buyer.
+
+Nao pule esse anuncio — e o que orienta o aluno a seguir o trilho da Aula 01.

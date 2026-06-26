@@ -6,6 +6,52 @@ user_invocable: true
 
 # Offerbook (Livro da Oferta)
 
+## Posição na Aula 01
+
+Esta é a **Skill 5 de 5 (última)** da Aula 01 do Cohort de Marketing.
+
+**Sequência:** `/avatar-funil` → `/espiao-do-concorrente` → `/trend-hunting` → `/swipe-file` → `/offerbook` (você está aqui).
+
+### Gate de pré-requisito (executar ANTES de qualquer coisa)
+
+Antes de começar, **verifique no diretório atual** os 3 inputs esperados:
+
+```
+ls relatorio-avatar.md 2>/dev/null
+ls dossie-*.md 2>/dev/null
+ls briefing-swipe-file.md 2>/dev/null
+```
+
+**Checklist de pré-requisitos:**
+
+| Input | Skill que gera | Obrigatório? |
+|---|---|---|
+| `relatorio-avatar.md` | `/avatar-funil` | **SIM** (sem avatar, offerbook vira ficção) |
+| `dossie-{concorrente}.md` (1+) | `/espiao-do-concorrente` | **SIM** (sem concorrente, posicionamento vira chute) |
+| `briefing-swipe-file.md` | `/swipe-file` | Recomendado (sem ele, copy fica sem referência) |
+
+**Se faltar `relatorio-avatar.md` OU nenhum dossiê existir**, exiba este aviso:
+
+> Detectei que faltam inputs essenciais pra montar um offerbook de qualidade. Sem eles, o offerbook vira ficção (e isso quebra a regra-mãe da Aula 01).
+>
+> Faltando:
+> - [ ] `relatorio-avatar.md` → rode `/avatar-funil [nicho]`
+> - [ ] Pelo menos 1 `dossie-{concorrente}.md` → rode `/espiao-do-concorrente [nome]`
+> - [ ] `briefing-swipe-file.md` → rode `/swipe-file briefing`
+>
+> Recomendo voltar e rodar as skills faltantes. Quer continuar mesmo assim? (s/n)
+
+Se o usuário responder `n`, encerre dizendo: *"Beleza. Rode as skills acima e volte aqui depois. O offerbook fica muito melhor com a fundação completa."*
+
+Se responder `s`, prossiga mas:
+- Marque no offerbook (Bloco 1 — Materiais) o que estava faltando
+- Use o aviso "SEM DADO NA PESQUISA" nos campos que dependeriam do input ausente
+- No fim, adicione na seção "Lacunas e Próximos Passos" que o offerbook foi gerado parcialmente
+
+**Se TODOS os inputs existirem**, leia-os antes de começar (avatar + dossiês + briefing) e mencione: *"Encontrei: 1 avatar + {N} dossiês de concorrentes + 1 briefing de swipe-file. Vou usar como fundação."*
+
+---
+
 Esta skill produz o **Offerbook** de uma oferta: o brief de Story Selling que fundamenta TODA a copy depois (LP, e-mails, ads). Regra-mãe: **toda oferta nova começa pelo offerbook**, antes de qualquer copy.
 
 Este arquivo é **autossuficiente**: a estrutura completa, o passo a passo, as regras e o checklist estão todos aqui dentro. Não depende de nenhum template, banco de dados ou pasta externa.
@@ -150,6 +196,37 @@ Regras de geração:
 - Template original do DOCX NUNCA é modificado — o script faz cópia.
 - Se faltar campo no MD, o DOCX gera com `[A PREENCHER]` no lugar (não falha).
 - Pré-requisito DOCX: `pip install python-docx` (uma vez).
+
+### Abrir o DOCX automaticamente (entrega visual ao aluno)
+
+Logo após gerar o `offerbook-{slug}.docx`, **rode automaticamente** o comando para abrir no Word/editor padrão:
+
+```
+open offerbook-{slug}.docx
+```
+
+(No Windows: `start offerbook-{slug}.docx`. No Linux: `xdg-open offerbook-{slug}.docx`.)
+
+Diga ao usuário: *"Abri o offerbook no Word pra você revisar."*
+
+### Anúncio de fechamento (última skill da Aula 01)
+
+Após confirmar entrega, **sempre** diga ao usuário em texto separado:
+
+> 🎉 **Aula 01 concluída.** Você completou as 5 skills.
+>
+> Você tem agora 13 arquivos no projeto:
+> - 3 do `/avatar-funil` (relatorio-avatar.md/html/pdf)
+> - 1+ do `/espiao-do-concorrente` (dossie-{concorrente}.md)
+> - 3 do `/trend-hunting` (trends + variacoes + briefing-media-buyer)
+> - 2 do `/swipe-file` (index + briefing-swipe-file)
+> - 3 do `/offerbook` (briefing-offerbook + offerbook.md + offerbook.docx — abri pra você)
+>
+> **Próximo passo manual:** crie o `lacunas-aula-01.md` (copie de `aula-01/docs/template-lacunas-aula-01.md` pra raiz do projeto). É o único artefato que não tem skill — você preenche o que ficou pendente em até 30 minutos.
+>
+> Esse pacote inteiro é o que vai alimentar a Aula 02 (Funil e Páginas). Sem ele aprovado pelo dono da oferta, NÃO se escreve copy. Essa é a regra-mãe do cohort.
+
+Nao pule esse anúncio — fecha o trilho completo da Aula 01.
 
 ---
 

@@ -6,6 +6,37 @@ user_invocable: true
 
 # Swipe File (Biblioteca de Criativos Winners)
 
+## Posicao na Aula 01
+
+Esta e a **Skill 4 de 5** da Aula 01 do Cohort de Marketing.
+
+**Sequencia:** `/avatar-funil` -> `/espiao-do-concorrente` -> `/trend-hunting` -> `/swipe-file` (voce esta aqui) -> `/offerbook`.
+
+### Gate de pre-requisito (executar ANTES de qualquer coisa)
+
+Antes de comecar, **verifique no diretorio atual** se existe pelo menos UM dos inputs esperados:
+
+```
+ls dossie-*.md 2>/dev/null
+ls variacoes-teste-*.md 2>/dev/null
+```
+
+**Se NENHUM dos dois existir**, exiba este aviso e pergunte:
+
+> Detectei que voce ainda nao tem inputs pra alimentar o swipe file. Esta skill organiza criativos vencedores que vieram de duas fontes:
+> - `dossie-{concorrente}.md` (gerado pelo `/espiao-do-concorrente`)
+> - `variacoes-teste-{data}.md` (gerado pelo `/trend-hunting`)
+>
+> Recomendo voltar e rodar pelo menos um deles antes. Quer continuar mesmo assim com captura manual? (s/n)
+
+Se o usuario responder `n`, encerre dizendo: *"Beleza. Rode `/espiao-do-concorrente [nome]` ou `/trend-hunting [nicho]` e volte aqui depois."*
+
+Se responder `s`, prossiga em modo manual (aluno cola criativos um a um).
+
+**Se algum existir**, leia os arquivos e use os criativos ja identificados como base do swipe file. Mencione: *"Encontrei {N} dossies e {M} arquivos de variacoes. Vou usar como base do swipe file."*
+
+---
+
 Esta skill mantem **biblioteca viva** de criativos vencedores (anuncios, posts, hooks, CTAs, paginas) **organizados por padrao**, para alimentar Copy e Media Buyer com referencias acionaveis.
 
 **Atencao etica:** swipe file e **biblioteca de inspiracao**, nao copy-paste. Voce extrai o **padrao** (estrutura do hook, formato, angulo) e adapta ao seu ICP. Copiar literalmente e tiro no pe (pena algoritmica + risco de marca).
@@ -291,11 +322,24 @@ fonte: https://www.facebook.com/ads/library/?id=...
 ## Conexao com outras skills
 
 ```
-/espiao-do-concorrente → briefing-swipe-file.md ↘
-                                                /swipe-file (esta skill)
-/trend-hunting → variacoes-teste.md          ↗      ↓
-                                                briefing para Copy + Media Buyer
-                                                     ↓
-                                                Aula 02 (Arquiteto de Funil)
-                                                Aula 03 (Media Buyer)
+/espiao-do-concorrente -> dossie-*.md       \
+                                              -> /swipe-file (esta skill)
+/trend-hunting -> variacoes-teste-*.md      /        |
+                                                briefing-swipe-file.md
+                                                     |
+                                                 /offerbook (proxima)
 ```
+
+## Anuncio de fechamento (proxima skill)
+
+Apos gerar os 2 arquivos (`swipe-file-index.md` + `briefing-swipe-file.md`), **sempre** diga ao usuario em texto separado:
+
+> Skill 4/5 entregue. Voce tem agora:
+> - swipe-file-index.md (indice master da biblioteca)
+> - briefing-swipe-file.md (handoff pronto pra Copy e Media Buyer)
+>
+> **Proxima e ultima skill da Aula 01:** `/offerbook [nome-do-produto]`
+>
+> Offerbook consolida TUDO (avatar + dossies + swipe-file) num Livro da Oferta de 7 blocos. E o brief mestre que vai alimentar LP, e-mails e ads nas proximas aulas.
+
+Nao pule esse anuncio — e o que orienta o aluno a seguir o trilho da Aula 01.
