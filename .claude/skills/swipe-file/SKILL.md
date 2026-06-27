@@ -219,6 +219,156 @@ Top 5 angulos validados pelo algoritmo: ...
 **Para `/swipe-file revisar`:**
 1. Lista de itens marcados como arquivo, evergreen, ou saturado
 
+### Entrega visual (HTML + PDF dos 2 handoffs principais)
+
+Para `/swipe-file capturar` e `/swipe-file briefing`, alem dos MD ja descritos, gerar tambem HTML e PDF dos 2 handoff masters:
+
+**4 arquivos extras:**
+- `swipe-file-index.html` + `.pdf`
+- `briefing-swipe-file.html` + `.pdf`
+
+**Como gerar:**
+
+**Passo 1 — Aplicar gate de brand-choice** (segue `_shared/brand-choice.md`):
+
+```
+ls .cohort-brand-choice 2>/dev/null
+```
+
+Se nao existir, perguntar (3 opcoes: neutro / rodar /design-md / usar DESIGN.md existente) e salvar.
+
+**Passo 2 — Gerar swipe-file-index.html** copiando `templates/swipe-file-index.html` e substituindo TODOS os placeholders. O template e premium, com varios componentes visuais. Voce DEVE preencher cada placeholder com HTML semantico real (nao deixe vazio):
+
+- `{{TITULO}}` — nome do projeto/nicho (ex.: "Pos-Graduacao NeuroTCC")
+- `{{SUBTITULO}}` — descricao curta (ex.: "10 criativos catalogados · 3 concorrentes · 3 brechas mapeadas")
+- `{{DATA}}` — data (ex.: "26 de junho de 2026")
+- `{{MARCA}}` — vazio se neutro, ou nome do `DESIGN.md`
+- `{{KPIS}}` — 3 a 5 KPIs no formato:
+  ```html
+  <div class="kpi"><div class="num">10</div><div class="label">Criativos</div></div>
+  <div class="kpi"><div class="num accent">7</div><div class="label">Winners</div></div>
+  <div class="kpi"><div class="num">3</div><div class="label">Concorrentes</div></div>
+  <div class="kpi"><div class="num">3</div><div class="label">Brechas</div></div>
+  ```
+- `{{CATEGORIAS}}` — uma `<div class="cat">` por categoria (Hooks, Posts, LPs, Vídeos, etc.):
+  ```html
+  <div class="cat">
+    <div class="cat-nome">Hooks</div>
+    <div class="cat-count">5</div>
+    <div class="cat-desc">Texto isolado, primeiros 3s</div>
+  </div>
+  ```
+- `{{TOP_PADROES}}` — top 3 padroes mais usados, cada um em `<div class="padrao-card">`:
+  ```html
+  <div class="padrao-card">
+    <span class="rank">#1 Padrão</span>
+    <h3>Narrativa pessoal + autoridade academica</h3>
+    <p class="descricao">Funciona porque da identificacao rapida + credibilidade tecnica que justifica o preco.</p>
+    <div class="stats">
+      <div class="stat"><strong>Usado em:</strong> 4 criativos</div>
+      <div class="stat"><strong>Performance:</strong> 3 winners</div>
+      <div class="stat"><strong>Tipos:</strong> Posts, LP, Video</div>
+    </div>
+  </div>
+  ```
+- `{{CRIATIVOS}}` — UM card por criativo catalogado, em `<div class="criativo">`. Use badges:
+  - `<span class="badge winner">Winner</span>` para winners
+  - `<span class="badge promising">Promissor</span>` para promissores
+  - `<span class="badge anti">Anti-modelo</span>` para anti-modelos (estudar o que NAO fazer)
+  - `<span class="badge original">Variacao original</span>` para variacoes do aluno
+  Exemplo completo:
+  ```html
+  <div class="criativo">
+    <div class="criativo-header">
+      <span class="criativo-id">sw01</span>
+      <span class="badge winner">Winner</span>
+    </div>
+    <h4>"Prazer, Fernanda Landeiro"</h4>
+    <div class="meta-row">
+      <div><strong>Concorrente:</strong> Grupo PBE</div>
+      <div><strong>Tipo:</strong> Post organico · texto</div>
+      <div><strong>Padrao:</strong> Narrativa + autoridade</div>
+    </div>
+    <div class="meta-row">
+      <div><strong>Engajamento:</strong> 604k seguidores · 6 anos</div>
+    </div>
+    <div class="arquivo-link">📄 <a href="./hooks/sw01-fernanda-prazer-fernanda-landeiro.md">sw01-fernanda-prazer-fernanda-landeiro.md</a></div>
+  </div>
+  ```
+- `{{ANALISE_CRUZADA}}` — secao opcional com analise extra (padroes evitados, anti-modelos, comentarios). Use `<h2>` + paragrafos + `<div class="callout brecha">` ou `<div class="callout anti">` quando relevante.
+
+**Passo 3 — Gerar briefing-swipe-file.html** copiando `templates/briefing-swipe-file.html` e substituindo TODOS os placeholders:
+
+- `{{TITULO}}` — nicho
+- `{{SUBTITULO}}` — frase curta (ex.: "Handoff pronto pra Copy e Media Buyer")
+- `{{DATA}}`, `{{MARCA}}`
+- `{{RESUMO}}` — 4 items no resumo strip:
+  ```html
+  <div class="resumo-item"><div class="label">Atualizado</div><div class="val">26/06/2026</div></div>
+  <div class="resumo-item"><div class="label">Briefings ativos</div><div class="val">3</div></div>
+  <div class="resumo-item"><div class="label">Referencias totais</div><div class="val">47</div></div>
+  <div class="resumo-item"><div class="label">Top padrao</div><div class="val">Narrativa pessoal</div></div>
+  ```
+- `{{TOP_PADROES}}` — top 3 padroes em `<div class="top-padrao">`:
+  ```html
+  <div class="top-padrao">
+    <span class="rank">#1 Padrao</span>
+    <h3>Narrativa pessoal + autoridade academica</h3>
+    <p class="resumo-padrao">Funciona porque da identificacao rapida + credibilidade.</p>
+    <div class="exemplo">"Prazer, Fernanda Landeiro. PhD em Psicologia..."</div>
+    <div class="meta-padrao">
+      <div><strong>Usado em:</strong> 4 criativos</div>
+      <div><strong>Performance:</strong> 3 winners + 1 promissor</div>
+    </div>
+  </div>
+  ```
+- `{{BRIEFINGS_TIPO}}` — uma linha por briefing ativo:
+  ```html
+  <div class="briefing-tipo">
+    <div class="nome">hooks-vsl</div>
+    <div class="qtd">18 refs</div>
+  </div>
+  ```
+- `{{DESTINATARIOS}}` — 2 cards, um para Copy e um para Media Buyer:
+  ```html
+  <div class="destinatario copy">
+    <span class="quem">Para Copy</span>
+    <h3>Top 5 hooks adaptaveis ao ICP</h3>
+    <ol>
+      <li><strong>Narrativa pessoal:</strong> "Prazer, [seu nome]..." — adapte pro especialista da sua oferta</li>
+      <li>... etc</li>
+    </ol>
+  </div>
+  <div class="destinatario media">
+    <span class="quem">Para Media Buyer</span>
+    <h3>Top 5 angulos validados pelo algoritmo</h3>
+    <ol>
+      <li><strong>Tensao cultural + dado:</strong> formato Reel, primeiros 3s...</li>
+      <li>... etc</li>
+    </ol>
+  </div>
+  ```
+
+Se brand-choice = `design-md`, ler `DESIGN.md` e substituir tokens em `:root`.
+
+**Passo 4 — Gerar PDFs:**
+
+```
+bash scripts/gerar_pdf.sh swipe-file-index.html
+bash scripts/gerar_pdf.sh briefing-swipe-file.html
+```
+
+**Passo 5 — Abrir HTML automaticamente:**
+
+```
+open swipe-file-index.html
+open briefing-swipe-file.html
+```
+
+(Windows: `start`. Linux: `xdg-open`.)
+
+Diga ao usuario: *"Abri o index do swipe-file e o briefing no seu navegador."*
+
 ---
 
 ## Template de captura (1 arquivo por criativo)
@@ -335,8 +485,8 @@ fonte: https://www.facebook.com/ads/library/?id=...
 Apos gerar os 2 arquivos (`swipe-file-index.md` + `briefing-swipe-file.md`), **sempre** diga ao usuario em texto separado:
 
 > Skill 4/5 entregue. Voce tem agora:
-> - swipe-file-index.md (indice master da biblioteca)
-> - briefing-swipe-file.md (handoff pronto pra Copy e Media Buyer)
+> - swipe-file-index.md / .html (abri pra voce) / .pdf
+> - briefing-swipe-file.md / .html (abri pra voce) / .pdf (handoff pronto pra Copy e Media Buyer)
 >
 > **Proxima e ultima skill da Aula 01:** `/offerbook [nome-do-produto]`
 >

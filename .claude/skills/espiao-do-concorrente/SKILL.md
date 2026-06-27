@@ -182,11 +182,68 @@ Se a amostra foi pequena, veio de poucas fontes ou do modo offline, diga isso no
 - Sem login alheio, sem engenharia social, sem burlar paywall ou termos de uso.
 - Sem acesso à rede, o modo offline entrega a mesma análise sobre o material colado.
 
+## Entrega final (3 formatos: MD + HTML + PDF)
+
+A skill **sempre** entrega 3 arquivos para cada concorrente analisado:
+
+1. **`dossie-{concorrente}.md`** — fonte de verdade (markdown editável)
+2. **`dossie-{concorrente}.html`** — versão visual com brand
+3. **`dossie-{concorrente}.pdf`** — versão para imprimir ou compartilhar
+
+### Como gerar os 3 arquivos
+
+**Passo 1 — Aplicar gate de brand-choice** (segue protocolo de `_shared/brand-choice.md`):
+
+```
+ls .cohort-brand-choice 2>/dev/null
+```
+
+- Se existir, leia (`cat .cohort-brand-choice`) e use a escolha salva
+- Se não existir, faça a pergunta de 3 opções (neutro padrão / rodar /design-md / usar DESIGN.md existente) e salve a escolha
+
+**Passo 2 — Gerar o MD** com o nome `dossie-{slug-do-concorrente}.md` (slug em minúsculas sem espaço, ex.: `dossie-hotmart.md`).
+
+**Passo 3 — Gerar o HTML** copiando `templates/dossie.html` e substituindo placeholders:
+- `{{TITULO}}` — nome do concorrente (ex.: "Hotmart")
+- `{{SUBTITULO}}` — frente coberta + amostra (ex.: "Meta Ad Library + site + reviews · 47 peças")
+- `{{DATA}}` — data de hoje (formato `26 de junho de 2026`)
+- `{{MARCA}}` — deixar em branco (vazio) se brand-choice = `neutro`, ou nome da marca do `DESIGN.md` se brand-choice = `design-md`
+- `{{CONTEUDO}}` — as 9 seções do dossiê renderizadas em HTML, usando:
+  - `<h2>` por seção principal
+  - `<h3>` por subitem
+  - `<table>` para Ganchos, Ofertas e preços
+  - `<blockquote class="hook">` para CADA hook/anúncio citado literalmente
+  - `<div class="brecha">` para CADA brecha identificada (destaque verde)
+  - `<div class="callout">` para avisos de amostra parcial
+
+Se brand-choice = `design-md`, leia `DESIGN.md` e substitua os tokens CSS em `:root` (cores e fontes) pelos do aluno.
+
+**Passo 4 — Gerar o PDF** rodando o script sobre o HTML:
+
+```
+bash scripts/gerar_pdf.sh dossie-{slug}.html
+```
+
+Ele usa Chrome headless (fallback wkhtmltopdf). Se o PDF não sair, avise o usuário e entregue MD + HTML mesmo assim.
+
+**Passo 5 — Abrir HTML automaticamente** logo após geração:
+
+```
+open dossie-{slug}.html
+```
+
+(No Windows: `start dossie-{slug}.html`. No Linux: `xdg-open dossie-{slug}.html`.)
+
+Diga ao usuário: *"Abri o dossiê no seu navegador."*
+
 ## Anúncio de fechamento (próxima skill)
 
-Após salvar o `dossie-{concorrente}.md`, **sempre** diga ao usuário em texto separado:
+Após entregar os 3 formatos, **sempre** diga ao usuário em texto separado:
 
-> Skill 2/5 entregue. Você tem agora: `dossie-{nome-do-concorrente}.md`
+> Skill 2/5 entregue. Você tem agora 3 arquivos pra cada concorrente:
+> - dossie-{nome-do-concorrente}.md
+> - dossie-{nome-do-concorrente}.html (abri pra você)
+> - dossie-{nome-do-concorrente}.pdf
 >
 > Recomendado: rode novamente para mais 2 ou 3 concorrentes diretos (mínimo 3 dossiês pra ter base de comparação).
 >

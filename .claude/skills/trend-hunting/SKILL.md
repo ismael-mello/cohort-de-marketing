@@ -145,11 +145,82 @@ Saida final: briefing acionavel para o Media Buyer ou Designer testar as variaco
 
 ## Output
 
-A skill gera:
+A skill gera 7 arquivos no total (MD + HTML + PDF dos 2 entregaveis visuais, mais o briefing):
 
+**Trends (3 formatos):**
 1. `trends-{nicho}-{data}.md` — relatorio completo com 4 fontes, padroes identificados, classificacao por timing
-2. `variacoes-teste-{data}.md` — lista de variacoes prontas para teste, com hook + estrutura + CTA
-3. `briefing-media-buyer.md` — briefing acionavel com orcamento e metricas
+2. `trends-{nicho}-{data}.html` — versao visual
+3. `trends-{nicho}-{data}.pdf` — versao para imprimir/compartilhar
+
+**Variacoes (3 formatos):**
+4. `variacoes-teste-{data}.md` — lista de variacoes prontas para teste, com hook + estrutura + CTA
+5. `variacoes-teste-{data}.html` — versao visual em cards
+6. `variacoes-teste-{data}.pdf` — versao para imprimir/compartilhar
+
+**Briefing:**
+7. `briefing-media-buyer.md` — briefing acionavel com orcamento e metricas (so MD, e arquivo de trabalho)
+
+### Como gerar os 7 arquivos
+
+**Passo 1 — Aplicar gate de brand-choice** (segue `_shared/brand-choice.md`):
+
+```
+ls .cohort-brand-choice 2>/dev/null
+```
+
+- Se existir, ler e usar a escolha salva (neutro ou design-md)
+- Se nao existir, perguntar (3 opcoes) e salvar
+
+**Passo 2 — Gerar os 3 MD** (trends, variacoes, briefing) conforme as etapas anteriores
+
+**Passo 3 — Gerar os 2 HTML** copiando os templates:
+
+Para `trends-{nicho}-{data}.html`, copiar `templates/trends.html` e substituir:
+- `{{TITULO}}` — nicho (ex.: "Marketing digital para advogados")
+- `{{SUBTITULO}}` — fontes + amostra (ex.: "Twitter/X + Reels + TikTok + LinkedIn · 47 padroes")
+- `{{DATA}}` — data de hoje
+- `{{MARCA}}` — vazio se neutro, ou nome do `DESIGN.md`
+- `{{CONTEUDO}}` — secoes em HTML com `<h2>`, `<h3>`, `<table>`, `<blockquote class="padrao">`. Use os badges `<span class="timing emergente">`, `<span class="timing em-alta">` e `<span class="timing saturado">` ao lado dos padroes.
+
+Para `variacoes-teste-{data}.html`, copiar `templates/variacoes.html` e substituir:
+- `{{TITULO}}` — nicho
+- `{{SUBTITULO}}` — quantidade de variacoes (ex.: "12 variacoes prontas para teste A/B")
+- `{{CONTEUDO}}` — cada variacao envolvida em `<div class="variacao">`:
+
+```html
+<div class="variacao">
+  <span class="numero">Variacao 1 — Formato: Reels POV</span>
+  <p class="hook">"Voce nunca mais vai escrever uma peticao do zero depois de ver isso"</p>
+  <ul class="estrutura">
+    <li>0-3s: gancho visual (cliente bravo na delegacia)</li>
+    <li>3-10s: revelacao (modelo de IA pronto)</li>
+    <li>10-20s: demo rapida</li>
+    <li>20-25s: CTA</li>
+  </ul>
+  <p class="meta"><strong>Tom:</strong> direto · <strong>Persona:</strong> advogado autonomo</p>
+  <span class="cta">CTA: link na bio</span>
+</div>
+```
+
+Se brand-choice = `design-md`, ler `DESIGN.md` e substituir os tokens em `:root` (cores e fontes) pelos do aluno.
+
+**Passo 4 — Gerar os 2 PDF** rodando o script sobre cada HTML:
+
+```
+bash scripts/gerar_pdf.sh trends-{nicho}-{data}.html
+bash scripts/gerar_pdf.sh variacoes-teste-{data}.html
+```
+
+**Passo 5 — Abrir HTML automaticamente** (so os 2 visuais, briefing-media-buyer fica em MD):
+
+```
+open trends-{nicho}-{data}.html
+open variacoes-teste-{data}.html
+```
+
+(Windows: `start`. Linux: `xdg-open`.)
+
+Diga ao usuario: *"Abri o trend report e as variacoes no seu navegador."*
 
 ---
 
@@ -253,11 +324,11 @@ E recomende qual testar primeiro e por que.
 
 ## Anuncio de fechamento (proxima skill)
 
-Apos gerar os 3 arquivos (`trends-{nicho}-{data}.md` + `variacoes-teste-{data}.md` + `briefing-media-buyer.md`), **sempre** diga ao usuario em texto separado:
+Apos gerar os 7 arquivos, **sempre** diga ao usuario em texto separado:
 
-> Skill 3/5 entregue. Voce tem agora 3 arquivos:
-> - trends-{nicho}-{data}.md
-> - variacoes-teste-{data}.md
+> Skill 3/5 entregue. Voce tem agora 7 arquivos:
+> - trends-{nicho}-{data}.md / .html (abri pra voce) / .pdf
+> - variacoes-teste-{data}.md / .html (abri pra voce) / .pdf
 > - briefing-media-buyer.md
 >
 > **Proxima skill da Aula 01:** `/swipe-file capturar`
