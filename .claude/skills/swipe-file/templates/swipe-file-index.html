@@ -195,13 +195,23 @@
   .criativo .arquivo-link {
     margin-top: 12px; padding-top: 12px;
     border-top: 1px dashed var(--raised);
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .criativo .arquivo-link .fmt-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px;
+    background: var(--bg-elevated); border: 1px solid var(--raised);
+    border-radius: 6px;
     font-family: var(--font-mono); font-size: 0.78rem;
-  }
-  .criativo .arquivo-link a {
     color: var(--primary-light); text-decoration: none;
-    border-bottom: 1px solid var(--primary-deep);
+    transition: all 0.15s;
   }
-  .criativo .arquivo-link a:hover { color: var(--primary); border-color: var(--primary); }
+  .criativo .arquivo-link .fmt-link:hover {
+    border-color: var(--primary); color: var(--primary);
+    background: var(--card);
+  }
+  .criativo .arquivo-link .fmt-link.md::before { content: "📄"; }
+  .criativo .arquivo-link .fmt-link.html::before { content: "🌐"; }
 
   /* === FLUXO === */
   .fluxo {
@@ -388,7 +398,10 @@
                <div class="meta-row">
                  <div><strong>Engajamento:</strong> 604k seguidores · 6 anos</div>
                </div>
-               <div class="arquivo-link">📄 <a href="./hooks/sw01-fernanda-prazer-fernanda-landeiro.md">sw01-fernanda-prazer-fernanda-landeiro.md</a></div>
+               <div class="arquivo-link">
+               <a href="./hooks/sw01-fernanda.md" class="fmt-link md">sw01-fernanda.md</a>
+               <a href="./hooks/sw01-fernanda.html" class="fmt-link html">sw01-fernanda.html</a>
+             </div>
              </div>
 
              Use badges:
@@ -396,6 +409,9 @@
              - <span class="badge promising">Promissor</span>
              - <span class="badge anti">Anti-modelo</span>
              - <span class="badge original">Variação original</span>
+
+             Cada criativo tem 2 links: .md (markdown editavel) e .html (versao visual).
+             Ambos os arquivos vivem na mesma pasta (./hooks/ ou ./posts-organicos/ etc).
         -->
         {{CRIATIVOS}}
       </div>

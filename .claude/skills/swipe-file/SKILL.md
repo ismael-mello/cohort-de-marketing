@@ -182,9 +182,37 @@ Retorna:
 A skill gera (depende da acao):
 
 **Para `/swipe-file capturar`:**
-1. Arquivos `.md` em `swipe-file/{tipo}/{nicho}/` (um por criativo)
+1. **2 arquivos por criativo** em `swipe-file/{tipo}/{nicho}/`:
+   - `{slug}.md` — markdown editavel (template em `## Template de captura` abaixo)
+   - `{slug}.html` — versao visual (template em `templates/criativo.html`)
 2. Atualizacao do `swipe-file-index.md` master
 3. Instrucoes Figma (link para adicionar frame manualmente, se usar Figma)
+
+### Como gerar HTML por criativo
+
+Apos gerar cada `{slug}.md`, gerar tambem `{slug}.html` copiando `templates/criativo.html` e substituindo:
+
+- `{{ID}}` — id do criativo (ex.: `sw01`)
+- `{{HOOK_CURTO}}` — primeiras palavras do hook (vai no `<title>` da aba)
+- `{{TITULO}}` — titulo descritivo (ex.: "Prazer, Fernanda Landeiro — apresentacao pessoal direta")
+- `{{BADGE}}` — escolher um:
+  - `<span class="badge winner">Winner</span>`
+  - `<span class="badge promising">Promissor</span>`
+  - `<span class="badge anti">Anti-modelo</span>`
+  - `<span class="badge original">Variacao original</span>`
+- `{{META}}` — preencher 6 `<div class="meta-item">` com: Concorrente, Tipo, Formato, Captura (data), Engajamento, Dias rodando
+- `{{HOOK_VERBATIM}}` — texto LITERAL do hook
+- `{{ESTRUTURA}}` — uma `<li>` por passo da estrutura
+- `{{CTA}}` — texto exato do CTA do criativo
+- `{{PROMESSA}}` — promessa principal em 1 frase
+- `{{EMOCAO}}` — medo / desejo / raiva / esperanca / curiosidade / outra
+- `{{PADRAO_EXTRAIDO}}` — paragrafo explicando POR QUE funciona e como adaptar
+- `{{ADAPTACOES}}` — pelo menos 2 `<li><strong>Adaptacao X:</strong> ...</li>`
+- `{{FONTE_URL}}` — link da fonte (Meta Ad Library, post URL, etc)
+- `{{MARCA}}` — vazio se brand-choice = `neutro`, ou nome do `DESIGN.md`
+- `{{DATA}}` — data de captura
+
+**Importante:** ambos arquivos (`.md` e `.html`) vivem na MESMA pasta (`swipe-file/{tipo}/{nicho}/`). O index master mostra os 2 links lado a lado.
 
 **Para `/swipe-file briefing [tipo]`:**
 1. Documento `briefing-{tipo}-{data}.md` com 10-20 referencias organizadas (granular, por tipo)
@@ -292,7 +320,10 @@ Se nao existir, perguntar (3 opcoes: neutro / rodar /design-md / usar DESIGN.md 
     <div class="meta-row">
       <div><strong>Engajamento:</strong> 604k seguidores · 6 anos</div>
     </div>
-    <div class="arquivo-link">📄 <a href="./hooks/sw01-fernanda-prazer-fernanda-landeiro.md">sw01-fernanda-prazer-fernanda-landeiro.md</a></div>
+    <div class="arquivo-link">
+      <a href="./hooks/sw01-fernanda.md" class="fmt-link md">sw01-fernanda.md</a>
+      <a href="./hooks/sw01-fernanda.html" class="fmt-link html">sw01-fernanda.html</a>
+    </div>
   </div>
   ```
 - `{{ANALISE_CRUZADA}}` — secao opcional com analise extra (padroes evitados, anti-modelos, comentarios). Use `<h2>` + paragrafos + `<div class="callout brecha">` ou `<div class="callout anti">` quando relevante.
