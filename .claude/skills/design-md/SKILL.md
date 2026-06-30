@@ -23,9 +23,10 @@ Conduza conforme a resposta. Os caminhos **1, 2 e 3** terminam igual: `DESIGN.md
 ### Caminho 1 — Do zero (a partir de referências visuais)
 1. Pergunte: que negócio é, que sensação a marca deve passar (3 palavras), e **peça as referências visuais — peça pro aluno COLAR imagens/prints aqui no chat** (prints do Pinterest, moodboard, fotos de marcas/páginas que ele curte). 3-5 imagens é o ideal.
    > **Pinterest por link não funciona** (o Pinterest bloqueia leitura automática). Peça pro aluno **printar ou salvar as imagens e colar aqui** — você é multimodal: **analise as imagens coladas** e extraia as cores (hex aproximado), a tipografia e o estilo/atmosfera.
-2. Se ele der uma **URL de site** de referência forte, pode usá-la com o **Caminho 3** como ponto de partida e refinar.
-3. A partir das imagens/referências, proponha uma paleta (primary/secondary/accent/surface/text/text-muted) e uma dupla de fontes (título + corpo), **explicando de qual referência saiu cada decisão**.
-4. Com o aval dele, preencha o template `data/cohort-brand-template.md` e escreva o resultado em `./DESIGN.md` (raiz). Escreva `design-md` em `.cohort-brand-choice`.
+2. **PROPONHA você uma direção conforme o nicho/avatar do aluno** (não espere passivo): diga **o que ficaria bom** pro público dele — atmosfera, paleta de cores e dupla de fontes — e **explique o porquê pelo nicho** (ex.: público 50+ → fonte grande e alto contraste; mercado cético → tons sóbrios e anti-clichê; público jovem/tech → contraste alto e moderno). O aluno parte da sua proposta, das imagens dele, ou mistura os dois.
+3. Se ele der uma **URL de site** de referência forte, pode usá-la com o **Caminho 3** como ponto de partida e refinar.
+4. A partir das imagens + da sua proposta conforme o nicho, consolide a paleta (primary/secondary/accent/surface/text/text-muted) e a dupla de fontes (título + corpo), **explicando de qual referência/raciocínio saiu cada decisão**.
+5. Com o aval dele, preencha o template `data/cohort-brand-template.md` e escreva o resultado em `./DESIGN.md` (raiz). Escreva `design-md` em `.cohort-brand-choice`.
 
 ### Caminho 2 — Com o que eu já tenho
 1. Peça os arquivos da marca (logo, paleta, manual, prints) e **leia o que ele enviar**.
