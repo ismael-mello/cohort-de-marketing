@@ -19,14 +19,14 @@ Skill que estrutura funil pelo **método de elevação de consciência do Alan N
 Quando você precisar montar/diagnosticar um funil ou decidir o tipo de funil/anúncio:
 
 1. **Carregar o KB** (`KB-metodo-funil-alan.md`) pra ter os frameworks na mão.
-2. **Coletar 3 inputs** (definir só os que ainda não estão claros):
+2. **Ler o offerbook e confirmar os 3 inputs** — o offerbook (output da Aula 01, skill `/offerbook`) é a **fonte primária**: dele saem nicho/mercado, produto/transformação/ticket e o avatar/público. Se o offerbook existir, **leia de lá e NÃO peça de novo** — só pergunte o que faltar.
    - **Nicho / mercado** (ex.: cursinhos, estética, IA pra marketing)
    - **Produto / transformação** e **ticket** (front-end barato? back-end caro?)
    - **Público a atacar** — de onde ele vem (frio do ads? base quente? orgânico?) → isso define o **estágio de consciência**
 3. **Rodar o diagnóstico de consciência** (Passo 1 abaixo) — é o gate que decide tudo.
 4. **Prescrever** funil + anúncio + conteúdo + oferta + página, seguindo o método.
 5. **Revisar a estrutura antes de executar** — nunca subir/rodar nada sem revisar.
-6. **Copy você escreve** com a sua skill de copy: se precisar de copy da página/VSL/e-mails, use a sua skill de copy (não escrever de cabeça). A oferta sai da skill `oferta-funil`; os e-mails, da skill `email-funil`.
+6. **Copy você escreve** com a sua skill de copy: se precisar de copy da página/VSL/e-mails, use a sua skill de copy (não escrever de cabeça). A oferta sai da skill `/offerbook`; os e-mails, da skill `/email-funil`.
 
 ---
 
@@ -43,6 +43,16 @@ Quando você precisar montar/diagnosticar um funil ou decidir o tipo de funil/an
 | **1 — Mais consciente** | já viu seu pitch, só falta empurrão | **checkout direto** / página simplificada / vídeo de **2 min** | remarketing, hook | stories |
 
 **Regra de ouro do casamento:** depoimento só converte no **nível 2**; estudo de caso no **3+**. *"Anúncio de depoimento pra público frio? Burrice total."*
+
+**Cada funil prescrito tem uma skill que o constrói:**
+
+| Funil prescrito | Skill | Nível |
+|-----------------|-------|-------|
+| VSL | `/vsl-funil` | 5 |
+| Advertorial | `/advertorial-funil` | 5 |
+| Webinário / aula | `/webinario-funil` | 4 e 3 |
+| Quiz / diagnóstico | `/quiz-funil` | 4 |
+| Página de vendas | `/pagina-vendas` | 2 e 1 |
 
 ---
 
@@ -119,14 +129,20 @@ Estágio [N] → Funil: [tipo de funil]
 PEÇA            SKILL             O QUE ENTREGA
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 01 Offerbook    (pré-requisito)   oferta, mecanismo, ancoragem, bônus ← precisa existir antes
-02 Copy         /copy-funil       hooks, headline, bullets, CTA, objeções
-03 Página       /design-md        identidade visual da sua marca
-                /pagina-vendas    estrutura da página usando a copy
-04 Email        /email-funil      sequência nutrição → venda → recuperação
-05 Conteúdo     /conteudo-funil   Reels + carrosséis + stories por estágio
-06 Back-end     /back-end         upsell / OTO / downsell / janela 4h / LTV
-07 Recuperação  /recuperacao      carrinho / cartão recusado / boleto / re-elevação
-08 Teste        /cro-funil        KPIs por etapa + A/B headline + quando escalar
+02 Funil        (pelo nível)      o formato de funil de topo casado ao estágio:
+   (formato)    nível 5 → /advertorial-funil (+ /vsl-funil)
+                nível 4 → /webinario-funil ou /quiz-funil
+                nível 3 → /webinario-funil
+                nível 2-1 → /pagina-vendas
+03 Copy         /copy-funil       hooks, headline, bullets, CTA, objeções
+04 Página       /design-md        identidade visual da sua marca
+                /pagina-vendas    estrutura da página/checkout usando a copy
+                /mockup-produto   mockups dos produtos/bônus na identidade da marca
+05 Email        /email-funil      sequência nutrição → venda → recuperação
+06 Conteúdo     /conteudo-funil   Reels + carrosséis + stories por estágio
+07 Back-end     /back-end         upsell / OTO / downsell / janela 4h / LTV
+08 Recuperação  /recuperacao      carrinho / cartão recusado / boleto / re-elevação
+09 Teste        /cro-funil        KPIs por etapa + A/B headline + quando escalar
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Execute nessa ordem. Cada skill usa o output da anterior.
 ```
@@ -142,7 +158,7 @@ Execute nessa ordem. Cada skill usa o output da anterior.
 | Situação | Ação |
 |----------|------|
 | Não sei o nível de consciência do público | PARAR → diagnosticar primeiro (é o gate) |
-| Oferta/offerbook não existe | PARAR → construir a oferta ANTES do funil (skill `oferta-funil`) |
+| Oferta/offerbook não existe | PARAR → construir a oferta ANTES do funil (skill `/offerbook`) |
 | Pediram copy pronta | Escrever com a sua skill de copy, não de cabeça |
 | Vão subir sem revisar | PARAR → revisar a estrutura primeiro |
 

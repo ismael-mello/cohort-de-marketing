@@ -24,7 +24,7 @@ O `/metodo-funil` lê o seu offerbook, identifica o estágio de consciência do 
 
 ## O que você ganha na Aula 02
 
-13 skills para o Claude Code que montam o squad **Arquiteto de Funil**:
+17 skills para o Claude Code que montam o squad **Arquiteto de Funil**:
 
 | Skill | O que faz | Output |
 |---|---|---|
@@ -34,6 +34,10 @@ O `/metodo-funil` lê o seu offerbook, identifica o estágio de consciência do 
 | `/design-md` | Extrai paleta, tipografia e estilo da sua URL | DESIGN.md da sua marca |
 | `/pagina-vendas` | Estrutura completa da página de vendas (15 blocos) | Página pronta para publicar |
 | `/vsl-funil` | Roteiro de VSL Direct Response | Script de vídeo de vendas |
+| `/advertorial-funil` | Página editorial de pré-venda pra público frio (nível 5) | Estrutura de advertorial |
+| `/webinario-funil` | Funil de webinário/aula que vende (níveis 4-3) | Registro → roteiro → pós-venda |
+| `/quiz-funil` | Funil de quiz/diagnóstico que segmenta e casa a oferta (nível 4) | Quiz + páginas de resultado |
+| `/mockup-produto` | Mockups dos produtos/bônus na identidade da marca | Prompts de mockup prontos |
 | `/email-funil` | Sequências de nutrição e venda por estágio | Cadência de email pronta |
 | `/conteudo-funil` | Mapa de conteúdo orgânico por estágio de consciência | Reels · carrosséis · stories · roteiros |
 | `/criativos-funil` | Anúncios casados ao estágio do público | Briefing de criativos pagos |
@@ -69,7 +73,7 @@ cd cohort-de-marketing
 claude
 ```
 
-As 13 skills em `.claude/skills/` são carregadas automaticamente (junto com as da Aula 01).
+As 17 skills em `.claude/skills/` são carregadas automaticamente (junto com as da Aula 01).
 
 **3. Teste que as skills estão instaladas**
 
@@ -166,7 +170,11 @@ Monta a estrutura de upsell, OTO, downsell e janela de 4h.
 │       ├── whatsapp-funil/            aula 02
 │       ├── back-end/                  aula 02
 │       ├── recuperacao/               aula 02
-│       └── cro-funil/                 aula 02
+│       ├── cro-funil/                 aula 02
+│       ├── advertorial-funil/         aula 02
+│       ├── webinario-funil/           aula 02
+│       ├── quiz-funil/                aula 02
+│       └── mockup-produto/            aula 02
 ├── aula-02/
 │   ├── README.md                      este arquivo
 │   ├── DESIGN.md                      exemplo de DESIGN.md (Cohort de Marketing)

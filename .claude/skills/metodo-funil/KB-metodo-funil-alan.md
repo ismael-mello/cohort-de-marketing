@@ -196,7 +196,7 @@ Para o Alan, funil não é um modelo único que se copia e cola — é **a sequ�
 
 **O que é:** Um acervo pessoal de materiais de funil/copy que já comprovadamente convertem, organizado por nicho, usado como base de modelagem (não criar do zero). É o que separa profissional de amador.
 
-**Como aplicar:** navegar a internet/biblioteca de anúncios como "espião"; tirar print de anúncios e páginas, salvar vídeos, guardar o link; subir num drive (cada um o seu, para ser "à prova de burro" — não editar em conjunto). Mapear cada etapa do funil concorrente (página → checkout → e-mails → WhatsApp). Para cada nicho existe um swipe file que funciona melhor. Ferramentas citadas: extensão **GoFullPage** (captura página em PNG), **SiteSucker** (Mac) / **HTTrack** (Windows) para baixar site inteiro via sitemap.xml, **Video DownloadHelper**, e o próprio Claude Code/terminal para baixar páginas e vídeos. Referência: **Pedro Sobral** tem swipe file gigantesco e ainda credita a origem de cada ideia.
+**Como aplicar:** navegar a internet/biblioteca de anúncios como "espião"; tirar print de anúncios e páginas, salvar vídeos, guardar o link; subir num drive (cada um o seu, para ser "à prova de burro" — não editar em conjunto). Mapear cada etapa do funil concorrente (página → checkout → e-mails → WhatsApp). Para cada nicho existe um swipe file que funciona melhor. Ferramentas citadas: extensão **GoFullPage** (captura página em PNG), **SiteSucker** (Mac) / **HTTrack** (Windows) para baixar site inteiro via sitemap.xml, **Video DownloadHelper**, e o próprio Claude Code/terminal para baixar páginas e vídeos. Os melhores profissionais de tráfego mantêm um swipe file gigantesco e ainda creditam a origem de cada ideia.
 
 **Verbatim:**
 - *"Swipe file separa quem é pró de quem é júnior. Não conheço ninguém pró que não tem um bom swipe file... e ele protege o swipe file."*
@@ -310,7 +310,7 @@ A IA é o multiplicador em cada etapa do funil (Alan usa clones/agentes de espec
 | **Custo por MQL** | *"Reduzi em 100 reais o meu custo por MQL. Só mudamos a headline"* (Funis) |
 | **Webinário (planilha real)** | ~33% de show up; teste A/B Facebook 31% vs YouTube 35% de conversão de cadastro (Funis) |
 | **Clone do Fintia** | *"Faturei meio milhão de reais com o clone do Fintia"* (Encontro 2/3) |
-| **Pedro Sobral** | Citado como referência de swipe file gigantesco que credita origens (Funis) |
+| **Swipe file de referência** | Os melhores profissionais de tráfego mantêm um acervo gigantesco e creditam a origem de cada ideia (Funis) |
 
 ---
 
@@ -332,7 +332,7 @@ O que ficou incompleto, implícito ou só citado na transcrição:
 
 ## 8. Elementos da Página de Alta Conversão (síntese)
 
-> **Nota de fidelidade (LEIA ANTES):** esta seção é uma **reconstrução fiel à escola Hormozi + Alan**, **não** a lista literal dos "17 elementos" do blueprint original do Alan. Na aula, Alan confirma ter criado esse blueprint à parte — *"lembra que eu falei que eu vou criar as 17 páginas de conversão, tá aqui pra vocês... eu criei o blueprint de como criar uma página de vendas de alta conversão, tá tudo aqui, todos os elementos"* — mas o material em si **não está na transcrição** (ficou num drive/Obsidian). O que se tem verbatim do Alan são os elementos que ele **citou de passagem** (headline, sub-headline, vídeo, prova social, VSL, FAQ/"faquizinho", footer, CTA, benefícios, urgência, garantia, depoimento) e a estrutura de topo. O restante é **síntese do `$100M Offers`** (arquivo `_hormozi-100m-offers-completo.md`), marcada como `[HORMOZI/síntese]`. Nada de "fato" do Alan foi inventado: tudo marcado `[ALAN: "..."]` está na transcrição.
+> **Nota de fidelidade (LEIA ANTES):** esta seção é uma **reconstrução fiel à escola Hormozi + Alan**, **não** a lista literal dos "17 elementos" do blueprint original do Alan. Na aula, Alan confirma ter criado esse blueprint à parte — *"lembra que eu falei que eu vou criar as 17 páginas de conversão, tá aqui pra vocês... eu criei o blueprint de como criar uma página de vendas de alta conversão, tá tudo aqui, todos os elementos"* — mas o material em si **não está na transcrição** (ficou num drive/Obsidian). O que se tem verbatim do Alan são os elementos que ele **citou de passagem** (headline, sub-headline, vídeo, prova social, VSL, FAQ/"faquizinho", footer, CTA, benefícios, urgência, garantia, depoimento) e a estrutura de topo. O restante é **síntese do `$100M Offers`** (Hormozi), marcada como `[HORMOZI/síntese]`. Nada de "fato" do Alan foi inventado: tudo marcado `[ALAN: "..."]` está na transcrição.
 >
 > Marcação das fontes: `[ALAN: "verbatim"]` = fala do Alan na aula · `[HORMOZI/síntese]` = derivado do `$100M Offers` · `[ALAN+HORMOZI]` = Alan cita e Hormozi fundamenta.
 

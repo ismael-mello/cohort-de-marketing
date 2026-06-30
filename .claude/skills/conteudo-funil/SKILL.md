@@ -1,6 +1,6 @@
 ---
 name: conteudo-funil
-description: "Modela os Reels virais de um criador de referência e gera roteiros de conteúdo na SUA voz (ou na voz da sua marca). Pipeline: coletar Reels via Apify (vídeo + métricas reais) -> baixar -> transcrever -> analisar hooks/estrutura/viralização -> amostra -> gerar roteiros na sua voz -> exportar. Use quando quiser criar conteúdo orgânico modelado em um criador de referência, ou roteiros de Reels para o seu negócio a partir de uma referência do Instagram. Método de conteúdo baseado em modelagem de criadores (autoria Alan Nicolas)."
+description: "Modela os Reels virais de um criador de referência e gera roteiros de conteúdo na SUA voz (ou na voz da sua marca). Pipeline: coletar Reels com uma ferramenta de scraping de Instagram à sua escolha (vídeo + métricas reais) -> baixar -> transcrever -> analisar hooks/estrutura/viralização -> amostra -> gerar roteiros na sua voz -> exportar. Use quando quiser criar conteúdo orgânico modelado em um criador de referência, ou roteiros de Reels para o seu negócio a partir de uma referência do Instagram. Método de conteúdo baseado em modelagem de criadores (autoria Alan Nicolas)."
 user_invocable: true
 ---
 
@@ -18,7 +18,7 @@ Pega os Reels virais de um criador de referência e gera roteiros de conteúdo n
 Escolha a voz conforme o tema da referência e o alvo. O conteúdo é gerado na SUA voz — a voz que representa você ou a sua marca. Calibre a voz em transcrições reais suas (falas, lives, vídeos que você já gravou), nunca em uma descrição genérica. Case o TEMA da referência com a voz/posicionamento certo (ex.: referência de mentalidade → tom mais reflexivo; referência de tráfego → tom mais técnico).
 
 ## Execução (resumo)
-1. **Coletar** — rode o scraper de Reels via Apify (use a SUA conta Apify, token na sua configuração; traz vídeo + views/likes/caption) para o perfil do criador de referência.
+1. **Coletar** — rode um scraper de Reels com a ferramenta de scraping de Instagram da sua escolha (use a sua própria conta/token; traz vídeo + views/likes/caption) para o perfil do criador de referência.
 2. **Baixar** os vídeos a partir das URLs coletadas (URLs do Instagram EXPIRAM rápido — baixe logo).
 3. **Transcrever** com whisper (no idioma do criador).
 4. **Analisar** — VIEWS = vencedor; identifique famílias de hook, estrutura e mecanismos de viralização. Consolide num arquivo de análise.

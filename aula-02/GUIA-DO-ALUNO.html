@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia do Aluno — Cohort de Marketing · Aula 02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;600;700&family=Rajdhani:wght@600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --background: #0A0A0A;
+    --card: #0F0F0F;
+    --raised: #262626;
+    --border: #262626;
+    --foreground: #E5E5E5;
+    --muted-foreground: #999999;
+    --primary: #C9B298;
+    --primary-light: #D9CBB9;
+    --primary-deep: #8D7556;
+    --primary-foreground: #1A1A1A;
+    --status-success: #23E169;
+    --font-body: 'Source Serif 4', Georgia, serif;
+    --font-ui: Inter, 'Source Sans Pro', system-ui, sans-serif;
+    --font-display: Rajdhani, Inter, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body);
+    font-size: 19px;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+  :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px; width: 0;
+    background: var(--primary);
+    box-shadow: 0 0 15px rgba(201, 178, 152, 0.6);
+    z-index: 100;
+  }
+
+  .wrap { max-width: 920px; margin: 0 auto; padding: 64px 32px 96px; }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 32px 0 56px;
+    border-bottom: 1px solid var(--raised);
+    margin-bottom: 56px;
+  }
+  .hero .kicker {
+    display: inline-block;
+    font-family: var(--font-ui); font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--primary);
+    padding: 6px 16px;
+    border: 1px solid var(--primary-deep);
+    border-radius: 9999px;
+    margin-bottom: 32px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+  }
+  .hero h1 em {
+    font-family: var(--font-body);
+    font-style: normal;
+    font-weight: 400;
+    color: var(--primary);
+  }
+  .hero .subtitle {
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    color: var(--muted-foreground);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 0 0 24px;
+  }
+  .hero .lead {
+    font-family: var(--font-body);
+    font-style: normal;
+    font-size: 1.3rem;
+    color: var(--foreground);
+    max-width: 65ch;
+    margin: 0 auto;
+  }
+
+  /* Sumario (estatico, scrolla com a pagina) */
+  .toc {
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 0.75rem;
+    padding: 20px 24px;
+    margin: 48px auto;
+    max-width: 720px;
+  }
+  .toc-label {
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    margin-bottom: 12px;
+  }
+  .toc ol {
+    margin: 0;
+    padding-left: 20px;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    line-height: 1.8;
+  }
+  .toc ol li {
+    color: var(--muted-foreground);
+  }
+  .toc ol li a {
+    color: var(--foreground);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .toc ol li a:hover {
+    color: var(--primary);
+  }
+
+  /* Section */
+  section {
+    margin: 80px 0;
+    scroll-margin-top: 32px;
+  }
+  .section-num {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  section h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0 0 24px;
+  }
+  section h2 em {
+    font-family: var(--font-body);
+    font-style: normal;
+    font-weight: 400;
+    color: var(--primary);
+  }
+  section h3 {
+    font-family: var(--font-ui);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 32px 0 12px;
+  }
+  section p { margin: 16px 0; }
+  section strong { color: var(--primary-light); font-weight: 600; }
+
+  /* Steps */
+  .step {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 24px;
+    margin: 32px 0;
+    padding: 24px;
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 1rem;
+    transition: border-color 0.2s ease;
+  }
+  .step:hover { border-color: var(--primary-deep); }
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .step-content h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+  .step-content p {
+    margin: 8px 0;
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    color: var(--muted-foreground);
+  }
+  .step-content code {
+    font-family: var(--font-mono);
+    background: var(--raised);
+    color: var(--primary-light);
+    padding: 2px 8px;
+    border-radius: 0.25rem;
+    font-size: 0.85em;
+  }
+
+  /* Bloco command */
+  .command-block {
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 0.75rem;
+    padding: 20px 24px;
+    margin: 16px 0;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--foreground);
+    overflow-x: auto;
+    position: relative;
+  }
+  .command-block::before {
+    content: "$";
+    color: var(--primary);
+    margin-right: 12px;
+    font-weight: 700;
+  }
+  .command-block.slash::before {
+    content: "/";
+  }
+
+  /* Cards de skills */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 32px 0;
+  }
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-left: 2px solid var(--primary);
+    border-radius: 0.75rem;
+    padding: 24px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .skill-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-light);
+  }
+  .skill-card.nova {
+    border-left-width: 3px;
+    border-color: var(--primary-deep);
+    background: rgba(201, 178, 152, 0.04);
+  }
+  .skill-card .skill-name {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .skill-card .nova-tag {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--primary-foreground);
+    background: var(--primary);
+    padding: 2px 8px;
+    border-radius: 9999px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .skill-card .skill-what {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    color: var(--foreground);
+    margin: 0 0 12px;
+    line-height: 1.5;
+  }
+  .skill-card .skill-out {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    color: var(--muted-foreground);
+    padding-top: 12px;
+    border-top: 1px solid var(--raised);
+    margin: 0;
+  }
+  .skill-card .skill-out strong {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  /* Tabela de consciencia */
+  .conscious-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 32px 0;
+    font-family: var(--font-ui);
+    font-size: 0.92rem;
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+  .conscious-table thead th {
+    text-align: left;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--primary);
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--primary-deep);
+  }
+  .conscious-table tbody td {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--raised);
+    vertical-align: top;
+    color: var(--foreground);
+  }
+  .conscious-table tbody tr:last-child td { border-bottom: none; }
+  .conscious-table .nivel {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+  .conscious-table .estado {
+    color: var(--muted-foreground);
+  }
+  .conscious-table code {
+    font-family: var(--font-mono);
+    color: var(--primary-light);
+    font-size: 0.85em;
+    display: inline-block;
+    margin: 2px 0;
+  }
+  .table-scroll { overflow-x: auto; }
+
+  /* Blocos da aula */
+  .bloco {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 28px;
+    margin: 24px 0;
+  }
+  .bloco .bloco-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--raised);
+  }
+  .bloco .bloco-num {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .bloco .bloco-time {
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    color: var(--muted-foreground);
+    letter-spacing: 0.06em;
+  }
+  .bloco h3 {
+    margin: 0 0 16px;
+    font-size: 1.4rem;
+  }
+  .bloco .bloco-action {
+    background: rgba(201, 178, 152, 0.06);
+    border: 1px solid var(--primary-deep);
+    border-radius: 0.5rem;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+  .bloco .bloco-result {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    color: var(--muted-foreground);
+    margin: 12px 0 0;
+  }
+  .bloco .bloco-result strong {
+    color: var(--primary);
+  }
+
+  /* Mapa de execucao */
+  .mapa {
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 1rem;
+    padding: 8px 4px;
+    margin: 32px 0;
+  }
+  .mapa-row {
+    display: grid;
+    grid-template-columns: 44px 160px 1fr;
+    gap: 16px;
+    align-items: baseline;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--raised);
+  }
+  .mapa-row:last-child { border-bottom: none; }
+  .mapa-step {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .mapa-peca {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--foreground);
+  }
+  .mapa-peca code {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--primary);
+    font-weight: 400;
+    margin-top: 4px;
+  }
+  .mapa-desc {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    color: var(--muted-foreground);
+    line-height: 1.5;
+  }
+  @media (max-width: 640px) {
+    .mapa-row { grid-template-columns: 36px 1fr; }
+    .mapa-desc { grid-column: 1 / -1; }
+  }
+
+  /* Regras */
+  .rule {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 20px;
+    background: var(--card);
+    border-left: 2px solid var(--primary);
+    border-radius: 0.5rem;
+    margin: 16px 0;
+  }
+  .rule-icon {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .rule h3 {
+    margin: 0 0 4px;
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  .rule p {
+    margin: 4px 0 0;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    color: var(--muted-foreground);
+    line-height: 1.5;
+  }
+
+  /* Aula context */
+  .cohort-map {
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 1rem;
+    padding: 28px;
+    margin: 32px 0;
+  }
+  .cohort-map .aula {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    border-radius: 0.5rem;
+    margin: 6px 0;
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    transition: background 0.2s ease;
+  }
+  .cohort-map .aula.atual {
+    background: rgba(201, 178, 152, 0.08);
+    border: 1px solid var(--primary-deep);
+  }
+  .cohort-map .aula-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--primary);
+    min-width: 60px;
+  }
+  .cohort-map .aula-name {
+    flex: 1;
+    color: var(--foreground);
+    font-weight: 600;
+  }
+  .cohort-map .aula-status {
+    font-size: 0.7rem;
+    color: var(--muted-foreground);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .cohort-map .aula.atual .aula-status {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* CTA final */
+  .cta-final {
+    text-align: center;
+    margin: 96px 0 32px;
+    padding: 48px 32px;
+    background: var(--card);
+    border: 1px solid var(--primary-deep);
+    border-radius: 1.5rem;
+  }
+  .cta-final h2 {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    margin: 0 0 16px;
+  }
+  .cta-final h2 em {
+    font-family: var(--font-body);
+    font-style: normal;
+    color: var(--primary);
+    font-weight: 400;
+  }
+  .cta-final p {
+    font-family: var(--font-body);
+    font-style: normal;
+    color: var(--muted-foreground);
+    max-width: 50ch;
+    margin: 16px auto 24px;
+  }
+  .cta-final .command-block {
+    max-width: 440px;
+    margin: 0 auto;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="kicker">Cohort de Marketing · Aula 02</span>
+    <h1>Funil e <em>Páginas</em></h1>
+    <p class="subtitle">Academia Lendária · Squad Funil</p>
+    <p class="lead">O offerbook que você montou na Aula 01 vira um funil completo: páginas, copy, email, conteúdo e back-end. Cinco minutos de leitura para montar o sistema inteiro com clareza.</p>
+  </header>
+
+  <nav class="toc">
+    <div class="toc-label">Você vai ler aqui</div>
+    <ol>
+      <li><a href="#secao-1">A ideia central: do offerbook ao funil</a></li>
+      <li><a href="#secao-2">Onde você está no cohort</a></li>
+      <li><a href="#secao-3">Setup em 5 minutos</a></li>
+      <li><a href="#secao-4">O conceito-chave: elevação de consciência</a></li>
+      <li><a href="#secao-5">As 17 skills do squad Funil</a></li>
+      <li><a href="#secao-6">O Mapa de Execução</a></li>
+      <li><a href="#secao-7">Passo a passo: como rodar</a></li>
+      <li><a href="#secao-8">Avisos importantes</a></li>
+    </ol>
+  </nav>
+
+  <section id="secao-1">
+    <div class="section-num">Parte 1</div>
+    <h2>A ideia <em>central</em></h2>
+    <p>Na Aula 01 você saiu com um <strong>offerbook</strong>: o Livro da Oferta, pesquisa real, avatar e voz da marca consolidados. Nesta aula, esse offerbook vira a matéria-prima de um funil inteiro.</p>
+    <p>A tese-mãe da Aula 02 é simples e dura: <strong>um funil não é uma página. É um sistema.</strong> Cada peça tem um trabalho específico — e existe uma ordem certa para montar. Página, copy, email, conteúdo, back-end e recuperação não são coisas soltas: são engrenagens de uma mesma máquina.</p>
+
+    <h3>O ponto de entrada</h3>
+    <p>Tudo começa por uma skill só:</p>
+    <div class="command-block slash">metodo-funil [nome do seu produto]</div>
+    <p>O <code style="font-family: var(--font-mono); background: var(--raised); color: var(--primary-light); padding: 2px 8px; border-radius: 0.25rem; font-size: 0.85em;">/metodo-funil</code> lê o seu offerbook, identifica o estágio de consciência do seu público e gera o <strong>Mapa de Execução</strong> — a ordem exata de quais skills rodar e em que sequência. Você não decide no escuro: a skill prescreve o funil certo pro público que você tem.</p>
+  </section>
+
+  <section id="secao-2">
+    <div class="section-num">Parte 2</div>
+    <h2>Onde você está <em>no cohort</em></h2>
+    <p>O Cohort de Marketing entrega um squad por aula. Você já passou pela base (pesquisa) e agora monta a máquina de venda: o squad Arquiteto de Funil.</p>
+
+    <div class="cohort-map">
+      <div class="aula">
+        <span class="aula-num">01</span>
+        <span class="aula-name">Research Analyst</span>
+        <span class="aula-status">Concluída</span>
+      </div>
+      <div class="aula atual">
+        <span class="aula-num">02</span>
+        <span class="aula-name">Arquiteto de Funil</span>
+        <span class="aula-status">Você está aqui</span>
+      </div>
+      <div class="aula">
+        <span class="aula-num">03</span>
+        <span class="aula-name">Tráfego Pago · Media Buyer</span>
+        <span class="aula-status">Próxima</span>
+      </div>
+      <div class="aula">
+        <span class="aula-num">04</span>
+        <span class="aula-name">Análise de Dados</span>
+        <span class="aula-status">Final</span>
+      </div>
+    </div>
+
+    <p>A Aula 02 <strong>depende</strong> do offerbook da Aula 01. Sem ele, o <code style="font-family: var(--font-mono); background: var(--raised); color: var(--primary-light); padding: 2px 8px; border-radius: 0.25rem; font-size: 0.85em;">/metodo-funil</code> não tem como diagnosticar o estágio de consciência — e sem diagnóstico, você monta o funil errado para o público certo. Se ainda não fez a Aula 01, volte antes de continuar.</p>
+  </section>
+
+  <section id="secao-3">
+    <div class="section-num">Parte 3</div>
+    <h2>Setup em <em>5 minutos</em></h2>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>Tenha o Claude Code e o offerbook</h3>
+        <p>Se ainda não tem o Claude Code, baixe em <code>docs.claude.com/claude-code</code>. E confirme que você tem o <strong>offerbook da Aula 01</strong> em mãos: é o pré-requisito desta aula.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>Clone este repositório</h3>
+        <p>Se ainda não clonou, abra o terminal e rode:</p>
+        <div class="command-block">git clone https://github.com/marketingLendario/cohort-de-marketing.git</div>
+        <div class="command-block">cd cohort-de-marketing</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>Abra o Claude Code no diretório</h3>
+        <div class="command-block">claude</div>
+        <p>As 17 skills da Aula 02 em <code>.claude/skills/</code> são carregadas automaticamente, junto com as 5 skills da Aula 01.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h3>Teste que está funcionando</h3>
+        <p>No Claude Code, digite:</p>
+        <div class="command-block slash">metodo-funil</div>
+        <p>Se a skill responder com o menu de diagnóstico, está tudo certo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="secao-4">
+    <div class="section-num">Parte 4</div>
+    <h2>O conceito-chave: <em>elevação de consciência</em></h2>
+    <p>Esse é o coração da aula. O método não trata o público como um bloco só. Ele separa as pessoas em <strong>5 níveis de consciência</strong> — do mais frio (nem sabe que tem o problema) ao mais quente (só falta o empurrão). E cada nível pede um funil diferente.</p>
+    <p>A regra é literal: <strong>"para cada estágio de consciência existe um funil ideal"</strong>. Não adianta copiar o funil que funcionou pra outra pessoa e colar no seu público. Se o nível não bate, o funil não converte.</p>
+
+    <div class="table-scroll">
+      <table class="conscious-table">
+        <thead>
+          <tr>
+            <th>Nível</th>
+            <th>Estado do público</th>
+            <th>Funil ideal</th>
+            <th>Skills que constroem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="nivel">5 — Frio</td>
+            <td class="estado">Não te conhece nem sabe que tem o problema (80-90% do mercado).</td>
+            <td>Advertorial de pré-venda + VSL Direct Response</td>
+            <td><code>/advertorial-funil</code><code>/vsl-funil</code></td>
+          </tr>
+          <tr>
+            <td class="nivel">4 — Problema</td>
+            <td class="estado">Sente a dor, mas não sabe que existe solução.</td>
+            <td>Webinário/aula que vende ou quiz/diagnóstico que segmenta</td>
+            <td><code>/webinario-funil</code><code>/quiz-funil</code></td>
+          </tr>
+          <tr>
+            <td class="nivel">3 — Solução</td>
+            <td class="estado">Conhece as categorias de solução, mas não o seu produto.</td>
+            <td>Webinário da solução / estudo de caso</td>
+            <td><code>/webinario-funil</code></td>
+          </tr>
+          <tr>
+            <td class="nivel">2-1 — Quente</td>
+            <td class="estado">Já sabe que seu produto existe (2) ou já viu o pitch e só falta empurrão (1).</td>
+            <td>Página + depoimento / checkout direto</td>
+            <td><code>/pagina-vendas</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>A regra de ouro do casamento:</strong> depoimento só converte no nível 2. Estudo de caso, do nível 3 pra cima. Hook de captação, no nível 5. Mandar anúncio de depoimento pra público frio é queimar verba.</p>
+  </section>
+
+  <section id="secao-5">
+    <div class="section-num">Parte 5</div>
+    <h2>As 17 skills do <em>squad Funil</em></h2>
+    <p>Cada skill monta uma peça do funil. Elas se conectam: o output de uma alimenta a próxima. Quatro skills são <strong>novas nesta aula</strong> — são os formatos de funil de topo pros públicos frios (níveis 5 e 4) e os mockups de produto.</p>
+
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-name">/metodo-funil</div>
+        <p class="skill-what">Lê o offerbook, diagnostica o estágio de consciência (1-5) e prescreve o funil certo. Gera o Mapa de Execução completo.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Qual funil usar + ordem das skills</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/avatar-funil</div>
+        <p class="skill-what">ICP detalhado, dores, objeções e voz do cliente, prontos para virar copy.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Perfil de avatar copy-ready</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/copy-funil</div>
+        <p class="skill-what">Hooks, headline, bullets, CTA e tratamento de objeções, casados ao estágio de consciência.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Blocos de copy organizados</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/design-md</div>
+        <p class="skill-what">Extrai paleta, tipografia e estilo da URL da sua marca. Vira a âncora visual de todas as páginas.</p>
+        <p class="skill-out"><strong>Sai com:</strong> DESIGN.md da sua marca</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/pagina-vendas</div>
+        <p class="skill-what">Estrutura completa da página de vendas em 15 blocos, usando o DESIGN.md e a copy.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Página pronta para publicar</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/vsl-funil</div>
+        <p class="skill-what">Roteiro de VSL Direct Response — o vídeo de vendas para público frio (nível 5).</p>
+        <p class="skill-out"><strong>Sai com:</strong> Script de vídeo de vendas</p>
+      </div>
+
+      <div class="skill-card nova">
+        <div class="skill-name">/advertorial-funil <span class="nova-tag">Nova</span></div>
+        <p class="skill-what">Página editorial de pré-venda para público frio (nível 5). Aquece antes da oferta.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Estrutura de advertorial</p>
+      </div>
+
+      <div class="skill-card nova">
+        <div class="skill-name">/webinario-funil <span class="nova-tag">Nova</span></div>
+        <p class="skill-what">Funil de webinário/aula que vende (níveis 4-3): registro, roteiro e pós-venda.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Registro → roteiro → pós-venda</p>
+      </div>
+
+      <div class="skill-card nova">
+        <div class="skill-name">/quiz-funil <span class="nova-tag">Nova</span></div>
+        <p class="skill-what">Funil de quiz/diagnóstico que segmenta o público e casa a oferta (nível 4).</p>
+        <p class="skill-out"><strong>Sai com:</strong> Quiz + páginas de resultado</p>
+      </div>
+
+      <div class="skill-card nova">
+        <div class="skill-name">/mockup-produto <span class="nova-tag">Nova</span></div>
+        <p class="skill-what">Mockups dos produtos e bônus na identidade da sua marca, para a página de vendas.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Prompts de mockup prontos</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/email-funil</div>
+        <p class="skill-what">Sequências de nutrição e venda por estágio. Cadência completa de email.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Cadência de email pronta</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/conteudo-funil</div>
+        <p class="skill-what">Mapa de conteúdo orgânico por estágio de consciência: Reels, carrosséis, stories e roteiros.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Conteúdo por estágio</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/criativos-funil</div>
+        <p class="skill-what">Anúncios pagos casados ao estágio do público. Briefing para a equipe de mídia.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Briefing de criativos pagos</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/whatsapp-funil</div>
+        <p class="skill-what">Sequências de WhatsApp e DM por momento do funil. Mensagens prontas por etapa.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Mensagens por etapa</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/back-end</div>
+        <p class="skill-what">Upsell, OTO, downsell, order bump, janela de 4h e estrutura de LTV.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Back-end completo</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/recuperacao</div>
+        <p class="skill-what">Carrinho abandonado, cartão recusado e boleto vencido. Receita que já estava quase dentro.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Sequências de recuperação</p>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">/cro-funil</div>
+        <p class="skill-what">KPIs por etapa, teste A/B da headline e o gatilho de quando escalar.</p>
+        <p class="skill-out"><strong>Sai com:</strong> Protocolo de otimização</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="secao-6">
+    <div class="section-num">Parte 6</div>
+    <h2>O Mapa de <em>Execução</em></h2>
+    <p>O <code style="font-family: var(--font-mono); background: var(--raised); color: var(--primary-light); padding: 2px 8px; border-radius: 0.25rem; font-size: 0.85em;">/metodo-funil</code> sempre entrega este mapa: a ordem exata de montagem. Cada peça usa o output da anterior. Não pule etapas — quem pula, retrabalha.</p>
+
+    <div class="mapa">
+      <div class="mapa-row">
+        <span class="mapa-step">01</span>
+        <span class="mapa-peca">Offerbook<code>(pré-requisito)</code></span>
+        <span class="mapa-desc">Oferta, mecanismo, ancoragem e bônus. Vem da Aula 01 — precisa existir antes de tudo.</span>
+      </div>
+      <div class="mapa-row">
+        <span class="mapa-step">02</span>
+        <span class="mapa-peca">Funil de topo<code>(pelo nível)</code></span>
+        <span class="mapa-desc">O formato casado ao estágio: nível 5 → /advertorial-funil + /vsl-funil · nível 4 → /webinario-funil ou /quiz-funil · nível 3 → /webinario-funil · nível 2-1 → /pagina-vendas.</span>
+      </div>
+      <div class="mapa-row">
+        <span class="mapa-step">03</span>
+        <span class="mapa-peca">Copy<code>/copy-funil</code></span>
+        <span class="mapa-desc">Hooks, headline, bullets, CTA e objeções por estágio.</span>
+      </div>
+      <div class="mapa-row">
+        <span class="mapa-step">04</span>
+        <span class="mapa-peca">Página<code>/design-md · /pagina-vendas · /mockup-produto</code></span>
+        <span class="mapa-desc">Identidade visual da marca, estrutura da página usando a copy, e mockups dos produtos e bônus.</span>
+      </div>
+      <div class="mapa-row">
+        <span class="mapa-step">05</span>
+        <span class="mapa-peca">Email<code>/email-funil</code></span>
+        <span class="mapa-desc">Sequência nutrição → venda → recuperação.</span>
+      </div>
+      <div class="mapa-row">
+        <span class="mapa-step">06</span>
+        <span class="mapa-peca">Conteúdo<code>/conteudo-funil</code></span>
+        <span class="mapa-desc">Reels, carrosséis e stories por estágio de consciência.</span>
+      </div>
+      <div class="mapa-row">
+        <span class="mapa-step">07</span>
+        <span class="mapa-peca">Back-end<code>/back-end</code></span>
+        <span class="mapa-desc">Upsell, OTO, downsell, janela de 4h e LTV.</span>
+      </div>
+      <div class="mapa-row">
+        <span class="mapa-step">08</span>
+        <span class="mapa-peca">Recuperação<code>/recuperacao</code></span>
+        <span class="mapa-desc">Carrinho, cartão recusado, boleto e re-elevação de consciência.</span>
+      </div>
+      <div class="mapa-row">
+        <span class="mapa-step">09</span>
+        <span class="mapa-peca">Teste<code>/cro-funil</code></span>
+        <span class="mapa-desc">KPIs por etapa, A/B da headline e quando escalar.</span>
+      </div>
+    </div>
+    <p style="font-family: var(--font-ui); font-size: 0.9rem; color: var(--muted-foreground);">Execute nessa ordem. O mapa não é decoração: é a sequência que faz cada engrenagem encaixar na próxima.</p>
+  </section>
+
+  <section id="secao-7">
+    <div class="section-num">Parte 7</div>
+    <h2>Passo a passo: <em>como rodar</em></h2>
+    <p>Esse é o manual operacional. Comece sempre pelo diagnóstico — ele define todo o resto.</p>
+
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Passo 1</span>
+        <span class="bloco-time">15 minutos</span>
+      </div>
+      <h3>Diagnóstico com /metodo-funil</h3>
+      <p>Rode a skill e cole o seu offerbook quando ela pedir. Ela diagnostica o estágio de consciência (1-5), recomenda o tipo de funil e entrega o Mapa de Execução completo.</p>
+      <div class="bloco-action">/metodo-funil [nome do produto]</div>
+      <p class="bloco-result"><strong>Resultado:</strong> Estágio de consciência + funil recomendado + ordem exata de skills.</p>
+    </div>
+
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Passo 2</span>
+        <span class="bloco-time">20 minutos</span>
+      </div>
+      <h3>Copy com /copy-funil</h3>
+      <p>Use o Mapa de Execução do passo 1. A skill gera hooks, headline, bullets, CTA e trata objeções com base no estágio identificado.</p>
+      <div class="bloco-action">/copy-funil [nome do produto]</div>
+      <p class="bloco-result"><strong>Resultado:</strong> Blocos de copy casados ao nível de consciência.</p>
+    </div>
+
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Passo 3</span>
+        <span class="bloco-time">10 minutos</span>
+      </div>
+      <h3>Identidade visual com /design-md</h3>
+      <p>Rode uma vez com a URL real do seu negócio. Extrai paleta, tipografia e estilo, e gera o <code>DESIGN.md</code> que as próximas skills usam automaticamente.</p>
+      <div class="bloco-action">/design-md [URL do seu site ou landing page]</div>
+      <p class="bloco-result"><strong>Resultado:</strong> DESIGN.md da sua marca, âncora visual de tudo.</p>
+    </div>
+
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Passo 4</span>
+        <span class="bloco-time">30 minutos</span>
+      </div>
+      <h3>Página + mockups</h3>
+      <p>Usa o <code>DESIGN.md</code> e a copy do passo 2. Gera a estrutura completa em 15 blocos, e os mockups dos produtos e bônus na sua identidade.</p>
+      <div class="bloco-action">/pagina-vendas [nome do produto]</div>
+      <div class="bloco-action">/mockup-produto [nome do produto]</div>
+      <p class="bloco-result"><strong>Resultado:</strong> Página pronta para publicar com os produtos visualizados.</p>
+    </div>
+
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Passo 5</span>
+        <span class="bloco-time">30 minutos · paralelo</span>
+      </div>
+      <h3>Email + Conteúdo (em abas separadas)</h3>
+      <p>As duas skills rodam ao mesmo tempo em abas diferentes do Claude Code. Uma monta a cadência de email; a outra, o mapa de conteúdo orgânico por estágio.</p>
+      <div class="bloco-action">/email-funil [nome do produto]</div>
+      <div class="bloco-action">/conteudo-funil [nome do produto]</div>
+      <p class="bloco-result"><strong>Resultado:</strong> Sequência de email + conteúdo orgânico por estágio.</p>
+    </div>
+
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Passo 6</span>
+        <span class="bloco-time">15 minutos</span>
+      </div>
+      <h3>Back-end, recuperação e teste</h3>
+      <p>Feche o sistema: estrutura de upsell/OTO/downsell, as sequências de recuperação e o protocolo de otimização. É aqui que está boa parte do lucro.</p>
+      <div class="bloco-action">/back-end [nome do produto]</div>
+      <div class="bloco-action">/recuperacao [nome do produto]</div>
+      <div class="bloco-action">/cro-funil [nome do produto]</div>
+      <p class="bloco-result"><strong>Resultado:</strong> Funil fechado, com recuperação e plano de A/B prontos.</p>
+    </div>
+  </section>
+
+  <section id="secao-8">
+    <div class="section-num">Parte 8</div>
+    <h2>Avisos <em>importantes</em></h2>
+    <p>Essas regras valem para a Aula 02 inteira. Decore.</p>
+
+    <div class="rule">
+      <span class="rule-icon">1</span>
+      <div>
+        <h3>Offerbook antes do funil</h3>
+        <p>O <code style="font-family: var(--font-mono);">/metodo-funil</code> precisa do offerbook para funcionar. Sem ele, não há diagnóstico de estágio — e sem diagnóstico, você monta o funil errado pro público certo.</p>
+      </div>
+    </div>
+
+    <div class="rule">
+      <span class="rule-icon">2</span>
+      <div>
+        <h3>Execute na ordem do mapa</h3>
+        <p>O Mapa de Execução define a ordem por um motivo: cada skill usa o output da anterior. A página consome a copy; o email consome o DESIGN.md. Pular etapas gera retrabalho.</p>
+      </div>
+    </div>
+
+    <div class="rule">
+      <span class="rule-icon">3</span>
+      <div>
+        <h3>Rode o /design-md uma vez</h3>
+        <p>Rode <code style="font-family: var(--font-mono);">/design-md</code> uma única vez, com a URL real do seu negócio. O arquivo gerado é a âncora visual: sem ele, as páginas saem com padrão genérico.</p>
+      </div>
+    </div>
+
+    <div class="rule">
+      <span class="rule-icon">4</span>
+      <div>
+        <h3>Não pule recuperação nem CRO</h3>
+        <p>Carrinho abandonado, cartão recusado e boleto vencido são receita que já estava quase dentro. As sequências de <code style="font-family: var(--font-mono);">/recuperacao</code> e o protocolo de <code style="font-family: var(--font-mono);">/cro-funil</code> têm o maior ROI do funil. Pular é dinheiro esquecido.</p>
+      </div>
+    </div>
+
+    <div class="rule">
+      <span class="rule-icon">5</span>
+      <div>
+        <h3>Case o funil ao nível de consciência</h3>
+        <p>Depoimento só converte no nível 2. Estudo de caso, do nível 3 pra cima. Mandar lead frio pra página completa, ou lead quente pra funil de topo, queima conversão. O nível decide o funil.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-final">
+    <h2>Pronta para <em>montar o funil</em>?</h2>
+    <p>Abra o Claude Code no terminal, cole o seu offerbook e rode o ponto de entrada.</p>
+    <div class="command-block slash">metodo-funil [nome do seu produto]</div>
+  </div>
+</div>
+
+<script>
+  const bar = document.getElementById('progress');
+  function updateBar() {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  document.addEventListener('scroll', updateBar);
+  updateBar();
+</script>
+
+</body>
+</html>

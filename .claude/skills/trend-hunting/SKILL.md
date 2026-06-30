@@ -1,6 +1,6 @@
 ---
 name: trend-hunting
-description: "Identifica tendencias emergentes no nicho usando Claude + Twitter/X + Apify. Mapeia formatos virais (Reels, carousels, threads), detecta timing antes da saturacao, gera 2+ variacoes de hook e identifica vencedor por engajamento. Output: relatorio de tendencias acionavel + variacoes prontas para teste. Triggers: 'tendencias', 'trends', 'trend hunting', '/trend-hunting', 'o que ta bombando', 'formato viral'."
+description: "Identifica tendencias emergentes no nicho usando Claude + Twitter/X + scraping de redes. Mapeia formatos virais (Reels, carousels, threads), detecta timing antes da saturacao, gera 2+ variacoes de hook e identifica vencedor por engajamento. Output: relatorio de tendencias acionavel + variacoes prontas para teste. Triggers: 'tendencias', 'trends', 'trend hunting', '/trend-hunting', 'o que ta bombando', 'formato viral'."
 user_invocable: true
 ---
 
@@ -31,7 +31,7 @@ Se nao vier o nicho, **pergunte e PARE** ate receber.
 
 1. **Nicho ou palavras-chave** definidas (5-10 termos)
 2. **Acesso a Twitter/X** (busca publica, sem login obrigatorio)
-3. **Apify MCP** (opcional, para scrape de TikTok/Instagram)
+3. **Scraper de redes** (OBRIGATÓRIO para coletar Reels/vídeos de Instagram e TikTok com métricas reais — ferramenta de scraping à sua escolha)
 4. **Output do `/pesquisa-de-avatar`** (recomendado) — para filtrar tendencias relevantes ao perfil do cliente
 
 ---
@@ -53,12 +53,12 @@ Apartir do nicho, gerar 5-10 termos de busca em 3 categorias:
 - Filtrar posts dos ultimos 14 dias com 100+ likes
 - Capturar: texto do post, formato (thread, single, video), engajamento
 
-**B. Instagram Reels** (via Apify ou manual)
+**B. Instagram Reels** (via scraper ou manual)
 - Buscar hashtags do nicho
 - Capturar Reels com 50k+ views dos ultimos 14 dias
 - Estrutura: hook (primeiros 3s), formato, narrativa, CTA
 
-**C. TikTok** (via Apify ou manual)
+**C. TikTok** (via scraper ou manual)
 - Mesmo processo dos Reels
 - Atentar a formatos especificos de TikTok (POV, story, tutorial)
 
