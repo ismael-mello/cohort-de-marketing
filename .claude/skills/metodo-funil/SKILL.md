@@ -30,6 +30,32 @@ Quando você precisar montar/diagnosticar um funil ou decidir o tipo de funil/an
 
 ---
 
+## Gate de pré-requisito — Offerbook (executar ANTES de qualquer coisa)
+
+Esta skill **parte do offerbook** (a oferta que você montou na Aula 01). Antes de diagnosticar ou prescrever qualquer funil:
+
+1. **Procure o offerbook no projeto e pergunte qual usar.** Verifique se já existe:
+
+   ```
+   ls *offerbook*.md offerbook*.md OFFERBOOK*.md 2>/dev/null
+   ```
+
+   - Se achar **um**, confirme com o aluno: *"Encontrei o offerbook `<arquivo>`. Uso esse?"*
+   - Se achar **vários**, liste-os e **pergunte qual usar**.
+   - Se o aluno apontar um arquivo específico, use esse.
+
+2. **Se NÃO existir nenhum offerbook**, PARE e exiba este aviso:
+
+   > Pra montar o funil eu preciso do seu **offerbook** — é nele que está a oferta (dor, mecanismo, entregáveis, preço-âncora, bônus, garantia). Sem ele, o funil sai genérico, sem âncora no que você realmente vende.
+   >
+   > Rode **`/offerbook [nome do seu produto]`** primeiro pra montar a oferta. Quando terminar, volte e rode `/metodo-funil` de novo.
+
+   **Não prossiga sem offerbook. Não invente a oferta de cabeça.**
+
+3. Com o offerbook em mãos, leia dele o nicho, o produto/transformação, o ticket e o público — e só então siga pro **Gate de diagnóstico**.
+
+---
+
 ## Gate de diagnóstico (OBRIGATÓRIO antes de prescrever)
 
 **Diagnosticar o estágio de consciência do público é o passo que decide funil, anúncio e conteúdo.** Pular isso = funil que não converte.
