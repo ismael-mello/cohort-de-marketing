@@ -12,7 +12,7 @@
  *   node .claude/skills/design-md/cohort.cjs --url https://site-da-marca.com
  */
 
-const { execFileSync } = require('child_process');
+const { execFileSync, spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
@@ -38,23 +38,9 @@ if (!yamlInstalled) {
   }
 }
 
-// --- 2. Roda o extrator original (run.cjs) a partir da raiz do projeto ---
+// --- 2 a 4: roda o extrator, mostra progresso, copia o DESIGN.md e marca o brand-choice ---
 const args = process.argv.slice(2);
-log('Gerando o DESIGN.md da sua marca...');
-let runHadError = false;
-try {
-  execFileSync('node', [path.join(skillDir, 'run.cjs'), ...args], {
-    cwd: projectRoot,
-    stdio: 'inherit',
-  });
-} catch (e) {
-  // Um passo não-essencial (ex.: render do preview) pode falhar mesmo com o
-  // DESIGN.md já gerado. Não aborta aqui: confere abaixo se o arquivo saiu.
-  runHadError = true;
-}
 
-// --- 3. Acha o DESIGN.md recém-gerado e copia para a raiz do projeto ---
-const outputsDir = path.join(projectRoot, 'outputs', 'design-md');
 function findFreshestDesignMd(dir) {
   if (!fs.existsSync(dir)) return null;
   let best = null;
@@ -69,23 +55,65 @@ function findFreshestDesignMd(dir) {
   return best;
 }
 
-const found = findFreshestDesignMd(outputsDir);
-if (!found) {
-  log('Não consegui gerar o DESIGN.md. Veja o log acima.');
-  process.exit(runHadError ? 1 : 2);
-}
-if (runHadError) {
-  log('Obs: um passo opcional (preview) deu aviso, mas o seu DESIGN.md saiu normalmente.');
-}
+(async () => {
+  log('Analisando o site e montando o seu DESIGN.md...');
+  log('A etapa de IA leva alguns minutos (normalmente 2 a 6 min). É NORMAL a tela ficar parada um tempo aqui — não travou, pode deixar rodando.');
 
-const rootDesign = path.join(projectRoot, 'DESIGN.md');
-fs.copyFileSync(found.file, rootDesign);
-log(`DESIGN.md copiado para a raiz do projeto (a partir de "${found.slug}").`);
+  let runHadError = false;
+  const started = Date.now();
+  let lastOutput = Date.now();
 
-// --- 4. Marca o brand-choice ---
-try {
-  fs.writeFileSync(path.join(projectRoot, '.cohort-brand-choice'), 'design-md\n');
-} catch (_) { /* não-crítico */ }
+  // Roda o extrator original (run.cjs) de forma assíncrona para conseguir
+  // mostrar um "ainda processando..." durante a etapa longa (silenciosa) da IA.
+  await new Promise((resolve) => {
+    const child = spawn('node', [path.join(skillDir, 'run.cjs'), ...args], {
+      cwd: projectRoot,
+      stdio: ['inherit', 'pipe', 'pipe'],
+    });
+    const forward = (chunk) => { process.stdout.write(chunk); lastOutput = Date.now(); };
+    child.stdout.on('data', forward);
+    child.stderr.on('data', forward);
+    // Heartbeat: só aparece quando há silêncio (>12s sem output), pra não poluir.
+    const heartbeat = setInterval(() => {
+      if ((Date.now() - lastOutput) / 1000 >= 12) {
+        const total = Math.round((Date.now() - started) / 1000);
+        const min = Math.floor(total / 60), sec = total % 60;
+        const tempo = min > 0 ? `${min}m${String(sec).padStart(2, '0')}s` : `${sec}s`;
+        process.stdout.write(`[cohort] ...ainda processando (${tempo}) — a IA está analisando o design, pode deixar rodando.\n`);
+      }
+    }, 12000);
+    child.on('error', () => { runHadError = true; });
+    child.on('close', (code) => {
+      clearInterval(heartbeat);
+      if (code && code !== 0) runHadError = true;
+      resolve();
+    });
+  });
 
-log('Pronto! A sua marca está ativa. Daqui pra frente as skills usam o seu DESIGN.md.');
-log(`Abra o preview pra conferir: outputs/design-md/${found.slug}/preview.html`);
+  // Acha o DESIGN.md recém-gerado e copia para a raiz do projeto
+  const outputsDir = path.join(projectRoot, 'outputs', 'design-md');
+  const found = findFreshestDesignMd(outputsDir);
+  if (!found) {
+    log('Não consegui gerar o DESIGN.md. Veja o log acima.');
+    process.exit(runHadError ? 1 : 2);
+  }
+  if (runHadError) {
+    log('Obs: um passo opcional (preview) deu aviso, mas o seu DESIGN.md saiu normalmente.');
+  }
+
+  const rootDesign = path.join(projectRoot, 'DESIGN.md');
+  fs.copyFileSync(found.file, rootDesign);
+  log(`DESIGN.md copiado para a raiz do projeto (a partir de "${found.slug}").`);
+
+  // Marca o brand-choice
+  try {
+    fs.writeFileSync(path.join(projectRoot, '.cohort-brand-choice'), 'design-md\n');
+  } catch (_) { /* não-crítico */ }
+
+  log('Pronto! A sua marca está ativa. Daqui pra frente as skills usam o seu DESIGN.md automaticamente.');
+  log(`Confira o preview: outputs/design-md/${found.slug}/preview.html`);
+  log('');
+  log('PRÓXIMO PASSO:');
+  log('  - Se já tem a copy da oferta:  rode  /pagina-vendas  (monta a página já com a sua marca).');
+  log('  - Não sabe a ordem do funil?   rode  /metodo-funil   (ele lê o seu offerbook e te dá o mapa completo).');
+})();
