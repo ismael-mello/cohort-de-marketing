@@ -37,6 +37,8 @@ API = "https://api.apify.com/v2"
 # Actors usados (id na URL usa ~ no lugar de /)
 ACTOR_INSTAGRAM = "apify~instagram-scraper"
 ACTOR_TIKTOK = "clockworks~free-tiktok-scraper"
+# Transcricao falada (speech-to-text) de videos do TikTok. Aceita 1+ URLs.
+ACTOR_TIKTOK_TRANSCRIPT = "scrape-creators~best-tiktok-transcripts-scraper"
 
 
 def ler_token() -> str:
@@ -132,6 +134,14 @@ def cmd_tiktok_profile(perfil: str, limite: int, token: str):
     return rodar_actor(ACTOR_TIKTOK, payload, token)
 
 
+def cmd_tiktok_transcript(alvo: str, token: str):
+    # Transcricao falada de 1+ videos. 'alvo' pode trazer varias URLs
+    # separadas por virgula (ou espaco/quebra de linha).
+    urls = [u.strip() for u in alvo.replace("\n", ",").replace(" ", ",").split(",") if u.strip()]
+    payload = {"videos": urls}
+    return rodar_actor(ACTOR_TIKTOK_TRANSCRIPT, payload, token)
+
+
 def main():
     p = argparse.ArgumentParser(description="Chama a API REST do Apify (sem MCP).")
     p.add_argument(
@@ -141,10 +151,11 @@ def main():
             "instagram-profile",
             "tiktok-hashtag",
             "tiktok-profile",
+            "tiktok-transcript",
             "run",
         ],
     )
-    p.add_argument("alvo", help="hashtag, URL/@ do perfil, ou actor id (modo run)")
+    p.add_argument("alvo", help="hashtag, URL/@ do perfil, URL(s) de video (transcript), ou actor id (modo run)")
     p.add_argument("--limit", type=int, default=30, help="quantos itens (default 30)")
     p.add_argument("--input", default="{}", help="JSON de input (so no modo run)")
     args = p.parse_args()
@@ -162,6 +173,8 @@ def main():
         itens = cmd_tiktok_hashtag(args.alvo, args.limit, token)
     elif args.modo == "tiktok-profile":
         itens = cmd_tiktok_profile(args.alvo, args.limit, token)
+    elif args.modo == "tiktok-transcript":
+        itens = cmd_tiktok_transcript(args.alvo, token)
     elif args.modo == "run":
         try:
             payload = json.loads(args.input)
