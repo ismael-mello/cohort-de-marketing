@@ -36,3 +36,13 @@ Método baseado no **método do Alan Nicolas**: o concorrente já validou o que 
 ## Caso de uso típico
 
 Você escolhe um concorrente forte do seu nicho, coleta os anúncios que estão no ar há mais tempo, transcreve, identifica os 8+ ângulos vencedores e gera um lote de roteiros remodelados na sua voz — prontos para gravar e rodar na sua próxima campanha.
+
+---
+
+## Ao terminar — SEMPRE diga o próximo passo
+
+Toda execução desta skill **termina apontando o próximo passo** — pra o aluno nunca ficar sem saber o que fazer depois. Consulte o **Mapa de Execução do `/metodo-funil`** (ou a sequência da aula) pra saber qual skill vem a seguir, e aponte-a explicitamente:
+
+> Pronto. **Próximo passo:** rode `/{proxima-skill}` — [o que ela entrega].
+
+Nunca encerre sem o próximo passo.

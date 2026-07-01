@@ -70,3 +70,13 @@ Todo entregável desta skill sai em **3 formatos**, com o mesmo nome-base:
    ```
 
 Salve os 3 e confirme ao final. Nunca entregar só o `.md`.
+
+---
+
+## Ao terminar — SEMPRE diga o próximo passo
+
+Toda execução desta skill **termina apontando o próximo passo** — pra o aluno nunca ficar sem saber o que fazer depois. Consulte o **Mapa de Execução do `/metodo-funil`** (ou a sequência da aula) pra saber qual skill vem a seguir, e aponte-a explicitamente:
+
+> Pronto. **Próximo passo:** rode `/{proxima-skill}` — [o que ela entrega].
+
+Nunca encerre sem o próximo passo.

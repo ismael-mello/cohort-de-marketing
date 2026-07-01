@@ -222,3 +222,13 @@ E recomende qual testar primeiro e por que.
     ↓
 Media Buyer (Aula 03 do cohort)
 ```
+
+---
+
+## Ao terminar — SEMPRE diga o próximo passo
+
+Toda execução desta skill **termina apontando o próximo passo** — pra o aluno nunca ficar sem saber o que fazer depois. Consulte o **Mapa de Execução do `/metodo-funil`** (ou a sequência da aula) pra saber qual skill vem a seguir, e aponte-a explicitamente:
+
+> Pronto. **Próximo passo:** rode `/{proxima-skill}` — [o que ela entrega].
+
+Nunca encerre sem o próximo passo.

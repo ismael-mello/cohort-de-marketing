@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1080px;height:1350px;background:#7A3B4A;font-family:'Inter',-apple-system,sans-serif;color:#FAF6F0;overflow:hidden;}
+.slide{width:1080px;height:1350px;position:relative;overflow:hidden;}
+.bg{position:absolute;inset:0;z-index:0;
+  background:linear-gradient(180deg,rgba(122,59,74,0.80) 0%,rgba(122,59,74,0.88) 40%,rgba(90,38,48,0.96) 100%),url('foto-capa.jpg');
+  background-size:cover;background-position:50% 20%;background-repeat:no-repeat;}
+.content{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 92px;}
+.eyebrow{font-size:24px;font-weight:600;letter-spacing:0.20em;text-transform:uppercase;color:#DDC894;margin-bottom:40px;display:flex;align-items:center;justify-content:center;gap:18px;}
+.eyebrow .rule{display:inline-block;width:52px;height:2px;background:#C9A961;}
+.big{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:88px;line-height:1.1;letter-spacing:-0.01em;color:#FAF6F0;max-width:880px;text-shadow:0 2px 20px rgba(60,20,30,0.45);}
+.big .gold{color:#DDC894;font-style:italic;}
+.line{width:120px;height:3px;background:#C9A961;margin:48px auto;border-radius:2px;}
+.share{background:rgba(60,24,32,0.42);border:1px solid rgba(221,200,148,0.50);border-radius:24px;padding:48px 54px;max-width:880px;backdrop-filter:blur(2px);}
+.share .q{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:600;color:#FAF6F0;line-height:1.2;margin-bottom:20px;}
+.share .t{font-size:34px;font-weight:400;line-height:1.5;color:#F6EFE3;}
+.share .t b{color:#DDC894;font-weight:600;}
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="bg"></div>
+  <div class="content">
+    <div class="eyebrow"><span class="rule"></span>Se você marcou três ou mais<span class="rule"></span></div>
+    <div class="big">Você não envelheceu.<br><span class="gold">Você só parou de ser vista.</span></div>
+    <div class="line"></div>
+    <div class="share">
+      <div class="q">E ela também sumiu — você sabe quem é.</div>
+      <div class="t">Marca aqui embaixo <b>aquela amiga</b> que também foi ficando invisível — e que merece voltar a ser vista.</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

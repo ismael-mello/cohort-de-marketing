@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trend Report — Mulheres 50+ / Autoestima</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600&family=Inter:wght@400;600;700&family=Rajdhani:wght@600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --background: #0A0A0A; --card: #0F0F0F; --raised: #262626; --border: #262626;
+    --foreground: #E5E5E5; --muted-foreground: #999999; --primary: #BFBFBF;
+    --primary-light: #E5E5E5; --primary-deep: #595959;
+    --status-success: #23E169; --status-warning: #FF9D0A; --status-error: #FF4438;
+    --font-body: 'Source Serif 4', Georgia, serif; --font-ui: Inter, system-ui, sans-serif;
+    --font-display: Rajdhani, Inter, sans-serif; --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--background); color: var(--foreground);
+    font-family: var(--font-body); font-size: 17px; line-height: 1.6; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 56px 40px 80px; }
+  .hero { text-align: center; padding: 16px 0 40px; border-bottom: 1px solid var(--raised); margin-bottom: 44px; }
+  .kicker { display: inline-block; font-family: var(--font-ui); font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--primary);
+    padding: 6px 16px; border: 1px solid var(--primary-deep); border-radius: 9999px; margin-bottom: 24px; }
+  .hero h1 { font-family: var(--font-display); font-size: clamp(1.9rem, 5vw, 3rem); font-weight: 700;
+    line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 10px; }
+  .hero .sub { font-family: var(--font-ui); font-size: 0.95rem; color: var(--muted-foreground); margin: 6px 0 0; }
+  h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; letter-spacing: -0.01em;
+    color: var(--foreground); margin: 48px 0 16px; padding-bottom: 10px; border-bottom: 1px solid var(--raised); }
+  h3 { font-family: var(--font-ui); font-size: 1.1rem; font-weight: 700; color: var(--primary-light); margin: 28px 0 10px; }
+  p { margin: 0 0 14px; }
+  strong { color: #fff; font-weight: 600; }
+  em { color: var(--primary-light); font-style: normal; }
+  ul, ol { margin: 0 0 16px; padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  code { font-family: var(--font-mono); background: var(--card); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+  .timing { display: inline-block; padding: 3px 10px; border-radius: 9999px; font-family: var(--font-ui);
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 8px; }
+  .timing.emergente { background: rgba(35, 225, 105, 0.15); color: var(--status-success); border: 1px solid var(--status-success); }
+  .timing.em-alta { background: rgba(255, 157, 10, 0.15); color: var(--status-warning); border: 1px solid var(--status-warning); }
+  .timing.saturado { background: rgba(255, 68, 56, 0.15); color: var(--status-error); border: 1px solid var(--status-error); }
+  blockquote, .padrao { font-family: var(--font-body); color: var(--primary-light);
+    background: var(--card); border-left: 3px solid var(--primary-deep);
+    margin: 14px 0; padding: 12px 18px; border-radius: 0 8px 8px 0; }
+  .padrao .fonte { display: block; font-family: var(--font-ui); font-size: 0.78rem; color: var(--muted-foreground); margin-top: 6px; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-family: var(--font-ui); font-size: 0.9rem; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--raised); vertical-align: top; }
+  th { color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.72rem; }
+  .callout { background: rgba(255,157,10,0.08); border: 1px solid var(--status-warning);
+    border-radius: 10px; padding: 14px 18px; margin: 18px 0; font-family: var(--font-ui); font-size: 0.92rem; color: var(--foreground); }
+  .footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--raised);
+    font-family: var(--font-ui); font-size: 0.78rem; color: var(--muted-foreground); text-align: center; }
+  .footer .logo { font-family: var(--font-display); font-weight: 700; color: var(--primary); letter-spacing: 0.02em; }
+  @media print { html, body { font-size: 12px; background: #fff; color: #111; }
+    .wrap { padding: 0 12px; max-width: 100%; } h2 { page-break-after: avoid; }
+    blockquote, .padrao, table, .callout { page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <span class="kicker">Trend Report</span>
+      <h1>Mulheres 50+ / Autoestima</h1>
+      <p class="sub">TikTok + Instagram + perfil concorrente · ~47 peças · API Apify · 27/06/2026</p>
+    </div>
+
+    <div class="callout">
+      <strong>Aviso de honestidade.</strong> Coleta real via API do Apify (Instagram + TikTok). Dois limites: (1) o feed de hashtag do Instagram traz posts <strong>recentes</strong>, não os de maior engajamento — o sinal forte de timing vem do <strong>TikTok</strong> (play counts altos). (2) <strong>Twitter/X</strong> rende pouco nesse recorte (mulher 50+ BR vive em Instagram/TikTok) — entra só como contexto.
+    </div>
+
+    <h2>1. Fontes consultadas</h2>
+    <table>
+      <thead><tr><th>Fonte</th><th>O que rendeu</th><th>Sinal</th></tr></thead>
+      <tbody>
+        <tr><td>TikTok (hashtag <code>depoisdos50</code>)</td><td>20 vídeos, vários com 80k-244k plays</td><td><strong>Forte</strong> — winners reais</td></tr>
+        <tr><td>Instagram (hashtag <code>mulher50mais</code>)</td><td>15 posts recentes (engajamento baixo-médio)</td><td>Médio — linguagem</td></tr>
+        <tr><td>Instagram @flaviajordao (concorrente)</td><td>12 posts; melhor: entrevista (3.774 likes)</td><td>Médio — formatos</td></tr>
+        <tr><td>Twitter/X</td><td>Sem post viral no recorte; só matérias</td><td>Fraco (contexto)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>2. Padrões identificados</h2>
+
+    <h3>Padrão 1 — Abertura "Depois dos 50, [reframe]" <span class="timing em-alta">Em alta</span></h3>
+    <p>O abridor dominante. Mecânicas: <strong>contrarian</strong> ("não é X, é Y") e <strong>revelação</strong> ("você descobre que…"). Engajamento alto, volume altíssimo — perto de saturar.</p>
+    <blockquote class="padrao">"Depois dos 50, não é o agachamento que muda suas pernas… é isso que você faz antes"<span class="fonte">TikTok @personal_rafaelrosa · 192.100 plays · 1.195 shares</span></blockquote>
+    <blockquote class="padrao">"Depois Dos 50 Você Descobre Quem Nunca Deveria Ter Sentado À Sua Mesa"<span class="fonte">TikTok @telenovelas.vidareal · 95.000 plays</span></blockquote>
+
+    <h3>Padrão 2 — Confissão em 1ª pessoa com idade exata <span class="timing emergente">Emergente</span></h3>
+    <p>"Aos [idade] anos, descobri/decidi/percebi…". Vulnerável, ancorado em identidade. No recorte <strong>emocional/identidade</strong> ainda está subindo — é o que mais conversa com o avatar.</p>
+    <blockquote class="padrao">"Aos 53 anos, descobri que a verdadeira elegância nasce de dentro. Hoje, não me visto para impressionar ninguém. Me visto para celebrar a mulher que sou"<span class="fonte">Instagram @flavialemos.menopausa · 88 likes</span></blockquote>
+    <blockquote class="padrao">"Vou confessar uma coisa para vocês…"<span class="fonte">Instagram @flaviajordao (concorrente)</span></blockquote>
+
+    <h3>Padrão 3 — Reflexão/sabedoria com texto na tela + música <span class="timing saturado">Saturado</span></h3>
+    <p>Frases de sabedoria sobre a tela, música emocional, formato "farm". Shares enormes, MAS volume e repetição altíssimos — risco de fadiga. Entra como <strong>aviso</strong>, não recomendação.</p>
+    <blockquote class="padrao">"A VIDA DEPOIS DOS 50"<span class="fonte">TikTok @opoderdaspalavrasmn · 156.600 plays · 695 comentários · 4.050 shares</span></blockquote>
+
+    <h3>Padrão 4 — Tutorial/dica estética madura <span class="timing em-alta">Em alta</span></h3>
+    <p>Dica prática de beleza/estilo. Foi o <strong>maior play count</strong> da coleta. Funciona, mas é ângulo estético (menos alinhado à identidade).</p>
+    <blockquote class="padrao">"cabelo longo depois dos 50 pode? aqui vão algumas dicas para vocês!"<span class="fonte">TikTok @djeinemoda · 244.300 plays</span></blockquote>
+
+    <h3>Padrão 5 — Contrarian "não é X… é Y" no emocional <span class="timing emergente">Emergente</span></h3>
+    <p>A mecânica "nega o óbvio, revela o real" está forte no <strong>fitness</strong> mas é <strong>pouco usada pro emocional/identidade</strong>. Trazê-la pro "ser vista" é o espaço aberto — alta curiosidade, baixa concorrência nesse ângulo.</p>
+
+    <h2>3. Leitura para o avatar (invisibilidade)</h2>
+    <p>Padrões 2 e 5 são os mais alinhados à sua dor (identidade/visibilidade) <strong>e</strong> de timing bom (emergente). O padrão 1 funciona mas exige twist fresco. O padrão 3 é tentador pelo alcance, mas é farm saturado — não construa marca nele. O padrão 4 (estético) é o território da concorrência genérica.</p>
+    <p><strong>A jogada de timing:</strong> pegar a mecânica contrarian (padrão 5) + a confissão de identidade (padrão 2) e aplicar ao ângulo <em>"você não envelheceu, você sumiu"</em>. Ninguém no nicho faz isso — todos falam de corpo, estética ou sabedoria genérica.</p>
+
+    <h2>4. Três jogadas</h2>
+    <ol>
+      <li><strong>Lidere com confissão de identidade (padrão 2), não com estética.</strong> "Aos [idade], percebi que eu tinha sumido" abre a conversa que a concorrência não faz.</li>
+      <li><strong>Use a mecânica contrarian no emocional (padrão 5).</strong> "Não é a ruga que te deixou invisível. É ter parado de ocupar espaço."</li>
+      <li><strong>Evite o padrão 3 (sabedoria/farm).</strong> Alto alcance, zero marca, satura rápido. No máximo isca de topo.</li>
+    </ol>
+
+    <div class="footer">
+      <div class="logo"></div>
+      <p>Trend report · 27/06/2026 · Coleta via API Apify (TikTok + Instagram). Pegue na rampa de subida (padrões 2 e 5), não no pico (padrão 3).</p>
+    </div>
+  </div>
+</body>
+</html>

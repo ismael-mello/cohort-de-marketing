@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Offerbook — Mulheres 50+ / Autoestima</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --background: #0A0A0A;
+    --card: #0F0F0F;
+    --raised: #262626;
+    --border: #262626;
+    --foreground: #E5E5E5;
+    --muted-foreground: #999999;
+    --primary: #BFBFBF;
+    --primary-light: #E5E5E5;
+    --primary-deep: #595959;
+    --status-success: #23E169;
+    --status-warning: #FF9D0A;
+    --status-error: #FF4438;
+    --font-body: 'Source Serif 4', Georgia, serif;
+    --font-ui: Inter, system-ui, sans-serif;
+    --font-display: Inter, system-ui, sans-serif;
+    --font-mono: ui-monospace, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 56px 40px 80px; }
+  .hero { text-align: center; padding: 16px 0 40px; border-bottom: 1px solid var(--raised); margin-bottom: 44px; }
+  .kicker {
+    display: inline-block; font-family: var(--font-ui); font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--primary);
+    padding: 6px 16px; border: 1px solid var(--primary-deep); border-radius: 9999px; margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: var(--font-display); font-size: clamp(1.9rem, 5vw, 3rem); font-weight: 700;
+    line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 10px;
+  }
+  .hero h1 em { font-family: var(--font-body); font-style: italic; font-weight: 400; color: var(--primary); }
+  .hero .sub { font-family: var(--font-ui); font-size: 0.95rem; color: var(--muted-foreground); margin: 6px 0 0; }
+  h2 {
+    font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; letter-spacing: -0.01em;
+    color: var(--foreground); margin: 48px 0 16px; padding-bottom: 10px; border-bottom: 1px solid var(--raised);
+  }
+  h3 { font-family: var(--font-ui); font-size: 1.1rem; font-weight: 700; color: var(--primary-light); margin: 28px 0 10px; }
+  h4 { font-family: var(--font-ui); font-size: 0.95rem; font-weight: 700; color: var(--primary); margin: 20px 0 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+  p { margin: 0 0 14px; }
+  strong { color: #fff; font-weight: 600; }
+  em { color: var(--primary-light); }
+  ul, ol { margin: 0 0 16px; padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  blockquote, .verbatim {
+    font-family: var(--font-body); font-style: italic; color: var(--primary-light);
+    background: var(--card); border-left: 3px solid var(--primary-deep);
+    margin: 14px 0; padding: 12px 18px; border-radius: 0 8px 8px 0;
+  }
+  .verbatim .fonte { display: block; font-family: var(--font-ui); font-style: normal; font-size: 0.78rem; color: var(--muted-foreground); margin-top: 6px; }
+  .callout {
+    background: rgba(255,157,10,0.08); border: 1px solid var(--status-warning);
+    border-radius: 10px; padding: 14px 18px; margin: 18px 0;
+    font-family: var(--font-ui); font-size: 0.92rem; color: var(--foreground);
+  }
+  .callout ol { margin: 8px 0 0; }
+  .tag { display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.04em; padding: 2px 8px; border-radius: 9999px; vertical-align: middle; margin-left: 8px; }
+  .tag.real { background: rgba(35,225,105,0.12); color: var(--status-success); border: 1px solid var(--status-success); }
+  .tag.hip { background: rgba(255,157,10,0.12); color: var(--status-warning); border: 1px solid var(--status-warning); }
+  .def {
+    display: inline-block; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.03em; padding: 1px 7px; border-radius: 6px; vertical-align: baseline;
+    background: rgba(255,157,10,0.12); color: var(--status-warning); border: 1px solid var(--status-warning);
+  }
+  .def.add { background: rgba(255,68,56,0.12); color: var(--status-error); border-color: var(--status-error); }
+  .def.nd { background: rgba(89,89,89,0.18); color: var(--muted-foreground); border-color: var(--primary-deep); }
+  .lead-note {
+    font-family: var(--font-ui); font-size: 0.88rem; color: var(--muted-foreground);
+    background: var(--card); border: 1px solid var(--raised); border-radius: 10px;
+    padding: 12px 18px; margin: 0 0 8px;
+  }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-family: var(--font-ui); font-size: 0.9rem; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--raised); vertical-align: top; }
+  th { color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.72rem; }
+  td.num, th.num { text-align: center; font-family: var(--font-mono); }
+  hr.div { border: none; border-top: 1px solid var(--raised); margin: 40px 0 0; }
+  .footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--raised);
+    font-family: var(--font-ui); font-size: 0.78rem; color: var(--muted-foreground); text-align: center; }
+  .footer .logo { font-family: var(--font-display); font-weight: 700; color: var(--primary); letter-spacing: 0.02em; }
+  @media print {
+    html, body { font-size: 12px; background: #fff; color: #111; }
+    .wrap { padding: 0 12px; max-width: 100%; }
+    h2 { page-break-after: avoid; }
+    blockquote, .verbatim, table, .callout { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <span class="kicker">Offerbook · Story Selling</span>
+      <h1>Mulheres 50+ que querem <em>autoestima</em></h1>
+      <p class="sub">Slug: mulheres-50-autoestima · Brand: neutro · 30/06/2026</p>
+    </div>
+
+    <p class="lead-note">Fonte de verdade da oferta (Story Selling). Toda copy posterior (LP, e-mails, ads) parte daqui. Avatar e Análise de Cliente saem da pesquisa real (<code>pesquisa-avatar-mulheres-50-autoestima/relatorio-avatar.md</code>, N≈20 verbatim · ~8 fontes); concorrência do dossiê Flávia Jordão; copy calibrada pelo swipe file (9 criativos · 5 winners).</p>
+
+    <div class="callout">
+      <strong>Natureza da oferta.</strong> A pesquisa não define um produto fechado. A DOR é real e cravada (invisibilidade aos 50+); a ESTRUTURA da oferta abaixo (mecanismo, módulos, bônus) é <strong>proposta coerente com a dor</strong>, a confirmar pela dona. Campos de decisão de negócio estão marcados <span class="def">A DEFINIR pela dona</span>. Onde a pesquisa não tem dado: <span class="def nd">SEM DADO NA PESQUISA</span>.
+    </div>
+
+    <h2>Bloco 1 — Materiais</h2>
+    <p><em>(Materiais = links que a equipe abre. Sem link ainda → "A ADICIONAR".)</em></p>
+
+    <h4>Social Media / URLs</h4>
+    <ul>
+      <li>Instagram da oferta: <span class="def add">A ADICIONAR</span></li>
+      <li>Página de vendas: <span class="def add">A ADICIONAR</span></li>
+      <li>Checkout: <span class="def add">A ADICIONAR</span></li>
+    </ul>
+
+    <h4>Materiais de apoio</h4>
+    <ul>
+      <li>Pesquisa de avatar (interno): <code>pesquisa-avatar-mulheres-50-autoestima/relatorio-avatar.md</code></li>
+      <li>Dossiê de concorrente (interno): <code>espiao-concorrentes/dossie-flavia-jordao.md</code></li>
+      <li>Swipe file (interno): <code>swipe-file/swipe-file-index.md</code> + <code>swipe-file/briefing-swipe-file.md</code></li>
+      <li>Trend report (interno): <code>trend-hunting-mulheres-50-autoestima/trends-mulheres-50-autoestima-2026-06-27.md</code></li>
+    </ul>
+
+    <h4>Conteúdos de referência</h4>
+    <ul>
+      <li>Concorrente — Instagram @flaviajordao e site eusouflaviajordao.com.br (referência de hook de confissão/espelho; destino comercial — NÃO copiar o destino)</li>
+      <li>Vozes públicas do tema: Andréa Beltrão, Claudia Raia (etarismo / "mulheres desaparecem")</li>
+      <li>Depoimentos de pares 50+ reais: <span class="def add">A ADICIONAR</span> (lacuna crítica — ver Bloco "Lacunas")</li>
+    </ul>
+
+    <h2>Bloco 2 — Posicionamento › Oferta</h2>
+
+    <h3>Nome do produto</h3>
+    <p><span class="def">A DEFINIR pela dona</span> — nome comercial. Direções de trabalho (não chumbar sem aprovação): "Voltar a Ser Vista", "De Volta ao Centro", "A Mulher que Eu Ainda Sou".</p>
+
+    <h3>Promessa</h3>
+    <p>Voltar a ser vista, desejada e dona de uma identidade/projeto próprio depois dos 50 — sem ter que fingir ter 30, sem creme milagroso e sem depender de hormônio.</p>
+
+    <h3>USP (proposta única de venda)</h3>
+    <p>Enquanto o mercado vende para essa mulher <em>parecer mais jovem</em> (creme), <em>repor hormônio</em> ou <em>terapia genérica</em>, esta é a única oferta que ataca de frente a dor real — <strong>a invisibilidade</strong> — e reconstrói <strong>presença e identidade</strong> com método e com pares reais 50+ (não modelos de 25 retocadas). Posicionamento "ao lado" da concorrência que monetiza a autoridade: aqui a dor é existencial ("eu sumi como pessoa"), não comercial ("quero vender online").</p>
+
+    <h3>Valor, ancoragem e bônus — 9 perguntas de valor</h3>
+    <ol>
+      <li><strong>O que é?</strong> Programa guiado de reconstrução de presença e identidade para mulheres 50+, com método em etapas + comunidade de pares reais. (Formato exato <span class="def">A DEFINIR pela dona</span>: cohort ao vivo / curso + comunidade.)</li>
+      <li><strong>Para quem é?</strong> Mulher 50–62, que sente que "sumiu" — no espelho, na relação, na vida. (Avatar do Bloco 3.)</li>
+      <li><strong>Qual o resultado dos sonhos?</strong> Voltar a se sentir vista e desejada, com um "projeto só meu" e uma identidade que ela reconhece de novo.</li>
+      <li><strong>Em quanto tempo?</strong> <span class="def">A DEFINIR pela dona</span> — proposta: jornada de ~6 a 8 semanas (uma etapa por semana).</li>
+      <li><strong>Qual a probabilidade percebida de conseguir (prova)?</strong> Sustentada por prova de <strong>pares 50+ reais</strong> (a coletar) — exatamente o que derruba a objeção "já me frustrei". NÃO usar prova centrada na mentora (erro da concorrente).</li>
+      <li><strong>Qual o esforço/sacrifício?</strong> Baixo e na medida dela: passos curtos, à noite no celular, "do meu jeito" — atende a pragmática que detesta papo motivacional vago.</li>
+      <li><strong>Quanto isso vale (ancoragem)?</strong> Custo do problema hoje: anos de invisibilidade, dinheiro perdido em cremes que frustram, sessões avulsas de terapia. Referência de mercado: concorrente cobra R$ 59–147 no front-end. Valor percebido alto porque resolve o que ninguém resolve.</li>
+      <li><strong>Por quanto vou vender (preço)?</strong> <span class="def">A DEFINIR pela dona</span>.</li>
+      <li><strong>Por que agora (urgência) + bônus?</strong> Cada mês adiado é mais um mês "sumida". Bônus com escassez no Bloco abaixo. Janela/turma <span class="def">A DEFINIR pela dona</span>.</li>
+    </ol>
+
+    <h3>Conteúdo do treinamento (módulos + técnica de cada um)</h3>
+    <p><em>estrutura proposta, a validar</em></p>
+    <ul>
+      <li><strong>Módulo 1 — O Diagnóstico da Invisibilidade.</strong> Técnica: <em>Inventário da Presença</em> — mapear exatamente onde você sumiu (espelho, relação, trabalho, vida social).</li>
+      <li><strong>Módulo 2 — O Luto da Mulher que Você Era.</strong> Técnica: <em>Ritual de Virada</em> — fechar o ciclo da juventude sem fingir 30 (ataca "não me reconheço" / "luto pela juventude").</li>
+      <li><strong>Módulo 3 — Um Projeto Só Meu.</strong> Técnica: <em>Projeto-Âncora</em> — reconstruir identidade própria a partir de um projeto pessoal (verbatim "nunca tive um projeto só meu").</li>
+      <li><strong>Módulo 4 — Voltar a Ocupar Espaço.</strong> Técnica: <em>Micro-exposições</em> — corpo, voz e presença social em passos pequenos e seguros.</li>
+      <li><strong>Módulo 5 — Ser Vista de Novo.</strong> Técnica: <em>Reconexão</em> — relações, desejo e visibilidade afetiva, sem cobrança (atende a dor da libido/cobrança com acolhimento).</li>
+      <li><strong>Módulo 6 — Sustentação entre Pares.</strong> Técnica: <em>Círculo de Pares 50+</em> — comunidade pra não recair na invisibilidade (pertencimento, "ver outras como eu").</li>
+    </ul>
+
+    <h3>Autoridade (Especialista + Depoimentos)</h3>
+    <ul>
+      <li>Especialista / criadora da oferta: <span class="def nd">SEM DADO NA PESQUISA</span> — <span class="def">A DEFINIR pela dona</span>.</li>
+      <li>Depoimentos: <span class="def add">A ADICIONAR</span> — coletar 3–5 histórias de mulheres 50+ reais (prova de pares, não de modelo). É o ativo que mais derruba a objeção principal.</li>
+    </ul>
+
+    <h2>Bloco 3 — Avatar <span class="tag real">DA PESQUISA REAL · N≈20 · ~8 FONTES</span></h2>
+
+    <h3>Cliente ideal</h3>
+    <p>Mulher, 50–62 anos (avatar ancora em 52–59). Filhos adultos ou saindo de casa; muitas casadas há 20+ anos, algumas recém-viúvas ou recém-separadas. Classe B/C urbana, trabalha ou trabalhou, <strong>decide a própria compra</strong>. Lê no celular, à noite, sozinha, em estado emocional baixo ou reflexivo.</p>
+
+    <h3>Desejo</h3>
+    <p>Voltar a ser vista, desejada e útil; "se reinventar"; ter "um projeto só meu" — sem precisar fingir ter 30.</p>
+    <blockquote class="verbatim">"após a viuvez fiquei perdida pq nunca tive um projeto só meu"<span class="fonte">Alondra, 55</span></blockquote>
+
+    <h3>Problema</h3>
+    <p>A dor nº 1 é a <strong>invisibilidade</strong>: a sensação de ter "sumido" no trabalho, no espelho e na relação. Aparece em 4+ fontes independentes, sempre com a mesma palavra.</p>
+    <blockquote class="verbatim">"Você tem 58 anos? Mas você tá ótima. O que esse mas quer dizer?"<span class="fonte">Andréa Beltrão, 58</span></blockquote>
+    <blockquote class="verbatim">"Invisíveis no mercado de trabalho. Invisíveis nas relações."<span class="fonte">Izah Mendonça</span></blockquote>
+    <blockquote class="verbatim">"Mulheres desaparecem."<span class="fonte">Claudia Raia (sobre etarismo)</span></blockquote>
+
+    <h3>Erros (o que ela já tentou e errou)</h3>
+    <ul>
+      <li>Creme antienvelhecimento — frustrou.</li>
+    </ul>
+    <blockquote class="verbatim">"Se você espera milagre e rejuvenescimento... de um creme: não compre absolutamente nada. Você vai se frustar."<span class="fonte">review (peledeimperatriz)</span></blockquote>
+    <ul>
+      <li>Reposição hormonal (médica, não resolve a identidade) e busca em consultório.</li>
+    </ul>
+    <blockquote class="verbatim">"Doutora, eu não me reconheço mais."<span class="fonte">frase recorrente em consultório</span></blockquote>
+    <ul>
+      <li>Posterga o autocuidado, evita foto, evita certas roupas.</li>
+    </ul>
+
+    <h3>Solução (Solução técnica + Mecanismo único + "Bambu chinês")</h3>
+    <ul>
+      <li><em>Solução técnica:</em> reconstrução de presença e identidade em etapas, com pares reais (não estética, não hormônio).</li>
+      <li><em>Mecanismo único (interno proposto):</em> <strong>Método Voltar a Ser Vista</strong> — sair de "invisível" para "presente" tratando a causa (parou de ocupar espaço/ter identidade própria), não o sintoma (a ruga).</li>
+      <li><em>Bambu chinês:</em> a presença se reconstrói por baixo (raiz: identidade, projeto, ocupar espaço) e parece "de repente" — depois de semanas de passos pequenos, ela volta a ser vista e o entorno percebe a virada.</li>
+    </ul>
+
+    <h3>Objeções <em>(verbatim da pesquisa)</em></h3>
+    <blockquote class="verbatim">"Isso é papo de quem tem tempo e dinheiro."</blockquote>
+    <blockquote class="verbatim">"Na minha idade não muda mais nada."</blockquote>
+    <blockquote class="verbatim">"Já tentei de tudo e me frustrei."</blockquote>
+    <blockquote class="verbatim">"Não quero parecer que tô querendo bancar a novinha."</blockquote>
+
+    <h3>Benefícios diretos</h3>
+    <p>Voltar a se arrumar e se mostrar sem vergonha; ter um projeto pessoal em andamento; sentir-se enxergada por pares; primeiro passo simples e possível "do meu jeito".</p>
+
+    <h3>Benefícios profundos</h3>
+    <p>Reencontrar a si mesma ("voltei a me reconhecer"); sair do "à deriva" para ter direção; sentir-se desejada e dona da própria vida; pertencer ("não sou só eu, tem outras como eu"); "minha vez agora".</p>
+
+    <h2>Bloco 4 — História</h2>
+
+    <h3>Promessa · estilo · bambu chinês</h3>
+    <ul>
+      <li><em>Promessa:</em> você vai voltar a ser vista — começando por se ver de novo.</li>
+      <li><em>Estilo:</em> confissão em 1ª pessoa, tom de acolhimento (não de venda), validação antes de solução. Voz de par 50+, nunca de modelo de 25.</li>
+      <li><em>Bambu chinês:</em> meses parecendo "nada", até que a raiz (identidade/presença) sustenta a virada e o mundo volta a te enxergar.</li>
+    </ul>
+
+    <h3>Problema · o "porquê" do problema · erros · porque não funciona</h3>
+    <ul>
+      <li><em>Problema:</em> ela sumiu — invisível no trabalho, no espelho e na relação.</li>
+      <li><em>Porquê:</em> etarismo + transições da meia-idade (corpo muda, ninho esvazia, viuvez/separação) e a perda do "projeto só meu".</li>
+      <li><em>Erros:</em> creme (frustra), hormônio (médico, não cura identidade), terapia genérica, posterga o autocuidado.</li>
+      <li><em>Porque não funciona:</em> tudo isso ataca o sintoma (parecer 30) e ignora a causa (parou de ser vista / de ter identidade própria).</li>
+    </ul>
+
+    <h3>Nome da situação do problema</h3>
+    <p>"A Mulher que Sumiu" / o estado de invisibilidade ("eu sumi", "parei de ser vista").</p>
+
+    <h3>Contexto da solução · mecanismo</h3>
+    <p>A virada não é parecer mais jovem; é <strong>voltar a ocupar espaço e reconstruir uma identidade própria</strong>. Mecanismo: Método Voltar a Ser Vista — diagnóstico da invisibilidade → luto da mulher que era → projeto só meu → ocupar espaço → ser vista de novo → sustentação entre pares.</p>
+
+    <h3>Nome da situação do resultado</h3>
+    <p>"De Volta ao Centro" / a Mulher Vista de Novo (vista, desejada, com projeto próprio).</p>
+
+    <h3>Exemplo (gancho para a oferta + USP)</h3>
+    <blockquote class="verbatim">"Você não envelheceu. Você só parou de ser vista. Vamos mudar isso?"</blockquote>
+    <p>USP atrelado: não é mais um creme que promete 30 anos; é o caminho para voltar a ser vista aos 50+, com método e com pares reais.</p>
+
+    <h2>Bloco 5 — História v2 (versão expandida)</h2>
+
+    <h3>[Atenção] · Boas-vindas · Promessa · Lead</h3>
+    <ul>
+      <li><em>Atenção (hook):</em> "Aos 54 anos, percebi que eu não tinha envelhecido. Eu tinha sumido." (winner do swipe, padrão confissão.)</li>
+      <li><em>Boas-vindas:</em> se você leu essa frase e pensou "essa sou eu", esta carta é pra você — e foi escrita por quem entende, não por quem vende.</li>
+      <li><em>Promessa:</em> voltar a ser vista, desejada e dona de uma identidade própria — sem fingir ter 30.</li>
+      <li><em>Lead:</em> tem uma palavra que se repete quando mulheres na sua fase desabafam: "sumir". Não é sobre rugas. É sobre ter parado de ser vista.</li>
+    </ul>
+
+    <h3>Problema (mundo atual) e consequências · porque acontece</h3>
+    <p>Invisível no trabalho (recolocação 50+ leva ~2x mais tempo), no espelho ("não me reconheço") e na relação (libido cobrada, "me cobra muito"). Consequência: vazio, "à deriva", solidão, choro escondido. Acontece por etarismo somado às transições da meia-idade e à perda de um projeto próprio.</p>
+    <blockquote class="verbatim">"Sinto-me à deriva. Literalmente."<span class="fonte">Katia, 54</span></blockquote>
+    <blockquote class="verbatim">"me sinto profundamente aozinha"<span class="fonte">Alondra, 55</span></blockquote>
+
+    <h3>Como tentam resolver (erros) · porque não funciona · o que pode piorar</h3>
+    <p>Creme (frustra e ressente), hormônio (médico), terapia avulsa, fingir que está tudo bem. Não funciona porque trata o sintoma, não a causa. Pode piorar: cada tentativa frustrada reforça "na minha idade não muda mais nada" e aprofunda a invisibilidade.</p>
+
+    <h3>Tirar a culpa · inimigo comum</h3>
+    <p>A culpa não é dela, nem da idade. <em>Inimigo comum:</em> um mercado e uma cultura que ensinam a mulher 50+ a sumir — que vendem "pareça 30" e elogiam com "tá ótima... pra sua idade". O "mas" é o inimigo.</p>
+    <blockquote class="verbatim">"Elogio com 'mas' não é elogio."<span class="fonte">Andréa Beltrão</span></blockquote>
+
+    <h3>"Porquê" é outra solução · provas · mecanismo único</h3>
+    <p>Porque ninguém vende de frente o que ela pede: voltar a ser vista e ter identidade própria. <em>Provas:</em> histórias de pares 50+ reais (a coletar) — não modelo retocada. <em>Mecanismo único:</em> Método Voltar a Ser Vista (6 etapas: diagnóstico → luto → projeto só meu → ocupar espaço → ser vista → sustentação entre pares).</p>
+
+    <h3>Exemplo / big idea · mundo ideal</h3>
+    <p><em>Big idea:</em> "Você não envelheceu. Você só parou de ser vista." <em>Mundo ideal:</em> ela volta a se arrumar sem vergonha, tem um projeto só dela, é enxergada por pares e por quem ama, e diz "minha vez agora".</p>
+
+    <h3>Bônus com escassez · objeções</h3>
+    <ul>
+      <li><em>Bônus (propostos, a confirmar):</em> (1) Círculo de Pares 50+ por tempo limitado; (2) encontro ao vivo de abertura "Voltar a Ser Vista"; (3) guia "Primeiro Passo" (ação simples pra começar hoje). Escassez real = turma/janela <span class="def">A DEFINIR pela dona</span> — NÃO usar escassez artificial tipo "83% vendido" (é justamente o que alimenta a objeção "já me frustrei").</li>
+      <li><em>Objeções tratadas:</em> "papo de quem tem tempo/dinheiro" → passos curtos, no celular, à noite; "na minha idade não muda" → prova de pares reais; "já me frustrei" → garantia incondicional + prova de pares; "bancar a novinha" → o oposto: ser vista como a mulher que você é agora, não fingir 30.</li>
+    </ul>
+
+    <h2>Bloco 6 — Análise de Cliente <span class="tag real">DA PESQUISA REAL</span></h2>
+
+    <h3>Demográfico</h3>
+    <p>Mulher 50–62 (núcleo 52–59), classe B/C urbana, filhos adultos/saindo, casadas 20+ anos ou recém-viúvas/separadas, renda própria ou compartilhada, decide a própria compra.</p>
+
+    <h3>Personalidade</h3>
+    <p>Valoriza ser útil, ser vista e ter "um projeto só meu". Decisão lenta e emocional, com necessidade de pertencimento. Confia em prova de pares 50+ reais, não em autoridade que se vende. Compra quando sente que <strong>foi enxergada</strong>, não quando é convencida.</p>
+
+    <h3>Armadilhas</h3>
+    <p>Posterga o autocuidado; evita foto e certas roupas; cai em promessa de "milagre" (creme) e se frustra; silencia o que sente (libido, "me sinto feia" só saem no anônimo); reage mal a "tá ótima pra sua idade".</p>
+
+    <h3>Dores · Dores escondidas</h3>
+    <ul>
+      <li><em>Dores (ditas):</em> invisibilidade ("sumi"), não se reconhecer ("não me reconheço"), vazio/"à deriva", solidão.</li>
+      <li><em>Dores escondidas (só no anônimo):</em> perda de libido + cobrança do parceiro; "me sinto feia/substituível/não feminina".</li>
+    </ul>
+    <blockquote class="verbatim">"Tenho 52 anos e nao tenho mais vontade de transar... Meu esposo... me cobra muito isso."<span class="fonte">Doctoralia</span></blockquote>
+    <blockquote class="verbatim">"Me acho feia, substituível e não me sinto bem comigo mesmo."<span class="fonte">MundoPsicologos <span class="def nd">idade não confirmada — tratar como hipótese</span></span></blockquote>
+
+    <h3>Medos</h3>
+    <p>Ter virado invisível e "passado do ponto"; ser mais uma promessa que frustra; não mudar nunca mais; ser substituída; envelhecer sozinha.</p>
+
+    <h3>Desejos · Desejos profundos</h3>
+    <ul>
+      <li><em>Desejos:</em> voltar a se sentir vista e desejada; se reinventar; ter um projeto próprio.</li>
+      <li><em>Profundos:</em> reencontrar a própria identidade ("voltar a me reconhecer"); pertencer; "minha vez agora"; ser amada e desejada como a mulher que é hoje.</li>
+    </ul>
+
+    <h3>Vida Perfeita</h3>
+    <p>Ela se olha no espelho e se reconhece; tem um projeto só dela em andamento; se arruma e se mostra sem vergonha; é enxergada no trabalho, pelos amigos e por quem ama; está cercada de outras mulheres 50+ que vivem o mesmo recomeço.</p>
+
+    <h3>Objeções (Da promessa + Do produto)</h3>
+    <ul>
+      <li><em>Da promessa:</em> "na minha idade não muda mais nada"; "isso é papo de quem tem tempo e dinheiro".</li>
+      <li><em>Do produto:</em> "já tentei de tudo e me frustrei" (medo de mais uma promessa); "não quero parecer que tô bancando a novinha"; "tá, e na prática? quanto tempo, quanto custa, dá pra fazer do meu jeito?".</li>
+    </ul>
+
+    <h2>Bloco 7 — Copy</h2>
+    <p><em>(Rascunhos calibrados pelo swipe file real — 5 winners. Lançar só após o offerbook aprovado e a prova de pares coletada.)</em></p>
+
+    <h3>Ads <em>(hooks validados — padrões #1 confissão e #2 contrarian)</em></h3>
+    <ol>
+      <li>"Aos 54 anos, percebi que eu não tinha envelhecido. Eu tinha sumido." (confissão / talking head, rosto + silêncio nos 3s)</li>
+      <li>"Não é a ruga que te deixou invisível. É ter parado de ocupar espaço." (contrarian, texto grande em tela limpa)</li>
+      <li>"Depois dos 50, não é o espelho que muda. É a forma como o mundo para de te ver." (reframe)</li>
+      <li>"Você é incrível na vida real… mas virou invisível pro mundo?" (espelho — mecânica da concorrente, destino de identidade)</li>
+      <li>EVITAR: "frase de sabedoria + música" (anti-modelo sw03 — alcança mas não converte).</li>
+    </ol>
+
+    <h3>Landing Page</h3>
+    <ul>
+      <li><em>Versão A (emocional — para a Marlene 9/10):</em> Headline "Você não envelheceu. Você só parou de ser vista." → validação da dor → "a culpa não é sua, é do 'mas'" → mecanismo (Método Voltar a Ser Vista) → prova de pares 50+ reais → oferta → garantia incondicional → CTA "Quero voltar a ser vista".</li>
+      <li><em>Versão B (racional/concreta — para a Regina 7/10):</em> Headline "Um método em 6 etapas para mulheres 50+ voltarem a ser vistas — sem creme, sem fingir 30." → o que você leva (módulos + técnica) → resultado em ~N semanas → depoimento de quem recolocou/recomeçou → preço → CTA.</li>
+      <li><em>Versão C (pragmática/primeiro passo — para a Sônia 6/10):</em> Headline "Comece com um passo simples hoje — no seu tempo, do seu jeito." → primeiro passo simples e gratuito → "sem papo motivacional vago: passo a passo" → formato (tempo/custo claros) → CTA suave.</li>
+    </ul>
+
+    <h3>E-mails <em>(sequência proposta — calibrar voz na aprovação)</em></h3>
+    <ol>
+      <li><em>Confissão/abertura:</em> "Eu sumi" — nomeia a dor, valida, sem vender. Assunto: "Aos 54, percebi que tinha sumido".</li>
+      <li><em>Inimigo comum:</em> "O 'mas' que te apagou" — tira a culpa, aponta o etarismo/mercado.</li>
+      <li><em>Mecanismo:</em> "Por que creme e hormônio não resolvem isso" — apresenta o Método.</li>
+      <li><em>Prova de pares:</em> história de uma mulher 50+ real que voltou a ser vista.</li>
+      <li><em>Oferta + bônus/escassez real:</em> convite com garantia incondicional. Assunto: "Minha vez agora".</li>
+    </ol>
+
+    <hr class="div">
+
+    <h2>Lacunas e Próximos Passos</h2>
+
+    <h3>Resolve o DONO da oferta (decisão de negócio)</h3>
+    <ul>
+      <li>Nome comercial do produto · preço final · formato/duração oficial · garantia (termos finais) · bônus confirmados · datas/turma.</li>
+      <li>Definição da especialista/autoridade e sua história (origem da oferta).</li>
+    </ul>
+
+    <h3>Resolve a EQUIPE de marketing</h3>
+    <ul>
+      <li>Coletar prova social: 3–5 histórias de mulheres 50+ reais (rosto + voz) — ATIVO PRIORITÁRIO (derruba a objeção nº 1).</li>
+      <li>Rodada híbrida para confirmar o vácuo (comunidade ficou bloqueada — 403 — na coleta de avatar).</li>
+      <li>Confirmar a Dor 5 ("feia/substituível") na faixa 50+ antes de usá-la em copy.</li>
+      <li>Criar Instagram/página/checkout e preencher os links do Bloco 1.</li>
+      <li>Verificar mídia paga e reputação da concorrente (lacunas do dossiê) antes de fixar posicionamento.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Gate:</strong> só liberar LP/e-mails/ads depois deste offerbook aprovado pela dona e com a prova de pares coletada.
+    </div>
+
+    <div class="footer">
+      <div class="logo">Offerbook</div>
+      <p>Offerbook · mulheres-50-autoestima · 30/06/2026 · Story Selling, 7 blocos. Avatar e Análise de Cliente da pesquisa real (N≈20 verbatim · ~8 fontes). Estrutura da oferta proposta — confirmar campos [A DEFINIR pela dona] e coletar prova de pares antes de lançar.</p>
+    </div>
+  </div>
+</body>
+</html>

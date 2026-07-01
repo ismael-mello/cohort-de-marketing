@@ -153,3 +153,13 @@ Se a amostra foi pequena, veio de poucas fontes ou do modo offline, diga isso no
 - Amostra mínima para afirmar padrão: 10 peças. Abaixo disso, sinalize como parcial.
 - Sem login alheio, sem engenharia social, sem burlar paywall ou termos de uso.
 - Sem acesso à rede, o modo offline entrega a mesma análise sobre o material colado.
+
+---
+
+## Ao terminar — SEMPRE diga o próximo passo
+
+Toda execução desta skill **termina apontando o próximo passo** — pra o aluno nunca ficar sem saber o que fazer depois. Consulte o **Mapa de Execução do `/metodo-funil`** (ou a sequência da aula) pra saber qual skill vem a seguir, e aponte-a explicitamente:
+
+> Pronto. **Próximo passo:** rode `/{proxima-skill}` — [o que ela entrega].
+
+Nunca encerre sem o próximo passo.

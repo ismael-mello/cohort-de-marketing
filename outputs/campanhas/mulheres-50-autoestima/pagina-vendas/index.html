@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Voltar a Ser Vista — Um método em 6 aulas para mulheres 50+</title>
+<meta name="description" content="Você não envelheceu. Você só parou de ser vista — e isso tem volta. Um método em 6 aulas para mulheres 50+ voltarem a se reconhecer e ocupar o próprio espaço. R$88, garantia de 7 dias." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ===== Tokens do DESIGN.md — Voltar a Ser Vista ===== */
+  :root {
+    /* cores */
+    --primary: #7A3B4A;
+    --primary-600: #6A3340;
+    --primary-300: #C68894;
+    --primary-50: #F6ECEE;
+    --secondary: #B86B4B;
+    --accent: #C9A961;
+    --gold-700: #A9883F;
+    --surface: #FAF6F0;
+    --surface-elev: #FFFFFF;
+    --surface-warm: #F3EBDF;
+    --text: #2E2620;
+    --text-muted: #6B5D52;
+    --border: #E5DACF;
+    --success: #5C7A5A;
+
+    /* tipografia */
+    --font-title: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --font-body: "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+
+    /* espaçamento */
+    --sp-xs: 8px;
+    --sp-sm: 12px;
+    --sp-md: 20px;
+    --sp-lg: 32px;
+    --sp-xl: 56px;
+    --sp-xxl: 88px;
+
+    /* raio */
+    --r-sm: 8px;
+    --r-md: 14px;
+    --r-lg: 22px;
+    --r-full: 9999px;
+
+    /* sombra quente */
+    --shadow-card: 0 8px 24px -12px rgba(122, 59, 74, 0.14);
+    --shadow-btn: 0 6px 18px -6px rgba(122, 59, 74, 0.35);
+
+    --maxw: 1080px;
+    --readw: 68ch;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 18px;            /* corpo grande — a11y 50+ */
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-title);
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 var(--sp-md);
+    letter-spacing: -0.005em;
+  }
+
+  h1 { font-size: clamp(2.4rem, 6vw, 3.25rem); line-height: 1.12; letter-spacing: -0.01em; }
+  h2 { font-size: clamp(1.9rem, 4.5vw, 2.5rem); line-height: 1.15; }
+  h3 { font-size: clamp(1.4rem, 3vw, 1.875rem); line-height: 1.2; }
+  h4 { font-size: 1.5rem; line-height: 1.25; }
+
+  p { margin: 0 0 var(--sp-md); }
+
+  strong { font-weight: 700; color: var(--text); }
+
+  a { color: var(--primary); }
+
+  /* foco visível — nunca remover (a11y) */
+  a:focus-visible,
+  button:focus-visible,
+  .faq-question:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: var(--r-sm);
+  }
+
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 var(--sp-md);
+  }
+
+  .read { max-width: var(--readw); }
+
+  section { padding: var(--sp-xl) 0; }
+
+  @media (min-width: 768px) {
+    section { padding: var(--sp-xxl) 0; }
+  }
+
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    margin: 0 0 var(--sp-sm);
+    display: block;
+  }
+
+  .lede { font-size: 1.25rem; line-height: 1.7; color: var(--text); }
+
+  .muted { color: var(--text-muted); }
+
+  .rule {
+    width: 64px;
+    height: 3px;
+    background: var(--accent);
+    border: none;
+    border-radius: var(--r-full);
+    margin: var(--sp-md) 0 var(--sp-lg);
+  }
+  .rule.center { margin-left: auto; margin-right: auto; }
+
+  /* ===== Botão (grande — a11y) ===== */
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    text-align: center;
+    padding: 20px 36px;
+    min-height: 56px;
+    border-radius: var(--r-md);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: var(--surface);
+    border: 2px solid var(--primary);
+    box-shadow: var(--shadow-btn);
+  }
+  .btn-primary:hover {
+    background: var(--primary-600);
+    border-color: var(--primary-600);
+    transform: translateY(-2px);
+  }
+  .btn-lg { font-size: 1.25rem; padding: 22px 44px; width: 100%; max-width: 520px; }
+
+  .cta-note {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-top: var(--sp-sm);
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    background: linear-gradient(180deg, var(--surface-warm) 0%, var(--surface) 100%);
+    padding-top: var(--sp-xl);
+    text-align: center;
+  }
+  .hero .sub {
+    font-family: var(--font-title);
+    font-size: clamp(1.5rem, 3.4vw, 2rem);
+    font-weight: 500;
+    color: var(--primary);
+    line-height: 1.3;
+    margin: 0 auto var(--sp-lg);
+    max-width: 20ch;
+  }
+  .hero .desc {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    max-width: 60ch;
+    margin: 0 auto var(--sp-lg);
+  }
+
+  /* ===== Vídeo / VSL (opcional) ===== */
+  .video-frame {
+    max-width: 760px;
+    margin: var(--sp-lg) auto 0;
+    aspect-ratio: 16 / 9;
+    background: var(--surface-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 1rem;
+    text-align: center;
+    padding: var(--sp-md);
+  }
+
+  /* ===== blocos alternados ===== */
+  .band-warm { background: var(--surface-warm); }
+  .band-primary { background: var(--primary); color: var(--surface); }
+  .band-primary h2, .band-primary h3 { color: var(--surface); }
+  .band-primary .eyebrow { color: var(--accent); }
+  .band-primary strong { color: #F6E6D6; }
+
+  .quote {
+    font-family: var(--font-title);
+    font-size: 1.5rem;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--primary);
+    border-left: 4px solid var(--accent);
+    padding: var(--sp-xs) 0 var(--sp-xs) var(--sp-md);
+    margin: var(--sp-lg) 0;
+    line-height: 1.4;
+  }
+  .band-primary .quote { color: #F6E6D6; border-color: var(--accent); }
+
+  /* ===== cards de etapa (método) ===== */
+  .steps {
+    display: grid;
+    gap: var(--sp-md);
+    margin-top: var(--sp-lg);
+  }
+  @media (min-width: 768px) {
+    .steps { grid-template-columns: repeat(2, 1fr); gap: var(--sp-lg); }
+  }
+  .step {
+    background: var(--surface-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-card);
+    padding: var(--sp-lg);
+  }
+  .step-num {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--gold-700);
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: var(--sp-xs);
+  }
+  .step h4 { margin-bottom: var(--sp-xs); }
+  .step p { margin: 0; font-size: 1.0625rem; color: var(--text-muted); }
+  .step .tool {
+    display: inline-block;
+    margin-top: var(--sp-sm);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--secondary);
+  }
+
+  /* ===== aulas (stack de valor) ===== */
+  .lessons { list-style: none; padding: 0; margin: var(--sp-lg) 0 0; display: grid; gap: var(--sp-sm); }
+  .lesson {
+    background: var(--surface-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: var(--sp-md) var(--sp-lg);
+    display: flex;
+    gap: var(--sp-md);
+    align-items: baseline;
+  }
+  .lesson .n {
+    font-family: var(--font-title);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    min-width: 1.6em;
+  }
+  .lesson .t { font-size: 1.125rem; }
+  .lesson .t b { font-weight: 700; }
+  .lesson .t span { color: var(--text-muted); font-size: 1.0625rem; }
+
+  /* ===== bullets ===== */
+  .bullets { list-style: none; padding: 0; margin: var(--sp-lg) auto 0; max-width: var(--readw); display: grid; gap: var(--sp-md); }
+  .bullets li {
+    position: relative;
+    padding-left: 2.2rem;
+    font-size: 1.125rem;
+  }
+  .bullets li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 12px;
+    height: 12px;
+    border-radius: var(--r-full);
+    background: var(--accent);
+  }
+
+  /* ===== proof / slot ===== */
+  .proof-card {
+    background: var(--surface-elev);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--accent);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-card);
+    padding: var(--sp-lg);
+    margin-top: var(--sp-lg);
+  }
+  .slot {
+    border: 2px dashed var(--primary-300);
+    border-radius: var(--r-md);
+    background: var(--primary-50);
+    padding: var(--sp-lg);
+    margin-top: var(--sp-lg);
+    color: var(--text-muted);
+    font-size: 1.0625rem;
+  }
+  .slot strong { color: var(--primary); }
+
+  /* ===== oferta / preço ===== */
+  .offer-box {
+    background: var(--surface-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-card);
+    padding: var(--sp-xl) var(--sp-lg);
+    max-width: 640px;
+    margin: var(--sp-lg) auto 0;
+    text-align: center;
+  }
+  .badge-founder {
+    display: inline-block;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold-700);
+    background: var(--surface-warm);
+    border: 1px solid var(--accent);
+    border-radius: var(--r-full);
+    padding: 8px 20px;
+    margin-bottom: var(--sp-md);
+  }
+  .price {
+    font-family: var(--font-title);
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+    margin: var(--sp-sm) 0;
+  }
+  .price .cur { font-size: 2rem; vertical-align: top; }
+  .price .val { font-size: 5rem; }
+  .price-note { color: var(--text-muted); font-size: 1.0625rem; margin-bottom: var(--sp-lg); }
+  .offer-list { list-style: none; padding: 0; margin: 0 auto var(--sp-lg); max-width: 44ch; text-align: left; display: grid; gap: var(--sp-sm); }
+  .offer-list li { padding-left: 1.8rem; position: relative; font-size: 1.0625rem; }
+  .offer-list li::before {
+    content: "";
+    position: absolute; left: 0; top: 0.55em;
+    width: 10px; height: 10px; border-radius: var(--r-full); background: var(--accent);
+  }
+
+  /* ===== garantia ===== */
+  .guarantee {
+    display: grid;
+    gap: var(--sp-lg);
+    align-items: center;
+    background: var(--surface-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-card);
+    padding: var(--sp-xl) var(--sp-lg);
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .seal {
+    width: 132px; height: 132px;
+    margin: 0 auto;
+    border-radius: var(--r-full);
+    border: 3px solid var(--accent);
+    background: var(--surface-warm);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: var(--primary);
+  }
+  .seal .big { font-family: var(--font-title); font-weight: 700; font-size: 2.6rem; line-height: 1; }
+  .seal .sm { font-size: 0.9375rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-700); }
+
+  /* ===== urgência ===== */
+  .urgency {
+    background: var(--surface-warm);
+    border: 1px solid var(--accent);
+    border-radius: var(--r-md);
+    padding: var(--sp-lg);
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .urgency h3 { color: var(--primary); }
+
+  /* ===== FAQ ===== */
+  .faq { max-width: var(--readw); margin: var(--sp-lg) auto 0; }
+  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    font-family: var(--font-title);
+    font-size: 1.375rem;
+    font-weight: 600;
+    color: var(--text);
+    padding: var(--sp-md) 44px var(--sp-md) 0;
+    min-height: 56px;
+    cursor: pointer;
+    position: relative;
+    line-height: 1.3;
+  }
+  .faq-question .icon {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px; height: 24px;
+    color: var(--gold-700);
+    transition: transform 0.25s ease;
+    font-size: 1.6rem;
+    line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .faq-question[aria-expanded="true"] .icon { transform: translateY(-50%) rotate(45deg); }
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  .faq-answer-inner { padding: 0 0 var(--sp-md); font-size: 1.0625rem; color: var(--text-muted); }
+  .faq-answer-inner p { margin: 0; }
+
+  /* ===== footer ===== */
+  footer {
+    background: var(--surface-warm);
+    border-top: 1px solid var(--border);
+    padding: var(--sp-xl) 0;
+    text-align: center;
+  }
+  .brand-name {
+    font-family: var(--font-title);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: var(--sp-sm);
+  }
+  footer .links { margin: var(--sp-md) 0; font-size: 1rem; }
+  footer .links a { color: var(--text-muted); text-decoration: none; margin: 0 var(--sp-sm); }
+  footer .links a:hover { color: var(--primary); text-decoration: underline; }
+  footer .fine { font-size: 0.9375rem; color: var(--text-muted); max-width: 60ch; margin: var(--sp-md) auto 0; }
+
+  .center { text-align: center; }
+  .mt-lg { margin-top: var(--sp-lg); }
+</style>
+</head>
+<body>
+
+<!-- ============ 1+2+3+4 HERO: Headline · Sub-headline · Vídeo · CTA ============ -->
+<header class="hero">
+  <div class="wrap">
+    <!-- 1. HEADLINE -->
+    <h1>Você não envelheceu.<br />Você só parou de ser vista.</h1>
+    <!-- 2. SUB-HEADLINE -->
+    <p class="sub">E, ao contrário do que te venderam, isso tem volta — sem creme milagroso, sem fingir ter 30 e sem repor hormônio.</p>
+    <p class="desc">Um método em 6 aulas para mulheres 50+ que sentem que sumiram — no espelho, na relação e na vida — voltarem a se reconhecer e a ocupar o próprio espaço.</p>
+    <!-- 4. CTA principal (acima da dobra) -->
+    <a class="btn btn-primary btn-lg" href="#checkout">Quero voltar a ser vista — R$88</a>
+    <p class="cta-note">Acesso imediato às 6 aulas · Garantia incondicional de 7 dias</p>
+    <!-- 3. VÍDEO / VSL (opcional) -->
+    <div class="video-frame">[Embed do vídeo — VSL curta de abertura, opcional]</div>
+  </div>
+</header>
+
+<!-- ============ LEAD — a história (prova para consciência nível 3: estudo de caso/história) ============ -->
+<section>
+  <div class="wrap read">
+    <span class="eyebrow">A palavra que se repete</span>
+    <h2>Tem uma palavra que aparece quando mulheres na nossa fase finalmente desabafam.</h2>
+    <hr class="rule" />
+    <p class="lede">Não é "rugas". Não é "celulite". Não é "idade".</p>
+    <p class="lede"><strong>É "sumir".</strong></p>
+    <p>"Eu sumi." "Não me reconheço mais." "Me sinto à deriva." "Virei invisível."</p>
+    <p>Se você leu isso e pensou <em>"essa sou eu"</em> — respira. Você não está exagerando, e não está sozinha. Você está nomeando, talvez pela primeira vez, uma coisa que foi acontecendo tão devagar que ninguém viu. Nem você.</p>
+    <p>Porque não foi de uma vez. Foi aos poucos.</p>
+    <p>Você foi cedendo espaço — pelos filhos, pela casa, pelo trabalho de todo mundo menos o seu. Deixou o "projeto só meu" pra depois. Parou de se arrumar "só pra você". Foi ficando em segundo plano. E um dia você se olhou no espelho e não era mais a ruga que te incomodava. Era não saber mais quem era aquela mulher ali.</p>
+    <blockquote class="quote">"após a viuvez fiquei perdida pq nunca tive um projeto só meu"</blockquote>
+    <p class="muted">[A história da fundadora entra aqui — a virada pessoal de quem criou o método. Sem inventar: usar a origem real quando definida pela dona.]</p>
+    <p>Esta página não é pra te vender mais uma promessa. É pra te mostrar por que as outras promessas falharam — e o que muda quando você ataca a causa certa.</p>
+  </div>
+</section>
+
+<!-- ============ O PROBLEMA — e por que nada funcionou ============ -->
+<section class="band-warm">
+  <div class="wrap read">
+    <span class="eyebrow">Por que nada funcionou</span>
+    <h2>Você provavelmente já tentou.</h2>
+    <hr class="rule" />
+    <p>Comprou o creme que prometia rejuvenescer. Frustrou.</p>
+    <blockquote class="quote">"Se você espera milagre e rejuvenescimento de um creme: não compre absolutamente nada. Você vai se frustrar."</blockquote>
+    <p>Foi no médico, repôs hormônio. Ajudou no corpo — mas no consultório a frase que escapou foi outra:</p>
+    <blockquote class="quote">"Doutora, eu não me reconheço mais."</blockquote>
+    <p>Talvez tenha feito terapia avulsa, ou simplesmente foi fingindo que estava tudo bem. E toda vez que não resolvia, uma vozinha ficava mais alta: <em>"na minha idade não muda mais nada."</em></p>
+    <p>Aqui está a verdade que ninguém te conta: <strong>nenhuma dessas coisas falhou por sua culpa. Elas falharam porque atacavam o problema errado.</strong></p>
+    <p>Creme, hormônio e "dicas pra parecer mais nova" tratam um sintoma: parecer mais jovem. Mas o seu problema nunca foi parecer mais jovem.</p>
+  </div>
+</section>
+
+<!-- ============ 5. MECANISMO DO PROBLEMA — "O Recuo Silencioso" ============ -->
+<section class="band-primary">
+  <div class="wrap read">
+    <span class="eyebrow">O mecanismo do problema</span>
+    <h2>O Recuo Silencioso</h2>
+    <hr class="rule" />
+    <p>O seu problema é que, sem perceber, <strong>você foi recuando.</strong></p>
+    <p>A gente chama isso de <strong>Recuo Silencioso.</strong> É a soma de centenas de pequenas vezes em que você ficou em segundo plano — e que ninguém, nem você, registrou como perda.</p>
+    <p>O mundo não parou de te ver porque você envelheceu. Ele parou de te ver porque <strong>você foi parando de ocupar o seu espaço.</strong> Saiu de cena devagar. E quando uma mulher sai de cena, o mundo, infelizmente, deixa de olhar.</p>
+    <p>Por isso o creme nunca ia resolver: a sua invisibilidade não está na sua pele. Está no espaço que você deixou de ocupar e na identidade que você deixou de ter.</p>
+    <p>E é exatamente por isso que isso <strong>tem volta.</strong> Recuo se reverte. Pele, não — pele só se disfarça.</p>
+  </div>
+</section>
+
+<!-- ============ 5b. MECANISMO DA SOLUÇÃO — "Método Voltar a Ser Vista" ============ -->
+<section>
+  <div class="wrap">
+    <div class="read">
+      <span class="eyebrow">O mecanismo da solução</span>
+      <h2>O Método Voltar a Ser Vista</h2>
+      <hr class="rule" />
+      <p>Voltar a ser vista não é parecer 30. É <strong>voltar a ocupar espaço e reconstruir uma identidade que é só sua</strong> — de dentro pra fora.</p>
+      <p>Não dá pra fazer isso na sorte, e não dá pra fazer na força de vontade. Dá pra fazer na <strong>ordem certa.</strong> É isso que o método é: a sequência de 6 etapas que reconstrói a sua presença pela raiz.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">ETAPA 01</span>
+        <h4>O Diagnóstico da Invisibilidade</h4>
+        <p>Onde, exatamente, você recuou. Você sai com o seu Inventário da Presença preenchido — o mapa em uma folha das 4 áreas onde você sumiu.</p>
+        <span class="tool">Ferramenta: Inventário da Presença</span>
+      </div>
+      <div class="step">
+        <span class="step-num">ETAPA 02</span>
+        <h4>O Luto da Mulher que Você Era</h4>
+        <p>Um Ritual de Virada pra fechar o ciclo da juventude sem fingir que ela não passou — e sem fingir 30. Esse passo é o que destrava todos os outros.</p>
+        <span class="tool">Ferramenta: Ritual de Virada</span>
+      </div>
+      <div class="step">
+        <span class="step-num">ETAPA 03</span>
+        <h4>Um Projeto Só Meu</h4>
+        <p>O Projeto-Âncora: reconstruir identidade a partir de algo que é seu. Não é hobby. É o que devolve direção pra quem está "à deriva".</p>
+        <span class="tool">Ferramenta: Projeto-Âncora</span>
+      </div>
+      <div class="step">
+        <span class="step-num">ETAPA 04</span>
+        <h4>Voltar a Ocupar Espaço</h4>
+        <p>Micro-exposições: corpo, voz e presença social em passos pequenos e seguros — no seu tempo, do seu jeito.</p>
+        <span class="tool">Ferramenta: Micro-exposições</span>
+      </div>
+      <div class="step">
+        <span class="step-num">ETAPA 05</span>
+        <h4>Ser Vista de Novo</h4>
+        <p>Reconexão: relação, desejo e visibilidade afetiva, sem cobrança e sem pressão. Começando por você se enxergar.</p>
+        <span class="tool">Ferramenta: Reconexão</span>
+      </div>
+      <div class="step">
+        <span class="step-num">ETAPA 06</span>
+        <h4>Sustentação entre Pares</h4>
+        <p>O Círculo de Pares 50+ pra você não recair na invisibilidade — ao lado de outras mulheres que estão vivendo o mesmo recomeço.</p>
+        <span class="tool">Ferramenta: Círculo de Pares 50+</span>
+      </div>
+    </div>
+
+    <div class="read mt-lg">
+      <p>É o <strong>efeito bambu</strong>: nas primeiras semanas parece que "nada" mudou. Aí a raiz sustenta — e, de repente, o mundo volta a te enxergar. Porque você voltou primeiro.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. OFERTA / STACK DE VALOR — 6 aulas ============ -->
+<section class="band-warm">
+  <div class="wrap">
+    <div class="read">
+      <span class="eyebrow">O que você leva</span>
+      <h2>6 aulas em vídeo, no seu ritmo</h2>
+      <hr class="rule" />
+      <p>São <strong>6 aulas em vídeo, gravadas</strong>, que você assiste no seu ritmo — à noite, no celular, do seu jeito. Cada aula é uma etapa do método, com a técnica e a ação prática daquela semana.</p>
+    </div>
+    <ul class="lessons">
+      <li class="lesson"><span class="n">1</span><span class="t"><b>O Diagnóstico da Invisibilidade</b> <span>+ ferramenta Inventário da Presença</span></span></li>
+      <li class="lesson"><span class="n">2</span><span class="t"><b>O Luto da Mulher que Você Era</b> <span>+ Ritual de Virada</span></span></li>
+      <li class="lesson"><span class="n">3</span><span class="t"><b>Um Projeto Só Meu</b> <span>+ Projeto-Âncora</span></span></li>
+      <li class="lesson"><span class="n">4</span><span class="t"><b>Voltar a Ocupar Espaço</b> <span>+ Micro-exposições</span></span></li>
+      <li class="lesson"><span class="n">5</span><span class="t"><b>Ser Vista de Novo</b> <span>+ Reconexão</span></span></li>
+      <li class="lesson"><span class="n">6</span><span class="t"><b>Sustentação entre Pares</b> <span>+ acesso ao Círculo de Pares 50+</span></span></li>
+    </ul>
+    <div class="read mt-lg">
+      <p class="muted">Sem aula de 2 horas. Sem teoria que você nunca vai usar. Cada aula entrega um passo que cabe na sua semana.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. PROVA SOCIAL — casada ao nível 3: história/estudo de caso + SLOT FUNDADORAS ============ -->
+<section>
+  <div class="wrap read">
+    <span class="eyebrow">Por que isto é diferente</span>
+    <h2>A prova não é uma modelo de 25 retocada. É a lógica que você reconhece em si.</h2>
+    <hr class="rule" />
+    <div class="proof-card">
+      <p>Repare no caminho: a <strong>causa</strong> é o recuo (você foi saindo de cena). O <strong>efeito</strong> é a invisibilidade (o mundo parou de te ver). E a <strong>reversão</strong> é ocupar espaço de novo (você volta primeiro, e o mundo volta a te enxergar).</p>
+      <p>Quando essa sequência é nomeada, ela para de ser um sentimento vago e vira um caminho. É por isso que tratar a ruga nunca resolveu — e por que atacar o recuo resolve.</p>
+    </div>
+    <div class="slot">
+      <p><strong>[SLOT FUNDADORAS]</strong> — Assim que a primeira turma terminar, entram aqui de 3 a 5 histórias reais de mulheres 50+ que voltaram a ser vistas (rosto + voz de pares, nunca modelo). É o ativo que mais derruba a objeção "já me frustrei".</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. BENEFÍCIOS / BULLETS ============ -->
+<section class="band-warm">
+  <div class="wrap">
+    <div class="read center">
+      <span class="eyebrow">O que muda em você</span>
+      <h2>Não é parecer outra. É voltar a ser você.</h2>
+      <hr class="rule center" />
+    </div>
+    <ul class="bullets">
+      <li>Como fechar o ciclo da juventude sem fingir que ela não passou — e por que esse luto é o que destrava todo o resto.</li>
+      <li>Por que "um projeto só meu" não é hobby nem ambição — é o que devolve uma identidade que você reconhece.</li>
+      <li>A diferença entre "parecer mais nova" e "voltar a ser vista" — e por que só uma delas tem volta.</li>
+      <li>O passo de presença que cabe na sua noite, no celular, sem ninguém ver — pra quem acha que "não tem tempo nem dinheiro pra isso".</li>
+      <li>Por que você não precisa de mais força de vontade: precisa da ordem certa das 6 etapas.</li>
+      <li>Como voltar a se arrumar e se mostrar sem aquela vozinha de "tô bancando a novinha".</li>
+      <li>O que muda na relação quando você para de ser cobrada e volta a se sentir desejada — começando por você.</li>
+      <li>Por que recolocação, reconvite e reconquista chegam "de repente" depois de semanas parecendo nada (o efeito bambu).</li>
+      <li>Por que você vai fazer isso ao lado de outras mulheres 50+ reais — e não de modelos de 25 retocadas.</li>
+      <li>O primeiro passo simples que você pode dar hoje à noite, antes mesmo da primeira aula.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 7+10. A OFERTA R$88 + ANCORAGEM + BÔNUS ============ -->
+<section id="oferta">
+  <div class="wrap">
+    <div class="read center">
+      <span class="eyebrow">A oferta</span>
+      <h2>Você entra como Fundadora.</h2>
+      <hr class="rule center" />
+      <p>Esta é a primeira turma. Por isso o valor é R$88 — o preço de quem chega primeiro e ajuda a construir esta comunidade desde o começo. Quem entra agora não paga o que esta jornada vai custar quando estiver cheia de histórias de mulheres que voltaram a ser vistas.</p>
+    </div>
+
+    <div class="offer-box">
+      <span class="badge-founder">Primeira turma · Fundadoras</span>
+      <div class="price"><span class="cur">R$</span><span class="val">88</span></div>
+      <p class="price-note">Pagamento único · acesso imediato</p>
+      <ul class="offer-list">
+        <li>As 6 aulas em vídeo (o Método Voltar a Ser Vista completo).</li>
+        <li>O Inventário da Presença e as ferramentas de cada etapa.</li>
+        <li>O Círculo de Pares 50+ — a comunidade pra não recair sozinha.</li>
+      </ul>
+      <a class="btn btn-primary btn-lg" href="#checkout">Quero voltar a ser vista — R$88</a>
+      <p class="cta-note">Garantia incondicional de 7 dias · Você entra como Fundadora</p>
+    </div>
+
+    <div class="read mt-lg">
+      <div class="slot">
+        <p><strong>[SLOT FUNDADORAS]</strong> — Assim que a 1ª turma terminar, os bônus e a prova de pares reais entram aqui.</p>
+      </div>
+      <p class="mt-lg">Não é um curso pra você "parecer" alguma coisa. É um caminho pra você <strong>voltar a ser</strong> — vista, desejada e dona de um projeto que é só seu.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. GARANTIA ============ -->
+<section class="band-warm">
+  <div class="wrap">
+    <div class="guarantee">
+      <div class="seal">
+        <span class="big">7</span>
+        <span class="sm">dias</span>
+      </div>
+      <div>
+        <span class="eyebrow">O risco é meu, não seu</span>
+        <h3>Garantia incondicional de 7 dias</h3>
+        <p>Você já se frustrou antes. Eu sei. Por isso o risco aqui é meu, não seu.</p>
+        <p>Entre, assista à primeira aula, faça o seu Inventário da Presença. Se você sentir que é mais uma promessa que não te enxerga — pede o reembolso e devolvo 100%, sem pergunta, sem você ter que justificar nada.</p>
+        <p><strong>Eu só quero que fique quem sentir que finalmente foi enxergada.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12. ESCASSEZ / URGÊNCIA (real — turma Fundadoras) ============ -->
+<section>
+  <div class="wrap">
+    <div class="urgency">
+      <span class="eyebrow">Por que agora</span>
+      <h3>A porta das Fundadoras está aberta</h3>
+      <p>Esta é a <strong>primeira turma</strong>. O valor de R$88 é o preço de quem chega primeiro e ajuda a construir a comunidade desde o começo — ele não se repete quando esta jornada estiver cheia de histórias. Cada mês adiado é mais um mês em segundo plano.</p>
+      <a class="btn btn-primary btn-lg" href="#checkout" style="margin-top: var(--sp-md);">Quero minha vaga de Fundadora — R$88</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13. FAQ — quebra de objeções verbatim ============ -->
+<section class="band-warm">
+  <div class="wrap">
+    <div class="read center">
+      <span class="eyebrow">Perguntas frequentes</span>
+      <h2>O que você ainda está se perguntando</h2>
+      <hr class="rule center" />
+    </div>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">"Na minha idade não muda mais nada."<span class="icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner"><p>Muda o que você reconstrói — e o que a gente reconstrói aqui não é a pele, é a presença. Presença não tem idade. O método começa exatamente de onde você está hoje, não de onde você estava aos 30.</p></div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">"Já tentei de tudo e me frustrei."<span class="icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner"><p>Você tentou tratar o sintoma (parecer mais nova). Aqui a gente trata a causa (o recuo). É diferente no ponto de partida, por isso é diferente no resultado. E se mesmo assim não for pra você, a garantia de 7 dias te protege: risco zero.</p></div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">"Isso é papo de quem tem tempo e dinheiro."<span class="icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner"><p>São 6 aulas curtas que você assiste à noite, no celular, no seu ritmo. Por R$88 — menos que um pote de creme que frustra. Foi feito justamente pra mulher real, com a vida cheia, não pra quem tem o dia livre.</p></div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">"Não quero parecer que tô querendo bancar a novinha."<span class="icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner"><p>Esse é o ponto: aqui é o oposto disso. A ideia não é você fingir ter 30. É você ser vista como a mulher que você é hoje — com a história que tem, do jeito que é. Voltar a ser você, não virar outra.</p></div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">"Tá, e na prática? Quanto tempo, quanto custa, dá pra fazer do meu jeito?"<span class="icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner"><p>6 aulas gravadas, no seu ritmo (a maioria faz uma por semana). R$88, pagamento único. Tudo no celular, quando der na sua noite. Do seu jeito é a regra, não a exceção.</p></div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">"E se não for pra mim?"<span class="icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner"><p>7 dias de garantia incondicional. Você assiste, testa, e se não te servir, devolvo tudo.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14. CTA REPETIDO + CHECKOUT ============ -->
+<section id="checkout" class="band-primary">
+  <div class="wrap read center">
+    <span class="eyebrow">Minha vez agora</span>
+    <h2>Você passou tempo demais em segundo plano.</h2>
+    <hr class="rule center" />
+    <p style="font-size: 1.25rem;">Não dá pra voltar atrás nos anos que você cedeu. Mas dá pra decidir, hoje, que daqui pra frente é <strong>a sua vez.</strong></p>
+    <div class="mt-lg">
+      <a class="btn btn-primary btn-lg" href="[Link do checkout]" style="background: var(--surface); color: var(--primary); border-color: var(--surface);">Quero voltar a ser vista — R$88</a>
+    </div>
+    <p class="cta-note" style="color: #F6E6D6;">Garantia incondicional de 7 dias · Acesso imediato às 6 aulas · Você entra como Fundadora.</p>
+  </div>
+</section>
+
+<!-- ============ 15. FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="brand-name">[Nome comercial — A DEFINIR pela dona]</div>
+    <p class="muted" style="margin:0;">Método Voltar a Ser Vista · para mulheres 50+</p>
+    <div class="links">
+      <a href="[Termos de uso]">Termos de uso</a>
+      <a href="[Política de privacidade]">Política de privacidade</a>
+      <a href="[Contato]">Contato</a>
+    </div>
+    <p class="fine">As 6 aulas são um programa de desenvolvimento pessoal e reconstrução de presença; não substituem acompanhamento médico ou psicológico. Resultados variam de pessoa para pessoa. Pagamento único de R$88 com garantia incondicional de 7 dias.</p>
+  </div>
+</footer>
+
+<script>
+  // FAQ accordion — vanilla JS, sem dependências
+  (function () {
+    var questions = document.querySelectorAll('.faq-question');
+    questions.forEach(function (q) {
+      q.addEventListener('click', function () {
+        var expanded = q.getAttribute('aria-expanded') === 'true';
+        var answer = q.nextElementSibling;
+        // fecha os outros
+        questions.forEach(function (other) {
+          if (other !== q) {
+            other.setAttribute('aria-expanded', 'false');
+            other.nextElementSibling.style.maxHeight = null;
+          }
+        });
+        if (expanded) {
+          q.setAttribute('aria-expanded', 'false');
+          answer.style.maxHeight = null;
+        } else {
+          q.setAttribute('aria-expanded', 'true');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -139,3 +139,13 @@ Pra cada pedido, entregar o **mapa estruturado da página**:
 ---
 
 *Skill pagina-vendas v1 — estrutura genérica pelo método do Alan Nicolas. Toda montagem calibra no KB-pagina-vendas.md. A identidade visual vem do DESIGN.md gerado pela skill /design-md. Zero marca embutida.*
+
+---
+
+## Ao terminar — SEMPRE diga o próximo passo
+
+Toda execução desta skill **termina apontando o próximo passo** — pra o aluno nunca ficar sem saber o que fazer depois. Consulte o **Mapa de Execução do `/metodo-funil`** (ou a sequência da aula) pra saber qual skill vem a seguir, e aponte-a explicitamente:
+
+> Pronto. **Próximo passo:** rode `/{proxima-skill}` — [o que ela entrega].
+
+Nunca encerre sem o próximo passo.
