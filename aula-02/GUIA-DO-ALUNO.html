@@ -513,7 +513,7 @@
       <li><a href="#secao-1">O que você vai construir</a></li>
       <li><a href="#secao-2">Onde você está no cohort</a></li>
       <li><a href="#secao-3">Convenção de projeto — a pasta que organiza tudo</a></li>
-      <li><a href="#secao-4">Comece por aqui: /metodo-funil</a></li>
+      <li><a href="#secao-4">Comece por aqui: /design-md e /metodo-funil</a></li>
       <li><a href="#secao-5">A ordem do funil (Aula 1 + Aula 2)</a></li>
       <li><a href="#secao-6">Formatos alternativos</a></li>
       <li><a href="#secao-7">Os 3 formatos de entregável</a></li>
@@ -655,8 +655,8 @@
   <!-- 4 -->
   <section id="secao-4">
     <div class="section-num">Parte 4</div>
-    <h2>Comece por aqui: <em>/metodo-funil</em></h2>
-    <p>Não tente montar o funil escolhendo o formato você mesmo. Rode <code style="font-family: var(--font-mono); background: var(--raised); color: var(--primary-light); padding: 2px 8px; border-radius: 0.25rem; font-size: 0.85em;">/metodo-funil</code> primeiro. Ele lê o seu offerbook, diagnostica em que <strong>estágio de consciência</strong> o público está e devolve o <strong>mapa exato</strong> das peças a construir — na ordem certa, com a skill de cada uma.</p>
+    <h2>Comece por aqui: <em>/design-md</em>, depois <em>/metodo-funil</em></h2>
+    <p>O primeiro comando da Aula 2 é o <code style="font-family: var(--font-mono); background: var(--raised); color: var(--primary-light); padding: 2px 8px; border-radius: 0.25rem; font-size: 0.85em;">/design-md</code>: ele cria a <strong>identidade visual da sua marca</strong> (o DESIGN.md) — e toda skill que gera HTML ou PDF usa ela. Com a identidade pronta, não tente montar o funil escolhendo o formato você mesmo: rode <code style="font-family: var(--font-mono); background: var(--raised); color: var(--primary-light); padding: 2px 8px; border-radius: 0.25rem; font-size: 0.85em;">/metodo-funil</code>. Ele lê o seu offerbook, diagnostica em que <strong>estágio de consciência</strong> o público está e devolve o <strong>mapa exato</strong> das peças a construir — na ordem certa, com a skill de cada uma.</p>
 
     <div class="alerta">
       <div class="alerta-label">Por que isso importa</div>
@@ -749,6 +749,12 @@
 
     <div class="skills-grid">
       <div class="skill-card">
+        <div class="skill-name">/design-md</div>
+        <div class="skill-what">Gera a identidade visual da sua marca (DESIGN.md no formato Google design.md + tokens.json + preview.html). Começa perguntando <strong>qual dos 5 caminhos</strong> você quer: <strong>1)</strong> usar um design pronto que você já tem · <strong>2)</strong> extrair de um site (URL pública, análise de HTML/CSS) · <strong>3)</strong> criar do zero (a skill propõe uma direção pelo seu nicho/avatar) · <strong>4)</strong> a partir de referências (cole prints do Pinterest, mood board, imagens: o Claude lê as imagens e autora a identidade) · <strong>5)</strong> neutro. Em todos os caminhos roda o <strong>ciclo de aprovação</strong>: mostra o preview renderizado, se autocritica, sugere melhorias e itera até o SEU ok — o DESIGN.md nunca é entregue como fato consumado. Todas as skills de saída visual leem daqui.</div>
+        <p class="skill-out"><strong>Lê:</strong> uma URL, imagens de referência ou nada (do zero). <strong>Gera:</strong> DESIGN.md (+ tokens.json, preview.html)</p>
+        <p class="skill-out"><strong>Guia completo da aula:</strong> <a href="aula-design-md-GUIA-ALUNO.html" style="color:inherit;">aula-design-md-GUIA-ALUNO.html</a> (os 5 caminhos passo a passo, moodboard e o Nível 2)</p>
+      </div>
+      <div class="skill-card">
         <div class="skill-name">/metodo-funil</div>
         <div class="skill-what">O mapa. Diagnostica o estágio de consciência do público (1-5) e entrega o mapa de execução com todas as peças na ordem certa. Estrutura a oferta (ancoragem, upsell, OTO, downsell), a página (16 elementos) e o plano de aquisição.</div>
         <p class="skill-out"><strong>Lê:</strong> offerbook.md. <strong>Gera:</strong> funil.md (md + html + pdf)</p>
@@ -757,12 +763,6 @@
         <div class="skill-name">/copy-funil</div>
         <div class="skill-what">Pipeline de copy de alta conversão em 3 fluxos (Lançamento Completo, Tráfego Pago, Otimização) aplicando os frameworks de Eugene Schwartz, David Ogilvy, Gary Halbert, Claude Hopkins, Dan Kennedy, Gary Bencivenga, Jon Benson e Andre Chaperon. Checkpoints entre fases para revisão.</div>
         <p class="skill-out"><strong>Lê:</strong> offerbook.md. <strong>Gera:</strong> copy.md (+ html + pdf)</p>
-      </div>
-      <div class="skill-card">
-        <div class="skill-name">/design-md</div>
-        <div class="skill-what">Gera a identidade visual da sua marca (DESIGN.md no formato Google design.md + tokens.json + preview.html). Começa perguntando <strong>qual dos 5 caminhos</strong> você quer: <strong>1)</strong> usar um design pronto que você já tem · <strong>2)</strong> extrair de um site (URL pública, análise de HTML/CSS) · <strong>3)</strong> criar do zero (a skill propõe uma direção pelo seu nicho/avatar) · <strong>4)</strong> a partir de referências (cole prints do Pinterest, mood board, imagens: o Claude lê as imagens e autora a identidade) · <strong>5)</strong> neutro. Em todos os caminhos roda o <strong>ciclo de aprovação</strong>: mostra o preview renderizado, se autocritica, sugere melhorias e itera até o SEU ok — o DESIGN.md nunca é entregue como fato consumado. Todas as skills de saída visual leem daqui.</div>
-        <p class="skill-out"><strong>Lê:</strong> uma URL, imagens de referência ou nada (do zero). <strong>Gera:</strong> DESIGN.md (+ tokens.json, preview.html)</p>
-        <p class="skill-out"><strong>Guia completo da aula:</strong> <a href="aula-design-md-GUIA-ALUNO.html" style="color:inherit;">aula-design-md-GUIA-ALUNO.html</a> (os 5 caminhos passo a passo, moodboard e o Nível 2)</p>
       </div>
       <div class="skill-card">
         <div class="skill-name">/pagina-vendas-funil</div>
@@ -903,11 +903,22 @@
   <section id="secao-9">
     <div class="section-num">Parte 9</div>
     <h2>Passo a passo <em>por skill</em></h2>
-    <p>Abaixo, cada skill da Aula 2 com o que esperar ao rodá-la. Siga esta ordem depois de receber o mapa de execução do <code style="font-family: var(--font-mono); background: var(--raised); color: var(--primary-light); padding: 2px 8px; border-radius: 0.25rem; font-size: 0.85em;">/metodo-funil</code>.</p>
+    <p>Abaixo, cada skill da Aula 2 com o que esperar ao rodá-la. Comece pelo <code style="font-family: var(--font-mono); background: var(--raised); color: var(--primary-light); padding: 2px 8px; border-radius: 0.25rem; font-size: 0.85em;">/design-md</code>; depois rode o <code style="font-family: var(--font-mono); background: var(--raised); color: var(--primary-light); padding: 2px 8px; border-radius: 0.25rem; font-size: 0.85em;">/metodo-funil</code> e siga a ordem do mapa de execução que ele entrega.</p>
 
     <div class="bloco">
       <div class="bloco-header">
         <span class="bloco-num">01</span>
+        <span class="bloco-time">Identidade visual</span>
+      </div>
+      <h3>/design-md — a identidade da sua marca</h3>
+      <p style="font-family: var(--font-ui); font-size: 0.95rem; color: var(--muted-foreground);">Informe uma URL pública da sua marca. A skill faz análise estática de HTML e CSS, detecta cores, fontes, espaçamentos e estilo visual e gera o DESIGN.md no padrão Google design.md v0.1.0. Depois copie o arquivo gerado para <code>projetos/{slug}/DESIGN.md</code> — as skills seguintes leem dali.</p>
+      <div class="bloco-action">/design-md</div>
+      <p class="bloco-result"><strong>Você recebe:</strong> DESIGN.md com tokens completos, tokens.json e preview.html mostrando a paleta e tipografia extraídas. Mova para <strong>projetos/{slug}/DESIGN.md</strong>.</p>
+    </div>
+
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">02</span>
         <span class="bloco-time">Gate obrigatório</span>
       </div>
       <h3>/metodo-funil — o diagnóstico e o mapa</h3>
@@ -918,7 +929,7 @@
 
     <div class="bloco">
       <div class="bloco-header">
-        <span class="bloco-num">02</span>
+        <span class="bloco-num">03</span>
         <span class="bloco-time">Copy</span>
       </div>
       <h3>/copy-funil — a copy de alta conversão</h3>
@@ -927,16 +938,6 @@
       <p class="bloco-result"><strong>Você recebe:</strong> headline (25 opções, 5 finalistas), bullets de fascination, VSL ou carta de vendas, sequência de emails e auditoria completa. Salvo em <strong>copy.md</strong>.</p>
     </div>
 
-    <div class="bloco">
-      <div class="bloco-header">
-        <span class="bloco-num">03</span>
-        <span class="bloco-time">Identidade visual</span>
-      </div>
-      <h3>/design-md — a identidade da sua marca</h3>
-      <p style="font-family: var(--font-ui); font-size: 0.95rem; color: var(--muted-foreground);">Informe uma URL pública da sua marca. A skill faz análise estática de HTML e CSS, detecta cores, fontes, espaçamentos e estilo visual e gera o DESIGN.md no padrão Google design.md v0.1.0. Depois copie o arquivo gerado para <code>projetos/{slug}/DESIGN.md</code> — as skills seguintes leem dali.</p>
-      <div class="bloco-action">/design-md</div>
-      <p class="bloco-result"><strong>Você recebe:</strong> DESIGN.md com tokens completos, tokens.json e preview.html mostrando a paleta e tipografia extraídas. Mova para <strong>projetos/{slug}/DESIGN.md</strong>.</p>
-    </div>
 
     <div class="bloco">
       <div class="bloco-header">

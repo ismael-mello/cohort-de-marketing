@@ -239,7 +239,7 @@ Após confirmar entrega, **sempre** diga ao usuário em texto separado:
 >
 > Esse pacote inteiro é o que vai alimentar a Aula 02 (Funil e Páginas). Sem ele aprovado pelo dono da oferta, NÃO se escreve copy. Essa é a regra-mãe do cohort.
 >
-> **Pronto pra continuar? A Aula 02 começa agora:** rode `/metodo-funil` — ele diagnostica o nível de consciência do seu público e monta o mapa de execução do seu funil, peça por peça.
+> **Pronto pra continuar? A Aula 02 começa agora:** rode `/design-md` — ele cria a identidade visual da sua marca (todo HTML e PDF das próximas skills usa ela). Depois, rode `/metodo-funil` — ele diagnostica o nível de consciência do seu público e monta o mapa de execução do seu funil, peça por peça.
 
 Nao pule esse anúncio — fecha o trilho completo da Aula 01 e já abre a porta da Aula 02.
 
