@@ -24,7 +24,7 @@ Todo o trabalho de um nicho fica em **`projetos/{slug}/`** (um slug por nicho). 
 
 **Nomes dentro da pasta** (sem repetir o slug): `avatar.md`, `offerbook.md`, `copy.md`, `funil.md`, `DESIGN.md`, `recuperacao.md`, `cro.md`; subpastas `pagina/`, `emails/`, `conteudo/`, `carrossel/`, `mockups/`. Nos 3 formatos (md/html/pdf) onde a skill gera.
 
-> **Recriar NUNCA apaga o que existe (regra dura).** Se a peça que você vai gerar JÁ EXISTE no projeto (arquivo, lote de PNGs, pasta), o novo sai como **versão nova** (sufixo `-v2`, `-v3`… ou subpasta `v2/`) e o antigo fica intocado. Apagar ou sobrescrever trabalho existente SÓ com ordem explícita do dono nesta conversa ("pode apagar", "substitui"). O dono compara as versões e decide qual usar; índices e galerias mostram as duas, com a mais nova primeiro.
+> **Recriar NUNCA apaga o que existe (regra dura).** Se a peça que você vai gerar JÁ EXISTE no projeto (arquivo, lote de PNGs, pasta), o novo sai como **versão nova** (sufixo `-v2`, `-v3`… ou subpasta `v2/`) e o antigo fica intocado. Apagar ou sobrescrever trabalho existente SÓ com ordem explícita do dono nesta conversa ("pode apagar", "substitui"). O dono compara as versões e decide qual usar; índices, galerias e o Book mostram as duas, com a mais nova primeiro, e **cada versão antiga leva um botão ✕ "Excluir esta versão"**: como página estática não apaga arquivo, o ✕ copia pro clipboard a ordem pronta ("Excluir a v1 de {peça} do projeto {slug}") e instrui colar no chat — aí sim o Claude apaga os arquivos daquela versão e regenera o índice sem ela. O ✕ é o jeito de o dono dar a ordem explícita; nada some sem esse passo.
 
 > **Onde salvar:** os mockups e prompts desta skill saem na subpasta **`projetos/{slug}/mockups/`**.
 
