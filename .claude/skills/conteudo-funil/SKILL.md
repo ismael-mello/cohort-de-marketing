@@ -54,7 +54,7 @@ ls projetos/{slug}/DESIGN.md projetos/{slug}/offerbook.md 2>/dev/null
 > **Onde salvar:** os roteiros de Reels desta skill saem em **`projetos/{slug}/conteudo/`** e os carrosséis (HTML + PNG) em **`projetos/{slug}/carrossel/`**. Mesma pasta do projeto.
 
 ## Ativação
-1. **Pergunte em qual plataforma pesquisar** (e PARE até responder): **Instagram**, **YouTube**, **TikTok**, **X (Twitter)** ou **LinkedIn** — pode ser mais de uma. É onde a skill vai caçar os conteúdos **mais em alta** do tema. **Na sequência, pergunte o FORMATO conforme a plataforma escolhida** (e gere SÓ o formato escolhido — nunca assuma):
+1. **Pergunte em qual plataforma pesquisar** (e PARE até responder): **Instagram**, **YouTube**, **TikTok**, **X (Twitter)** ou **LinkedIn** — pode ser mais de uma. É onde a skill vai caçar os conteúdos **mais em alta** do tema. **Na sequência, pergunte o FORMATO conforme a plataforma escolhida** (e gere SÓ o formato escolhido — nunca assuma). **As duas perguntas saem como OPÇÕES CLICÁVEIS (regra dura):** use a ferramenta de pergunta com opções (AskUserQuestion) — plataforma com múltipla escolha, formato com as opções da plataforma marcada. Nunca pergunta aberta em texto corrido: o aluno marca, não digita.
    - **Instagram** → carrossel, Reels, ou os dois
    - **YouTube** → roteiro de vídeo longo (e Shorts, se o aluno quiser)
    - **TikTok** → vídeo curto
