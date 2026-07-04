@@ -70,7 +70,13 @@ Esta skill **parte do offerbook** (a oferta que você montou na Aula 01). Antes 
    - Se achar **vários** projetos, liste-os e **pergunte qual usar**.
    - Se o aluno apontar um projeto específico, use esse.
 
-2. **Se NÃO existir nenhum `projetos/{slug}/offerbook.md`**, antes de parar, procure o offerbook no formato da Aula 1 (que salva na raiz): `ls offerbook-*.md 2>/dev/null`. Se achar, confirme com o aluno e **migre**: crie `projetos/{slug}/` (slug derivado do nicho) e copie o arquivo pra `projetos/{slug}/offerbook.md` — daí siga normal. Só se não achar em lugar nenhum, PARE e exiba este aviso:
+2. **Se NÃO existir nenhum `projetos/{slug}/offerbook.md`**, antes de parar, procure o offerbook no formato da Aula 1 (que salva na raiz): `ls offerbook-*.md 2>/dev/null`. Se achar, confirme com o aluno e **migre o PACK INTEIRO da Aula 1, em TODOS os formatos (md + html + pdf)** — não só o offerbook, senão as pesquisas ficam pra trás e o Book acaba linkando `.md` solto. Crie `projetos/{slug}/` (slug derivado do nicho) e traga cada peça pra sua posição, mantendo os 3 formatos:
+   - offerbook: `offerbook-*.{md,html,pdf,docx}` → `projetos/{slug}/offerbook.{md,html,pdf,docx}`
+   - avatar: `relatorio-avatar.{md,html,pdf}` → `projetos/{slug}/avatar.{md,html,pdf}`
+   - espião: `dossie-*.{md,html,pdf}` → `projetos/{slug}/espiao/`
+   - trends: `trends-*.{md,html,pdf}` + `variacoes-*.{md,html,pdf}` → `projetos/{slug}/trends/`
+   - swipe: `briefing-swipe-file.{md,html,pdf}` + `swipe-file-index.{md,html,pdf}` → `projetos/{slug}/swipe/`
+   Copie SEMPRE o `.html` e o `.pdf` junto do `.md` (o `.md` é fonte; o dono abre o `.html`). Depois siga normal. Só se não achar offerbook em lugar nenhum, PARE e exiba este aviso:
 
    > Pra montar o funil eu preciso do seu **offerbook** — é nele que está a oferta (dor, mecanismo, entregáveis, preço-âncora, bônus, garantia), e é dele que eu leio o produto e o público (você não precisa redigitar nada).
    >
