@@ -138,6 +138,16 @@ Assim que o checkout começar a registrar os comportamentos, volte e rode `/recu
 
 **Regra de leitura:** quem **tentou pagar** (cartão recusado) está mais quente do que quem **só abandonou** o carrinho. A abordagem do cartão recusado é mais quente e direta; a do carrinho é mais cuidadosa, porque ali existe objeção.
 
+> **Sequência, NUNCA mensagem única (regra dura).** 1 mensagem por comportamento não é recuperação, é lembrete. Cada comportamento ativo gera uma **sequência de no mínimo 3 toques com timing definido**, e cada toque tem um ângulo DIFERENTE (nunca a mesma mensagem reenviada). Cadência padrão (o "Quando" da tabela acima é só o 1º toque; ajuste ao ciclo de compra do nicho e declare o que ajustou):
+>
+> | Comportamento | Toque 1 | Toque 2 | Toque 3 |
+> |---|---|---|---|
+> | **Cartão recusado** | 15 min: ajuda operacional (limite? banco travou?) + parcelado + Pix | 24h: quebra a objeção real + prova | 48h: urgência honesta (vaga/turma/condição expira) |
+> | **Pix/boleto gerado** | 30 min: reenvia o código + facilita (copia e cola) | 24h ou véspera do vencimento: "vence hoje" + o que ele perde | Após vencer: gera código novo + última condição |
+> | **Carrinho abandonado** | 30 min: leve, "aconteceu algo?" (sem vender) | 24h: quebra a objeção nº 1 do avatar + prova | 72h: escassez real ou ponte pro downsell |
+>
+> A progressão de ângulo é sempre: **1º toque remove atrito · 2º quebra objeção com prova · 3º dá o motivo honesto de agir agora.** Se o aluno tem WhatsApp além do e-mail, intercale os canais (ex.: toque 2 no WhatsApp). Downsell e re-nutrição entram DEPOIS da sequência direta esgotar, como degraus próprios da cascata. Cada toque sai como arquivo separado (`recuperacao/{comportamento}-{n}.html`) no índice, seguindo as regras de layout e numeração invisível acima.
+
 ---
 
 ## A escala de consciência (pra re-elevação)
