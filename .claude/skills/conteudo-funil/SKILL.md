@@ -101,6 +101,8 @@ Todo lote de conteúdo cobre os **3 estágios do funil**, casados com o nível d
 
 Distribua os roteiros pelos 3 estágios e **marque cada um com o estágio (TOPO/MEIO/FUNDO)**. Um funil que só produz topo atrai e não converte; só fundo converte pouco porque não atrai.
 
+> **Carrossel: 3 de cada nível (regra dura).** Se o formato escolhido for carrossel, o lote é **3 carrosséis de CADA estágio — 3 TOPO + 3 MEIO + 3 FUNDO = 9 carrosséis**. Cada um com ângulo e hook próprios (nunca o mesmo hook reaproveitado nos 3 do estágio): varie a mecânica (listicle, jeito errado/jeito certo, narrativo). Todos entram na mesma galeria do Book, agrupados por estágio.
+
 ## Carrossel: estrutura pra save/share/engajamento + render HTML → PNG
 
 Carrossel não sai só como texto — ele é **montado em slides visuais** (formato Instagram 1080x1350), com o **design system do aluno** (o `DESIGN.md`), e **exportado como PNG** pronto pra postar.
