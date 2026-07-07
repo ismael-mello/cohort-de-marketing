@@ -767,12 +767,11 @@ let flowPanning = false, flowPanStart = null;
 let canvasMetrics = { w: 0, h: 0 };
 let panAnimFrame = null;
 
+/** Trilha N12 núcleo — apenas skills com amostras reais em mapa-skills-samples/ */
 const N12_TOUR = [
   "comecar", "avatar-funil", "espiao-do-concorrente", "trend-hunting", "swipe-file",
   "offerbook", "design-md", "metodo-funil", "copy-funil",
-  "vsl-funil", "advertorial-funil", "lancamento-funil", "webinario-funil", "quiz-funil", "pagina-vendas-funil",
-  "conteudo-funil", "criativos-funil", "email-funil", "whatsapp-funil",
-  "recuperacao-funil", "backend-funil", "cro-funil"
+  "quiz-funil", "email-funil", "recuperacao-funil", "backend-funil"
 ];
 let tourState = { active: false, index: 0, timer: null };
 

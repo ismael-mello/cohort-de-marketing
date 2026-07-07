@@ -18,6 +18,13 @@
     sampleUrl: `${SAMPLES}/${rel}`,
     content: content || null
   });
+  /** Artefato ilustrativo — sem arquivo em mapa-skills-samples (só content inline) */
+  const mdInline = (id, label, rel, content) => ({
+    id, label, path: P(rel), format: "md", sampleUrl: null, content
+  });
+  const htmlInline = (id, label, rel, content) => ({
+    id, label, path: P(rel), format: "html", sampleUrl: null, content
+  });
   const pdf = (id, label, rel, htmlId) => ({
     id, label, path: P(rel), format: "pdf",
     htmlId,
@@ -115,6 +122,13 @@ Saturação estimada: 6–8 semanas. Testar agora.`),
           `<span class="kicker">Trend Hunting</span><h1>Tendências Jul/2026</h1>
            <div class="card"><strong>Formato:</strong> Carrossel antes/depois honesto (+220% engajamento)</div>
            <div class="card"><strong>Hook:</strong> "Parei de contar caloria e..."</div>`)),
+      pdf("trends-pdf", "trends-2026-07.pdf", "trends-2026-07.pdf", "trends-html"),
+      html("variacoes-html", "variacoes-hooks.html", "variacoes-hooks.html",
+        miniHtml("Hooks", "Variações", "#22c7b1",
+          `<span class="kicker">Trend Hunting</span><h1>Variações de Hook</h1>
+           <div class="card"><strong>A:</strong> O erro silencioso que faz 9 em 10 mulheres voltarem ao peso antigo</div>
+           <div class="card"><strong>B:</strong> Parei de me pesar todo dia. Em 90 dias perdi 8kg.</div>`)),
+      pdf("variacoes-pdf", "variacoes-hooks.pdf", "variacoes-hooks.pdf", "variacoes-html"),
       md("variacoes-md", "variacoes-hooks.md", "variacoes-hooks.md", `# Variações de Hook — prontas pra teste
 
 ## Variação A (curiosidade)
@@ -137,12 +151,18 @@ Variação A — baseado em engajamento de referências do nicho.`)
 
 ## Para Copy
 Usar estrutura confissão nos headlines do copy.md`),
+      html("briefing-html", "briefing-swipe-file.html", "swipe/briefing-swipe-file.html",
+        miniHtml("Swipe File", "Briefing", "#22c7b1",
+          `<span class="kicker">Swipe File</span><h1>Briefing — padrões extraídos</h1>
+           <div class="card">Hook tipo confissão + número específico</div>`)),
+      pdf("briefing-pdf", "briefing-swipe-file.pdf", "swipe/briefing-swipe-file.pdf", "briefing-html"),
       html("index-html", "swipe-file-index.html", "swipe-file-index.html",
         miniHtml("Swipe File", "Biblioteca de Referências", "#22c7b1",
           `<span class="kicker">Swipe File</span><h1>Índice — 34 criativos</h1>
            <table><tr><th>Tipo</th><th>Qtd</th><th>Score médio</th></tr>
            <tr><td>Hook curiosidade</td><td>12</td><td>7.8</td></tr>
            <tr><td>Confissão</td><td>9</td><td>8.1</td></tr></table>`)),
+      pdf("index-pdf", "swipe-file-index.pdf", "swipe-file-index.pdf", "index-html"),
       folder("swipe-folder", "swipe/{tipo}/", "swipe/",
         `# Pasta swipe/\n\n\`\`\`\nswipe/\n├── hooks/\n├── ctas/\n├── carrosseis/\n└── vsl-refs/\n\`\`\`\n\nCada criativo: .md + .html + metadados (fonte, score, padrão).`)
     ],
@@ -166,6 +186,7 @@ Usar estrutura confissão nos headlines do copy.md`),
           `<span class="kicker">Offerbook</span><h1>Método Consistência 90</h1>
            <div class="card"><strong>Mecanismo:</strong> Ciclo de 3 Fases</div>
            <table><tr><td>Programa</td><td>R$ 1.997</td></tr><tr><td><strong>Preço</strong></td><td><strong style="color:#f59e0b">R$ 497</strong></td></tr></table>`)),
+      pdf("offerbook-pdf", "offerbook.pdf", "offerbook.pdf", "offerbook-html"),
       docx("offerbook-docx", "offerbook.docx", "offerbook.docx", "offerbook-html")
     ],
 
@@ -188,7 +209,8 @@ Usar estrutura confissão nos headlines do copy.md`),
         miniHtml("Brand Preview", "Design System", "#8b5cf6",
           `<span class="kicker">DESIGN.md</span><h1>Preview da Marca</h1>
            <div class="card" style="border-color:#7C3AED"><button style="background:#7C3AED;color:#F5F0FF;border:none;padding:10px 20px;border-radius:16px;font-weight:600">CTA primário</button></div>
-           <p style="color:#999;font-size:0.85rem">tokens.json · preview.html · .cohort-brand-choice</p>`))
+           <p style="color:#999;font-size:0.85rem">tokens.json · preview.html · .cohort-brand-choice</p>`)),
+      pdf("preview-pdf", "preview.pdf", "preview.pdf", "preview-html")
     ],
 
     "metodo-funil": [
@@ -226,7 +248,7 @@ copy-funil ✓ → **quiz-funil** (próximo)
     ],
 
     "vsl-funil": [
-      md("vsl-md", "vsl.md", "vsl.md", `# Roteiro VSL — Método Consistência 90
+      mdInline("vsl-md", "vsl.md", "vsl.md", `# Roteiro VSL — Método Consistência 90
 
 ## Hook (0:00–0:30)
 "Se você já perdeu peso e voltou tudo, o problema não é você..."
@@ -236,7 +258,7 @@ Ciclo de 3 Fases explicado com analogia da "sanfona hormonal"
 
 ## Stack + CTA (12:00–15:00)
 Oferta R$ 497 · Garantia 30 dias · CTA abaixo do vídeo`),
-      html("vsl-page", "pagina/vsl.html", "pagina/vsl.html",
+      htmlInline("vsl-page", "pagina/vsl.html", "pagina/vsl.html",
         miniHtml("VSL", "Página de VSL", "#f43f5e",
           `<span class="kicker">VSL Direct Response</span><h1>Emagreça sem recomeçar toda segunda</h1>
            <div class="card" style="aspect-ratio:16/9;background:#000;display:flex;align-items:center;justify-content:center;color:#555">▶ Vídeo VSL</div>
@@ -244,7 +266,7 @@ Oferta R$ 497 · Garantia 30 dias · CTA abaixo do vídeo`),
     ],
 
     "advertorial-funil": [
-      md("adv-md", "advertorial.md", "advertorial.md", `# Advertorial — Estilo editorial
+      mdInline("adv-md", "advertorial.md", "advertorial.md", `# Advertorial — Estilo editorial
 
 ## Lead
 "Nutricionista revela por que 90% das dietas falham após 21 dias"
@@ -254,7 +276,7 @@ História da Maria, 42 anos, que descobriu que o problema era inflamação...
 
 ## Transição
 "Foi quando encontrei o protocolo de 3 fases que mudou tudo..."`),
-      html("adv-page", "pagina/advertorial.html", "pagina/advertorial.html",
+      htmlInline("adv-page", "pagina/advertorial.html", "pagina/advertorial.html",
         miniHtml("Advertorial", "Pré-venda editorial", "#f43f5e",
           `<span class="kicker" style="color:#888;border-color:#444">Saúde & Bem-estar</span>
            <h1>Nutricionista revela por que 90% das dietas falham</h1>
@@ -263,7 +285,7 @@ História da Maria, 42 anos, que descobriu que o problema era inflamação...
     ],
 
     "lancamento-funil": [
-      md("lanc-md", "lancamento.md", "lancamento.md", `# Lançamento PLF — Método Consistência 90
+      mdInline("lanc-md", "lancamento.md", "lancamento.md", `# Lançamento PLF — Método Consistência 90
 
 ## Pré-lançamento (7 dias)
 - PLC 1: Oportunidade (O ciclo de 3 fases)
@@ -272,7 +294,7 @@ História da Maria, 42 anos, que descobriu que o problema era inflamação...
 
 ## Carrinho
 Abre: 14/07 · Fecha: 16/07 · Escassez: 50 vagas`),
-      html("lanc-html", "lancamento.html", "lancamento.html",
+      htmlInline("lanc-html", "lancamento.html", "lancamento.html",
         miniHtml("Lançamento", "PLF", "#f43f5e",
           `<span class="kicker">Product Launch Formula</span><h1>Sequência de Lançamento</h1>
            <table><tr><th>Fase</th><th>Conteúdo</th></tr>
@@ -280,7 +302,7 @@ Abre: 14/07 · Fecha: 16/07 · Escassez: 50 vagas`),
     ],
 
     "webinario-funil": [
-      md("web-md", "webinario.md", "webinario.md", `# Webinário — Roteiro completo
+      mdInline("web-md", "webinario.md", "webinario.md", `# Webinário — Roteiro completo
 
 ## Abertura (10 min)
 Promessa: "Como perder 8kg em 90 dias sem dieta restritiva"
@@ -292,7 +314,7 @@ Promessa: "Como perder 8kg em 90 dias sem dieta restritiva"
 
 ## Fechamento
 Stack + escassez: vagas limitadas ao vivo`),
-      html("web-reg", "pagina/registro.html", "pagina/registro.html",
+      htmlInline("web-reg", "pagina/registro.html", "pagina/registro.html",
         miniHtml("Registro", "Webinário", "#f43f5e",
           `<span class="kicker">Aula ao vivo</span><h1>Descubra o método de 3 fases</h1>
            <div class="card"><input placeholder="Seu melhor e-mail" style="width:100%;padding:10px;background:#1a1a22;border:1px solid #333;border-radius:8px;color:#fff"></div>
@@ -317,11 +339,17 @@ Stack + escassez: vagas limitadas ao vivo`),
         miniHtml("Quiz", "Diagnóstico", "#f43f5e",
           `<span class="kicker">Quiz</span><h1>Qual seu perfil de emagrecimento?</h1>
            <div class="card"><strong>Pergunta 1/5</strong><p>Quantas dietas você já tentou?</p>
-           <p style="color:#888">○ Nenhuma · ○ 1-3 · ○ Mais de 3</p></div>`))
+           <p style="color:#888">○ Nenhuma · ○ 1-3 · ○ Mais de 3</p></div>`)),
+      pdf("quiz-pdf", "pagina/quiz.pdf", "pagina/quiz.pdf", "quiz-page"),
+      html("quiz-resultado", "pagina/resultado-emocional.html", "pagina/resultado-emocional.html",
+        miniHtml("Resultado", "Perfil Emocional", "#f43f5e",
+          `<span class="kicker">Quiz</span><h1>Seu perfil: Emocional</h1>
+           <div class="card">Você precisa de consistência sem culpa — oferta com comunidade e suporte.</div>`)),
+      pdf("quiz-resultado-pdf", "pagina/resultado-emocional.pdf", "pagina/resultado-emocional.pdf", "quiz-resultado")
     ],
 
     "pagina-vendas-funil": [
-      md("pv-md", "pagina/pagina-vendas.md", "pagina/pagina-vendas.md", `# Página de Vendas — 16 elementos
+      mdInline("pv-md", "pagina/pagina-vendas.md", "pagina/pagina-vendas.md", `# Página de Vendas — 16 elementos
 
 1. Headline: Como perder 8kg em 90 dias sem contar caloria
 2. Sub: Sem dieta restritiva, sem efeito sanfona
@@ -332,7 +360,7 @@ Stack + escassez: vagas limitadas ao vivo`),
 7. Garantia 30 dias
 8. FAQ (7 objeções)
 9. CTA repetido (4x)`),
-      html("pv-page", "pagina/index.html", "pagina/index.html",
+      htmlInline("pv-page", "pagina/index.html", "pagina/index.html",
         miniHtml("Página de Vendas", "16 elementos", "#f43f5e",
           `<span class="kicker">Alta conversão</span><h1>Como perder 8kg em 90 dias sem contar caloria</h1>
            <p style="color:#888">Sem dieta restritiva · Sem efeito sanfona</p>
@@ -341,7 +369,7 @@ Stack + escassez: vagas limitadas ao vivo`),
     ],
 
     "conteudo-funil": [
-      md("cont-md", "conteudo/roteiros.md", "conteudo/roteiros.md", `# Roteiros de Conteúdo — Semana 1
+      mdInline("cont-md", "conteudo/roteiros.md", "conteudo/roteiros.md", `# Roteiros de Conteúdo — Semana 1
 
 ## Reel 1 (Nível 5 — problema)
 **Hook:** "Você não é preguiçosa. Sua dieta é que está errada."
@@ -355,7 +383,7 @@ Stack + escassez: vagas limitadas ao vivo`),
     ],
 
     "criativos-funil": [
-      md("cri-md", "criativos/roteiros.md", "criativos/roteiros.md", `# Criativos — modelados do FitFlow
+      mdInline("cri-md", "criativos/roteiros.md", "criativos/roteiros.md", `# Criativos — modelados do FitFlow
 
 ## Vídeo 1 (feed 4:5)
 **Hook:** "Descobri o erro que 9 em 10 mulheres cometem"
@@ -378,11 +406,13 @@ Headline + mockup do produto + CTA`),
         miniHtml("E-mail", "Venda", "#3b82f6",
           `<div class="card"><h1 style="font-size:1.1rem">Últimas 12 vagas — Método Consistência 90</h1>
            <p>R$ 497 · Garantia 30 dias</p>
-           <button style="background:#3b82f6;color:#fff;border:none;padding:10px 20px;border-radius:8px">GARANTIR MINHA VAGA</button></div>`))
+           <button style="background:#3b82f6;color:#fff;border:none;padding:10px 20px;border-radius:8px">GARANTIR MINHA VAGA</button></div>`)),
+      pdf("email-nut-pdf", "emails/nutricao.pdf", "emails/nutricao.pdf", "email-nut"),
+      pdf("email-venda-pdf", "emails/venda.pdf", "emails/venda.pdf", "email-venda")
     ],
 
     "whatsapp-funil": [
-      md("wa-md", "whatsapp/sequencia.md", "whatsapp/sequencia.md", `# Sequência WhatsApp
+      mdInline("wa-md", "whatsapp/sequencia.md", "whatsapp/sequencia.md", `# Sequência WhatsApp
 
 ## T+0 — Confirmação de compra
 "Oi Maria! 🎉 Bem-vinda ao Método Consistência 90. Seu acesso: [link]"
@@ -395,7 +425,7 @@ Headline + mockup do produto + CTA`),
     ],
 
     "mockup-produto-funil": [
-      md("mock-md", "mockups/prompts.md", "mockups/prompts.md", `# Prompts de Mockup
+      mdInline("mock-md", "mockups/prompts.md", "mockups/prompts.md", `# Prompts de Mockup
 
 ## Capa do ebook
 "Ebook cover, fitness program, purple brand #7C3AED, title 'Método Consistência 90', professional, 3D soft shadow"
@@ -407,7 +437,7 @@ Headline + mockup do produto + CTA`),
     ],
 
     "bonus-funil": [
-      md("bonus-md", "bonus/checklist.md", "bonus/checklist.md", `# Bônus: Checklist Semanal Anti-Sanfona
+      mdInline("bonus-md", "bonus/checklist.md", "bonus/checklist.md", `# Bônus: Checklist Semanal Anti-Sanfona
 
 ## Semana 1
 - [ ] Cardápio anti-inflamação (7 dias)
@@ -417,7 +447,7 @@ Headline + mockup do produto + CTA`),
 ## Semana 2
 - [ ] Introduzir Fase 2
 - [ ] Primeira refeição livre planejada`),
-      html("bonus-html", "bonus/ebook.html", "bonus/ebook.html",
+      htmlInline("bonus-html", "bonus/ebook.html", "bonus/ebook.html",
         miniHtml("Bônus", "Checklist Semanal", "#64748b",
           `<span class="kicker">Bônus #2</span><h1>Checklist Semanal Anti-Sanfona</h1>
            <div class="card">☐ Cardápio anti-inflamação<br>☐ Ritual 12 min<br>☐ Pesagem domingo</div>`))
@@ -439,7 +469,8 @@ WhatsApp: "Quer tentar em 2x?"
           `<span class="kicker">recuperacao-funil</span><h1>Cascata de Recuperação</h1>
            <table><tr><th>Trigger</th><th>Canal</th><th>Timing</th></tr>
            <tr><td>Carrinho</td><td>E-mail</td><td>T+1h</td></tr>
-           <tr><td>Cartão</td><td>WhatsApp</td><td>Imediato</td></tr></table>`))
+           <tr><td>Cartão</td><td>WhatsApp</td><td>Imediato</td></tr></table>`)),
+      pdf("rec-pdf", "recuperacao.pdf", "recuperacao.pdf", "rec-html")
     ],
 
     "backend-funil": [
@@ -453,7 +484,7 @@ WhatsApp: "Quer tentar em 2x?"
 
 ## Downsell (recusou upsell)
 **Pack de receitas premium** — R$ 47`),
-      html("upsell-page", "pagina/upsell.html", "pagina/upsell.html",
+      htmlInline("upsell-page", "pagina/upsell.html", "pagina/upsell.html",
         miniHtml("Upsell", "One-Click", "#f59e0b",
           `<span class="kicker" style="color:#23e169;border-color:#23e169">Compra confirmada!</span>
            <h1>Espere — oferta exclusiva</h1>
@@ -462,7 +493,7 @@ WhatsApp: "Quer tentar em 2x?"
     ],
 
     "cro-funil": [
-      md("cro-md", "cro.md", "cro.md", `# Plano CRO
+      mdInline("cro-md", "cro.md", "cro.md", `# Plano CRO
 
 ## KPIs atuais
 | Etapa | Taxa |
@@ -474,7 +505,7 @@ WhatsApp: "Quer tentar em 2x?"
 **Elemento:** Headline
 **Hipótese:** Ângulo "sanfona" > ângulo "caloria"
 **Mínimo:** 1.000 views · 1 teste por vez`),
-      html("cro-html", "cro.html", "cro.html",
+      htmlInline("cro-html", "cro.html", "cro.html",
         miniHtml("CRO", "Otimização", "#ef4444",
           `<span class="kicker">cro-funil</span><h1>Dashboard de KPIs</h1>
            <table><tr><th>Etapa</th><th>Taxa</th></tr>
@@ -483,7 +514,7 @@ WhatsApp: "Quer tentar em 2x?"
     ],
 
     "status-funil": [
-      md("status-md", "status-checklist.md", "status-checklist.md", `# Status do Funil — academia-fit
+      mdInline("status-md", "status-checklist.md", "status-checklist.md", `# Status do Funil — academia-fit
 
 ## Você está aqui
 **copy-funil** ✓ concluído

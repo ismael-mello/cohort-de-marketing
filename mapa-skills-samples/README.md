@@ -11,8 +11,10 @@ bash scripts/bootstrap-academia-fit.sh
 # 2. Sincronizar para amostras + regenerar PDFs
 bash sync-mapa-samples.sh
 
-# 3. Validar
-node scripts/validate-mapa-skills.mjs
+# 3. Validar contratos + mapa (Playwright para tour/PDF)
+node scripts/verify-skill-contracts.mjs
+cd scripts && npm install && cd ..
+node scripts/validate-mapa-skills.mjs --playwright
 
 # 4. Abrir mapa (HTTP obrigatório para PDF em iframe)
 python3 -m http.server 8765
@@ -21,7 +23,7 @@ python3 -m http.server 8765
 
 ## Checklist manual (`mapa-validacao.md` no scratch do goal)
 
-- [ ] Tour N12 percorre 22 passos sem erro
+- [ ] Tour N12 percorre 13 passos (núcleo com amostras reais) sem erro
 - [ ] Pré-requisitos clicáveis navegam ao nó correto
 - [ ] Alimenta clicável navega ao nó correto
 - [ ] `avatar-funil` → `relatorio-avatar.pdf` abre PDF no modal
