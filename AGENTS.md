@@ -4,7 +4,7 @@ Este repositório é o material do Cohort de Marketing (Academia Lendária). O t
 
 ## Onde as skills vivem
 
-Todas as skills estão em **`.claude/skills/{nome}/SKILL.md`** (uma pasta por skill, com scripts e KBs dentro). Elas funcionam em QUALQUER agente: quando o usuário digitar `@{nome}`, `/{nome}` ou pedir pela skill por extenso (ex.: "roda o comecar", "quero o offerbook"), **leia o arquivo `.claude/skills/{nome}/SKILL.md` e execute-o fielmente**, incluindo os arquivos compartilhados que ele referencia em `.claude/skills/_shared/`.
+Todas as skills canônicas estão em **`.claude/skills/{nome}/SKILL.md`** (uma pasta por skill, com scripts e KBs dentro). A pasta **`.agents/skills/` é um espelho literal** para o Codex carregar as mesmas skills; não edite divergindo dela. Quando o usuário digitar `@{nome}`, `/{nome}` ou pedir pela skill por extenso (ex.: "roda o comecar", "quero o offerbook"), **leia o arquivo `.claude/skills/{nome}/SKILL.md` e execute-o fielmente**, incluindo os arquivos compartilhados que ele referencia em `.claude/skills/_shared/`.
 
 ## O primeiro comando
 

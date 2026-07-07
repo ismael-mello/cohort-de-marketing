@@ -54,7 +54,7 @@ Da identidade visual ao funil montado: `/design-md` → `/metodo-funil` (o mapa 
 
 ## As 25 skills
 
-Instaladas em `.claude/skills/` — carregam automaticamente ao abrir o Claude Code na pasta (no Codex, chame com `@` em vez de `/`; o `AGENTS.md` na raiz cuida do resto).
+Instaladas canonicamente em `.claude/skills/` — carregam automaticamente ao abrir o Claude Code na pasta. Para o Codex, `.agents/skills/` é um espelho literal da pasta canônica; chame com `@` quando a interface usar esse prefixo. Se houver dúvida, siga sempre `.claude/skills/` como fonte de verdade.
 
 | Grupo | Skills |
 |-------|--------|
@@ -78,6 +78,8 @@ cohort-de-marketing/
 ├── .env.example                  template das chaves (copie pra .env)
 ├── .claude/
 │   └── skills/                   as 25 skills + regras compartilhadas (_shared/)
+├── .agents/
+│   └── skills/                   espelho literal para Codex carregar as mesmas skills
 ├── aula-01/                      docs e templates da Aula 1
 ├── aula-02/                      material de apoio da Aula 2
 └── projetos/                     nasce quando você roda as skills (só seu, fora do git)
