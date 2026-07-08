@@ -1,5 +1,12 @@
 /** Conteúdo completo — 25 skills academia-fit */
-import { simpleHtml, brandHtml } from './coleta-utils.mjs';
+import {
+  documentHtml,
+  landingHtml,
+  emailHtml,
+  salesPageHtml,
+  quizPageHtml,
+  previewHtml,
+} from './coleta-utils.mjs';
 import { buildDepthContent } from './academia-fit-depth-content.mjs';
 
 const COLETA_URLS = `| reclame_aqui | https://www.google.com/search?q=emagrecimento+sustent%C3%A1vel+mulheres+35%2B+reclame+aqui |
@@ -50,14 +57,17 @@ function finish(){
 }`;
 
 function bannerHtml(w, h, title, hook, cta) {
+  const fs = w > 1080 ? 56 : w === 1080 && h === 1080 ? 44 : 52;
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>${title}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
 <style>*{box-sizing:border-box;margin:0;padding:0}html,body{width:${w}px;height:${h}px;overflow:hidden}
-body{font-family:Inter,sans-serif;background:linear-gradient(160deg,#0A0A0F 0%,#1a1035 100%);color:#F5F0FF;display:flex;flex-direction:column;justify-content:center;padding:48px}
-.kicker{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:#22C7B1;margin-bottom:16px}
-h1{font-family:'Space Grotesk',Inter,sans-serif;font-size:${w>1080?56:48}px;line-height:1.1;color:#F5F0FF}
-.sub{margin-top:20px;font-size:18px;color:#A1A1AA;max-width:90%}
-.cta{margin-top:32px;display:inline-block;background:#7C3AED;color:#F5F0FF;padding:16px 28px;border-radius:12px;font-weight:700;font-size:18px}
-.logo{position:absolute;bottom:40px;left:48px;font-size:13px;color:#7C3AED;font-weight:700}
+body{font-family:Inter,sans-serif;background:radial-gradient(120% 80% at 20% 0%,#1a1035 0%,#0A0A0F 55%);color:#F5F0FF;display:flex;flex-direction:column;justify-content:center;padding:56px;position:relative}
+body::after{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;background:radial-gradient(circle,#7C3AED33,transparent 70%);pointer-events:none}
+.kicker{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#22C7B1;margin-bottom:20px;font-weight:600}
+h1{font-family:'Space Grotesk',Inter,sans-serif;font-size:${fs}px;line-height:1.08;color:#F5F0FF;max-width:92%}
+.sub{margin-top:22px;font-size:19px;color:#A1A1AA;max-width:88%}
+.cta{margin-top:36px;display:inline-block;background:#7C3AED;color:#F5F0FF;padding:18px 30px;border-radius:14px;font-weight:700;font-size:18px;box-shadow:0 8px 32px #7C3AED44}
+.logo{position:absolute;bottom:44px;left:56px;font-size:14px;color:#7C3AED;font-weight:700;letter-spacing:.04em}
 </style></head><body>
 <p class="kicker">Academia Fit</p>
 <h1>${hook}</h1>
@@ -280,46 +290,40 @@ Ciclo de 3 Fases com Fase 3 obrigatória (Manter).
 - "É caro" → R$ 5,52/dia por 90 dias
 `;
 
-  const quizHtml = brandHtml(
-    'Quiz — Perfil de emagrecimento',
-    `<h1>Qual seu perfil de emagrecimento?</h1>
-<div class="card" id="q1"><strong>1/5</strong> Quantas dietas você já tentou?<br><br>
-<label><input type="radio" name="q1" onclick="sel(1,'e')"> Nenhuma</label><br>
-<label><input type="radio" name="q1" onclick="sel(1,'r')"> 1 a 3</label><br>
-<label><input type="radio" name="q1" onclick="sel(1,'p')"> Mais de 3</label></div>
-<div class="card" id="q2"><strong>2/5</strong> O que mais te frustra?<br><br>
-<label><input type="radio" onclick="sel(2,'e')"> Efeito sanfona</label><br>
-<label><input type="radio" onclick="sel(2,'r')"> Falta de método claro</label><br>
-<label><input type="radio" onclick="sel(2,'p')"> Falta de tempo</label></div>
-<div class="card" id="q3"><strong>3/5</strong> Tempo por dia?<br><br>
-<label><input type="radio" onclick="sel(3,'p')"> 10–15 min</label><br>
-<label><input type="radio" onclick="sel(3,'r')"> 30 min</label><br>
-<label><input type="radio" onclick="sel(3,'e')"> 1h+</label></div>
-<div class="card" id="q4"><strong>4/5</strong> Já teve efeito sanfona?<br><br>
-<label><input type="radio" onclick="sel(4,'e')"> Sim, várias vezes</label><br>
-<label><input type="radio" onclick="sel(4,'r')"> Uma vez</label><br>
-<label><input type="radio" onclick="sel(4,'p')"> Não</label></div>
-<div class="card" id="q5"><strong>5/5</strong> O que te motiva mais?<br><br>
-<label><input type="radio" onclick="sel(5,'e')"> Autoestima</label><br>
-<label><input type="radio" onclick="sel(5,'r')"> Saúde e exames</label><br>
-<label><input type="radio" onclick="sel(5,'p')"> Praticidade</label></div>
-<button onclick="finish()">VER MEU RESULTADO</button>
-<script>${QUIZ_JS}</script>`
-  );
+  const variacoesMd = `# Variações de Hook\n\n## A (TikTok)\n"${ttHook}"\n\n## B (Instagram)\n"${igHook}"\n\n## Vencedor: A\n`;
+  const swipeMd = `# Briefing Swipe File\n\n## Padrões Apify\n${igTable(ig)}\n\n## Para copy\nHook confissão + número + CTA quiz\n`;
+  const swipeIndexMd = `# Índice Swipe File\n\n| Tipo | Qtd | Score médio |\n|------|-----|-------------|\n| Hook curiosidade | 12 | 7.8 |\n| Confissão | 9 | 8.1 |\n| CTA quiz | 6 | 7.5 |\n| Carrossel | 7 | 8.0 |\n`;
 
-  const salesHtml = brandHtml(
-    'Método Consistência 90',
-    `<h1>Como perder 8kg em 90 dias sem contar caloria</h1>
-<p style="color:#A1A1AA">Sem dieta restritiva · Sem efeito sanfona · Para mulheres 35+</p>
-<div class="card"><strong>Mecanismo:</strong> Ciclo de 3 Fases — Desinflamar, Reprogramar, Manter</div>
-<div class="card"><s style="color:#666">R$ 2.935</s> <strong style="color:#F59E0B;font-size:1.4rem">R$ 497</strong></div>
-<ul><li>Programa 90 dias + comunidade</li><li>3 bônus inclusos</li><li>Garantia 30 dias</li></ul>
-<button>QUERO COMEÇAR AGORA</button>
-<h2 style="color:#22C7B1;margin-top:32px">FAQ</h2>
-<div class="card"><strong>Funciona na menopausa?</strong> Protocolo adaptado para 35+.</div>
-<div class="card"><strong>Quanto tempo por dia?</strong> A partir de 12 minutos.</div>
-<button>QUERO COMEÇAR AGORA</button>`
-  );
+  const quizHtml = quizPageHtml(QUIZ_JS);
+  const salesHtml = salesPageHtml({
+    headline: 'Como perder 8kg em 90 dias sem contar caloria',
+    sub: 'Sem dieta restritiva · Sem efeito sanfona · Para mulheres 35+',
+    bullets: [
+      'Fase 1 desinflama em 7 dias sem cortar grupos alimentares',
+      'Ritual de 12 minutos para dias sem tempo',
+      'Comunidade de mulheres 35+ no mesmo ciclo',
+      'Protocolo de manutenção para não voltar ao peso antigo',
+      '3 bônus inclusos + garantia 30 dias',
+    ],
+    priceOld: '2.935',
+    priceNow: '497',
+    faq: [
+      { q: 'Funciona na menopausa?', a: 'Protocolo adaptado para mulheres 35+ com foco hormonal.' },
+      { q: 'Quanto tempo por dia?', a: 'A partir de 12 minutos com o ritual diário.' },
+      { q: 'E se eu já tive efeito sanfona?', a: 'A Fase Manter foi desenhada exatamente para isso.' },
+    ],
+  });
+
+  const resultado = (perfil, titulo, texto, cta) =>
+    landingHtml(`Resultado — ${perfil}`, `
+<div class="wrap">
+  <span class="kicker">Seu diagnóstico</span>
+  <h1>${titulo}</h1>
+  <p class="lead">${texto}</p>
+  <div class="card card-accent"><strong>Oferta recomendada:</strong> Método Consistência 90 · R$ 497</div>
+  <input class="input" placeholder="Seu melhor e-mail" type="email">
+  <a class="btn btn-block" href="index.html">${cta}</a>
+</div>`);
 
   const files = {
     'SETUP.md': `# Ambiente — academia-fit
@@ -347,8 +351,8 @@ Tráfego no quiz + teste A/B headline (ver cro.md).
     'avatar.md': avatarMd,
     'espiao/dossie-fitflow.md': dossieMd,
     'trends-2026-07.md': trendsMd,
-    'variacoes-hooks.md': `# Variações de Hook\n\n## A (TikTok 5,2M)\n"${ttHook}"\n\n## B (Instagram)\n"${igHook}"\n\n## Vencedor: A\n`,
-    'swipe/briefing-swipe-file.md': `# Briefing Swipe\n\n## Padrões Apify\n${igTable(ig)}\n\n## Para copy\nHook confissão + número + CTA quiz\n`,
+    'variacoes-hooks.md': variacoesMd,
+    'swipe/briefing-swipe-file.md': swipeMd,
     'offerbook.md': offerbookMd,
     'DESIGN.md': depth.designMd,
     'tokens.json': JSON.stringify({ colors: { primary: '#7C3AED', secondary: '#22C7B1', surface: '#0A0A0F', text: '#F5F0FF' } }, null, 2),
@@ -372,83 +376,131 @@ Tráfego no quiz + teste A/B headline (ver cro.md).
     'bonus/checklist-semanal.md': depth.bonusChecklistMd,
     'bonus/ebook-anti-sanfona.md': depth.bonusEbookMd,
     'bonus/workbook-fase1.md': depth.bonusWorkbookMd,
-    'bonus/index.html': brandHtml(
+    'bonus/index.html': landingHtml(
       'Bônus da oferta',
-      `<h1>Bônus da oferta</h1>
-<div class="card"><strong>1.</strong> <a href="checklist-semanal.html" style="color:#22C7B1">Checklist Semanal Anti-Sanfona</a></div>
-<div class="card"><strong>2.</strong> <a href="ebook-anti-sanfona.html" style="color:#22C7B1">E-book Anti-Sanfona</a></div>
-<div class="card"><strong>3.</strong> <a href="workbook-fase1.html" style="color:#22C7B1">Workbook Fase 1 Desinflamar</a></div>`
+      `<div class="wrap">
+  <span class="kicker">Stack de valor</span>
+  <h1>Bônus da oferta</h1>
+  <p class="lead">Materiais completos inclusos no Método Consistência 90</p>
+  <div class="card"><strong>1.</strong> <a href="checklist-semanal.html">Checklist Semanal Anti-Sanfona</a></div>
+  <div class="card"><strong>2.</strong> <a href="ebook-anti-sanfona.html">E-book Anti-Sanfona</a></div>
+  <div class="card"><strong>3.</strong> <a href="workbook-fase1.html">Workbook Fase 1 Desinflamar</a></div>
+</div>`
     ),
     'mockups/prompts.md': depth.mockupsPromptsMd,
     'cro.md': depth.croMd,
     'status.md': depth.statusMd,
-    'relatorio-avatar.html': simpleHtml('Avatar', relatorioMd.split('\n').slice(0, 20).map((l) => `<p>${l}</p>`).join('')),
-    'espiao/dossie-fitflow.html': simpleHtml('FitFlow', `<h1>FitFlow Academy</h1><table><tr><th>Likes</th><th>Caption</th></tr>${ig.map((p) => `<tr><td>${p.likesCount}</td><td>${(p.caption || '').slice(0, 60)}</td></tr>`).join('')}</table>`),
-    'trends-2026-07.html': simpleHtml('Trends', `<h1>Trends Jul/2026</h1><p>${ttHook}</p>`),
-    'variacoes-hooks.html': simpleHtml('Hooks', `<h1>Variações</h1><p>A: ${ttHook}</p>`),
-    'swipe/briefing-swipe-file.html': simpleHtml('Swipe', '<h1>Briefing</h1>'),
-    'swipe-file-index.html': simpleHtml('Índice', '<h1>34 referências</h1>'),
-    'offerbook.html': simpleHtml('Offerbook', '<h1>Método Consistência 90</h1><p>R$ 497</p>'),
-    'preview.html': brandHtml('Preview', '<h1>Academia Fit</h1><button>CTA</button>'),
-    'funil.html': brandHtml('Funil', '<h1>Nível 4</h1><p>Quiz + Página</p>'),
+    'relatorio-avatar.html': documentHtml('Pesquisa de Avatar', 'avatar-funil', relatorioMd, { accent: '#A78BFA' }),
+    'espiao/dossie-fitflow.html': documentHtml('Dossiê FitFlow', 'espiao-do-concorrente', dossieMd, { accent: '#22C7B1' }),
+    'trends-2026-07.html': documentHtml('Trend Hunting', 'trend-hunting', trendsMd),
+    'variacoes-hooks.html': documentHtml('Variações de Hook', 'trend-hunting', variacoesMd),
+    'swipe/briefing-swipe-file.html': documentHtml('Briefing Swipe', 'swipe-file', swipeMd),
+    'swipe-file-index.html': documentHtml('Swipe File', 'swipe-file', swipeIndexMd),
+    'offerbook.html': documentHtml('Offerbook', 'offerbook', offerbookMd, { accent: '#F59E0B' }),
+    'preview.html': previewHtml(),
+    'funil.html': documentHtml('Mapa de Execução', 'metodo-funil', depth.funilMd),
     'pagina/quiz.html': quizHtml,
-    'pagina/resultado-emocional.html': brandHtml('Emocional', '<h1>Perfil Emocional</h1><p>Oferta com comunidade</p><button>VER OFERTA</button>'),
-    'pagina/resultado-racional.html': brandHtml('Racional', '<h1>Perfil Racional</h1><p>Oferta com protocolo e dados</p><button>VER OFERTA</button>'),
-    'pagina/resultado-pragmatico.html': brandHtml('Pragmático', '<h1>Perfil Pragmático</h1><p>Checklist rápido</p><button>VER OFERTA</button>'),
+    'pagina/resultado-emocional.html': resultado(
+      'Emocional',
+      'Perfil Emocional',
+      'Você precisa de consistência sem culpa. A comunidade e o suporte são seu diferencial.',
+      'VER OFERTA COM COMUNIDADE'
+    ),
+    'pagina/resultado-racional.html': resultado(
+      'Racional',
+      'Perfil Racional',
+      'Você quer método claro com marcos. O protocolo em 3 fases foi feito para você.',
+      'VER PROTOCOLO COMPLETO'
+    ),
+    'pagina/resultado-pragmatico.html': resultado(
+      'Pragmático',
+      'Perfil Pragmático',
+      'Você precisa de praticidade. Ritual de 12 min + checklist pronto.',
+      'QUERO O CHECKLIST RÁPIDO'
+    ),
     'pagina/index.html': salesHtml,
-    'pagina/vsl.html': brandHtml(
+    'pagina/vsl.html': landingHtml(
       'VSL',
-      `<h1>Emagreça sem recomeçar toda segunda-feira</h1>
-<p style="color:#A1A1AA">Assista antes de decidir · 18 min</p>
-<div class="card" style="aspect-ratio:16/9;background:#000;color:#555;display:flex;align-items:center;justify-content:center">[ SLOT VSL — gravar a partir de vsl.md ]</div>
-<div class="card"><strong>Mecanismo:</strong> Ciclo de 3 Fases — Desinflamar, Reprogramar, Manter</div>
-<div class="card"><s style="color:#666">R$ 2.935</s> <strong style="color:#F59E0B;font-size:1.4rem">R$ 497</strong></div>
-<button>QUERO COMEÇAR AGORA</button>`
+      `<div class="wrap">
+  <span class="kicker">Vídeo de vendas</span>
+  <h1>Emagreça sem recomeçar toda segunda-feira</h1>
+  <p class="lead">Assista antes de decidir · 18 min</p>
+  <div class="vsl-slot">Gravar VSL a partir de vsl.md</div>
+  <div class="card card-accent"><strong>Mecanismo:</strong> Ciclo de 3 Fases</div>
+  <div class="card"><span class="price-old">R$ 2.935</span> <span class="price-now">R$ 497</span></div>
+  <a class="btn btn-block" href="#">QUERO COMEÇAR AGORA</a>
+</div>`
     ),
-    'pagina/advertorial.html': brandHtml(
+    'pagina/advertorial.html': landingHtml(
       'Advertorial',
-      `<p style="color:#22C7B1;font-size:0.85rem;text-transform:uppercase;letter-spacing:.1em">Reportagem</p>
-<h1>Nutricionista revela por que 90% das dietas falham após 21 dias</h1>
-<p>Maria, 42 anos, analista. Terceira dieta em dois anos. Perdeu 4kg, ganhou 6.</p>
-<p>O problema não é força de vontade. É a ausência de uma fase de manutenção depois da perda de peso.</p>
-<div class="card"><strong>Mecanismo:</strong> Ciclo hábito + inflamação + adaptação hormonal 35+</div>
-<p>Pesquisadores em comunidades online documentam o padrão: restrição, perda, liberação, ganho.</p>
-<button>VER A EXPLICAÇÃO COMPLETA NO VÍDEO</button>`
+      `<div class="wrap">
+  <span class="kicker">Reportagem</span>
+  <h1>Nutricionista revela por que 90% das dietas falham após 21 dias</h1>
+  <p class="lead">Maria, 42 anos, analista. Terceira dieta em dois anos.</p>
+  <p>O problema não é força de vontade. É a ausência de uma fase de manutenção.</p>
+  <div class="card"><strong>Mecanismo:</strong> Ciclo hábito + inflamação + adaptação hormonal 35+</div>
+  <blockquote>A maioria dos programas para no dia 21. O peso volta nos meses seguintes.</blockquote>
+  <a class="btn btn-block" href="vsl.html">VER A EXPLICAÇÃO COMPLETA</a>
+</div>`
     ),
-    'pagina/registro.html': brandHtml('Webinário', '<h1>Aula ao vivo</h1><input placeholder="E-mail" style="width:100%;padding:10px"><button>RESERVAR</button>'),
-    'pagina/upsell.html': brandHtml('Upsell', '<h1>Fase 4 Avançada</h1><p>R$ 197 one-click</p><button>ADICIONAR</button>'),
-    'pagina/downsell.html': brandHtml('Downsell', '<h1>Pack Receitas</h1><p>R$ 47</p><button>QUERO</button>'),
-    'emails/convite.html': brandHtml('Convite', '<h1>Você foi convidada</h1>'),
-    'emails/nutricao.html': brandHtml('Nutrição', '<h1>Você não falhou. A dieta falhou.</h1>'),
-    'emails/venda.html': brandHtml('Venda', '<h1>Últimas vagas — R$ 497</h1><button>GARANTIR</button>'),
-    'recuperacao.html': brandHtml(
-      'Recuperação',
-      `<h1>Cascata de Recuperação</h1>
-<table style="width:100%;border-collapse:collapse"><tr><th style="border:1px solid #333;padding:8px">Trigger</th><th style="border:1px solid #333;padding:8px">Canal</th><th style="border:1px solid #333;padding:8px">Timing</th></tr>
-<tr><td style="border:1px solid #333;padding:8px">Carrinho</td><td style="border:1px solid #333;padding:8px">E-mail</td><td style="border:1px solid #333;padding:8px">T+1h</td></tr>
-<tr><td style="border:1px solid #333;padding:8px">Cartão recusado</td><td style="border:1px solid #333;padding:8px">WhatsApp</td><td style="border:1px solid #333;padding:8px">Imediato</td></tr>
-<tr><td style="border:1px solid #333;padding:8px">Boleto</td><td style="border:1px solid #333;padding:8px">E-mail</td><td style="border:1px solid #333;padding:8px">T+3d</td></tr></table>`
+    'pagina/registro.html': landingHtml(
+      'Webinário',
+      `<div class="wrap">
+  <span class="kicker">Aula ao vivo · gratuita</span>
+  <h1>Como emagrecer sem recomeçar toda segunda-feira</h1>
+  <p class="lead">Reserve sua vaga · turma jul/2026</p>
+  <input class="input" placeholder="Seu nome" type="text">
+  <input class="input" placeholder="Seu melhor e-mail" type="email">
+  <input class="input" placeholder="WhatsApp com DDD" type="tel">
+  <a class="btn btn-block" href="#">RESERVAR MINHA VAGA</a>
+</div>`
     ),
-    'lancamento.html': brandHtml(
-      'PLF',
-      `<h1>Lançamento jul/2026</h1>
-<div class="card"><strong>PLC 1:</strong> Oportunidade — erro silencioso</div>
-<div class="card"><strong>PLC 2:</strong> Transformação — case Maria</div>
-<div class="card"><strong>PLC 3:</strong> Propriedade — aula ao vivo</div>
-<div class="card"><strong>Carrinho:</strong> 14–16/07 · R$ 497</div>`
+    'pagina/upsell.html': landingHtml(
+      'Upsell',
+      `<div class="wrap" style="text-align:center">
+  <span class="kicker" style="color:#22C7B1">Compra confirmada</span>
+  <h1>Espere — oferta exclusiva</h1>
+  <p class="lead">One-click · não precisa preencher de novo</p>
+  <div class="card card-accent"><strong>Programa Avançado Fase 4</strong><p>De R$ 497 por <span class="price-now">R$ 197</span></p></div>
+  <a class="btn btn-block" href="#">SIM, QUERO ADICIONAR</a>
+  <a class="btn btn-ghost btn-block" href="downsell.html">Não, obrigada</a>
+</div>`
     ),
-    'cro.html': brandHtml(
-      'CRO',
-      `<h1>KPIs e teste A/B</h1>
-<table style="width:100%;border-collapse:collapse"><tr><th style="border:1px solid #333;padding:8px">Etapa</th><th style="border:1px solid #333;padding:8px">Meta</th></tr>
-<tr><td style="border:1px solid #333;padding:8px">Quiz → lead</td><td style="border:1px solid #333;padding:8px">35%</td></tr>
-<tr><td style="border:1px solid #333;padding:8px">Checkout → compra</td><td style="border:1px solid #333;padding:8px">25%</td></tr></table>
-<div class="card"><strong>Teste ativo:</strong> Headline A vs B (mín. 1.000 views/variante)</div>`
+    'pagina/downsell.html': landingHtml(
+      'Downsell',
+      `<div class="wrap" style="text-align:center">
+  <span class="kicker">Última chance</span>
+  <h1>Pack Receitas Premium</h1>
+  <p class="lead">30 receitas anti-sanfona · prontas em 15 min</p>
+  <div class="card"><span class="price-now">R$ 47</span></div>
+  <a class="btn btn-block" href="#">QUERO O PACK</a>
+</div>`
     ),
-    'conteudo/roteiros.html': brandHtml('Roteiros', `<h1>Semana 1</h1><p>${ttHook}</p>`),
-    'bonus/checklist-semanal.html': brandHtml('Checklist', '<h1>Checklist Semanal</h1>'),
-    'bonus/ebook-anti-sanfona.html': brandHtml('E-book', '<h1>Anti-Sanfona</h1>'),
-    'bonus/workbook-fase1.html': brandHtml('Workbook', '<h1>Fase 1</h1>'),
+    'emails/convite.html': emailHtml(
+      'Você foi convidada para o diagnóstico gratuito',
+      `<p>Descubra seu perfil de emagrecimento em 5 perguntas.</p>
+<p>Resultado personalizado + oferta casada ao seu diagnóstico.</p>
+<a class="btn btn-block" href="#">FAZER O DIAGNÓSTICO</a>`
+    ),
+    'emails/nutricao.html': emailHtml(
+      'Maria, você não falhou. A dieta falhou.',
+      `<p>Nos próximos dias vou te mostrar por que o efeito sanfona acontece.</p>
+<p>O problema não é força de vontade. É a ausência da <strong>Fase Manter</strong>.</p>
+<div class="card">Amanhã: o que acontece depois do dia 21.</div>`
+    ),
+    'emails/venda.html': emailHtml(
+      'Últimas vagas — Método Consistência 90',
+      `<p>Turma jul/2026 · <span class="price-now">R$ 497</span> · garantia 30 dias</p>
+<ul><li>Programa 90 dias + comunidade</li><li>3 bônus inclusos</li></ul>
+<a class="btn btn-block" href="#">GARANTIR MINHA VAGA</a>`
+    ),
+    'recuperacao.html': documentHtml('Recuperação', 'recuperacao-funil', depth.recuperacaoMd, { accent: '#F59E0B' }),
+    'lancamento.html': documentHtml('Lançamento PLF', 'lancamento-funil', depth.lancamentoMd),
+    'cro.html': documentHtml('CRO', 'cro-funil', depth.croMd),
+    'conteudo/roteiros.html': documentHtml('Roteiros', 'conteudo-funil', depth.conteudoRoteirosMd),
+    'bonus/checklist-semanal.html': documentHtml('Checklist Semanal', 'bonus-funil', depth.bonusChecklistMd),
+    'bonus/ebook-anti-sanfona.html': documentHtml('E-book Anti-Sanfona', 'bonus-funil', depth.bonusEbookMd),
+    'bonus/workbook-fase1.html': documentHtml('Workbook Fase 1', 'bonus-funil', depth.bonusWorkbookMd),
     'criativos/banners/feed-4x5-hook-a.html': bannerHtml(1080, 1350, 'Feed', ttHook, 'Fazer diagnóstico'),
     'criativos/banners/story-9x16-hook-b.html': bannerHtml(1080, 1920, 'Story', igHook, 'Link na bio'),
     'criativos/banners/quadrado-1x1-stack.html': bannerHtml(1080, 1080, 'Quadrado', 'Método Consistência 90', 'R$ 497'),

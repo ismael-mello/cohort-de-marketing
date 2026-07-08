@@ -1,6 +1,6 @@
 # Variações de Hook
 
-## A (TikTok 5,2M)
+## A (TikTok)
 "Tienes alguno de éstos síntomas? #adrianamontmenopausia #perimenopausi"
 
 ## B (Instagram)

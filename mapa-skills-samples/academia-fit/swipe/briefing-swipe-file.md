@@ -1,4 +1,4 @@
-# Briefing Swipe
+# Briefing Swipe File
 
 ## Padrões Apify
 | @emagrecerdevez | 4142 likes | "Vitamina B12: você está recebendo o suficiente? 😱💊 Fundamental para energia,..." |
