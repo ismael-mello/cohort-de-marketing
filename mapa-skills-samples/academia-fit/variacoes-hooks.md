@@ -1,10 +1,9 @@
-# Variações de Hook — prontas pra teste
+# Variações de Hook
 
-## Variação A (curiosidade)
-"O erro silencioso que faz 9 em 10 mulheres voltarem ao peso antigo"
+## A (TikTok 5,2M)
+"Tienes alguno de éstos síntomas? #adrianamontmenopausia #perimenopausi"
 
-## Variação B (confissão)
-"Parei de me pesar todo dia. Em 90 dias perdi 8kg."
+## B (Instagram)
+"Vitamina B12: você está recebendo o suficiente? 😱💊"
 
-## Vencedor provável
-Variação A — baseado em engajamento do nicho.
+## Vencedor: A

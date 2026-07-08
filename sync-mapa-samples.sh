@@ -20,12 +20,12 @@ echo ""
 
 mkdir -p "$DST"
 rsync -a --delete \
-  --include='*.md' --include='*.html' --include='*.pdf' --include='*.json' \
+  --include='*.md' --include='*.html' --include='*.pdf' --include='*.json' --include='*.png' \
   --include='*/' --exclude='*' \
   "$SRC/" "$DST/"
 
 echo "Copiados:"
-find "$DST" -type f \( -name '*.md' -o -name '*.html' -o -name '*.pdf' -o -name '*.json' \) | sort
+find "$DST" -type f \( -name '*.md' -o -name '*.html' -o -name '*.pdf' -o -name '*.json' -o -name '*.png' \) | sort
 
 echo ""
 echo "Regenerando PDFs..."

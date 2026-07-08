@@ -1,1 +1,35 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Quiz</title><style>body{font-family:Inter,sans-serif;background:#0A0A0F;color:#F5F0FF;margin:0;padding:40px}.wrap{max-width:720px;margin:0 auto}h1{color:#7C3AED}.card{background:#121218;border:1px solid #27272A;border-radius:12px;padding:16px;margin:12px 0}button{background:#7C3AED;color:#F5F0FF;border:none;padding:12px 24px;border-radius:12px;font-weight:600}</style></head><body><div class="wrap"><h1>Qual seu perfil de emagrecimento?</h1><div class="card"><p>Pergunta 1/5: Quantas dietas você já tentou?</p></div><button>Continuar</button><p style="color:#666;font-size:0.8rem;margin-top:32px">Academia Fit · 07/07/2026</p></div></body></html>
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Quiz — Perfil de emagrecimento</title>
+<style>body{font-family:Inter,sans-serif;background:#0A0A0F;color:#F5F0FF;margin:0;padding:40px}
+.wrap{max-width:720px;margin:0 auto}h1{color:#7C3AED}.card{background:#121218;border:1px solid #27272A;border-radius:12px;padding:16px;margin:12px 0}
+button{background:#7C3AED;color:#F5F0FF;border:none;padding:12px 24px;border-radius:12px;font-weight:600}
+</style></head><body><div class="wrap"><h1>Qual seu perfil de emagrecimento?</h1>
+<div class="card" id="q1"><strong>1/5</strong> Quantas dietas você já tentou?<br><br>
+<label><input type="radio" name="q1" onclick="sel(1,'e')"> Nenhuma</label><br>
+<label><input type="radio" name="q1" onclick="sel(1,'r')"> 1 a 3</label><br>
+<label><input type="radio" name="q1" onclick="sel(1,'p')"> Mais de 3</label></div>
+<div class="card" id="q2"><strong>2/5</strong> O que mais te frustra?<br><br>
+<label><input type="radio" onclick="sel(2,'e')"> Efeito sanfona</label><br>
+<label><input type="radio" onclick="sel(2,'r')"> Falta de método claro</label><br>
+<label><input type="radio" onclick="sel(2,'p')"> Falta de tempo</label></div>
+<div class="card" id="q3"><strong>3/5</strong> Tempo por dia?<br><br>
+<label><input type="radio" onclick="sel(3,'p')"> 10–15 min</label><br>
+<label><input type="radio" onclick="sel(3,'r')"> 30 min</label><br>
+<label><input type="radio" onclick="sel(3,'e')"> 1h+</label></div>
+<div class="card" id="q4"><strong>4/5</strong> Já teve efeito sanfona?<br><br>
+<label><input type="radio" onclick="sel(4,'e')"> Sim, várias vezes</label><br>
+<label><input type="radio" onclick="sel(4,'r')"> Uma vez</label><br>
+<label><input type="radio" onclick="sel(4,'p')"> Não</label></div>
+<div class="card" id="q5"><strong>5/5</strong> O que te motiva mais?<br><br>
+<label><input type="radio" onclick="sel(5,'e')"> Autoestima</label><br>
+<label><input type="radio" onclick="sel(5,'r')"> Saúde e exames</label><br>
+<label><input type="radio" onclick="sel(5,'p')"> Praticidade</label></div>
+<button onclick="finish()">VER MEU RESULTADO</button>
+<script>
+const scores={e:0,r:0,p:0};
+function sel(q,v){scores[v]++;}
+function finish(){
+  const m=Math.max(scores.e,scores.r,scores.p);
+  if(scores.e===m) location.href='resultado-emocional.html';
+  else if(scores.r===m) location.href='resultado-racional.html';
+  else location.href='resultado-pragmatico.html';
+}</script></div></body></html>

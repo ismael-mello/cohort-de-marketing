@@ -29,6 +29,7 @@ Lembrete: a frase/legenda do post entra como o autor escreveu (verbatim).
 import argparse
 import json
 import os
+import ssl
 import sys
 import urllib.request
 import urllib.error
@@ -37,7 +38,22 @@ API = "https://api.apify.com/v2"
 
 # Actors usados (id na URL usa ~ no lugar de /)
 ACTOR_INSTAGRAM = "apify~instagram-scraper"
+ACTOR_INSTAGRAM_POSTS = "apify~instagram-post-scraper"
 ACTOR_TIKTOK = "clockworks~free-tiktok-scraper"
+
+
+def ssl_context():
+    """macOS Python costuma falhar CERTIFICATE_VERIFY_FAILED; usa certifi se existir."""
+    try:
+        import certifi  # type: ignore
+
+        return ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        pass
+    try:
+        return ssl.create_default_context()
+    except Exception:
+        return ssl._create_unverified_context()
 
 
 def ler_token() -> str:
@@ -85,7 +101,7 @@ def rodar_actor(actor: str, payload: dict, token: str, limite_seg: int = 280):
         url, data=body, headers={"Content-Type": "application/json"}, method="POST"
     )
     try:
-        with urllib.request.urlopen(req, timeout=limite_seg + 20) as resp:
+        with urllib.request.urlopen(req, timeout=limite_seg + 20, context=ssl_context()) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
         detalhe = e.read().decode("utf-8", "ignore")[:400]
@@ -110,12 +126,19 @@ def cmd_instagram_hashtag(termo: str, limite: int, token: str):
 
 
 def cmd_instagram_profile(url: str, limite: int, token: str):
+    """Perfil/posts: instagram-post-scraper (username[]) — instagram-scraper retorna not_found."""
+    alvo = url.strip().rstrip("/")
+    if "instagram.com" in alvo:
+        user = alvo.split("instagram.com/")[-1].split("/")[0].lstrip("@")
+    else:
+        user = alvo.lstrip("@")
     payload = {
-        "directUrls": [url],
-        "resultsType": "posts",
+        "username": [user],
         "resultsLimit": limite,
+        "dataDetailLevel": "basicData",
+        "onlyPostsNewerThan": "6 months",
     }
-    return rodar_actor(ACTOR_INSTAGRAM, payload, token)
+    return rodar_actor(ACTOR_INSTAGRAM_POSTS, payload, token)
 
 
 def cmd_tiktok_hashtag(termo: str, limite: int, token: str):
@@ -144,6 +167,7 @@ def main():
         choices=[
             "instagram-hashtag",
             "instagram-profile",
+            "instagram-posts",
             "tiktok-hashtag",
             "tiktok-profile",
             "run",
@@ -163,6 +187,15 @@ def main():
         itens = cmd_instagram_hashtag(args.alvo, args.limit, token)
     elif args.modo == "instagram-profile":
         itens = cmd_instagram_profile(args.alvo, args.limit, token)
+    elif args.modo == "instagram-posts":
+        users = [u.strip() for u in args.alvo.split(",") if u.strip()]
+        payload = {
+            "username": users,
+            "resultsLimit": args.limit,
+            "dataDetailLevel": "basicData",
+            "onlyPostsNewerThan": "6 months",
+        }
+        itens = rodar_actor(ACTOR_INSTAGRAM_POSTS, payload, token)
     elif args.modo == "tiktok-hashtag":
         itens = cmd_tiktok_hashtag(args.alvo, args.limit, token)
     elif args.modo == "tiktok-profile":
