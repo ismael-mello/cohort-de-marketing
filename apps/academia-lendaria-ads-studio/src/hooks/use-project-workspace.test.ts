@@ -259,8 +259,10 @@ describe('use-project-workspace — hidratação e criação', () => {
     const input = {
       schemaVersion: '0.1.0' as const,
       project: { slug: 'importado', name: 'Projeto Importado' },
-      data: { count: 0, enabled: false, state: 'unknown' },
-      fieldMeta: { 'data.enabled': { source: 'user' } },
+      data: { visitors: 0 },
+      brand: { approvedDirection: false },
+      integrations: { apifyStatus: 'unknown' },
+      fieldMeta: { 'brand.approvedDirection': { source: 'user' } },
       artifacts: { offerbook: true },
     };
     const projectId = await controller.importProjectBrief(input);
@@ -307,12 +309,13 @@ describe('use-project-workspace — hidratação e criação', () => {
   it('retoma declarações de artefato após falha sem sobrescrever um projeto completo', async () => {
     const base = createFakeRepository();
     const upsertArtifact = vi.fn()
+      .mockImplementationOnce(base.upsertArtifact)
       .mockRejectedValueOnce(new Error('artefato indisponível'))
       .mockImplementation(base.upsertArtifact);
     const repository: ProjectRepository = { ...base, upsertArtifact };
     const firstStore = createProjectStore({ demoEnabled: false });
     const first = createProjectWorkspaceController({ workspaceId: WORKSPACE_ID, repository, store: firstStore, demoEnabled: false });
-    const input = { schemaVersion: '0.1.0' as const, project: { slug: 'retomavel' }, artifacts: { offerbook: true } };
+    const input = { schemaVersion: '0.1.0' as const, project: { slug: 'retomavel' }, artifacts: { offerbook: true, design: true } };
 
     await expect(first.importProjectBrief(input)).rejects.toThrow('artefato indisponível');
     expect(firstStore.getState().projects).toHaveLength(0);
@@ -328,7 +331,10 @@ describe('use-project-workspace — hidratação e criação', () => {
     const retry = createProjectWorkspaceController({ workspaceId: WORKSPACE_ID, repository, store: retryStore, demoEnabled: false });
     const projectId = await retry.importProjectBrief(input);
     expect(retryStore.getState().projects[0]?.id).toBe(projectId);
-    expect(retryStore.getState().artifacts[0]?.artifactType).toBe('offerbook');
+    expect(new Set(retryStore.getState().artifacts.map((artifact) => artifact.artifactType))).toEqual(new Set(['offerbook', 'design']));
+    const persistedArtifacts = await repository.listArtifacts(WORKSPACE_ID, projectId);
+    expect(persistedArtifacts).toHaveLength(2);
+    expect(new Set(persistedArtifacts.map((artifact) => artifact.artifactType))).toEqual(new Set(['offerbook', 'design']));
 
     await expect(retry.importProjectBrief(input)).rejects.toBeInstanceOf(RevisionConflictError);
     retry.destroy();

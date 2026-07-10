@@ -77,12 +77,14 @@ touched_paths:
   de slug sem sobrescrita.
 - A hidratação ignora transações interrompidas sem pointer ativo, evitando que
   um projeto parcial apareça na UI entre a falha e a retomada.
+- Retomadas reutilizam o `id` de declarações de artefato já persistidas, e a
+  validação percorre o schema canônico até os campos aninhados antes de gravar.
 - Conflitos de slug/revisão são rejeitados sem sobrescrita; valores `0`, `false`, `unknown` e `not_applicable` permanecem intactos.
 
 ## Evidências
 
-- Testes focados: 4 arquivos, 26 testes — PASS.
-- Suíte completa: `npm test` — 33 arquivos, 274 testes — PASS.
+- Testes focados finais: 3 arquivos, 22 testes — PASS.
+- Suíte completa: `npm test` — 33 arquivos, 276 testes — PASS.
 - `npm run lint` — PASS.
 - `VITE_SUPABASE_URL=http://localhost:54321 VITE_SUPABASE_ANON_KEY=test-anon-key npm run typecheck` — PASS.
 - `VITE_SUPABASE_URL=http://localhost:54321 VITE_SUPABASE_ANON_KEY=test-anon-key npm run build` — PASS.
@@ -91,9 +93,12 @@ touched_paths:
 
 ## QA Gate
 
-**Veredito:** PASS em 2026-07-10. Nenhum finding P0/P1/P2.
+**Veredito:** PASS em 2026-07-10. Nenhum finding aberto P0/P1/P2.
 
 - Sucesso, migração, conflito de slug, retomada após falha parcial sem atualização
   de cache, round-trip em novo controller e regressões de tipos foram cobertos.
 - O typecheck detectou e foi corrigido o seam de compatibilidade dos consumidores existentes do contexto; lint e builds finais passaram.
+- A primeira revisão Codex encontrou dois P2: duplicação de declaração na
+  retomada e validação aninhada incompleta. Ambos foram fechados com reuso de ID,
+  validação pelo schema canônico e testes de regressão.
 - Não houve alteração fora dos `touched_paths`, nem uso de `OPENAI_API_KEY`/`CODEX_API_KEY`.

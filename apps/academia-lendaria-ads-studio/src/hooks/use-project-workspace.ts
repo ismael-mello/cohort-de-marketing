@@ -263,17 +263,23 @@ export function createProjectWorkspaceController(deps: ProjectWorkspaceDeps): Pr
       data: migrated.document.data,
       fieldSources: migrated.document.fieldSources,
     });
+    const persistedArtifacts = existing ? await repository.listArtifacts(workspaceId, project.id) : [];
     const declarations = await Promise.all(
-      migrated.declaredArtifactTypes.map((artifactType) => repository.upsertArtifact({
-        workspaceId,
-        projectId: project.id,
-        artifactType,
-        title: artifactType,
-        format: 'other',
-        state: 'proposal',
-        verification: 'pending',
-        source: 'migration',
-      })),
+      migrated.declaredArtifactTypes.map((artifactType) => {
+        const persisted = persistedArtifacts.find((artifact) =>
+          artifact.artifactType === artifactType && artifact.source === 'migration');
+        return repository.upsertArtifact({
+          ...(persisted ? { id: persisted.id } : {}),
+          workspaceId,
+          projectId: project.id,
+          artifactType,
+          title: artifactType,
+          format: 'other',
+          state: 'proposal',
+          verification: 'pending',
+          source: 'migration',
+        });
+      }),
     );
     const updatedProject = await repository.updateProject(workspaceId, project.id, {
       activeBriefRevisionId: brief.id,

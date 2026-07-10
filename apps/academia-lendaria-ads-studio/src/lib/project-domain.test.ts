@@ -41,21 +41,39 @@ describe('project domain', () => {
       {
         schemaVersion: '0.1.0',
         project: { slug: 'preserve-values' },
-        data: { zero: 0, disabled: false, unknown: 'unknown', not_applicable: 'not_applicable' },
-        fieldMeta: { 'data.not_applicable': { source: 'not_applicable' } },
+        data: { visitors: 0 },
+        brand: { approvedDirection: false },
+        integrations: { apifyStatus: 'unknown' },
+        fieldMeta: { 'integrations.apifyStatus': { source: 'not_applicable' } },
       },
       { id: 'brief-2', workspaceId: 'workspace-1', projectId: 'project-2', now: '2026-07-09T00:00:00.000Z' },
     );
-    expect(result.document.data.data).toEqual({ zero: 0, disabled: false, unknown: 'unknown', not_applicable: 'not_applicable' });
-    expect(result.document.fieldSources['data.not_applicable']?.confirmation).toBe('not_applicable');
+    expect(result.document.data.data).toEqual({ visitors: 0 });
+    expect(result.document.data.brand).toEqual({ approvedDirection: false });
+    expect(result.document.data.integrations).toEqual({ apifyStatus: 'unknown' });
+    expect(result.document.fieldSources['integrations.apifyStatus']?.confirmation).toBe('not_applicable');
   });
 
   it('returns every invalid field path without changing the source document', () => {
     const source = { schemaVersion: '0.1.0', project: { slug: 'Bad Slug' }, artifacts: { offerbook: 'yes' } };
     expect(validateLegacyBrief(source)).toEqual([
-      { path: 'project.slug', message: 'é obrigatório e deve usar slug minúsculo com hífens.' },
+      { path: 'project.slug', message: 'não corresponde ao formato esperado.' },
       { path: 'artifacts.offerbook', message: 'deve ser booleano.' },
     ]);
     expect(source).toEqual({ schemaVersion: '0.1.0', project: { slug: 'Bad Slug' }, artifacts: { offerbook: 'yes' } });
+  });
+
+  it('rejects malformed nested project and field metadata values', () => {
+    expect(validateLegacyBrief({
+      schemaVersion: '0.1.0',
+      project: { slug: 'valido', name: {}, unknownField: 'x' },
+      fieldMeta: { 'project.slug': { source: 'invalid', updatedAt: 42, extra: true } },
+    })).toEqual(expect.arrayContaining([
+      { path: 'project.name', message: 'deve ser texto.' },
+      { path: 'project.unknownField', message: 'campo não permitido.' },
+      { path: 'fieldMeta.project.slug.source', message: expect.stringContaining('deve ser um de:') },
+      { path: 'fieldMeta.project.slug.updatedAt', message: 'deve ser texto.' },
+      { path: 'fieldMeta.project.slug.extra', message: 'campo não permitido.' },
+    ]));
   });
 });
