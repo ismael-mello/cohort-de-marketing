@@ -44,6 +44,7 @@ vi.mock('@/stores/spoke-store', () => ({
 }));
 
 import { Dashboard } from '@/components/dashboard';
+import { resolveUnifiedProjectsHref } from '@/lib/legacy-cutover';
 
 beforeEach(() => {
   insertSingle.mockReset();
@@ -90,12 +91,31 @@ describe('Dashboard (Tela 0)', () => {
     expect(await screen.findByText('Nova campanha')).toBeInTheDocument();
   });
 
-  it('AC3: faixa de alertas do monitor inicia vazia e oculta', async () => {
+  it('AC3: faixa de alertas do monitor inicia com estado vazio profissional', async () => {
     selectThen.mockReturnValue({ data: [], error: null });
 
     render(<Dashboard />);
 
-    expect(screen.queryByTestId('monitor-alerts-empty')).not.toBeInTheDocument();
+    expect(screen.getByTestId('monitor-alerts-empty')).toBeInTheDocument();
+    expect(screen.getByText('Nenhum alerta pendente')).toBeInTheDocument();
     expect(screen.queryByText(/Epic 5|Story 5\.2/i)).not.toBeInTheDocument();
+  });
+});
+
+describe('resolveUnifiedProjectsHref', () => {
+  const linkedCampaign: AdsCampaign = {
+    ...SAMPLE,
+    id: 'campaign-linked',
+    project_id: 'project-linked',
+  };
+
+  it('preserves an unknown campaign id in the legacy fallback', () => {
+    expect(resolveUnifiedProjectsHref([linkedCampaign], new Set(['project-linked']), 'does-not-exist'))
+      .toBe('/projects?legacyCampaignId=does-not-exist');
+  });
+
+  it('opens the linked unified project for a known campaign', () => {
+    expect(resolveUnifiedProjectsHref([linkedCampaign], new Set(['project-linked']), 'campaign-linked'))
+      .toBe('/projects/project-linked/overview?campaignId=campaign-linked');
   });
 });

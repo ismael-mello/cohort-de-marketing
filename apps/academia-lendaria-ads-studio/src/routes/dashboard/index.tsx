@@ -8,22 +8,24 @@ import { useSpokeStore } from '@/stores/spoke-store';
 import { LoginForm } from '@/components/login-form';
 import { SpokeSelector } from '@/components/spoke-selector';
 import { Dashboard } from '@/components/dashboard';
+import { ProjectHydrationBoundary } from '@/components/project-hydration-boundary';
 import type { AdsCampaign } from '@/lib/types';
 
 /**
  * Rota da Home / Dashboard — Tela 0 (STORY-AL-ADS-1.4).
  *
  * Hospeda o shell autenticado (REUSE da 1.2: useAuth, useSpokes, SpokeSelector,
- * LoginForm) e o `Dashboard` (grid de campanhas + Nova campanha + alertas).
+ * LoginForm) e o `Dashboard` (grid de campanhas + Nova campanha + alertas persistidos).
  *
  * "+ Nova campanha" cria um draft e navega ao wizard no `step_current` da
- * campanha (AC2). A rota do wizard é das stories 1.5+; aqui navegamos para
- * `/campaigns/$campaignId/$step` (placeholder fundacional registrado nesta story).
+ * campanha (AC2). A rota do wizard é legada e permanece recuperável durante
+ * o cutover para o workspace unificado.
  */
 function DashboardPage() {
   const navigate = useNavigate();
   const { session, loading: authLoading } = useAuth();
   const reset = useSpokeStore((s) => s.reset);
+  const activeSpokeId = useSpokeStore((s) => s.activeSpokeId);
   const { loading: spokesLoading, error: spokesError } = useSpokes(Boolean(session));
 
   async function handleSignOut() {
@@ -75,7 +77,9 @@ function DashboardPage() {
       ) : spokesError ? (
         <p style={{ opacity: 0.7 }}>Falha ao carregar spokes: {spokesError}</p>
       ) : (
-        <Dashboard onNavigateToWizard={goToWizard} />
+        <ProjectHydrationBoundary workspaceId={activeSpokeId}>
+          <Dashboard onNavigateToWizard={goToWizard} />
+        </ProjectHydrationBoundary>
       )}
     </main>
   );

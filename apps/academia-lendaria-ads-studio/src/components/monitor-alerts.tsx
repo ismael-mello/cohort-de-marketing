@@ -1,30 +1,56 @@
-/**
- * Faixa de alertas do monitor na Home (AC3 — STORY-AL-ADS-1.4).
- *
- * Zona onde o monitor (passo 8) escala campanhas para revisão humana (ex.:
- * "CPA 2× acima do alvo — kill sugerido"). O monitor NÃO existe na fundação:
- * esta faixa é um placeholder honesto e fica oculta enquanto não há alertas
- * (brief Tela 0, estado "vazio": faixa de alertas vazia oculta).
- *
- * VÍNCULO: o conteúdo real (cards de alerta com HealthBadge + CTA "Revisar") é
- * fechado na Story 5.2 AC4 (cards do monitor na Home). Não inventamos alertas
- * nem dados de trigger aqui — só a estrutura vazia (Art. IV).
- */
+import type { MonitorAlert } from '@/lib/monitor-alerts';
+import { Icon } from '@/lib/lendaria-ds';
+
 export interface MonitorAlertsProps {
-  /**
-   * Lista de alertas escalados pelo monitor. Vazia na fundação (sem monitor).
-   * A forma concreta do alerta é definida na Story 5.2; tipamos como `unknown[]`
-   * para não especular o schema antes da hora.
-   */
-  alerts?: unknown[];
+  alerts?: readonly MonitorAlert[];
 }
 
 export function MonitorAlerts({ alerts = [] }: MonitorAlertsProps) {
-  // Estado vazio: faixa oculta (brief Tela 0). Sem monitor, nada a mostrar.
-  if (alerts.length === 0) {
-    return null;
-  }
+  return (
+    <section className="cms-section asx-monitor-alerts" aria-labelledby="monitor-alerts-title" data-testid="monitor-alerts">
+      <div className="cms-section__head">
+        <div>
+          <span className="cms-kicker">Operação semanal</span>
+          <h2 id="monitor-alerts-title">Alertas para revisão</h2>
+        </div>
+        <span className="cms-live-status"><span /> Somente recomendação</span>
+      </div>
 
-  // Render real dos cards de alerta: Story 5.2. Por ora, nunca alcançado.
-  return null;
+      {alerts.length === 0 ? (
+        <div className="asx-monitor-empty" data-testid="monitor-alerts-empty">
+          <Icon name="check-circle" size={24} color="var(--success)" />
+          <strong>Nenhum alerta pendente</strong>
+          <p>A operação semanal não registrou recomendações para revisão.</p>
+        </div>
+      ) : (
+        <div className="asx-monitor-queue" style={{ display: 'grid', gap: '12px' }}>
+          {alerts.map((alert) => (
+            <article key={alert.id} data-testid="monitor-alert-card" data-severity={alert.severity}>
+              <div className="asx-monitor-impact">
+                <Icon name="warning-triangle" size={13} />
+                <span>{alert.severity === 'critical' ? 'Revisão prioritária' : 'Revisão recomendada'}</span>
+              </div>
+              <strong>{alert.campaignName}</strong>
+              <p>
+                <span className="cms-kicker">Hipótese</span>
+                {alert.hypothesis}
+              </p>
+              <div className="cms-compact-list" aria-label={`Evidências de ${alert.campaignName}`}>
+                {alert.evidence.map((evidence) => (
+                  <div className="cms-compact-row" key={`${evidence.kind}-${evidence.label}-${evidence.value}`}>
+                    <span><strong>{evidence.label}</strong><small>{evidence.source}</small></span>
+                    <span>{evidence.value}</span>
+                  </div>
+                ))}
+              </div>
+              <a className="al-btn al-btn--primary cms-action-link" href={alert.cta.href}>
+                {alert.cta.label}
+                <Icon name="nav-arrow-right" size={13} />
+              </a>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+  );
 }

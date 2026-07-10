@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button, Alert } from '@/lib/lendaria-ds';
 import { DEMO_AUTH_ENABLED, getDemoCampaigns } from '@/lib/demo-mode';
 import { supabase } from '@/lib/supabase';
@@ -7,16 +7,18 @@ import { useCreateCampaign } from '@/lib/use-create-campaign';
 import { CampaignCard } from '@/components/campaign-card';
 import { MonitorAlerts } from '@/components/monitor-alerts';
 import type { AdsCampaign } from '@/lib/types';
+import { projectMonitorAlerts } from '@/lib/monitor-alerts';
+import { resolveUnifiedProjectsHref } from '@/lib/legacy-cutover';
+import { useProjectStore } from '@/stores/project-store';
 
 /**
  * Dashboard / Home — Tela 0 (STORY-AL-ADS-1.4).
  *
  * Centro de comando da conta/spoke ativa:
- *  - AC1: lista campanhas do spoke ativo com status/CPA/ROAS/gasto (placeholders
- *    honestos — sem métricas até o Epic 5).
+ *  - AC1: lista campanhas do spoke ativo com status e estado de dados honesto.
  *  - AC2: botão "Nova campanha" cria um draft (status=draft, step_current=1) e
  *    entra no wizard.
- *  - AC3: faixa de alertas do monitor (placeholder vazio até a Story 5.2).
+ *  - AC3: alertas derivados da operação semanal persistida, sempre para revisão humana.
  *  - AC4: isolamento por spoke herdado da RLS (1.2) — a query usa o cliente
  *    RLS-aware + `workspace_id` do spoke ativo; o front nunca reimplementa a
  *    regra de isolamento.
@@ -36,6 +38,9 @@ export interface DashboardProps {
 
 export function Dashboard({ onNavigateToWizard }: DashboardProps) {
   const activeSpokeId = useSpokeStore((s) => s.activeSpokeId);
+  const projects = useProjectStore((s) => s.projects);
+  const weeklyPanels = useProjectStore((s) => s.weeklyPanels);
+  const artifacts = useProjectStore((s) => s.artifacts);
   const [campaigns, setCampaigns] = useState<AdsCampaign[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -58,7 +63,7 @@ export function Dashboard({ onNavigateToWizard }: DashboardProps) {
 
     supabase
       .from('ads_campaigns')
-      .select('id, workspace_id, name, status, step_current, created_at')
+      .select('id, workspace_id, project_id, name, status, step_current, created_at')
       .eq('workspace_id', activeSpokeId)
       .order('created_at', { ascending: false })
       .then(({ data, error: err }) => {
@@ -77,6 +82,17 @@ export function Dashboard({ onNavigateToWizard }: DashboardProps) {
     };
   }, [activeSpokeId]);
 
+  const monitorAlerts = useMemo(
+    () => projectMonitorAlerts({ panels: weeklyPanels, campaigns, artifacts }),
+    [artifacts, campaigns, weeklyPanels],
+  );
+  const queryCampaignId = typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('campaignId');
+  const unifiedHref = resolveUnifiedProjectsHref(
+    campaigns,
+    new Set(projects.map((project) => project.id)),
+    queryCampaignId,
+  );
+
   async function handleNewCampaign() {
     if (!activeSpokeId) return;
     // Nome provisório; o wizard (1.5+) deixa o usuário renomear no passo 1.
@@ -89,9 +105,17 @@ export function Dashboard({ onNavigateToWizard }: DashboardProps) {
 
   return (
     <section data-testid="dashboard">
-      {/* AC3 — faixa de alertas do monitor (placeholder até a Story 5.2). */}
+      <div
+        data-testid="unified-cutover-bridge"
+        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', padding: '0.75rem 1rem', border: '1px solid var(--hairline)', borderRadius: 'var(--radius-base)' }}
+      >
+        <span>O workspace unificado reúne projetos, campanhas e operação semanal.</span>
+        <a className="al-btn al-btn--outline cms-action-link" href={unifiedHref}>Abrir projetos</a>
+      </div>
+
+      {/* Alertas projetados somente a partir de painéis semanais persistidos. */}
       <div style={{ marginBottom: '1.5rem' }}>
-        <MonitorAlerts />
+        <MonitorAlerts alerts={monitorAlerts} />
       </div>
 
       {/* Header da seção campanhas + botão primário (AC2). */}

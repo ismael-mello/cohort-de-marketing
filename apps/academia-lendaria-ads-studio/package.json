@@ -17,6 +17,7 @@
     "build:server": "tsc -p tsconfig.server.json",
     "typecheck": "tsc -b",
     "test": "vitest run",
+    "test:e2e": "node e2e/story-8-w3-2.mjs",
     "test:watch": "vitest",
     "test:visual": "node scripts/visual-qa.mjs",
     "test:db": "supabase test db",

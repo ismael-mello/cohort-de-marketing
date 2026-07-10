@@ -31,6 +31,7 @@ interface CampaignPublicationStepProps {
   onBack?: () => void;
   onNavigateStep?: (targetStep: number) => void;
   onAdvanced?: (targetStep: number) => void;
+  readOnly?: boolean;
 }
 
 const SCENARIOS: Array<{ value: PublicationScenario; label: string }> = [
@@ -44,6 +45,7 @@ export function CampaignPublicationStep({
   onBack,
   onNavigateStep,
   onAdvanced,
+  readOnly = false,
 }: CampaignPublicationStepProps) {
   const [state, setState] = useState<CampaignPublicationState>(() => defaultCampaignPublicationState());
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -131,22 +133,24 @@ export function CampaignPublicationStep({
 
   return (
     <div className="asx-publication">
-      <div className="asx-publication-scenarios">
-        <span>Demo · cenário do agente</span>
-        <div>
-          {SCENARIOS.map((scenario) => (
-            <button
-              type="button"
-              key={scenario.value}
-              className={state.scenario === scenario.value ? 'is-active' : ''}
-              aria-pressed={state.scenario === scenario.value}
-              onClick={() => commit(resetPublicationScenario(state, scenario.value))}
-            >
-              {scenario.label}
-            </button>
-          ))}
+      {!readOnly ? (
+        <div className="asx-publication-scenarios">
+          <span>Demo · cenário do agente</span>
+          <div>
+            {SCENARIOS.map((scenario) => (
+              <button
+                type="button"
+                key={scenario.value}
+                className={state.scenario === scenario.value ? 'is-active' : ''}
+                aria-pressed={state.scenario === scenario.value}
+                onClick={() => commit(resetPublicationScenario(state, scenario.value))}
+              >
+                {scenario.label}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      ) : null}
 
       <div className="asx-publication-layout">
         <div className="asx-publication-left">
@@ -177,7 +181,12 @@ export function CampaignPublicationStep({
         </div>
 
         <aside className="asx-publication-agent">
-          {state.status === 'idle' ? (
+          {readOnly ? (
+            <div className="asx-publication-blocked" data-testid="legacy-publication-read-only">
+              <div><Icon name="shield-check" size={14} /> <strong>Revisão no projeto unificado</strong></div>
+              <p>O consolidado permanece disponível aqui. Continue pela ponte acima para revisar a submissão sem alterar a campanha nesta rota.</p>
+            </div>
+          ) : state.status === 'idle' ? (
             <>
               <div className="asx-publication-agent__title">Publicar via agente · CLI meta-ads</div>
               <button
