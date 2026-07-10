@@ -1,5 +1,5 @@
 ---
-status: Draft
+status: Ready
 story_id: "9.W2.1"
 title: "Intake seguro de artefatos do filesystem"
 epic: 9

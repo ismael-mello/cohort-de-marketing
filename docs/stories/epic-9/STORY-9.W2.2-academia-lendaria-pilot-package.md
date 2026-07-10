@@ -1,5 +1,5 @@
 ---
-status: Draft
+status: Ready
 story_id: "9.W2.2"
 title: "Pacote piloto da Academia Lendária"
 epic: 9
