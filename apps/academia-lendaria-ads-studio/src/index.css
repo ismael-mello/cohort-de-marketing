@@ -36,7 +36,28 @@
 
 .local-first-run {
   margin-bottom: 1.5rem;
-  border-color: hsl(var(--primary-hsl) / 0.42);
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid hsl(var(--primary-hsl) / 0.42);
+}
+
+.local-first-run__header {
+  margin-bottom: 1rem;
+}
+
+.local-first-run__header h2,
+.local-first-run__header p {
+  margin: 0;
+}
+
+.local-first-run__header h2 {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.local-first-run__header p {
+  margin-top: 0.25rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
 }
 
 .local-first-run__form {

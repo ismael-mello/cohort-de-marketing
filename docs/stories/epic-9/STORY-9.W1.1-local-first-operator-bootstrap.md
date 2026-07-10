@@ -84,6 +84,8 @@ touched_paths:
   são sanitizadas e não incluem senha, service role ou boundary token.
 - UI oferece o primeiro acesso na tela de login e, após a criação, chama
   `signInWithPassword`, deixando o fluxo normal abrir `Seus projetos`.
+- A composição do primeiro acesso é uma seção sem card próprio dentro do card
+  de login, preservando uma hierarquia visual única.
 
 ### Evidências
 
