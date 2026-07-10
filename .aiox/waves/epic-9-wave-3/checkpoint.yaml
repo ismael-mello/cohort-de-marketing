@@ -1,0 +1,36 @@
+schema_version: wave-checkpoint-v1
+epic_id: "9"
+wave_id: W3
+recorded_at: "2026-07-10"
+status: in_progress
+execution:
+  orchestrator: sinkra-wave-execute
+  implementation_runtime: codex-cli-local
+  api_key_used: false
+parallel_group_0:
+  - story_id: 9.W3.1
+    status: InProgress
+    commit: e737b25
+    result: observation_protocol_ready
+    remaining_gate: one real target operator must complete the route without development assistance
+  - story_id: 9.W3.2
+    status: Done
+    commit: f729653
+    result: qa_pass
+    evidence: docs/qa/epic-9-student-onboarding.md
+validation:
+  focused_tests: "12 passed"
+  typecheck: pass
+  lint: "pass with one pre-existing warning in concurrent use-project-workspace.ts changes"
+  playwright:
+    desktop: "1280x900 pass"
+    mobile: "390x844 pass"
+  field_schema:
+    pending_template: pass
+    rejects_pending_metrics: pass
+    rejects_pii: pass
+    rejects_duplicate_steps: pass
+next:
+  story_id: 9.W3.1
+  action: run the documented field session and sanitize the resulting evidence
+  unlocks: 9.W3.3
