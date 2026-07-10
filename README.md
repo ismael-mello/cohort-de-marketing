@@ -48,7 +48,7 @@ Da identidade visual ao funil montado: `/design-md` → `/metodo-funil` (o mapa 
 
 ### Aula 3 · Tráfego
 
-**Status:** em desenvolvimento no Marketing Studio. O Squad de Tráfego já possui cinco skills canônicas: `/zelador` → `/briefista` → `/estruturador` → `/leitor-de-metricas` → `/diagnosticador`. O modo Cohort prepara e recomenda; publicação e decisões continuam humanas.
+**Status:** operacional em piloto no Marketing Studio. As cinco skills canônicas — `/zelador` → `/briefista` → `/estruturador` → `/leitor-de-metricas` → `/diagnosticador` — já executam via Codex CLI local, com persistência, revisão humana e artefatos no projeto. O modo Cohort prepara e recomenda; publicação e decisões continuam humanas.
 
 ### Aula 4 · Dados
 

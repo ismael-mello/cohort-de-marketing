@@ -2,7 +2,11 @@
 
 ## Status
 
-Planejamento concluído. Nenhuma implementação deste plano foi iniciada.
+Implementado em 2026-07-10 no Marketing Studio. O produto unificado fechou as
+ondas funcionais e o Epic 8 entregou persistência Supabase, runtime durável via
+Codex CLI local, aprovação em duas fases, materialização no filesystem, piloto
+das cinco skills e launcher para não técnicos. Este documento permanece como
+registro do diagnóstico e das decisões de produto.
 
 ## Objetivo
 
@@ -393,6 +397,7 @@ PRD. O valor provisório não deve virar promessa de produto sem essa evidência
 
 ## Próximo ponto de retomada
 
-Começar pela `TRAF-BRIDGE-0`, sem tocar nas telas: promover o bundle, resolver o
-contrato do Leitor e registrar o ADR de autonomia. A primeira story de código só
-deve começar depois que esses três itens estiverem versionados e aprovados.
+Abrir o go-live da Aula 3: fechar hardenings pós-piloto, iniciar o Studio pelo
+launcher oficial, observar operadores não técnicos em projetos reais e medir
+conclusão sem assistência, tempo até campanha pronta e retomada após falha. O
+handoff para a Aula 4 começa somente depois desse aceite de campo.

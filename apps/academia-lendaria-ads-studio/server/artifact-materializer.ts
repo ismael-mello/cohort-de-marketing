@@ -156,6 +156,36 @@ export function canonicalizeRelativeArtifactPath(relativePath: string): string {
   return canonicalSegments.join('/');
 }
 
+/**
+ * Canonicalize a path relative to one project. Some skills historically
+ * returned the repository prefix (`projetos/{slug}/arquivo`) even though the
+ * materializer is already anchored at `projetos/{slug}/`. Accept that exact
+ * alias, but reject a prefix for another project instead of silently nesting
+ * or crossing project boundaries.
+ */
+export function canonicalizeProjectArtifactPath(projectSlug: string, relativePath: string): string {
+  assertValidSlug(projectSlug);
+  const canonicalPath = canonicalizeRelativeArtifactPath(relativePath);
+  const projectPrefix = `projetos/${projectSlug}/`;
+
+  if (!canonicalPath.startsWith('projetos/')) return canonicalPath;
+  if (!canonicalPath.startsWith(projectPrefix)) {
+    throw new ArtifactMaterializerError(
+      'invalid-relative-path',
+      `Caminho de artefato fora do projeto ${JSON.stringify(projectSlug)}: ${JSON.stringify(relativePath)}.`,
+    );
+  }
+
+  const projectRelativePath = canonicalPath.slice(projectPrefix.length);
+  if (!projectRelativePath) {
+    throw new ArtifactMaterializerError(
+      'invalid-relative-path',
+      `Caminho de artefato não aponta para um arquivo: ${JSON.stringify(relativePath)}.`,
+    );
+  }
+  return projectRelativePath;
+}
+
 function validateContentFormat(format: ArtifactFormat, content: string): void {
   if (format === 'json') {
     try {
@@ -188,7 +218,7 @@ export async function readSafeArtifactFile(
   slug: string,
   relativePath: string,
 ): Promise<string | null> {
-  const canonicalPath = canonicalizeRelativeArtifactPath(relativePath);
+  const canonicalPath = canonicalizeProjectArtifactPath(slug, relativePath);
   try {
     return await readConfinedArtifactFile(projectsRoot, slug, canonicalPath);
   } catch (error) {
@@ -218,7 +248,7 @@ export async function materializeArtifact(
   }
 
   assertValidSlug(request.projectSlug);
-  const canonicalPath = canonicalizeRelativeArtifactPath(request.relativePath);
+  const canonicalPath = canonicalizeProjectArtifactPath(request.projectSlug, request.relativePath);
   validateContentFormat(request.format, request.content);
 
   const hashAfter = sha256(request.content);

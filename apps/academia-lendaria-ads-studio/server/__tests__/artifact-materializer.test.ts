@@ -14,6 +14,7 @@ import { join } from 'node:path';
 import {
   ARTIFACT_WRITE_SCHEMA_VERSION,
   ArtifactMaterializerError,
+  canonicalizeProjectArtifactPath,
   materializeArtifact,
   readSafeArtifactFile,
   type ArtifactWriteRequest,
@@ -47,6 +48,22 @@ function request(overrides: Partial<ArtifactWriteRequest> = {}): ArtifactWriteRe
 }
 
 describe('materializeArtifact — escrita canônica (AC3/AC4)', () => {
+  it('aceita o alias projetos/{slug}/arquivo e o reduz ao caminho do projeto', async () => {
+    const req = request({ relativePath: 'projetos/cliente-x/briefing.md' });
+    const res = await materializeArtifact(req, { projectsRoot, now: FIXED_NOW });
+
+    expect(res.relativePath).toBe('briefing.md');
+    expect(res.audit.relativePath).toBe('briefing.md');
+    expect(await readFile(join(projectsRoot, 'cliente-x', 'briefing.md'), 'utf8')).toBe(req.content);
+    await expect(stat(join(projectsRoot, 'cliente-x', 'projetos'))).rejects.toMatchObject({ code: 'ENOENT' });
+  });
+
+  it('rejeita alias de outro projeto antes de escrever', () => {
+    expect(() => canonicalizeProjectArtifactPath('cliente-x', 'projetos/outro-cliente/briefing.md')).toThrow(
+      expect.objectContaining({ code: 'invalid-relative-path' }),
+    );
+  });
+
   it('grava markdown atomicamente e retorna before/after + auditoria', async () => {
     const req = request();
     const res = await materializeArtifact(req, { projectsRoot, now: FIXED_NOW });

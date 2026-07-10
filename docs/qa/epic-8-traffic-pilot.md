@@ -4,7 +4,7 @@ Story: **8.W3.1**
 
 Base: `4f05847f6d172cadf2e83befe69fed0d74d55f6c`
 
-Execução: 2026-07-10T16:39:10.841Z → 2026-07-10T16:42:41.940Z
+Execução: 2026-07-10T18:04:18.579Z → 2026-07-10T18:08:40.719Z
 
 Fixture: `story-8-w3-1-traffic-pilot` (workspace `81000000-0000-0000-0000-000000000031`, projeto `82000000-0000-0000-0000-000000000031`, campanha `84000000-0000-0000-0000-000000000031`)
 
@@ -20,11 +20,11 @@ Fixture: `story-8-w3-1-traffic-pilot` (workspace `81000000-0000-0000-0000-000000
 
 | Skill | Run DB | Tempo | Status | Decisões outbox | Artefatos / hash DB |
 |---|---|---:|---|---|---|
-| zelador | e5136f17-717f-4579-a3cb-20a75604ec6a | 21704 ms | done | approve/done | trafficTrackingAudit.json: 8a4ce3a200b66f9c9ddd621b8f5e435824395d336d2ee1cfb3c2c166654ea899 |
-| briefista | 1bfb0cc9-acf2-45db-a685-350e1dd24171 | 40583 ms | done | approve/done | briefista.bateria_gerada: 8820b0a3a3385f5c31072717d5f82c50fd898d2aa99cd715fae05f10f499db06 |
-| estruturador | fd2b4085-b7ea-4161-8f1d-489b99b099eb | 23440 ms | done | approve/done | generated/estruturador/fd2b4085-b7ea-4161-8f1d-489b99b099eb.yaml: 61dfcb267a4744b2473b5c01e109810e072328e06b4c9239821fb632c39091c8 |
-| leitor-de-metricas | 5622e4b0-5fb6-4af1-bace-d284fb5476be | 37968 ms | done | approve/done | generated/leitor-de-metricas/trafficMetricReading.yaml: 3977d386587a18c4e8a6c174d09c3b9981cb74614fac58cfc0fbad73d4971f61 |
-| diagnosticador | aa8cdea5-d777-4ce8-99ae-74bb27d3e694 | 44323 ms | done | approve/done | generated/diagnosticador/trafficDiagnosis.yaml: 33fed22273a19bbe07546b8ddbb273e57a032e9b1dbe5a589c4a514edfa8bb84 |
+| zelador | 864a3099-708c-44dc-adb6-cda26aadc26d | 38721 ms | done | approve/done | trafficTrackingAudit.yaml: ce971ef13845f4d8783b736150203f6f6f37468538d0d1cec8aa5adcd9794810 |
+| briefista | 0e416a17-f9d5-423e-bd40-9703ce10efe4 | 60422 ms | done | approve/done | briefista.bateria_gerada.yaml: 3830bb5306dfa0ece57ba0dfaa6a580bc95039d94fd037012a407a22c035871f<br>briefista.curadoria_pendente.yaml: 4440257257e34066984935914da0e0d2148548101c7da3381e4455dd462833a9 |
+| estruturador | 02bcdfae-39b6-448e-bd9c-7447da52bcec | 27054 ms | done | approve/done | generated/estruturador/02bcdfae-39b6-448e-bd9c-7447da52bcec.yaml: 63b3f7995c2f192b917a3cb8c3a3c6285c1e2b7fd66855e472e9bbaf45fe3a42 |
+| leitor-de-metricas | ede3a322-d190-4f10-8b50-da45d732c34a | 45175 ms | done | approve/done | generated/leitor-de-metricas/trafficMetricReading.yaml: 12945a3ff809dc4d28506a0f583847e5a2f26381290052aa915df5a414b1522e |
+| diagnosticador | 6d3bdfa2-b61e-4cb4-97e1-9a5cd4a3529a | 38813 ms | done | approve/done | generated/diagnosticador/trafficDiagnosis.yaml: e954571e1a05afa1f12f67114fb57cd2a3d4576f9f3c4e2a1dda81ba4906cc9e |
 
 O hash de proposta é o agregado canônico gravado no run/outbox. Os hashes de arquivo acima são reconciliados durante o E2E com o SHA-256 do conteúdo materializado no filesystem. O JSON preserva os paths e os jobs duráveis, incluindo tentativas, steps e logs.
 
@@ -32,26 +32,26 @@ O hash de proposta é o agregado canônico gravado no run/outbox. Os hashes de a
 
 | Checkpoint | Momento | Hidratação |
 |---|---|---|
-| Zelador crítico pronto para revisão | 2026-07-10T16:39:39.532Z | sim |
-| recusa do Zelador persistida | 2026-07-10T16:39:41.890Z | sim |
-| após recusa e retry do Zelador | 2026-07-10T16:39:45.007Z | sim |
-| Zelador pronto para revisão | 2026-07-10T16:40:04.641Z | sim |
-| Zelador materializado | 2026-07-10T16:40:08.191Z | sim |
-| Briefista pronto para revisão | 2026-07-10T16:40:47.063Z | sim |
-| Briefista materializado | 2026-07-10T16:40:50.346Z | sim |
-| Estruturador pronto para revisão | 2026-07-10T16:41:12.161Z | sim |
-| Estruturador materializado | 2026-07-10T16:41:15.395Z | sim |
-| Leitor de Metricas pronto para revisão | 2026-07-10T16:41:51.389Z | sim |
-| Leitor materializado | 2026-07-10T16:41:54.997Z | sim |
-| Diagnosticador pronto para revisão | 2026-07-10T16:42:37.736Z | sim |
+| Zelador crítico pronto para revisão | 2026-07-10T18:04:54.439Z | sim |
+| recusa do Zelador persistida | 2026-07-10T18:04:56.861Z | sim |
+| após recusa e retry do Zelador | 2026-07-10T18:05:00.513Z | sim |
+| Zelador pronto para revisão | 2026-07-10T18:05:36.581Z | sim |
+| Zelador materializado | 2026-07-10T18:05:41.570Z | sim |
+| Briefista pronto para revisão | 2026-07-10T18:06:39.651Z | sim |
+| Briefista materializado | 2026-07-10T18:06:43.695Z | sim |
+| Estruturador pronto para revisão | 2026-07-10T18:07:09.005Z | sim |
+| Estruturador materializado | 2026-07-10T18:07:12.319Z | sim |
+| Leitor de Metricas pronto para revisão | 2026-07-10T18:07:55.045Z | sim |
+| Leitor materializado | 2026-07-10T18:07:59.127Z | sim |
+| Diagnosticador pronto para revisão | 2026-07-10T18:08:36.228Z | sim |
 
 - Recusa honesta: registrada — o Zelador foi recusado quando CAPI/deduplicação não estavam confirmadas; nenhum arquivo foi materializado para essa decisão.
-- Retry: registrado para o job 6e8c909b-bbf3-4173-b743-194c005747d2, tentativa 2, seguido de cancelamento controlado.
+- Retry: registrado para o job 10358cb1-c60a-4d5f-a87b-672a64e223ec, tentativa 2, seguido de cancelamento controlado.
 - Guardas: token no BFF, Codex em `read-only`, revisão humana obrigatória e campanha recommend-only.
 
 ## Métricas e diagnóstico
 
-O operador forneceu ao Leitor apenas valores nomeados: gasto, impressões, cliques, conversões, CPA do gerenciador e ROAS do gerenciador. Métricas marcadas como **Não fornecido** no artefato: **CTR, alcance, frequência, CPM**; a janela de atribuição também ficou ausente e o ROAS sem venda confirmada ficou **Estimado** com premissa. O E2E rejeita qualquer valor calculado para essas métricas e confirmou **zero derivações** no Diagnosticador. A saída final trouxe uma única alavanca, hipótese, critério de sucesso, critério de reversão e decisão humana de aprovação via outbox.
+O operador forneceu ao Leitor apenas valores nomeados: gasto, impressões, cliques, conversões, CPA do gerenciador e ROAS do gerenciador. Métricas marcadas como **Não fornecido** no artefato: **CTR, Alcance, Frequência, CPM**; a janela de atribuição também ficou ausente e o ROAS sem venda confirmada ficou **Estimado** com premissa. O E2E rejeita qualquer valor calculado para essas métricas e confirmou **zero derivações** no Diagnosticador. A saída final trouxe uma única alavanca, hipótese, critério de sucesso, critério de reversão e decisão humana de aprovação via outbox.
 
 ## Evidência visual
 
@@ -69,8 +69,8 @@ O operador forneceu ao Leitor apenas valores nomeados: gasto, impressões, cliqu
 
 ## Paths observados
 
-- Projeto filesystem: `/Users/rafaelcosta/Projects/cohort-de-marketing/.claude/worktrees/story-8.W3.1/projetos/story-8-w3-1-traffic-pilot` (temporário, removido no teardown).
-- Evidência JSON: `/Users/rafaelcosta/Projects/cohort-de-marketing/.claude/worktrees/story-8.W3.1/apps/academia-lendaria-ads-studio/e2e/fixtures/traffic-pilot/evidence/run.json`.
-- Screenshots: `/Users/rafaelcosta/Projects/cohort-de-marketing/.claude/worktrees/story-8.W3.1/apps/academia-lendaria-ads-studio/e2e/fixtures/traffic-pilot/evidence/traffic-pilot-desktop.png` e `/Users/rafaelcosta/Projects/cohort-de-marketing/.claude/worktrees/story-8.W3.1/apps/academia-lendaria-ads-studio/e2e/fixtures/traffic-pilot/evidence/traffic-pilot-mobile.png`.
+- Projeto filesystem: `/Users/rafaelcosta/Projects/cohort-de-marketing/projetos/story-8-w3-1-traffic-pilot` (temporário, removido no teardown).
+- Evidência JSON: `/Users/rafaelcosta/Projects/cohort-de-marketing/apps/academia-lendaria-ads-studio/e2e/fixtures/traffic-pilot/evidence/run.json`.
+- Screenshots: `/Users/rafaelcosta/Projects/cohort-de-marketing/apps/academia-lendaria-ads-studio/e2e/fixtures/traffic-pilot/evidence/traffic-pilot-desktop.png` e `/Users/rafaelcosta/Projects/cohort-de-marketing/apps/academia-lendaria-ads-studio/e2e/fixtures/traffic-pilot/evidence/traffic-pilot-mobile.png`.
 
 Gerado por `scripts/traffic-pilot-report.mjs`; sem commit nesta execução.

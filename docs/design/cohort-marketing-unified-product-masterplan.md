@@ -2,7 +2,10 @@
 
 ## Status
 
-Planejamento concluido. Este documento nao inicia a implementacao.
+Implementacao concluida em 2026-07-10. O produto unificado foi entregue pela
+story `docs/stories/2026-07-09-cohort-marketing-unified-product.md` e recebeu
+persistencia, runtime operacional e launcher no Epic 8. Este documento permanece
+como registro das decisoes e do recorte arquitetural.
 
 Ele consolida tres superficies hoje separadas:
 
@@ -1057,22 +1060,21 @@ Executar as Ondas 4 e 5 do plano especializado:
 - `TRAFFIC_SQUAD_META_MUTATIONS=false` obrigatorio;
 - redirect reversivel para as rotas legadas durante o cutover.
 
-## Decisoes que ainda exigem aprovacao
+## Decisoes fechadas na implementacao
 
-1. Nome publico final: manter `Ads Studio` para o produto inteiro ou usar
-   `Cohort Marketing Studio` e deixar `Ads Studio` como modulo.
-2. Politica de armazenamento de artefatos: somente paths locais, upload para
-   object storage ou modelo hibrido.
-3. Nivel de edicao colaborativa e conflitos entre duas sessoes.
-4. Quais campos de economia pertencem ao projeto e quais sao overrides de
-   campanha por tipo de oferta.
+1. Nome publico: `Marketing Studio`; `Ads Studio` permanece como modulo de
+   campanhas.
+2. Artefatos: modelo hibrido, com filesystem canonico e Supabase para
+   metadados, hash, revisao e snapshot opcional.
+3. Colaboracao: optimistic concurrency por revisao, sem coedicao em tempo real
+   neste corte.
+4. Economia: defaults pertencem ao projeto; campanhas registram apenas
+   overrides explicitos e sua proveniencia.
+5. Runtime LOCAL: o BFF chama `codex exec` com a autenticacao ativa no Codex
+   CLI, execucao efemera, sandbox `read-only` e contrato JSON estruturado.
 
-Decisao fechada na implementacao: o runner LOCAL vive no BFF do app e chama
-`codex exec` com a autenticacao ja ativa no Codex CLI, execucao efemera,
-sandbox `read-only` e contrato JSON estruturado.
-
-Essas decisoes nao impedem a Onda 0. Elas precisam estar fechadas antes das
-stories 07, 08 e 17.
+As proximas decisoes pertencem ao go-live da Aula 3 e ao produto de Dados da
+Aula 4; nao reabrem o recorte arquitetural entregue.
 
 ## Fora de escopo deste corte
 

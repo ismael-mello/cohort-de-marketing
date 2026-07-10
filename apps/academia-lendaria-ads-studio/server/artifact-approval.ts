@@ -29,6 +29,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import {
   ARTIFACT_WRITE_SCHEMA_VERSION,
   ArtifactMaterializerError,
+  canonicalizeProjectArtifactPath,
   materializeArtifact,
   canonicalizeRelativeArtifactPath,
   readSafeArtifactFile,
@@ -235,20 +236,22 @@ function sha256(content: string): string {
  * is the integrity anchor: an edited proposal produces a different hash, which
  * invalidates a stale approval still carrying the old expected hash.
  */
-export function computeProposalHash(artifacts: ApprovalArtifactInput[]): string {
-  const canonical = normalizeApprovalArtifacts(artifacts)
+export function computeProposalHash(artifacts: ApprovalArtifactInput[], projectSlug?: string): string {
+  const canonical = normalizeApprovalArtifacts(artifacts, projectSlug)
     .map((artifact) => ({ path: artifact.path, format: artifact.format, content: artifact.content }))
     .sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
   return sha256(JSON.stringify(canonical));
 }
 
 /** Normalize every proposal path before hashing, planning, persistence or write. */
-export function normalizeApprovalArtifacts(artifacts: ApprovalArtifactInput[]): ApprovalArtifactInput[] {
+export function normalizeApprovalArtifacts(artifacts: ApprovalArtifactInput[], projectSlug?: string): ApprovalArtifactInput[] {
   const seen = new Set<string>();
   return artifacts.map((artifact) => {
     let path: string;
     try {
-      path = canonicalizeRelativeArtifactPath(artifact.path);
+      path = projectSlug
+        ? canonicalizeProjectArtifactPath(projectSlug, artifact.path)
+        : canonicalizeRelativeArtifactPath(artifact.path);
     } catch (error) {
       if (error instanceof ArtifactMaterializerError) {
         throw new ArtifactApprovalError('invalid-path', error.message);
@@ -266,14 +269,14 @@ export function normalizeApprovalArtifacts(artifacts: ApprovalArtifactInput[]): 
   });
 }
 
-function canonicalPlanValue(artifacts: ApprovalArtifactInput[]): Array<{
+function canonicalPlanValue(artifacts: ApprovalArtifactInput[], projectSlug?: string): Array<{
   artifactType: string;
   title: string;
   path: string;
   format: ApprovalFormat;
   content: string;
 }> {
-  return normalizeApprovalArtifacts(artifacts)
+  return normalizeApprovalArtifacts(artifacts, projectSlug)
     .map(({ artifactType, title, path, format, content }) => ({ artifactType, title, path, format, content }))
     .sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
 }
@@ -285,8 +288,8 @@ function storedPlanValue(plan: PlannedArtifact[]): ReturnType<typeof canonicalPl
     .sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
 }
 
-function plansMatch(record: ApprovalOutboxRecord, artifacts: ApprovalArtifactInput[]): boolean {
-  return JSON.stringify(storedPlanValue(record.plan)) === JSON.stringify(canonicalPlanValue(artifacts));
+function plansMatch(record: ApprovalOutboxRecord, artifacts: ApprovalArtifactInput[], projectSlug?: string): boolean {
+  return JSON.stringify(storedPlanValue(record.plan)) === JSON.stringify(canonicalPlanValue(artifacts, projectSlug));
 }
 
 // ---------------------------------------------------------------------------
@@ -438,7 +441,7 @@ export function createArtifactApprovalService(deps: ArtifactApprovalServiceDeps)
       record.decision === input.decision &&
       record.proposalHash === input.expectedProposalHash &&
       record.proposalRevision === input.expectedProposalRevision &&
-      plansMatch(record, artifacts);
+      plansMatch(record, artifacts, run.projectSlug);
     if (!sameSemantics) {
       throw new ArtifactApprovalError(
         'idempotency-conflict',
@@ -449,8 +452,8 @@ export function createArtifactApprovalService(deps: ArtifactApprovalServiceDeps)
 
   async function plan(input: { skillRunId: string; artifacts: ApprovalArtifactInput[] }): Promise<ApprovalPlan> {
     const run = await loadReviewableRun(input.skillRunId);
-    const artifacts = normalizeApprovalArtifacts(input.artifacts);
-    const proposalHash = computeProposalHash(artifacts);
+    const artifacts = normalizeApprovalArtifacts(input.artifacts, run.projectSlug);
+    const proposalHash = computeProposalHash(artifacts, run.projectSlug);
     const warnings: string[] = [];
     const files: ApprovalFileDiff[] = [];
     for (const artifact of artifacts) {
@@ -488,7 +491,7 @@ export function createArtifactApprovalService(deps: ArtifactApprovalServiceDeps)
 
   async function decide(input: DecideApprovalInput): Promise<ApprovalOutboxRecord> {
     const run = await loadReviewableRun(input.skillRunId);
-    const artifacts = input.decision === 'approve' ? normalizeApprovalArtifacts(input.artifacts ?? []) : [];
+    const artifacts = input.decision === 'approve' ? normalizeApprovalArtifacts(input.artifacts ?? [], run.projectSlug) : [];
 
     // Idempotent replay / resume is semantic, not merely lexical. A reused key
     // must describe the same tenant/run/project, decision, revision, hash and
@@ -544,7 +547,7 @@ export function createArtifactApprovalService(deps: ArtifactApprovalServiceDeps)
     if (artifacts.length === 0) {
       throw new ArtifactApprovalError('hash-mismatch', 'Aprovação sem artefatos para materializar.');
     }
-    const computed = computeProposalHash(artifacts);
+    const computed = computeProposalHash(artifacts, run.projectSlug);
     if (computed !== input.expectedProposalHash) {
       throw new ArtifactApprovalError(
         'hash-mismatch',

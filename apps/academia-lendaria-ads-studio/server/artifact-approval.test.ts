@@ -149,6 +149,29 @@ describe('artifact approval saga', () => {
     expect(runs.state.status).toBe('done');
   });
 
+  it('normaliza um path prefixado pelo projeto antes de planejar, hashear e materializar', async () => {
+    const store = createInMemoryArtifactApprovalStore();
+    const runs = fakeGateway({ proposalHash: null });
+    const service = createArtifactApprovalService({ store, runs: runs.gateway, projectsRoot });
+    const prefixed = { ...ARTIFACT, path: `projetos/${SLUG}/${ARTIFACT.path}` };
+
+    const plan = await service.plan({ skillRunId: RUN_ID, artifacts: [prefixed] });
+    expect(plan.files[0]?.path).toBe(ARTIFACT.path);
+
+    const record = await service.decide({
+      skillRunId: RUN_ID,
+      decision: 'approve',
+      expectedProposalHash: plan.proposalHash,
+      expectedProposalRevision: 1,
+      idempotencyKey: `${RUN_ID}:prefixed:approve`,
+      artifacts: [prefixed],
+    });
+
+    expect(record.state).toBe('done');
+    expect(record.plan[0]?.path).toBe(ARTIFACT.path);
+    expect(await readFile(targetPath(), 'utf8')).toBe(ARTIFACT.content);
+  });
+
   it('replays an approval idempotently — no second materialize or DB write', async () => {
     const store = createInMemoryArtifactApprovalStore();
     const runs = fakeGateway();

@@ -57,6 +57,39 @@ describe('artifact-approval client helpers', () => {
     expect(resolved[0].content).toBe('# Offerbook');
   });
 
+  it('consolida blocos do mesmo arquivo compartilhado no mesmo formato', () => {
+    const resolved = resolveApprovalArtifacts(
+      {
+        ...PROPOSAL,
+        artifacts: [
+          { artifactType: 'trafficCreativeBattery', title: 'Bateria', path: 'PAINEL-DA-SEMANA.yaml', format: 'yaml', content: 'briefista:\n  bateria_gerada: []' },
+          { artifactType: 'trafficCreativeBattery', title: 'Recusa', path: 'PAINEL-DA-SEMANA.yaml', format: 'yaml', content: 'angulo_recusado:\n  motivo: ausente' },
+        ],
+      },
+      { artifactType: 'x', title: 'X', path: 'x.md' },
+    );
+
+    expect(resolved).toHaveLength(1);
+    expect(resolved[0]).toMatchObject({ path: 'PAINEL-DA-SEMANA.yaml', format: 'yaml', title: 'Bateria + Recusa' });
+    expect(resolved[0].content).toContain('briefista:');
+    expect(resolved[0].content).toContain('angulo_recusado:');
+  });
+
+  it('mantém formatos diferentes como conflito para o backend rejeitar', () => {
+    const resolved = resolveApprovalArtifacts(
+      {
+        ...PROPOSAL,
+        artifacts: [
+          { artifactType: 'x', title: 'YAML', path: 'painel.yaml', format: 'yaml', content: 'a: 1' },
+          { artifactType: 'x', title: 'JSON', path: 'painel.yaml', format: 'json', content: '{"a":1}' },
+        ],
+      },
+      { artifactType: 'x', title: 'X', path: 'x.md' },
+    );
+
+    expect(resolved).toHaveLength(2);
+  });
+
   it('resolveApprovalArtifacts assigns a typed generated path when Codex leaves it blank', () => {
     const resolved = resolveApprovalArtifacts(
       {

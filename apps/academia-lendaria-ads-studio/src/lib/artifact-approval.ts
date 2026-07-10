@@ -111,7 +111,7 @@ export function resolveApprovalArtifacts(
   fallback: { artifactType: string; title: string; path: string },
 ): ApprovalArtifactInput[] {
   if (proposal.artifacts.length > 0) {
-    return proposal.artifacts.map((artifact, index) => ({
+    const resolved = proposal.artifacts.map((artifact, index) => ({
       artifactType: artifact.artifactType,
       title: artifact.title,
       path: artifact.path.trim() || (() => {
@@ -127,6 +127,27 @@ export function resolveApprovalArtifacts(
       format: artifact.format,
       content: artifact.content,
     }));
+
+    // Traffic skills can emit one block per section of the shared
+    // `PAINEL-DA-SEMANA.yaml`. The review/materializer operates on files, so
+    // same-path blocks in the same format must become one file instead of a
+    // duplicate-path approval error. Different formats remain separate and
+    // are intentionally rejected by the backend as an ambiguous contract.
+    const consolidated = new Map<string, ApprovalArtifactInput>();
+    for (const artifact of resolved) {
+      const key = `${artifact.path}\u0000${artifact.format}`;
+      const previous = consolidated.get(key);
+      if (!previous) {
+        consolidated.set(key, artifact);
+        continue;
+      }
+      consolidated.set(key, {
+        ...previous,
+        title: previous.title === artifact.title ? previous.title : `${previous.title} + ${artifact.title}`,
+        content: `${previous.content.trimEnd()}\n\n${artifact.content.trimStart()}`,
+      });
+    }
+    return [...consolidated.values()];
   }
   if (!proposal.resultMarkdown.trim()) return [];
   return [
