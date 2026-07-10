@@ -53,6 +53,14 @@
       "sha256": "3c38f969fd94e71f3d9081f6801e6b738ba683f511991b725a1b850403a2966c",
       "bytes": 2995,
       "provenance": "Artefato real do squad da Aula 3; autoridade para os 5 papéis, ordem de execução e regra de ouro human-in-the-loop."
+    },
+    {
+      "id": "src-copy-a3",
+      "kind": "copy-foundation",
+      "path": "/Users/rafaelcosta/Projects/AIOX/sinkra-hub/.claude/worktrees/cohort-marketing-aula-3-cbff0b/outputs/businesses/academia-lendaria/projetos/maquina-de-receita-com-ia/artefatos/aula3-live-copy-corpo.md",
+      "sha256": "b9eb1031bfe999091806ee6eb9f6b7a2be987f17f6b9c58eb2100ee505b07214",
+      "bytes": 41584,
+      "provenance": "Copy real da Aula 3; fornece a fundação narrativa requerida pelo Briefista sem gerar conteúdo oculto no piloto."
     }
   ],
   "facts": [
@@ -347,6 +355,17 @@
       "requiredFor": [
         "aula-3-intake"
       ]
+    },
+    {
+      "artifactType": "copy",
+      "title": "Copy base da Aula 3",
+      "sourceId": "src-copy-a3",
+      "path": "/Users/rafaelcosta/Projects/AIOX/sinkra-hub/.claude/worktrees/cohort-marketing-aula-3-cbff0b/outputs/businesses/academia-lendaria/projetos/maquina-de-receita-com-ia/artefatos/aula3-live-copy-corpo.md",
+      "sha256": "b9eb1031bfe999091806ee6eb9f6b7a2be987f17f6b9c58eb2100ee505b07214",
+      "requiredFor": [
+        "briefista",
+        "aula-3-intake"
+      ]
     }
   ],
   "conflicts": [
@@ -368,7 +387,8 @@
       "curriculum",
       "offerbook",
       "a3-prd",
-      "squad-trafego-readme"
+      "squad-trafego-readme",
+      "copy"
     ],
     "runtimeDependency": "brief-only"
   }

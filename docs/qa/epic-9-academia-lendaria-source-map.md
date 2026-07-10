@@ -18,6 +18,7 @@ Nenhum arquivo foi alterado no `sinkra-hub`. O runtime do aluno não depende des
 | `src-offerbook` | autoridade para promessa, ICP/avatar, mecanismo, narrativa e pricing/garantia | `2dc506e06ec59d15eae2625576ea3bd8747dc9f4b681ed902a4af0a342083f71` |
 | `src-a3-prd` | autoridade para o contrato operacional da Aula 3 e o default sagrado | `1314ad40a8355b836483fdf3db35cacb2b6c344a754cf40a20035c6a19bf81ce` |
 | `src-squad-readme` | autoridade para os 5 papéis do squad e a ordem de uso | `3c38f969fd94e71f3d9081f6801e6b738ba683f511991b725a1b850403a2966c` |
+| `src-copy-a3` | copy real da Aula 3 usada como fundação do Briefista | `b9eb1031bfe999091806ee6eb9f6b7a2be987f17f6b9c58eb2100ee505b07214` |
 
 ## Mapa de fatos para o ProjectBrief
 
@@ -79,7 +80,7 @@ Decisão do pacote: congelar ambos, registrar a divergência no manifesto e nunc
 ## Prova da jornada W1
 
 - O pacote importável está em `data/pilots/academia-lendaria-project-brief.json` com `schemaVersion: 0.1.0`.
-- O manifesto prova que os `artifacts` declarados no briefing são exatamente `curriculum`, `offerbook`, `a3-prd` e `squad-trafego-readme`.
+- O manifesto prova que os artefatos do intake são `curriculum`, `offerbook`, `a3-prd`, `squad-trafego-readme` e a fundação `copy` real da Aula 3.
 - O repositório ganhou um teste de jornada em `apps/academia-lendaria-ads-studio/src/hooks/use-project-workspace.test.ts` que importa o briefing pela rota `createProjectWorkspaceController.importProjectBrief`.
 - O teste passou com 17 casos usando somente a URL e a anon key públicas do
   `.env.example`; a jornada importou o pacote sem seed oculto e o typecheck do

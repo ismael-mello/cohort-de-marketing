@@ -422,7 +422,7 @@ describe('use-project-workspace — hidratação e criação', () => {
       calendarStatus: 'unknown',
     });
     expect(new Set(artifacts.map((artifact) => artifact.artifactType))).toEqual(
-      new Set(['curriculum', 'offerbook', 'a3-prd', 'squad-trafego-readme']),
+      new Set(['curriculum', 'offerbook', 'a3-prd', 'squad-trafego-readme', 'copy']),
     );
 
     controller.destroy();
