@@ -1,0 +1,1166 @@
+{
+  "story": "8.W3.1",
+  "base": "4f05847f6d172cadf2e83befe69fed0d74d55f6c",
+  "startedAt": "2026-07-10T16:39:10.841Z",
+  "fixture": {
+    "workspaceId": "81000000-0000-0000-0000-000000000031",
+    "projectId": "82000000-0000-0000-0000-000000000031",
+    "campaignId": "84000000-0000-0000-0000-000000000031",
+    "projectSlug": "story-8-w3-1-traffic-pilot",
+    "projectPath": "/Users/rafaelcosta/Projects/cohort-de-marketing/.claude/worktrees/story-8.W3.1/projetos/story-8-w3-1-traffic-pilot",
+    "demoAuth": false,
+    "seededFromFilesystem": true
+  },
+  "stages": [
+    {
+      "skillId": "zelador",
+      "title": "Zelador",
+      "runId": "e5136f17-717f-4579-a3cb-20a75604ec6a",
+      "jobId": "d1fc81ec-dce6-46e6-bc44-0458f4a76f6c",
+      "status": "done",
+      "durationMs": 21704,
+      "proposalHash": "e10d79ee86ec9e320757e0afada17dde312a5dbf0342cc01c087e2edc78523db",
+      "proposal": {
+        "fields": [
+          {
+            "key": "status_geral",
+            "value": "OK"
+          },
+          {
+            "key": "estruturador_bloqueado",
+            "value": "false"
+          },
+          {
+            "key": "event_match_quality",
+            "value": "não informado"
+          }
+        ],
+        "summary": "Auditoria de tracking confirmada pelo operador: todos os itens críticos e o domínio estão OK.",
+        "warnings": [
+          "Event Match Quality não foi informado; nenhuma nota foi estimada."
+        ],
+        "artifacts": [
+          {
+            "path": "trafficTrackingAudit.json",
+            "title": "Auditoria de tracking — Piloto real do Squad de Tráfego",
+            "format": "json",
+            "content": "{\"projectId\":\"82000000-0000-0000-0000-000000000031\",\"ultimaChecagem\":\"2026-07-10\",\"bmAtivo\":true,\"contaAnunciosAtiva\":true,\"pixelDisparando\":true,\"capiAtivo\":true,\"eventoCompraDeduplicado\":true,\"dominioVerificado\":true,\"pagamentoAprovado\":true,\"statusGeral\":\"OK\",\"evidenciasLiterais\":[\"BM ativo\",\"conta de anúncios ativa\",\"Pixel Helper mostra evento disparando\",\"CAPI Ativo no Events Manager\",\"evento Compra apareceu uma vez com event_id\",\"domínio verificado\",\"pagamento aprovado\"],\"eventMatchQuality\":null,\"observacoes\":[\"EMQ não foi informado pelo operador; não estimado.\"]}",
+            "artifactType": "trafficTrackingAudit"
+          }
+        ],
+        "questions": [],
+        "resultMarkdown": "Status geral: **OK**\n\nTodos os itens foram confirmados literalmente pelo operador. O Estruturador não está bloqueado por saúde de conta ou tracking."
+      },
+      "approvals": [
+        {
+          "id": "f4b5ae67-ccb2-43a1-959a-db63867017fe",
+          "decision": "approve",
+          "state": "done",
+          "outcome": "written",
+          "proposalHash": "e10d79ee86ec9e320757e0afada17dde312a5dbf0342cc01c087e2edc78523db",
+          "proposalRevision": 1,
+          "plan": [
+            {
+              "path": "trafficTrackingAudit.json",
+              "title": "Auditoria de tracking — Piloto real do Squad de Tráfego",
+              "format": "json",
+              "content": "{\"projectId\":\"82000000-0000-0000-0000-000000000031\",\"ultimaChecagem\":\"2026-07-10\",\"bmAtivo\":true,\"contaAnunciosAtiva\":true,\"pixelDisparando\":true,\"capiAtivo\":true,\"eventoCompraDeduplicado\":true,\"dominioVerificado\":true,\"pagamentoAprovado\":true,\"statusGeral\":\"OK\",\"evidenciasLiterais\":[\"BM ativo\",\"conta de anúncios ativa\",\"Pixel Helper mostra evento disparando\",\"CAPI Ativo no Events Manager\",\"evento Compra apareceu uma vez com event_id\",\"domínio verificado\",\"pagamento aprovado\"],\"eventMatchQuality\":null,\"observacoes\":[\"EMQ não foi informado pelo operador; não estimado.\"]}",
+              "artifactId": "43d889f7-506a-49d4-a090-f9f50ebef2f0",
+              "contentHash": "8a4ce3a200b66f9c9ddd621b8f5e435824395d336d2ee1cfb3c2c166654ea899",
+              "artifactType": "trafficTrackingAudit"
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "43d889f7-506a-49d4-a090-f9f50ebef2f0",
+          "path": "trafficTrackingAudit.json",
+          "contentHash": "8a4ce3a200b66f9c9ddd621b8f5e435824395d336d2ee1cfb3c2c166654ea899",
+          "filesystemHash": "8a4ce3a200b66f9c9ddd621b8f5e435824395d336d2ee1cfb3c2c166654ea899",
+          "state": "confirmed",
+          "verification": "confirmed"
+        }
+      ],
+      "job": {
+        "id": "d1fc81ec-dce6-46e6-bc44-0458f4a76f6c",
+        "skill_id": "zelador",
+        "status": "succeeded",
+        "attempt": 1,
+        "attempts": [
+          {
+            "status": "succeeded",
+            "attempt": 1,
+            "endedAt": "2026-07-10T16:40:03.049Z",
+            "startedAt": "2026-07-10T16:39:46.791Z"
+          }
+        ],
+        "steps": [
+          {
+            "id": "resolve",
+            "label": "Resolver skill canônica",
+            "status": "done",
+            "timestamp": "2026-07-10T16:39:46.797Z"
+          },
+          {
+            "id": "codex",
+            "label": "Executar Codex CLI",
+            "status": "done",
+            "timestamp": "2026-07-10T16:40:03.011Z"
+          },
+          {
+            "id": "parse",
+            "label": "Validar proposta estruturada",
+            "status": "done",
+            "timestamp": "2026-07-10T16:40:03.012Z"
+          }
+        ],
+        "logs": [
+          {
+            "level": "info",
+            "message": "Executando skill \"zelador\" no sandbox read-only.",
+            "timestamp": "2026-07-10T16:39:46.799Z"
+          }
+        ],
+        "input": {
+          "brief": {
+            "data": {
+              "aula2": {
+                "angulos": []
+              },
+              "dataSourceNotes": "Fixture isolada: números literais fornecidos pelo operador; alcance e janela ausentes."
+            },
+            "meta": {
+              "createdAt": "2026-07-10T09:00:00.000Z",
+              "updatedAt": "2026-07-10T09:00:00.000Z",
+              "completionStatus": "ready_for_traffic_pilot"
+            },
+            "offer": {
+              "name": "Método OFTR para gestores de tráfego",
+              "exactPrice": 1200,
+              "proofAssets": [
+                "copy.md"
+              ]
+            },
+            "funnel": {
+              "primaryPage": "https://fixture.local/oferta"
+            },
+            "market": {
+              "angles": [
+                {
+                  "name": "Seu tráfego não escala porque falta estrutura",
+                  "awarenessLevel": "consciente_do_problema"
+                },
+                {
+                  "name": "A rotina que transforma dados em uma decisão semanal",
+                  "awarenessLevel": "consciente_da_solucao"
+                },
+                {
+                  "name": "O erro que trava sua campanha",
+                  "awarenessLevel": ""
+                }
+              ],
+              "dominantPain": "Gestores não sabem qual alavanca mover sem inventar leitura dos números.",
+              "avatarSummary": "Gestor iniciante que precisa de rigor operacional e decisão humana.",
+              "trafficSource": "pago",
+              "awarenessLevel": "consciente_do_problema",
+              "trafficTemperature": "frio"
+            },
+            "project": {
+              "name": "Piloto real do Squad de Tráfego · Story 8.W3.1",
+              "slug": "story-8-w3-1-traffic-pilot",
+              "voice": "marca",
+              "currentStage": "aula3-trafego"
+            },
+            "channels": {
+              "adFormats": [
+                "reels 9:16",
+                "feed"
+              ],
+              "primaryCtaUrl": "https://fixture.local/oferta"
+            },
+            "integrations": {
+              "metaStatus": "recommend_only"
+            },
+            "schemaVersion": "0.1.0"
+          },
+          "context": {
+            "artifacts": [
+              {
+                "path": "copy.md",
+                "title": "Copy e ângulos da Aula 2",
+                "content": "# Copy e insumos da Aula 2 — fixture do piloto\n\nProjeto: Piloto real do Squad de Tráfego · Story 8.W3.1\nOferta: Pacote Método OFTR para gestores de tráfego\nPreço literal: R$ 1.200\nPágina: https://fixture.local/oferta\n\n## Ângulos validados na Aula 2\n\n1. \"Seu tráfego não escala porque falta estrutura\" — consciente_do_problema\n2. \"A rotina que transforma dados em uma decisão semanal\" — consciente_da_solucao\n3. \"O erro que trava sua campanha\" — nível ausente de propósito; o Briefista deve recusar este ângulo.\n\n## Prova e voz\n\nVoz de marca, sem promessa de performance garantida. O piloto usa dados literais fornecidos pelo operador e não publica na Meta.\n",
+                "artifactType": "copy"
+              }
+            ]
+          },
+          "projectId": "82000000-0000-0000-0000-000000000031",
+          "operatorInput": "Confirmação literal do operador: BM ativo; conta de anúncios ativa; Pixel Helper mostra evento disparando; CAPI Ativo no Events Manager; evento Compra apareceu uma vez com event_id; domínio verificado; pagamento aprovado. Status geral OK."
+        },
+        "updated_at": "2026-07-10T16:40:03.049+00:00"
+      }
+    },
+    {
+      "skillId": "briefista",
+      "title": "Briefista",
+      "runId": "1bfb0cc9-acf2-45db-a685-350e1dd24171",
+      "jobId": "8989140a-6606-43e7-a7a5-3d78bf1a1213",
+      "status": "done",
+      "durationMs": 40583,
+      "proposalHash": "14b089bc38e6f0f50ee541e7ff218bf25f67b12322e204e9ef7db5d2e86e050e",
+      "proposal": {
+        "fields": [
+          {
+            "key": "curadoria",
+            "value": "Aguardando o aluno escolher 2–3 finalistas por conjunto."
+          },
+          {
+            "key": "angulo_recusado",
+            "value": "O erro que trava sua campanha — recusado porque o nível de consciência não foi declarado."
+          },
+          {
+            "key": "alerta_awareness",
+            "value": "O segundo ângulo é consciente_da_solucao; sinalizar revisão humana antes de usar em tráfego frio amplo."
+          }
+        ],
+        "summary": "Bateria proposta com 8 variações para os dois ângulos da Aula 2 que possuem nível de consciência declarado. O terceiro ângulo foi recusado por nível ausente.",
+        "warnings": [
+          "Não foram geradas opções para o ângulo \"O erro que trava sua campanha\" porque seu nível de consciência está ausente."
+        ],
+        "artifacts": [
+          {
+            "path": "briefista.bateria_gerada",
+            "title": "Bateria de criativos — Briefista",
+            "format": "yaml",
+            "content": "briefista:\n  gerado_em: \"2026-07-10\"\n  bateria_gerada:\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"Cansado de olhar os números da campanha e ainda não saber o que mover?\"\n      copy: \"Quando cada métrica aponta para um lado, ajustar no impulso só aumenta a dúvida. O Método OFTR organiza a leitura do tráfego para apoiar uma decisão semanal mais clara. Conheça o método.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"dor\"\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"A parte da sua campanha que pode estar faltando não é mais verba.\"\n      copy: \"Antes de pensar em escalar, é preciso entender o que os dados realmente estão dizendo. Veja uma forma estruturada de analisar o tráfego e decidir qual alavanca merece atenção.\"\n      formato: \"feed\"\n      categoria_hook: \"curiosidade\"\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"Pare de trocar tudo quando a campanha pede uma decisão objetiva.\"\n      copy: \"Mudar criativo, público e orçamento ao mesmo tempo dificulta saber o que funcionou. O Método OFTR propõe mais rigor operacional para gestores que precisam escolher o próximo movimento com base nos números.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"contrarian\"\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"Toda semana eu abria o gerenciador e terminava com a mesma pergunta: o que faço agora?\"\n      copy: \"O problema nem sempre é falta de dados. Muitas vezes, é não ter uma estrutura para transformar leitura em decisão. Conheça o Método OFTR para organizar esse momento da operação.\"\n      formato: \"feed\"\n      categoria_hook: \"historia\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"Como transformar a leitura semanal da campanha em um próximo passo claro.\"\n      copy: \"Uma rotina de análise pode ajudar o gestor a sair do excesso de informação e chegar a uma decisão operacional. Veja como o Método OFTR estrutura esse processo.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"beneficio\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"Você não precisa de mais uma planilha antes de decidir o que ajustar.\"\n      copy: \"O ponto é criar um momento de leitura com critério: entender os sinais disponíveis e definir a próxima ação com responsabilidade. Conheça a rotina proposta pelo Método OFTR.\"\n      formato: \"feed\"\n      categoria_hook: \"contrarian\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"O que muda quando a análise da campanha deixa de ser uma tarefa solta?\"\n      copy: \"Com uma rotina definida, a revisão semanal ganha contexto e direção. O Método OFTR foi estruturado para gestores que querem tratar dados como apoio à decisão, sem inventar conclusões.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"curiosidade\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"Se toda segunda-feira começa com dúvida sobre a campanha, falta um ritual de decisão.\"\n      copy: \"Reunir os dados é apenas o começo. A rotina certa ajuda a transformar a leitura em uma escolha consciente sobre o que observar e ajustar. Veja o Método OFTR.\"\n      formato: \"feed\"\n      categoria_hook: \"dor\"\n  finalistas_curados: []",
+            "artifactType": "trafficCreativeBattery"
+          }
+        ],
+        "questions": [
+          "Quais 2–3 variações você deseja curar como finalistas para cada ângulo?"
+        ],
+        "resultMarkdown": "Bateria pronta para curadoria humana. Nenhum finalista foi escolhido."
+      },
+      "approvals": [
+        {
+          "id": "92400f33-99e0-4b81-88a4-426f1418b005",
+          "decision": "approve",
+          "state": "done",
+          "outcome": "written",
+          "proposalHash": "14b089bc38e6f0f50ee541e7ff218bf25f67b12322e204e9ef7db5d2e86e050e",
+          "proposalRevision": 1,
+          "plan": [
+            {
+              "path": "briefista.bateria_gerada",
+              "title": "Bateria de criativos — Briefista",
+              "format": "yaml",
+              "content": "briefista:\n  gerado_em: \"2026-07-10\"\n  bateria_gerada:\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"Cansado de olhar os números da campanha e ainda não saber o que mover?\"\n      copy: \"Quando cada métrica aponta para um lado, ajustar no impulso só aumenta a dúvida. O Método OFTR organiza a leitura do tráfego para apoiar uma decisão semanal mais clara. Conheça o método.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"dor\"\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"A parte da sua campanha que pode estar faltando não é mais verba.\"\n      copy: \"Antes de pensar em escalar, é preciso entender o que os dados realmente estão dizendo. Veja uma forma estruturada de analisar o tráfego e decidir qual alavanca merece atenção.\"\n      formato: \"feed\"\n      categoria_hook: \"curiosidade\"\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"Pare de trocar tudo quando a campanha pede uma decisão objetiva.\"\n      copy: \"Mudar criativo, público e orçamento ao mesmo tempo dificulta saber o que funcionou. O Método OFTR propõe mais rigor operacional para gestores que precisam escolher o próximo movimento com base nos números.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"contrarian\"\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"Toda semana eu abria o gerenciador e terminava com a mesma pergunta: o que faço agora?\"\n      copy: \"O problema nem sempre é falta de dados. Muitas vezes, é não ter uma estrutura para transformar leitura em decisão. Conheça o Método OFTR para organizar esse momento da operação.\"\n      formato: \"feed\"\n      categoria_hook: \"historia\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"Como transformar a leitura semanal da campanha em um próximo passo claro.\"\n      copy: \"Uma rotina de análise pode ajudar o gestor a sair do excesso de informação e chegar a uma decisão operacional. Veja como o Método OFTR estrutura esse processo.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"beneficio\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"Você não precisa de mais uma planilha antes de decidir o que ajustar.\"\n      copy: \"O ponto é criar um momento de leitura com critério: entender os sinais disponíveis e definir a próxima ação com responsabilidade. Conheça a rotina proposta pelo Método OFTR.\"\n      formato: \"feed\"\n      categoria_hook: \"contrarian\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"O que muda quando a análise da campanha deixa de ser uma tarefa solta?\"\n      copy: \"Com uma rotina definida, a revisão semanal ganha contexto e direção. O Método OFTR foi estruturado para gestores que querem tratar dados como apoio à decisão, sem inventar conclusões.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"curiosidade\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"Se toda segunda-feira começa com dúvida sobre a campanha, falta um ritual de decisão.\"\n      copy: \"Reunir os dados é apenas o começo. A rotina certa ajuda a transformar a leitura em uma escolha consciente sobre o que observar e ajustar. Veja o Método OFTR.\"\n      formato: \"feed\"\n      categoria_hook: \"dor\"\n  finalistas_curados: []",
+              "artifactId": "691557c7-694b-47fb-90e0-0333cb108fa9",
+              "contentHash": "8820b0a3a3385f5c31072717d5f82c50fd898d2aa99cd715fae05f10f499db06",
+              "artifactType": "trafficCreativeBattery"
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "691557c7-694b-47fb-90e0-0333cb108fa9",
+          "path": "briefista.bateria_gerada",
+          "contentHash": "8820b0a3a3385f5c31072717d5f82c50fd898d2aa99cd715fae05f10f499db06",
+          "filesystemHash": "8820b0a3a3385f5c31072717d5f82c50fd898d2aa99cd715fae05f10f499db06",
+          "state": "confirmed",
+          "verification": "confirmed"
+        }
+      ],
+      "job": {
+        "id": "8989140a-6606-43e7-a7a5-3d78bf1a1213",
+        "skill_id": "briefista",
+        "status": "succeeded",
+        "attempt": 1,
+        "attempts": [
+          {
+            "status": "succeeded",
+            "attempt": 1,
+            "endedAt": "2026-07-10T16:40:45.496Z",
+            "startedAt": "2026-07-10T16:40:09.595Z"
+          }
+        ],
+        "steps": [
+          {
+            "id": "resolve",
+            "label": "Resolver skill canônica",
+            "status": "done",
+            "timestamp": "2026-07-10T16:40:09.607Z"
+          },
+          {
+            "id": "codex",
+            "label": "Executar Codex CLI",
+            "status": "done",
+            "timestamp": "2026-07-10T16:40:45.463Z"
+          },
+          {
+            "id": "parse",
+            "label": "Validar proposta estruturada",
+            "status": "done",
+            "timestamp": "2026-07-10T16:40:45.464Z"
+          }
+        ],
+        "logs": [
+          {
+            "level": "info",
+            "message": "Executando skill \"briefista\" no sandbox read-only.",
+            "timestamp": "2026-07-10T16:40:09.610Z"
+          }
+        ],
+        "input": {
+          "brief": {
+            "data": {
+              "aula2": {
+                "angulos": []
+              },
+              "dataSourceNotes": "Fixture isolada: números literais fornecidos pelo operador; alcance e janela ausentes."
+            },
+            "meta": {
+              "createdAt": "2026-07-10T09:00:00.000Z",
+              "updatedAt": "2026-07-10T09:00:00.000Z",
+              "completionStatus": "ready_for_traffic_pilot"
+            },
+            "offer": {
+              "name": "Método OFTR para gestores de tráfego",
+              "exactPrice": 1200,
+              "proofAssets": [
+                "copy.md"
+              ]
+            },
+            "funnel": {
+              "primaryPage": "https://fixture.local/oferta"
+            },
+            "market": {
+              "angles": [
+                {
+                  "name": "Seu tráfego não escala porque falta estrutura",
+                  "awarenessLevel": "consciente_do_problema"
+                },
+                {
+                  "name": "A rotina que transforma dados em uma decisão semanal",
+                  "awarenessLevel": "consciente_da_solucao"
+                },
+                {
+                  "name": "O erro que trava sua campanha",
+                  "awarenessLevel": ""
+                }
+              ],
+              "dominantPain": "Gestores não sabem qual alavanca mover sem inventar leitura dos números.",
+              "avatarSummary": "Gestor iniciante que precisa de rigor operacional e decisão humana.",
+              "trafficSource": "pago",
+              "awarenessLevel": "consciente_do_problema",
+              "trafficTemperature": "frio"
+            },
+            "project": {
+              "name": "Piloto real do Squad de Tráfego · Story 8.W3.1",
+              "slug": "story-8-w3-1-traffic-pilot",
+              "voice": "marca",
+              "currentStage": "aula3-trafego"
+            },
+            "channels": {
+              "adFormats": [
+                "reels 9:16",
+                "feed"
+              ],
+              "primaryCtaUrl": "https://fixture.local/oferta"
+            },
+            "integrations": {
+              "metaStatus": "recommend_only"
+            },
+            "schemaVersion": "0.1.0"
+          },
+          "context": {
+            "artifacts": [
+              {
+                "path": "trafficTrackingAudit.json",
+                "title": "Auditoria de tracking — Piloto real do Squad de Tráfego",
+                "content": "{\"projectId\":\"82000000-0000-0000-0000-000000000031\",\"ultimaChecagem\":\"2026-07-10\",\"bmAtivo\":true,\"contaAnunciosAtiva\":true,\"pixelDisparando\":true,\"capiAtivo\":true,\"eventoCompraDeduplicado\":true,\"dominioVerificado\":true,\"pagamentoAprovado\":true,\"statusGeral\":\"OK\",\"evidenciasLiterais\":[\"BM ativo\",\"conta de anúncios ativa\",\"Pixel Helper mostra evento disparando\",\"CAPI Ativo no Events Manager\",\"evento Compra apareceu uma vez com event_id\",\"domínio verificado\",\"pagamento aprovado\"],\"eventMatchQuality\":null,\"observacoes\":[\"EMQ não foi informado pelo operador; não estimado.\"]}",
+                "artifactType": "trafficTrackingAudit"
+              },
+              {
+                "path": "copy.md",
+                "title": "Copy e ângulos da Aula 2",
+                "content": "# Copy e insumos da Aula 2 — fixture do piloto\n\nProjeto: Piloto real do Squad de Tráfego · Story 8.W3.1\nOferta: Pacote Método OFTR para gestores de tráfego\nPreço literal: R$ 1.200\nPágina: https://fixture.local/oferta\n\n## Ângulos validados na Aula 2\n\n1. \"Seu tráfego não escala porque falta estrutura\" — consciente_do_problema\n2. \"A rotina que transforma dados em uma decisão semanal\" — consciente_da_solucao\n3. \"O erro que trava sua campanha\" — nível ausente de propósito; o Briefista deve recusar este ângulo.\n\n## Prova e voz\n\nVoz de marca, sem promessa de performance garantida. O piloto usa dados literais fornecidos pelo operador e não publica na Meta.\n",
+                "artifactType": "copy"
+              }
+            ]
+          },
+          "projectId": "82000000-0000-0000-0000-000000000031",
+          "operatorInput": "Use apenas os dois ângulos com nível de consciência declarado no copy.md. Gere opções e deixe a curadoria/decisão humana explícita; recuse o ângulo sem nível."
+        },
+        "updated_at": "2026-07-10T16:40:45.496+00:00"
+      }
+    },
+    {
+      "skillId": "estruturador",
+      "title": "Estruturador",
+      "runId": "fd2b4085-b7ea-4161-8f1d-489b99b099eb",
+      "jobId": "05392ca0-7ad5-4a92-99ce-75ff80331799",
+      "status": "done",
+      "durationMs": 23440,
+      "proposalHash": "e78c3588b4b92269f3add777ffe824467c6cb7bdb9aec101b9be07c82979120e",
+      "proposal": {
+        "fields": [
+          {
+            "key": "pre_requisito_tracking",
+            "value": "OK"
+          },
+          {
+            "key": "bloqueio",
+            "value": "finalistas_curados ausentes"
+          },
+          {
+            "key": "verba_planejada",
+            "value": "R$30/dia por 7 dias"
+          },
+          {
+            "key": "publicacao",
+            "value": "não realizada"
+          }
+        ],
+        "summary": "Campanha não montada: não há finalistas curados pelo operador.",
+        "warnings": [
+          "Esta é apenas uma proposta para revisão humana; nenhuma campanha foi publicada ou alterada na Meta."
+        ],
+        "artifacts": [
+          {
+            "path": "",
+            "title": "Plano de campanha — bloqueado por ausência de finalistas",
+            "format": "yaml",
+            "content": "estruturador:\n  status: \"bloqueada\"\n  motivo: \"finalistas_curados ausentes; não inventar criativos\"\n  pre_requisito_tracking: \"OK\"\n  tipo_campanha: \"Vendas\"\n  otimizacao: \"Conversao\"\n  publico: \"amplo_frio_advantage_plus\"\n  interesse_guarda_chuva: \"\"\n  posicionamento: \"Advantage+ automático\"\n  estrutura: \"1 campanha → 1 conjunto → 2-3 criativos\"\n  verba_diaria: 30.0\n  periodo_dias: 7\n  criativos_usados: []\n  submetida_por_humano_em: \"\"",
+            "artifactType": "trafficCampaignPlan"
+          }
+        ],
+        "questions": [
+          "Quais são os 2 ou 3 IDs dos finalistas curados pelo operador?"
+        ],
+        "resultMarkdown": "O tracking está aprovado (`statusGeral: OK`), mas a montagem foi bloqueada porque `briefista.finalistas_curados` está vazio e o operador determinou o uso exclusivo desses finalistas. Forneça de 2 a 3 IDs de criativos finalistas para montar a configuração no default sagrado."
+      },
+      "approvals": [
+        {
+          "id": "821f75da-c649-436a-b3fd-e5e04cd3bd8c",
+          "decision": "approve",
+          "state": "done",
+          "outcome": "written",
+          "proposalHash": "e78c3588b4b92269f3add777ffe824467c6cb7bdb9aec101b9be07c82979120e",
+          "proposalRevision": 1,
+          "plan": [
+            {
+              "path": "generated/estruturador/fd2b4085-b7ea-4161-8f1d-489b99b099eb.yaml",
+              "title": "Plano de campanha — bloqueado por ausência de finalistas",
+              "format": "yaml",
+              "content": "estruturador:\n  status: \"bloqueada\"\n  motivo: \"finalistas_curados ausentes; não inventar criativos\"\n  pre_requisito_tracking: \"OK\"\n  tipo_campanha: \"Vendas\"\n  otimizacao: \"Conversao\"\n  publico: \"amplo_frio_advantage_plus\"\n  interesse_guarda_chuva: \"\"\n  posicionamento: \"Advantage+ automático\"\n  estrutura: \"1 campanha → 1 conjunto → 2-3 criativos\"\n  verba_diaria: 30.0\n  periodo_dias: 7\n  criativos_usados: []\n  submetida_por_humano_em: \"\"",
+              "artifactId": "8cc2d2e9-0bb8-4434-a3e3-3ab6cf4944c1",
+              "contentHash": "61dfcb267a4744b2473b5c01e109810e072328e06b4c9239821fb632c39091c8",
+              "artifactType": "trafficCampaignPlan"
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "8cc2d2e9-0bb8-4434-a3e3-3ab6cf4944c1",
+          "path": "generated/estruturador/fd2b4085-b7ea-4161-8f1d-489b99b099eb.yaml",
+          "contentHash": "61dfcb267a4744b2473b5c01e109810e072328e06b4c9239821fb632c39091c8",
+          "filesystemHash": "61dfcb267a4744b2473b5c01e109810e072328e06b4c9239821fb632c39091c8",
+          "state": "confirmed",
+          "verification": "confirmed"
+        }
+      ],
+      "job": {
+        "id": "05392ca0-7ad5-4a92-99ce-75ff80331799",
+        "skill_id": "estruturador",
+        "status": "succeeded",
+        "attempt": 1,
+        "attempts": [
+          {
+            "status": "succeeded",
+            "attempt": 1,
+            "endedAt": "2026-07-10T16:41:10.600Z",
+            "startedAt": "2026-07-10T16:40:51.746Z"
+          }
+        ],
+        "steps": [
+          {
+            "id": "resolve",
+            "label": "Resolver skill canônica",
+            "status": "done",
+            "timestamp": "2026-07-10T16:40:51.755Z"
+          },
+          {
+            "id": "codex",
+            "label": "Executar Codex CLI",
+            "status": "done",
+            "timestamp": "2026-07-10T16:41:10.567Z"
+          },
+          {
+            "id": "parse",
+            "label": "Validar proposta estruturada",
+            "status": "done",
+            "timestamp": "2026-07-10T16:41:10.568Z"
+          }
+        ],
+        "logs": [
+          {
+            "level": "info",
+            "message": "Executando skill \"estruturador\" no sandbox read-only.",
+            "timestamp": "2026-07-10T16:40:51.757Z"
+          }
+        ],
+        "input": {
+          "brief": {
+            "data": {
+              "aula2": {
+                "angulos": []
+              },
+              "dataSourceNotes": "Fixture isolada: números literais fornecidos pelo operador; alcance e janela ausentes."
+            },
+            "meta": {
+              "createdAt": "2026-07-10T09:00:00.000Z",
+              "updatedAt": "2026-07-10T09:00:00.000Z",
+              "completionStatus": "ready_for_traffic_pilot"
+            },
+            "offer": {
+              "name": "Método OFTR para gestores de tráfego",
+              "exactPrice": 1200,
+              "proofAssets": [
+                "copy.md"
+              ]
+            },
+            "funnel": {
+              "primaryPage": "https://fixture.local/oferta"
+            },
+            "market": {
+              "angles": [
+                {
+                  "name": "Seu tráfego não escala porque falta estrutura",
+                  "awarenessLevel": "consciente_do_problema"
+                },
+                {
+                  "name": "A rotina que transforma dados em uma decisão semanal",
+                  "awarenessLevel": "consciente_da_solucao"
+                },
+                {
+                  "name": "O erro que trava sua campanha",
+                  "awarenessLevel": ""
+                }
+              ],
+              "dominantPain": "Gestores não sabem qual alavanca mover sem inventar leitura dos números.",
+              "avatarSummary": "Gestor iniciante que precisa de rigor operacional e decisão humana.",
+              "trafficSource": "pago",
+              "awarenessLevel": "consciente_do_problema",
+              "trafficTemperature": "frio"
+            },
+            "project": {
+              "name": "Piloto real do Squad de Tráfego · Story 8.W3.1",
+              "slug": "story-8-w3-1-traffic-pilot",
+              "voice": "marca",
+              "currentStage": "aula3-trafego"
+            },
+            "channels": {
+              "adFormats": [
+                "reels 9:16",
+                "feed"
+              ],
+              "primaryCtaUrl": "https://fixture.local/oferta"
+            },
+            "integrations": {
+              "metaStatus": "recommend_only"
+            },
+            "schemaVersion": "0.1.0"
+          },
+          "context": {
+            "artifacts": [
+              {
+                "path": "briefista.bateria_gerada",
+                "title": "Bateria de criativos — Briefista",
+                "content": "briefista:\n  gerado_em: \"2026-07-10\"\n  bateria_gerada:\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"Cansado de olhar os números da campanha e ainda não saber o que mover?\"\n      copy: \"Quando cada métrica aponta para um lado, ajustar no impulso só aumenta a dúvida. O Método OFTR organiza a leitura do tráfego para apoiar uma decisão semanal mais clara. Conheça o método.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"dor\"\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"A parte da sua campanha que pode estar faltando não é mais verba.\"\n      copy: \"Antes de pensar em escalar, é preciso entender o que os dados realmente estão dizendo. Veja uma forma estruturada de analisar o tráfego e decidir qual alavanca merece atenção.\"\n      formato: \"feed\"\n      categoria_hook: \"curiosidade\"\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"Pare de trocar tudo quando a campanha pede uma decisão objetiva.\"\n      copy: \"Mudar criativo, público e orçamento ao mesmo tempo dificulta saber o que funcionou. O Método OFTR propõe mais rigor operacional para gestores que precisam escolher o próximo movimento com base nos números.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"contrarian\"\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"Toda semana eu abria o gerenciador e terminava com a mesma pergunta: o que faço agora?\"\n      copy: \"O problema nem sempre é falta de dados. Muitas vezes, é não ter uma estrutura para transformar leitura em decisão. Conheça o Método OFTR para organizar esse momento da operação.\"\n      formato: \"feed\"\n      categoria_hook: \"historia\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"Como transformar a leitura semanal da campanha em um próximo passo claro.\"\n      copy: \"Uma rotina de análise pode ajudar o gestor a sair do excesso de informação e chegar a uma decisão operacional. Veja como o Método OFTR estrutura esse processo.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"beneficio\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"Você não precisa de mais uma planilha antes de decidir o que ajustar.\"\n      copy: \"O ponto é criar um momento de leitura com critério: entender os sinais disponíveis e definir a próxima ação com responsabilidade. Conheça a rotina proposta pelo Método OFTR.\"\n      formato: \"feed\"\n      categoria_hook: \"contrarian\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"O que muda quando a análise da campanha deixa de ser uma tarefa solta?\"\n      copy: \"Com uma rotina definida, a revisão semanal ganha contexto e direção. O Método OFTR foi estruturado para gestores que querem tratar dados como apoio à decisão, sem inventar conclusões.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"curiosidade\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"Se toda segunda-feira começa com dúvida sobre a campanha, falta um ritual de decisão.\"\n      copy: \"Reunir os dados é apenas o começo. A rotina certa ajuda a transformar a leitura em uma escolha consciente sobre o que observar e ajustar. Veja o Método OFTR.\"\n      formato: \"feed\"\n      categoria_hook: \"dor\"\n  finalistas_curados: []",
+                "artifactType": "trafficCreativeBattery"
+              },
+              {
+                "path": "trafficTrackingAudit.json",
+                "title": "Auditoria de tracking — Piloto real do Squad de Tráfego",
+                "content": "{\"projectId\":\"82000000-0000-0000-0000-000000000031\",\"ultimaChecagem\":\"2026-07-10\",\"bmAtivo\":true,\"contaAnunciosAtiva\":true,\"pixelDisparando\":true,\"capiAtivo\":true,\"eventoCompraDeduplicado\":true,\"dominioVerificado\":true,\"pagamentoAprovado\":true,\"statusGeral\":\"OK\",\"evidenciasLiterais\":[\"BM ativo\",\"conta de anúncios ativa\",\"Pixel Helper mostra evento disparando\",\"CAPI Ativo no Events Manager\",\"evento Compra apareceu uma vez com event_id\",\"domínio verificado\",\"pagamento aprovado\"],\"eventMatchQuality\":null,\"observacoes\":[\"EMQ não foi informado pelo operador; não estimado.\"]}",
+                "artifactType": "trafficTrackingAudit"
+              },
+              {
+                "path": "copy.md",
+                "title": "Copy e ângulos da Aula 2",
+                "content": "# Copy e insumos da Aula 2 — fixture do piloto\n\nProjeto: Piloto real do Squad de Tráfego · Story 8.W3.1\nOferta: Pacote Método OFTR para gestores de tráfego\nPreço literal: R$ 1.200\nPágina: https://fixture.local/oferta\n\n## Ângulos validados na Aula 2\n\n1. \"Seu tráfego não escala porque falta estrutura\" — consciente_do_problema\n2. \"A rotina que transforma dados em uma decisão semanal\" — consciente_da_solucao\n3. \"O erro que trava sua campanha\" — nível ausente de propósito; o Briefista deve recusar este ângulo.\n\n## Prova e voz\n\nVoz de marca, sem promessa de performance garantida. O piloto usa dados literais fornecidos pelo operador e não publica na Meta.\n",
+                "artifactType": "copy"
+              }
+            ]
+          },
+          "projectId": "82000000-0000-0000-0000-000000000031",
+          "operatorInput": "Use somente os finalistas curados pelo operador. Default sagrado: Vendas, Conversão, público amplo/frio + Advantage+, posicionamento automático, R$30/dia por 7 dias. Não publique e deixe submetida_por_humano_em vazio."
+        },
+        "updated_at": "2026-07-10T16:41:10.6+00:00"
+      }
+    },
+    {
+      "skillId": "leitor-de-metricas",
+      "title": "Leitor de Metricas",
+      "runId": "5622e4b0-5fb6-4af1-bace-d284fb5476be",
+      "jobId": "97ee381c-2354-4aab-9086-b89af9393e3c",
+      "status": "done",
+      "durationMs": 37968,
+      "proposalHash": "33f6f8daa69c1a32ac62749b1175d4c1c6761609904f804ccff876d5e3aa7707",
+      "proposal": {
+        "fields": [],
+        "summary": "Leitura registrada com dados literais; ROAS marcado como Estimado e amostra insuficiente para CPA.",
+        "warnings": [
+          "A janela de atribuição não foi fornecida.",
+          "O ROAS do gerenciador não foi confirmado no caixa e permanece Estimado."
+        ],
+        "artifacts": [
+          {
+            "path": "generated/leitor-de-metricas/trafficMetricReading.yaml",
+            "title": "Leitura de métricas — 2026-07-10",
+            "format": "yaml",
+            "content": "leitor:\n  ultima_leitura: \"2026-07-10\"\n  janela_atribuicao: \"não fornecido\"\n  sinais:\n    - metrica: \"gasto\"\n      valor: \"R$210\"\n      selo: \"Real\"\n      fonte: \"colado pelo aluno em 2026-07-10\"\n    - metrica: \"impressões\"\n      valor: \"41.800\"\n      selo: \"Real\"\n      fonte: \"colado pelo aluno em 2026-07-10\"\n    - metrica: \"cliques no link\"\n      valor: \"334\"\n      selo: \"Real\"\n      fonte: \"colado pelo aluno em 2026-07-10\"\n    - metrica: \"conversões Compra\"\n      valor: \"4\"\n      selo: \"Real\"\n      fonte: \"colado pelo aluno em 2026-07-10\"\n    - metrica: \"CPA do gerenciador\"\n      valor: \"R$52,50\"\n      selo: \"Real\"\n      fonte: \"colado pelo aluno em 2026-07-10\"\n    - metrica: \"ROAS do gerenciador\"\n      valor: \"3,1x\"\n      selo: \"Estimado\"\n      fonte: \"colado pelo aluno em 2026-07-10; conforme atribuição da plataforma, não confirmado no caixa\"\n    - metrica: \"CTR\"\n      valor: null\n      selo: \"nao_fornecido\"\n      fonte: \"\"\n    - metrica: \"alcance\"\n      valor: null\n      selo: \"nao_fornecido\"\n      fonte: \"\"\n    - metrica: \"frequência\"\n      valor: null\n      selo: \"nao_fornecido\"\n      fonte: \"\"\n    - metrica: \"CPM\"\n      valor: null\n      selo: \"nao_fornecido\"\n      fonte: \"\"\n  amostra_suficiente_para_cpa: false\n  nota_amostra: \"amostra insuficiente para CPA — leia sinal de topo (CTR, CPM, hook rate, custo por clique no link, adição ao carrinho)\"",
+            "artifactType": "trafficMetricReading"
+          }
+        ],
+        "questions": [],
+        "resultMarkdown": "Leitura de 2026-07-10 concluída. Nenhuma métrica ausente foi calculada."
+      },
+      "approvals": [
+        {
+          "id": "574528bf-decc-495b-b957-d40d0d8b314b",
+          "decision": "approve",
+          "state": "done",
+          "outcome": "written",
+          "proposalHash": "33f6f8daa69c1a32ac62749b1175d4c1c6761609904f804ccff876d5e3aa7707",
+          "proposalRevision": 1,
+          "plan": [
+            {
+              "path": "generated/leitor-de-metricas/trafficMetricReading.yaml",
+              "title": "Leitura de métricas — 2026-07-10",
+              "format": "yaml",
+              "content": "leitor:\n  ultima_leitura: \"2026-07-10\"\n  janela_atribuicao: \"não fornecido\"\n  sinais:\n    - metrica: \"gasto\"\n      valor: \"R$210\"\n      selo: \"Real\"\n      fonte: \"colado pelo aluno em 2026-07-10\"\n    - metrica: \"impressões\"\n      valor: \"41.800\"\n      selo: \"Real\"\n      fonte: \"colado pelo aluno em 2026-07-10\"\n    - metrica: \"cliques no link\"\n      valor: \"334\"\n      selo: \"Real\"\n      fonte: \"colado pelo aluno em 2026-07-10\"\n    - metrica: \"conversões Compra\"\n      valor: \"4\"\n      selo: \"Real\"\n      fonte: \"colado pelo aluno em 2026-07-10\"\n    - metrica: \"CPA do gerenciador\"\n      valor: \"R$52,50\"\n      selo: \"Real\"\n      fonte: \"colado pelo aluno em 2026-07-10\"\n    - metrica: \"ROAS do gerenciador\"\n      valor: \"3,1x\"\n      selo: \"Estimado\"\n      fonte: \"colado pelo aluno em 2026-07-10; conforme atribuição da plataforma, não confirmado no caixa\"\n    - metrica: \"CTR\"\n      valor: null\n      selo: \"nao_fornecido\"\n      fonte: \"\"\n    - metrica: \"alcance\"\n      valor: null\n      selo: \"nao_fornecido\"\n      fonte: \"\"\n    - metrica: \"frequência\"\n      valor: null\n      selo: \"nao_fornecido\"\n      fonte: \"\"\n    - metrica: \"CPM\"\n      valor: null\n      selo: \"nao_fornecido\"\n      fonte: \"\"\n  amostra_suficiente_para_cpa: false\n  nota_amostra: \"amostra insuficiente para CPA — leia sinal de topo (CTR, CPM, hook rate, custo por clique no link, adição ao carrinho)\"",
+              "artifactId": "109f3387-cb0a-4287-adb4-876182ca0db6",
+              "contentHash": "3977d386587a18c4e8a6c174d09c3b9981cb74614fac58cfc0fbad73d4971f61",
+              "artifactType": "trafficMetricReading"
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "109f3387-cb0a-4287-adb4-876182ca0db6",
+          "path": "generated/leitor-de-metricas/trafficMetricReading.yaml",
+          "contentHash": "3977d386587a18c4e8a6c174d09c3b9981cb74614fac58cfc0fbad73d4971f61",
+          "filesystemHash": "3977d386587a18c4e8a6c174d09c3b9981cb74614fac58cfc0fbad73d4971f61",
+          "state": "confirmed",
+          "verification": "confirmed"
+        }
+      ],
+      "job": {
+        "id": "97ee381c-2354-4aab-9086-b89af9393e3c",
+        "skill_id": "leitor-de-metricas",
+        "status": "succeeded",
+        "attempt": 1,
+        "attempts": [
+          {
+            "status": "succeeded",
+            "attempt": 1,
+            "endedAt": "2026-07-10T16:41:49.884Z",
+            "startedAt": "2026-07-10T16:41:16.800Z"
+          }
+        ],
+        "steps": [
+          {
+            "id": "resolve",
+            "label": "Resolver skill canônica",
+            "status": "done",
+            "timestamp": "2026-07-10T16:41:16.811Z"
+          },
+          {
+            "id": "codex",
+            "label": "Executar Codex CLI",
+            "status": "done",
+            "timestamp": "2026-07-10T16:41:49.849Z"
+          },
+          {
+            "id": "parse",
+            "label": "Validar proposta estruturada",
+            "status": "done",
+            "timestamp": "2026-07-10T16:41:49.850Z"
+          }
+        ],
+        "logs": [
+          {
+            "level": "info",
+            "message": "Executando skill \"leitor-de-metricas\" no sandbox read-only.",
+            "timestamp": "2026-07-10T16:41:16.812Z"
+          }
+        ],
+        "input": {
+          "brief": {
+            "data": {
+              "aula2": {
+                "angulos": []
+              },
+              "dataSourceNotes": "Fixture isolada: números literais fornecidos pelo operador; alcance e janela ausentes."
+            },
+            "meta": {
+              "createdAt": "2026-07-10T09:00:00.000Z",
+              "updatedAt": "2026-07-10T09:00:00.000Z",
+              "completionStatus": "ready_for_traffic_pilot"
+            },
+            "offer": {
+              "name": "Método OFTR para gestores de tráfego",
+              "exactPrice": 1200,
+              "proofAssets": [
+                "copy.md"
+              ]
+            },
+            "funnel": {
+              "primaryPage": "https://fixture.local/oferta"
+            },
+            "market": {
+              "angles": [
+                {
+                  "name": "Seu tráfego não escala porque falta estrutura",
+                  "awarenessLevel": "consciente_do_problema"
+                },
+                {
+                  "name": "A rotina que transforma dados em uma decisão semanal",
+                  "awarenessLevel": "consciente_da_solucao"
+                },
+                {
+                  "name": "O erro que trava sua campanha",
+                  "awarenessLevel": ""
+                }
+              ],
+              "dominantPain": "Gestores não sabem qual alavanca mover sem inventar leitura dos números.",
+              "avatarSummary": "Gestor iniciante que precisa de rigor operacional e decisão humana.",
+              "trafficSource": "pago",
+              "awarenessLevel": "consciente_do_problema",
+              "trafficTemperature": "frio"
+            },
+            "project": {
+              "name": "Piloto real do Squad de Tráfego · Story 8.W3.1",
+              "slug": "story-8-w3-1-traffic-pilot",
+              "voice": "marca",
+              "currentStage": "aula3-trafego"
+            },
+            "channels": {
+              "adFormats": [
+                "reels 9:16",
+                "feed"
+              ],
+              "primaryCtaUrl": "https://fixture.local/oferta"
+            },
+            "integrations": {
+              "metaStatus": "recommend_only"
+            },
+            "schemaVersion": "0.1.0"
+          },
+          "context": {
+            "artifacts": [
+              {
+                "path": "generated/estruturador/fd2b4085-b7ea-4161-8f1d-489b99b099eb.yaml",
+                "title": "Plano de campanha — bloqueado por ausência de finalistas",
+                "content": "estruturador:\n  status: \"bloqueada\"\n  motivo: \"finalistas_curados ausentes; não inventar criativos\"\n  pre_requisito_tracking: \"OK\"\n  tipo_campanha: \"Vendas\"\n  otimizacao: \"Conversao\"\n  publico: \"amplo_frio_advantage_plus\"\n  interesse_guarda_chuva: \"\"\n  posicionamento: \"Advantage+ automático\"\n  estrutura: \"1 campanha → 1 conjunto → 2-3 criativos\"\n  verba_diaria: 30.0\n  periodo_dias: 7\n  criativos_usados: []\n  submetida_por_humano_em: \"\"",
+                "artifactType": "trafficCampaignPlan"
+              },
+              {
+                "path": "briefista.bateria_gerada",
+                "title": "Bateria de criativos — Briefista",
+                "content": "briefista:\n  gerado_em: \"2026-07-10\"\n  bateria_gerada:\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"Cansado de olhar os números da campanha e ainda não saber o que mover?\"\n      copy: \"Quando cada métrica aponta para um lado, ajustar no impulso só aumenta a dúvida. O Método OFTR organiza a leitura do tráfego para apoiar uma decisão semanal mais clara. Conheça o método.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"dor\"\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"A parte da sua campanha que pode estar faltando não é mais verba.\"\n      copy: \"Antes de pensar em escalar, é preciso entender o que os dados realmente estão dizendo. Veja uma forma estruturada de analisar o tráfego e decidir qual alavanca merece atenção.\"\n      formato: \"feed\"\n      categoria_hook: \"curiosidade\"\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"Pare de trocar tudo quando a campanha pede uma decisão objetiva.\"\n      copy: \"Mudar criativo, público e orçamento ao mesmo tempo dificulta saber o que funcionou. O Método OFTR propõe mais rigor operacional para gestores que precisam escolher o próximo movimento com base nos números.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"contrarian\"\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"Toda semana eu abria o gerenciador e terminava com a mesma pergunta: o que faço agora?\"\n      copy: \"O problema nem sempre é falta de dados. Muitas vezes, é não ter uma estrutura para transformar leitura em decisão. Conheça o Método OFTR para organizar esse momento da operação.\"\n      formato: \"feed\"\n      categoria_hook: \"historia\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"Como transformar a leitura semanal da campanha em um próximo passo claro.\"\n      copy: \"Uma rotina de análise pode ajudar o gestor a sair do excesso de informação e chegar a uma decisão operacional. Veja como o Método OFTR estrutura esse processo.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"beneficio\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"Você não precisa de mais uma planilha antes de decidir o que ajustar.\"\n      copy: \"O ponto é criar um momento de leitura com critério: entender os sinais disponíveis e definir a próxima ação com responsabilidade. Conheça a rotina proposta pelo Método OFTR.\"\n      formato: \"feed\"\n      categoria_hook: \"contrarian\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"O que muda quando a análise da campanha deixa de ser uma tarefa solta?\"\n      copy: \"Com uma rotina definida, a revisão semanal ganha contexto e direção. O Método OFTR foi estruturado para gestores que querem tratar dados como apoio à decisão, sem inventar conclusões.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"curiosidade\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"Se toda segunda-feira começa com dúvida sobre a campanha, falta um ritual de decisão.\"\n      copy: \"Reunir os dados é apenas o começo. A rotina certa ajuda a transformar a leitura em uma escolha consciente sobre o que observar e ajustar. Veja o Método OFTR.\"\n      formato: \"feed\"\n      categoria_hook: \"dor\"\n  finalistas_curados: []",
+                "artifactType": "trafficCreativeBattery"
+              },
+              {
+                "path": "trafficTrackingAudit.json",
+                "title": "Auditoria de tracking — Piloto real do Squad de Tráfego",
+                "content": "{\"projectId\":\"82000000-0000-0000-0000-000000000031\",\"ultimaChecagem\":\"2026-07-10\",\"bmAtivo\":true,\"contaAnunciosAtiva\":true,\"pixelDisparando\":true,\"capiAtivo\":true,\"eventoCompraDeduplicado\":true,\"dominioVerificado\":true,\"pagamentoAprovado\":true,\"statusGeral\":\"OK\",\"evidenciasLiterais\":[\"BM ativo\",\"conta de anúncios ativa\",\"Pixel Helper mostra evento disparando\",\"CAPI Ativo no Events Manager\",\"evento Compra apareceu uma vez com event_id\",\"domínio verificado\",\"pagamento aprovado\"],\"eventMatchQuality\":null,\"observacoes\":[\"EMQ não foi informado pelo operador; não estimado.\"]}",
+                "artifactType": "trafficTrackingAudit"
+              },
+              {
+                "path": "copy.md",
+                "title": "Copy e ângulos da Aula 2",
+                "content": "# Copy e insumos da Aula 2 — fixture do piloto\n\nProjeto: Piloto real do Squad de Tráfego · Story 8.W3.1\nOferta: Pacote Método OFTR para gestores de tráfego\nPreço literal: R$ 1.200\nPágina: https://fixture.local/oferta\n\n## Ângulos validados na Aula 2\n\n1. \"Seu tráfego não escala porque falta estrutura\" — consciente_do_problema\n2. \"A rotina que transforma dados em uma decisão semanal\" — consciente_da_solucao\n3. \"O erro que trava sua campanha\" — nível ausente de propósito; o Briefista deve recusar este ângulo.\n\n## Prova e voz\n\nVoz de marca, sem promessa de performance garantida. O piloto usa dados literais fornecidos pelo operador e não publica na Meta.\n",
+                "artifactType": "copy"
+              }
+            ]
+          },
+          "projectId": "82000000-0000-0000-0000-000000000031",
+          "operatorInput": "O operador colou literalmente: gasto R$210; impressões 41.800; cliques no link 334; conversões Compra 4; CPA do gerenciador R$52,50; ROAS do gerenciador 3,1x. Não forneceu CTR, alcance, frequência, CPM nem janela de atribuição. Registre cada campo ausente com valor null e selo nao_fornecido; não calcule nada ausente. ROAS não foi confirmado no caixa, portanto é Estimado com premissa explícita."
+        },
+        "updated_at": "2026-07-10T16:41:49.884+00:00"
+      }
+    },
+    {
+      "skillId": "diagnosticador",
+      "title": "Diagnosticador",
+      "runId": "aa8cdea5-d777-4ce8-99ae-74bb27d3e694",
+      "jobId": "1f30bec9-b2c2-4ec8-ba51-8db6bd48d65c",
+      "status": "done",
+      "durationMs": 44323,
+      "proposalHash": "7cae2c0aa6bac465e8b66974764d70023ef0aa982f1011d6859671f019cc4cae",
+      "proposal": {
+        "fields": [
+          {
+            "key": "decision",
+            "value": "Não alterar a campanha."
+          },
+          {
+            "key": "reason",
+            "value": "Amostra de CPA insuficiente; CTR, CPM, hook rate e roas_break_even ausentes."
+          }
+        ],
+        "summary": "Diagnóstico bloqueado: a amostra para CPA é insuficiente, os sinais de topo não foram fornecidos e roas_break_even está ausente. Nenhuma mudança de campanha é recomendada.",
+        "warnings": [
+          "A recomendação não executa nenhuma mudança na Meta.",
+          "O CPA de R$52,50 e o ROAS de 3,1x não foram usados para diagnosticar devido à amostra insuficiente e ao ROAS break-even ausente."
+        ],
+        "artifacts": [
+          {
+            "path": "generated/diagnosticador/trafficDiagnosis.yaml",
+            "title": "Diagnóstico de tráfego — 2026-07-10",
+            "format": "yaml",
+            "content": "diagnosticador:\n  diagnosticado_em: \"2026-07-10\"\n  hipotese: \"Não há sinal de topo validado pelo Leitor para apontar um gargalo: CTR, CPM e hook rate não foram fornecidos; a leitura marca amostra_suficiente_para_cpa como false. Também não há projecao.roas_break_even. Portanto, não é seguro diagnosticar CPA nem inferir uma alavanca de campanha.\"\n  alavanca_unica: \"Manter a campanha sem alterações e solicitar nova leitura do Leitor com CTR, CPM, hook rate, janela de atribuição e projecao.roas_break_even antes de escolher a próxima alavanca.\"\n  criterio_sucesso: \"Na próxima leitura, os sinais de topo e o ROAS break-even estiverem informados com selo e janela de atribuição, permitindo emitir um diagnóstico baseado em evidência.\"\n  criterio_reversao: \"Se a próxima leitura continuar sem esses dados, manter a recomendação de não alterar a campanha e bloquear novo diagnóstico até que sejam fornecidos.\"\n  aprovado_pelo_aluno: null\n  circuit_breaker_acionado: false",
+            "artifactType": "trafficDiagnosis"
+          }
+        ],
+        "questions": [
+          "Rode o Leitor de Métricas novamente com CTR, CPM, hook rate, janela de atribuição e roas_break_even. Ou confirme se esses dados existem em outra leitura literal."
+        ],
+        "resultMarkdown": "Não há base suficiente para escolher uma alavanca válida sem inventar dados."
+      },
+      "approvals": [
+        {
+          "id": "f073b7fd-0653-47ec-a064-d62e232a530c",
+          "decision": "approve",
+          "state": "done",
+          "outcome": "written",
+          "proposalHash": "7cae2c0aa6bac465e8b66974764d70023ef0aa982f1011d6859671f019cc4cae",
+          "proposalRevision": 1,
+          "plan": [
+            {
+              "path": "generated/diagnosticador/trafficDiagnosis.yaml",
+              "title": "Diagnóstico de tráfego — 2026-07-10",
+              "format": "yaml",
+              "content": "diagnosticador:\n  diagnosticado_em: \"2026-07-10\"\n  hipotese: \"Não há sinal de topo validado pelo Leitor para apontar um gargalo: CTR, CPM e hook rate não foram fornecidos; a leitura marca amostra_suficiente_para_cpa como false. Também não há projecao.roas_break_even. Portanto, não é seguro diagnosticar CPA nem inferir uma alavanca de campanha.\"\n  alavanca_unica: \"Manter a campanha sem alterações e solicitar nova leitura do Leitor com CTR, CPM, hook rate, janela de atribuição e projecao.roas_break_even antes de escolher a próxima alavanca.\"\n  criterio_sucesso: \"Na próxima leitura, os sinais de topo e o ROAS break-even estiverem informados com selo e janela de atribuição, permitindo emitir um diagnóstico baseado em evidência.\"\n  criterio_reversao: \"Se a próxima leitura continuar sem esses dados, manter a recomendação de não alterar a campanha e bloquear novo diagnóstico até que sejam fornecidos.\"\n  aprovado_pelo_aluno: null\n  circuit_breaker_acionado: false",
+              "artifactId": "d3b27494-10c5-47e3-ac13-c60580760290",
+              "contentHash": "33fed22273a19bbe07546b8ddbb273e57a032e9b1dbe5a589c4a514edfa8bb84",
+              "artifactType": "trafficDiagnosis"
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "d3b27494-10c5-47e3-ac13-c60580760290",
+          "path": "generated/diagnosticador/trafficDiagnosis.yaml",
+          "contentHash": "33fed22273a19bbe07546b8ddbb273e57a032e9b1dbe5a589c4a514edfa8bb84",
+          "filesystemHash": "33fed22273a19bbe07546b8ddbb273e57a032e9b1dbe5a589c4a514edfa8bb84",
+          "state": "confirmed",
+          "verification": "confirmed"
+        }
+      ],
+      "job": {
+        "id": "1f30bec9-b2c2-4ec8-ba51-8db6bd48d65c",
+        "skill_id": "diagnosticador",
+        "status": "succeeded",
+        "attempt": 1,
+        "attempts": [
+          {
+            "status": "succeeded",
+            "attempt": 1,
+            "endedAt": "2026-07-10T16:42:36.290Z",
+            "startedAt": "2026-07-10T16:41:56.792Z"
+          }
+        ],
+        "steps": [
+          {
+            "id": "resolve",
+            "label": "Resolver skill canônica",
+            "status": "done",
+            "timestamp": "2026-07-10T16:41:56.810Z"
+          },
+          {
+            "id": "codex",
+            "label": "Executar Codex CLI",
+            "status": "done",
+            "timestamp": "2026-07-10T16:42:36.254Z"
+          },
+          {
+            "id": "parse",
+            "label": "Validar proposta estruturada",
+            "status": "done",
+            "timestamp": "2026-07-10T16:42:36.255Z"
+          }
+        ],
+        "logs": [
+          {
+            "level": "info",
+            "message": "Executando skill \"diagnosticador\" no sandbox read-only.",
+            "timestamp": "2026-07-10T16:41:56.813Z"
+          }
+        ],
+        "input": {
+          "brief": {
+            "data": {
+              "aula2": {
+                "angulos": []
+              },
+              "dataSourceNotes": "Fixture isolada: números literais fornecidos pelo operador; alcance e janela ausentes."
+            },
+            "meta": {
+              "createdAt": "2026-07-10T09:00:00.000Z",
+              "updatedAt": "2026-07-10T09:00:00.000Z",
+              "completionStatus": "ready_for_traffic_pilot"
+            },
+            "offer": {
+              "name": "Método OFTR para gestores de tráfego",
+              "exactPrice": 1200,
+              "proofAssets": [
+                "copy.md"
+              ]
+            },
+            "funnel": {
+              "primaryPage": "https://fixture.local/oferta"
+            },
+            "market": {
+              "angles": [
+                {
+                  "name": "Seu tráfego não escala porque falta estrutura",
+                  "awarenessLevel": "consciente_do_problema"
+                },
+                {
+                  "name": "A rotina que transforma dados em uma decisão semanal",
+                  "awarenessLevel": "consciente_da_solucao"
+                },
+                {
+                  "name": "O erro que trava sua campanha",
+                  "awarenessLevel": ""
+                }
+              ],
+              "dominantPain": "Gestores não sabem qual alavanca mover sem inventar leitura dos números.",
+              "avatarSummary": "Gestor iniciante que precisa de rigor operacional e decisão humana.",
+              "trafficSource": "pago",
+              "awarenessLevel": "consciente_do_problema",
+              "trafficTemperature": "frio"
+            },
+            "project": {
+              "name": "Piloto real do Squad de Tráfego · Story 8.W3.1",
+              "slug": "story-8-w3-1-traffic-pilot",
+              "voice": "marca",
+              "currentStage": "aula3-trafego"
+            },
+            "channels": {
+              "adFormats": [
+                "reels 9:16",
+                "feed"
+              ],
+              "primaryCtaUrl": "https://fixture.local/oferta"
+            },
+            "integrations": {
+              "metaStatus": "recommend_only"
+            },
+            "schemaVersion": "0.1.0"
+          },
+          "context": {
+            "artifacts": [
+              {
+                "path": "generated/leitor-de-metricas/trafficMetricReading.yaml",
+                "title": "Leitura de métricas — 2026-07-10",
+                "content": "leitor:\n  ultima_leitura: \"2026-07-10\"\n  janela_atribuicao: \"não fornecido\"\n  sinais:\n    - metrica: \"gasto\"\n      valor: \"R$210\"\n      selo: \"Real\"\n      fonte: \"colado pelo aluno em 2026-07-10\"\n    - metrica: \"impressões\"\n      valor: \"41.800\"\n      selo: \"Real\"\n      fonte: \"colado pelo aluno em 2026-07-10\"\n    - metrica: \"cliques no link\"\n      valor: \"334\"\n      selo: \"Real\"\n      fonte: \"colado pelo aluno em 2026-07-10\"\n    - metrica: \"conversões Compra\"\n      valor: \"4\"\n      selo: \"Real\"\n      fonte: \"colado pelo aluno em 2026-07-10\"\n    - metrica: \"CPA do gerenciador\"\n      valor: \"R$52,50\"\n      selo: \"Real\"\n      fonte: \"colado pelo aluno em 2026-07-10\"\n    - metrica: \"ROAS do gerenciador\"\n      valor: \"3,1x\"\n      selo: \"Estimado\"\n      fonte: \"colado pelo aluno em 2026-07-10; conforme atribuição da plataforma, não confirmado no caixa\"\n    - metrica: \"CTR\"\n      valor: null\n      selo: \"nao_fornecido\"\n      fonte: \"\"\n    - metrica: \"alcance\"\n      valor: null\n      selo: \"nao_fornecido\"\n      fonte: \"\"\n    - metrica: \"frequência\"\n      valor: null\n      selo: \"nao_fornecido\"\n      fonte: \"\"\n    - metrica: \"CPM\"\n      valor: null\n      selo: \"nao_fornecido\"\n      fonte: \"\"\n  amostra_suficiente_para_cpa: false\n  nota_amostra: \"amostra insuficiente para CPA — leia sinal de topo (CTR, CPM, hook rate, custo por clique no link, adição ao carrinho)\"",
+                "artifactType": "trafficMetricReading"
+              },
+              {
+                "path": "generated/estruturador/fd2b4085-b7ea-4161-8f1d-489b99b099eb.yaml",
+                "title": "Plano de campanha — bloqueado por ausência de finalistas",
+                "content": "estruturador:\n  status: \"bloqueada\"\n  motivo: \"finalistas_curados ausentes; não inventar criativos\"\n  pre_requisito_tracking: \"OK\"\n  tipo_campanha: \"Vendas\"\n  otimizacao: \"Conversao\"\n  publico: \"amplo_frio_advantage_plus\"\n  interesse_guarda_chuva: \"\"\n  posicionamento: \"Advantage+ automático\"\n  estrutura: \"1 campanha → 1 conjunto → 2-3 criativos\"\n  verba_diaria: 30.0\n  periodo_dias: 7\n  criativos_usados: []\n  submetida_por_humano_em: \"\"",
+                "artifactType": "trafficCampaignPlan"
+              },
+              {
+                "path": "briefista.bateria_gerada",
+                "title": "Bateria de criativos — Briefista",
+                "content": "briefista:\n  gerado_em: \"2026-07-10\"\n  bateria_gerada:\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"Cansado de olhar os números da campanha e ainda não saber o que mover?\"\n      copy: \"Quando cada métrica aponta para um lado, ajustar no impulso só aumenta a dúvida. O Método OFTR organiza a leitura do tráfego para apoiar uma decisão semanal mais clara. Conheça o método.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"dor\"\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"A parte da sua campanha que pode estar faltando não é mais verba.\"\n      copy: \"Antes de pensar em escalar, é preciso entender o que os dados realmente estão dizendo. Veja uma forma estruturada de analisar o tráfego e decidir qual alavanca merece atenção.\"\n      formato: \"feed\"\n      categoria_hook: \"curiosidade\"\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"Pare de trocar tudo quando a campanha pede uma decisão objetiva.\"\n      copy: \"Mudar criativo, público e orçamento ao mesmo tempo dificulta saber o que funcionou. O Método OFTR propõe mais rigor operacional para gestores que precisam escolher o próximo movimento com base nos números.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"contrarian\"\n    - angulo: \"Seu tráfego não escala porque falta estrutura\"\n      nivel_consciencia: \"consciente_do_problema\"\n      hook: \"Toda semana eu abria o gerenciador e terminava com a mesma pergunta: o que faço agora?\"\n      copy: \"O problema nem sempre é falta de dados. Muitas vezes, é não ter uma estrutura para transformar leitura em decisão. Conheça o Método OFTR para organizar esse momento da operação.\"\n      formato: \"feed\"\n      categoria_hook: \"historia\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"Como transformar a leitura semanal da campanha em um próximo passo claro.\"\n      copy: \"Uma rotina de análise pode ajudar o gestor a sair do excesso de informação e chegar a uma decisão operacional. Veja como o Método OFTR estrutura esse processo.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"beneficio\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"Você não precisa de mais uma planilha antes de decidir o que ajustar.\"\n      copy: \"O ponto é criar um momento de leitura com critério: entender os sinais disponíveis e definir a próxima ação com responsabilidade. Conheça a rotina proposta pelo Método OFTR.\"\n      formato: \"feed\"\n      categoria_hook: \"contrarian\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"O que muda quando a análise da campanha deixa de ser uma tarefa solta?\"\n      copy: \"Com uma rotina definida, a revisão semanal ganha contexto e direção. O Método OFTR foi estruturado para gestores que querem tratar dados como apoio à decisão, sem inventar conclusões.\"\n      formato: \"reels 9:16\"\n      categoria_hook: \"curiosidade\"\n    - angulo: \"A rotina que transforma dados em uma decisão semanal\"\n      nivel_consciencia: \"consciente_da_solucao\"\n      hook: \"Se toda segunda-feira começa com dúvida sobre a campanha, falta um ritual de decisão.\"\n      copy: \"Reunir os dados é apenas o começo. A rotina certa ajuda a transformar a leitura em uma escolha consciente sobre o que observar e ajustar. Veja o Método OFTR.\"\n      formato: \"feed\"\n      categoria_hook: \"dor\"\n  finalistas_curados: []",
+                "artifactType": "trafficCreativeBattery"
+              },
+              {
+                "path": "trafficTrackingAudit.json",
+                "title": "Auditoria de tracking — Piloto real do Squad de Tráfego",
+                "content": "{\"projectId\":\"82000000-0000-0000-0000-000000000031\",\"ultimaChecagem\":\"2026-07-10\",\"bmAtivo\":true,\"contaAnunciosAtiva\":true,\"pixelDisparando\":true,\"capiAtivo\":true,\"eventoCompraDeduplicado\":true,\"dominioVerificado\":true,\"pagamentoAprovado\":true,\"statusGeral\":\"OK\",\"evidenciasLiterais\":[\"BM ativo\",\"conta de anúncios ativa\",\"Pixel Helper mostra evento disparando\",\"CAPI Ativo no Events Manager\",\"evento Compra apareceu uma vez com event_id\",\"domínio verificado\",\"pagamento aprovado\"],\"eventMatchQuality\":null,\"observacoes\":[\"EMQ não foi informado pelo operador; não estimado.\"]}",
+                "artifactType": "trafficTrackingAudit"
+              },
+              {
+                "path": "copy.md",
+                "title": "Copy e ângulos da Aula 2",
+                "content": "# Copy e insumos da Aula 2 — fixture do piloto\n\nProjeto: Piloto real do Squad de Tráfego · Story 8.W3.1\nOferta: Pacote Método OFTR para gestores de tráfego\nPreço literal: R$ 1.200\nPágina: https://fixture.local/oferta\n\n## Ângulos validados na Aula 2\n\n1. \"Seu tráfego não escala porque falta estrutura\" — consciente_do_problema\n2. \"A rotina que transforma dados em uma decisão semanal\" — consciente_da_solucao\n3. \"O erro que trava sua campanha\" — nível ausente de propósito; o Briefista deve recusar este ângulo.\n\n## Prova e voz\n\nVoz de marca, sem promessa de performance garantida. O piloto usa dados literais fornecidos pelo operador e não publica na Meta.\n",
+                "artifactType": "copy"
+              }
+            ]
+          },
+          "projectId": "82000000-0000-0000-0000-000000000031",
+          "operatorInput": "Leia somente a leitura literal anterior. Retorne UMA alavanca com hipótese, critério de sucesso, critério de reversão e circuit breaker. Não execute a alavanca; a decisão humana é aprovar ou rejeitar a recomendação."
+        },
+        "updated_at": "2026-07-10T16:42:36.29+00:00"
+      }
+    }
+  ],
+  "retries": [
+    {
+      "jobId": "6e8c909b-bbf3-4173-b743-194c005747d2",
+      "attempt": 2,
+      "status": "cancelled",
+      "retryHttpStatus": 202,
+      "cancelAfterRetry": true
+    }
+  ],
+  "refusals": [
+    {
+      "skillId": "zelador",
+      "runId": "2d800da8-64d5-4b53-b021-24738ec757ba",
+      "durationMs": 26679,
+      "reason": "Revisão humana recusou proposta com CAPI/deduplicação não confirmadas.",
+      "proposalExcerpt": "Proposta para revisão\n\nCRITICO: CAPI e deduplicação não foram confirmados; nenhum item foi liberado sem evidência literal do operador.\n\nARQUIVOS AFETADOS\nPAINEL-DA-SEMANA.yaml (proposta)\nNOVO\n+ zelador:\n+   ultima_checagem: \"2026-07-10\"\n+   bm_ativo: false\n+   conta_anuncios_ativa: false\n+   pixel_disparando: false\n+   capi_ativo: false\n+   evento_compra_deduplicado: false\n+   dominio_verificado: false\n+   pagamento_aprovado: false\n+   status_geral: \"CRITICO\"\n+   observacoes:\n+     - \"CAPI não confirmado pelo operador; não há evidência literal do Events Manager.\"\n+     - \"Deduplicação da compr",
+      "outbox": [
+        {
+          "id": "8dd14228-724d-4cba-b0e7-3e4a9f2ce4ec",
+          "workspace_id": "81000000-0000-0000-0000-000000000031",
+          "project_id": "82000000-0000-0000-0000-000000000031",
+          "skill_run_id": "2d800da8-64d5-4b53-b021-24738ec757ba",
+          "idempotency_key": "2d800da8-64d5-4b53-b021-24738ec757ba:89a81a37ee095cbd3f109e270e68aaf8197b07b10c49808f5eafde4de13e9fdb:reject",
+          "decision": "reject",
+          "proposal_hash": "89a81a37ee095cbd3f109e270e68aaf8197b07b10c49808f5eafde4de13e9fdb",
+          "proposal_revision": 1,
+          "state": "rejected",
+          "outcome": "rejected",
+          "plan": [],
+          "audit_event": {
+            "event": "artifact.approval",
+            "files": [],
+            "outcome": "rejected",
+            "decision": "reject",
+            "projectId": "82000000-0000-0000-0000-000000000031",
+            "timestamp": "2026-07-10T16:39:40.274Z",
+            "skillRunId": "2d800da8-64d5-4b53-b021-24738ec757ba",
+            "workspaceId": "81000000-0000-0000-0000-000000000031",
+            "proposalHash": "89a81a37ee095cbd3f109e270e68aaf8197b07b10c49808f5eafde4de13e9fdb",
+            "schemaVersion": "1.0.0",
+            "proposalRevision": 1
+          },
+          "error": null,
+          "attempt": 0,
+          "created_at": "2026-07-10T16:39:40.265+00:00",
+          "updated_at": "2026-07-10T16:39:40.274+00:00"
+        }
+      ]
+    }
+  ],
+  "reloads": [
+    {
+      "label": "Zelador crítico pronto para revisão",
+      "at": "2026-07-10T16:39:39.532Z",
+      "url": "http://127.0.0.1:5178/projects/82000000-0000-0000-0000-000000000031/journey",
+      "hydrated": true
+    },
+    {
+      "label": "recusa do Zelador persistida",
+      "at": "2026-07-10T16:39:41.890Z",
+      "url": "http://127.0.0.1:5178/projects/82000000-0000-0000-0000-000000000031/journey",
+      "hydrated": true
+    },
+    {
+      "label": "após recusa e retry do Zelador",
+      "at": "2026-07-10T16:39:45.007Z",
+      "url": "http://127.0.0.1:5178/projects/82000000-0000-0000-0000-000000000031/journey",
+      "hydrated": true
+    },
+    {
+      "label": "Zelador pronto para revisão",
+      "at": "2026-07-10T16:40:04.641Z",
+      "url": "http://127.0.0.1:5178/projects/82000000-0000-0000-0000-000000000031/journey",
+      "hydrated": true
+    },
+    {
+      "label": "Zelador materializado",
+      "at": "2026-07-10T16:40:08.191Z",
+      "url": "http://127.0.0.1:5178/projects/82000000-0000-0000-0000-000000000031/journey",
+      "hydrated": true
+    },
+    {
+      "label": "Briefista pronto para revisão",
+      "at": "2026-07-10T16:40:47.063Z",
+      "url": "http://127.0.0.1:5178/projects/82000000-0000-0000-0000-000000000031/journey",
+      "hydrated": true
+    },
+    {
+      "label": "Briefista materializado",
+      "at": "2026-07-10T16:40:50.346Z",
+      "url": "http://127.0.0.1:5178/projects/82000000-0000-0000-0000-000000000031/journey",
+      "hydrated": true
+    },
+    {
+      "label": "Estruturador pronto para revisão",
+      "at": "2026-07-10T16:41:12.161Z",
+      "url": "http://127.0.0.1:5178/projects/82000000-0000-0000-0000-000000000031/journey",
+      "hydrated": true
+    },
+    {
+      "label": "Estruturador materializado",
+      "at": "2026-07-10T16:41:15.395Z",
+      "url": "http://127.0.0.1:5178/projects/82000000-0000-0000-0000-000000000031/journey",
+      "hydrated": true
+    },
+    {
+      "label": "Leitor de Metricas pronto para revisão",
+      "at": "2026-07-10T16:41:51.389Z",
+      "url": "http://127.0.0.1:5178/projects/82000000-0000-0000-0000-000000000031/journey",
+      "hydrated": true
+    },
+    {
+      "label": "Leitor materializado",
+      "at": "2026-07-10T16:41:54.997Z",
+      "url": "http://127.0.0.1:5178/projects/82000000-0000-0000-0000-000000000031/journey",
+      "hydrated": true
+    },
+    {
+      "label": "Diagnosticador pronto para revisão",
+      "at": "2026-07-10T16:42:37.736Z",
+      "url": "http://127.0.0.1:5178/projects/82000000-0000-0000-0000-000000000031/journey",
+      "hydrated": true
+    }
+  ],
+  "visual": {
+    "desktop": "/Users/rafaelcosta/Projects/cohort-de-marketing/.claude/worktrees/story-8.W3.1/apps/academia-lendaria-ads-studio/e2e/fixtures/traffic-pilot/evidence/traffic-pilot-desktop.png",
+    "mobile": "/Users/rafaelcosta/Projects/cohort-de-marketing/.claude/worktrees/story-8.W3.1/apps/academia-lendaria-ads-studio/e2e/fixtures/traffic-pilot/evidence/traffic-pilot-mobile.png",
+    "sameState": true,
+    "overlaps": [],
+    "consoleErrors": [],
+    "networkFailures": [],
+    "desktopViewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "mobileViewport": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  "guards": [
+    "Runner autorizado no BFF por token local; Codex child em sandbox read-only.",
+    "Nenhuma publicação, pausa, escala ou kill foi enviada à Meta."
+  ],
+  "noMetaMutation": true,
+  "finalCampaign": {
+    "id": "84000000-0000-0000-0000-000000000031",
+    "workspace_id": "81000000-0000-0000-0000-000000000031",
+    "project_id": "82000000-0000-0000-0000-000000000031",
+    "name": "Validação A3 · fixture isolada",
+    "status": "draft",
+    "step_current": 1,
+    "created_at": "2026-07-10T09:00:00+00:00"
+  },
+  "finishedAt": "2026-07-10T16:42:41.940Z"
+}

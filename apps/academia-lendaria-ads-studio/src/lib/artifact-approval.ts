@@ -111,10 +111,19 @@ export function resolveApprovalArtifacts(
   fallback: { artifactType: string; title: string; path: string },
 ): ApprovalArtifactInput[] {
   if (proposal.artifacts.length > 0) {
-    return proposal.artifacts.map((artifact) => ({
+    return proposal.artifacts.map((artifact, index) => ({
       artifactType: artifact.artifactType,
       title: artifact.title,
-      path: artifact.path,
+      path: artifact.path.trim() || (() => {
+        const extension: Record<ApprovalFormat, string> = {
+          markdown: 'md',
+          json: 'json',
+          yaml: 'yaml',
+          html: 'html',
+        };
+        const base = fallback.path.trim().replace(/\.[^./]+$/, '');
+        return `${base}${index === 0 ? '' : `-${index + 1}`}.${extension[artifact.format]}`;
+      })(),
       format: artifact.format,
       content: artifact.content,
     }));

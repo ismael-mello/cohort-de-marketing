@@ -99,14 +99,17 @@ describe('ProjectJourney — durable async runs (AC6)', () => {
     expect(run?.status).toBe('cancelled');
   });
 
-  it('shows a Cancelar control for a running run and calls the runner on click (AC4)', () => {
-    seedRun('running', 'job-active');
+  it('shows a Cancelar control and persists the confirmed cancellation (AC4)', async () => {
+    const runId = seedRun('running', 'job-active');
     render(<ProjectJourney projectId={DEMO_PROJECT_ID} />);
     // Select the seeded skill so its run surfaces in the detail panel.
     fireEvent.click(screen.getAllByText(SKILL_TITLE)[0]);
     const cancelButton = screen.getByRole('button', { name: /Cancelar/i });
     fireEvent.click(cancelButton);
     expect(cancelSkillRun).toHaveBeenCalledWith('job-active');
+    await waitFor(() => {
+      expect(useProjectStore.getState().skillRuns.find((run) => run.id === runId)?.status).toBe('cancelled');
+    });
   });
 
   it('shows a Repetir control for a failed run and calls retry on click (AC4)', () => {
@@ -127,6 +130,21 @@ describe('ProjectJourney — durable async runs (AC6)', () => {
     fireEvent.click(retryButton);
     fireEvent.click(retryButton);
     expect(retrySkillRun).toHaveBeenCalledTimes(1);
+  });
+
+  it('reattaches the stream when retrying a run whose previous observer is stale', async () => {
+    const runId = seedRun('running', 'job-stale-observer');
+    render(<ProjectJourney projectId={DEMO_PROJECT_ID} />);
+    expect(observeSkillRun).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      useProjectStore.getState().updateSkillRun(runId, { status: 'cancelled' });
+    });
+    fireEvent.click(screen.getAllByText(SKILL_TITLE)[0]);
+    fireEvent.click(screen.getByRole('button', { name: /Repetir/i }));
+
+    await waitFor(() => expect(observeSkillRun).toHaveBeenCalledTimes(2));
+    expect(observeSkillRun).toHaveBeenLastCalledWith('job-stale-observer', expect.any(Object));
   });
 });
 

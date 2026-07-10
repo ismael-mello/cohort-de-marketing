@@ -4,7 +4,10 @@ import { buildApp } from '../app.js';
 import {
   CodexCliLocalSkillRunner,
   LocalSkillRunAbortError,
+  derivedUnavailableTrafficMetrics,
   type LocalSkillRunner,
+  type SkillProposal,
+  unavailableTrafficMetrics,
 } from '../local-skill-runner.js';
 import {
   LOCAL_RUNNER_TOKEN_HEADER,
@@ -465,6 +468,78 @@ describe('local skill runner endpoint', () => {
       if (previousCodex === undefined) delete process.env.CODEX_API_KEY;
       else process.env.CODEX_API_KEY = previousCodex;
     }
+  });
+
+  it('fails closed when Diagnosticador derives a metric marked as nao_fornecido by Leitor (QA-W3.1-P2-001)', async () => {
+    const metricContext = {
+      artifacts: [{
+        artifactType: 'trafficMetricReading',
+        content: [
+          'leitor:',
+          '  sinais:',
+          '    - metrica: CTR',
+          '      valor: null',
+          '      selo: nao_fornecido',
+          '    - metrica: CPA',
+          '      valor: "R$ 52,50"',
+          '      selo: Real',
+        ].join('\n'),
+      }],
+    };
+    let capturedPrompt = '';
+    const execute = vi.fn(async ({ outputPath, prompt }: { outputPath: string; prompt: string }) => {
+      capturedPrompt = prompt;
+      await writeFile(outputPath, JSON.stringify({
+        summary: 'Diagnóstico',
+        resultMarkdown: 'O CTR literal não foi fornecido; o valor aproximado de 0,8% foi derivado.',
+        artifacts: [],
+        fields: [],
+        questions: [],
+        warnings: [],
+      } satisfies SkillProposal));
+    });
+    const runner = new CodexCliLocalSkillRunner({
+      repoRoot: new URL('../../../../', import.meta.url).pathname,
+      execute,
+    });
+
+    await expect(runner.run('diagnosticador', {
+      projectId: 'project-1',
+      brief: {},
+      context: metricContext,
+    })).rejects.toThrow('Diagnosticador derivou CTR');
+    expect(capturedPrompt).toContain('GUARDA LITERAL DO LEITOR: CTR');
+    expect(capturedPrompt).toContain('não pode calcular, estimar, derivar nem mencionar qualquer valor numérico');
+  });
+
+  it('allows Diagnosticador to name an unavailable metric without assigning a number', async () => {
+    const context = {
+      artifacts: [{
+        artifactType: 'trafficMetricReading',
+        content: JSON.stringify({ leitor: { sinais: [{ metrica: 'frequência', valor: null, selo: 'Não fornecido' }] } }),
+      }],
+    };
+    const proposal: SkillProposal = {
+      summary: 'A frequência não foi fornecida.',
+      resultMarkdown: 'Aprovar 1 finalista em até 1 dia; frequência permanece não fornecida.',
+      artifacts: [],
+      fields: [],
+      questions: [],
+      warnings: ['Não diagnosticar frequência.'],
+    };
+    const execute = vi.fn(async ({ outputPath }: { outputPath: string }) => {
+      await writeFile(outputPath, JSON.stringify(proposal));
+    });
+    const runner = new CodexCliLocalSkillRunner({
+      repoRoot: new URL('../../../../', import.meta.url).pathname,
+      execute,
+    });
+
+    expect(unavailableTrafficMetrics(context)).toEqual(expect.arrayContaining(['frequência', 'CTR', 'CPM']));
+    expect(derivedUnavailableTrafficMetrics(proposal, ['frequência'])).toEqual([]);
+    await expect(runner.run('diagnosticador', { projectId: 'project-1', brief: {}, context })).resolves.toMatchObject({
+      proposal: { summary: 'A frequência não foi fornecida.' },
+    });
   });
 
   it('propagates the AbortSignal to the Codex execution and cleans up (AC4)', async () => {

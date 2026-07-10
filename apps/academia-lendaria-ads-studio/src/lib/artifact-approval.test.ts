@@ -57,6 +57,18 @@ describe('artifact-approval client helpers', () => {
     expect(resolved[0].content).toBe('# Offerbook');
   });
 
+  it('resolveApprovalArtifacts assigns a typed generated path when Codex leaves it blank', () => {
+    const resolved = resolveApprovalArtifacts(
+      {
+        ...PROPOSAL,
+        artifacts: [{ ...PROPOSAL.artifacts[0], path: '   ', format: 'json' }],
+      },
+      { artifactType: 'offerbook', title: 'Offerbook', path: 'generated/offerbook/run.md' },
+    );
+    expect(resolved[0].path).toBe('generated/offerbook/run.json');
+    expect(resolved[0].content).toBe('# Offerbook');
+  });
+
   it('resolveApprovalArtifacts falls back to a generated artifact from resultMarkdown', () => {
     const resolved = resolveApprovalArtifacts(
       { ...PROPOSAL, artifacts: [] },

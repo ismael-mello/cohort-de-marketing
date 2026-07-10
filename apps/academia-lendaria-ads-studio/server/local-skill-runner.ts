@@ -3,6 +3,7 @@ import { spawn } from 'node:child_process';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
+import { parse as parseYaml } from 'yaml';
 import {
   DEFAULT_LOCAL_RUNNER_LIMITS,
   resolveLocalRunnerLimits,
@@ -112,6 +113,119 @@ interface CodexExecution {
 }
 
 type CodexExecutor = (execution: CodexExecution) => Promise<void>;
+
+interface TrafficMetricSignal {
+  metrica?: unknown;
+  valor?: unknown;
+  selo?: unknown;
+}
+
+const CANONICAL_TRAFFIC_METRICS = ['CTR', 'CPM', 'CPA', 'ROAS', 'frequência', 'alcance'] as const;
+
+function normalizeForComparison(value: string): string {
+  return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function collectTrafficMetricSignals(value: unknown, output: TrafficMetricSignal[] = []): TrafficMetricSignal[] {
+  if (Array.isArray(value)) {
+    value.forEach((entry) => collectTrafficMetricSignals(entry, output));
+    return output;
+  }
+  if (!value || typeof value !== 'object') return output;
+  const record = value as Record<string, unknown>;
+  if ('metrica' in record && ('valor' in record || 'selo' in record)) output.push(record);
+  Object.values(record).forEach((entry) => collectTrafficMetricSignals(entry, output));
+  return output;
+}
+
+function parseStructuredContent(content: string): unknown {
+  try {
+    return JSON.parse(content);
+  } catch {
+    return parseYaml(content);
+  }
+}
+
+/** Metrics explicitly marked as unavailable by the canonical Leitor artifact. */
+export function unavailableTrafficMetrics(context: Record<string, unknown> | undefined): string[] {
+  const artifacts = Array.isArray(context?.artifacts) ? context.artifacts : [];
+  const metrics = new Set<string>();
+  for (const candidate of artifacts) {
+    if (!candidate || typeof candidate !== 'object') continue;
+    const artifact = candidate as Record<string, unknown>;
+    if (artifact.artifactType !== 'trafficMetricReading' || typeof artifact.content !== 'string') continue;
+    try {
+      const signals = collectTrafficMetricSignals(parseStructuredContent(artifact.content));
+      const suppliedMetrics = new Set<string>();
+      for (const signal of signals) {
+        if (typeof signal.metrica !== 'string') continue;
+        const seal = typeof signal.selo === 'string' ? normalizeForComparison(signal.selo).replace(/[_-]+/g, ' ') : '';
+        const name = signal.metrica.trim();
+        if (signal.valor == null || seal.includes('nao fornecido')) metrics.add(name);
+        else suppliedMetrics.add(normalizeForComparison(name));
+      }
+      // The Leitor contract says absent named fields are "não fornecido". If a
+      // model omits one of the canonical derived metrics instead of emitting a
+      // null signal, the Diagnosticador must still treat it as unavailable.
+      for (const metric of CANONICAL_TRAFFIC_METRICS) {
+        const normalizedMetric = normalizeForComparison(metric);
+        const alreadyUnavailable = [...metrics].some((candidateMetric) => normalizeForComparison(candidateMetric) === normalizedMetric);
+        if (!suppliedMetrics.has(normalizedMetric) && !alreadyUnavailable) metrics.add(metric);
+      }
+    } catch {
+      // A malformed upstream artifact is already visible to the model, but it
+      // cannot establish a deterministic unavailable-metric contract.
+    }
+  }
+  return [...metrics];
+}
+
+function collectProposalStrings(value: unknown, depth = 0): string[] {
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (depth < 3 && (trimmed.startsWith('{') || trimmed.startsWith('['))) {
+      try {
+        return collectProposalStrings(JSON.parse(trimmed), depth + 1);
+      } catch {
+        return [value];
+      }
+    }
+    if (depth < 3 && trimmed.includes('\n') && trimmed.includes(':')) {
+      try {
+        const parsed = parseYaml(trimmed);
+        if (parsed && typeof parsed === 'object') return collectProposalStrings(parsed, depth + 1);
+      } catch {
+        // Keep the original text so the guard can still inspect it.
+      }
+    }
+    return [value];
+  }
+  if (Array.isArray(value)) return value.flatMap((entry) => collectProposalStrings(entry, depth));
+  if (value && typeof value === 'object') return Object.values(value).flatMap((entry) => collectProposalStrings(entry, depth));
+  return [];
+}
+
+/**
+ * Returns unavailable metrics that received a numeric value in the proposal.
+ * Text such as "CTR não fornecido" remains valid; assignments, estimates and
+ * derivations such as "CTR aproximado de 0,8%" fail closed.
+ */
+export function derivedUnavailableTrafficMetrics(proposal: SkillProposal, unavailableMetrics: string[]): string[] {
+  const texts = collectProposalStrings(proposal).map(normalizeForComparison);
+  const assignment = '(?:valor|aproxim\\w*|calcul\\w*|derivad\\w*|estim\\w*|equival\\w*|result\\w*|seria|foi\\s+de|e\\s+de|[:=])';
+  const numeric = '(?:r\\$\\s*)?\\d+(?:[.,]\\d+)*(?:\\s*[%x])?';
+  return unavailableMetrics.filter((metric) => {
+    const name = escapeRegExp(normalizeForComparison(metric));
+    const metricThenAssignment = new RegExp(`\\b${name}\\b.{0,90}${assignment}.{0,24}${numeric}`, 'i');
+    const assignmentThenMetric = new RegExp(`${numeric}.{0,24}${assignment}.{0,90}\\b${name}\\b`, 'i');
+    const directUnitValue = new RegExp(`(?:\\b${name}\\b.{0,36}${numeric}\\s*[%x]|(?:r\\$\\s*)?\\d+(?:[.,]\\d+)*\\s*[%x].{0,36}\\b${name}\\b)`, 'i');
+    return texts.some((text) => metricThenAssignment.test(text) || assignmentThenMetric.test(text) || directUnitValue.test(text));
+  });
+}
 
 export const skillProposalSchema = {
   type: 'object',
@@ -251,6 +365,14 @@ export class CodexCliLocalSkillRunner implements LocalSkillRunner {
     const skillHash = createHash('sha256').update(instructions).digest('hex');
     onStep?.({ id: 'resolve', label: 'Resolver skill canônica', status: 'done' });
     const primaryArtifacts = skill.primaryArtifacts.length ? skill.primaryArtifacts.join(', ') : 'nenhum artefato obrigatório';
+    const unavailableMetrics = skillId === 'diagnosticador' ? unavailableTrafficMetrics(input.context) : [];
+    const unavailableMetricGuard = unavailableMetrics.length > 0
+      ? [
+          `GUARDA LITERAL DO LEITOR: ${unavailableMetrics.join(', ')} estão marcadas como nao_fornecido.`,
+          'Você pode dizer que essas métricas não foram fornecidas, mas não pode calcular, estimar, derivar nem mencionar qualquer valor numérico para elas.',
+          'Baseie a alavanca somente nos valores literais e nos estados operacionais presentes nos artefatos.',
+        ].join(' ')
+      : '';
     ensureLive();
     const temporaryDirectory = await mkdtemp(resolve(tmpdir(), 'cohort-codex-skill-'));
     const schemaPath = resolve(temporaryDirectory, 'proposal.schema.json');
@@ -281,6 +403,7 @@ export class CodexCliLocalSkillRunner implements LocalSkillRunner {
         'Não edite arquivos. Não publique, pause, escale ou altere campanhas na Meta.',
         `Tipos de artefato esperados no catálogo: ${primaryArtifacts}.`,
         skill.guard ? `Guarda de produto: ${skill.guard}` : '',
+        unavailableMetricGuard,
         '',
         '--- SKILL.md canônico ---',
         instructions,
@@ -309,6 +432,12 @@ export class CodexCliLocalSkillRunner implements LocalSkillRunner {
       onStep?.({ id: 'codex', label: 'Executar Codex CLI', status: 'done' });
       onStep?.({ id: 'parse', label: 'Validar proposta estruturada', status: 'running' });
       const proposal = JSON.parse(await readFile(outputPath, 'utf8')) as SkillProposal;
+      const derivedMetrics = derivedUnavailableTrafficMetrics(proposal, unavailableMetrics);
+      if (derivedMetrics.length > 0) {
+        throw new Error(
+          `Diagnosticador derivou ${derivedMetrics.join(', ')}, marcado como não fornecido pelo Leitor. Rode novamente sem calcular métricas ausentes.`,
+        );
+      }
       onStep?.({ id: 'parse', label: 'Validar proposta estruturada', status: 'done' });
       return {
         skillId,

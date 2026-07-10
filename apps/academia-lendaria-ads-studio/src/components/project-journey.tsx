@@ -367,6 +367,10 @@ export function ProjectJourney({ projectId }: { projectId: string }) {
     setRuntimeError(null);
     try {
       await cancelSkillRun(jobId);
+      persistRunUpdate(run.id, { status: 'cancelled', error: null });
+      unsubsRef.current.get(jobId)?.();
+      unsubsRef.current.delete(jobId);
+      observedRef.current.delete(jobId);
     } catch (error) {
       setRuntimeError(error instanceof Error ? error.message : 'Falha ao cancelar a execução.');
     }
@@ -385,6 +389,9 @@ export function ProjectJourney({ projectId }: { projectId: string }) {
     try {
       await retrySkillRun(jobId);
       persistRunUpdate(run.id, { status: 'running', error: null });
+      observedRef.current.delete(jobId);
+      unsubsRef.current.get(jobId)?.();
+      unsubsRef.current.delete(jobId);
       attach(run.id, jobId);
     } catch (error) {
       setRuntimeError(error instanceof Error ? error.message : 'Falha ao repetir a execução.');

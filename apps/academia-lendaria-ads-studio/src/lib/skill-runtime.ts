@@ -184,8 +184,15 @@ export function observeSkillRun(
   const settleTerminal = (view: SkillRunView) => {
     if (view.status === 'succeeded' && view.proposal && view.skillHash && view.model) {
       handlers.onDone?.({ jobId: view.jobId, proposal: view.proposal, skillHash: view.skillHash, model: view.model });
-    } else if (view.error) {
-      handlers.onError?.(view.error, view.status);
+    } else if (view.error || view.status === 'cancelled') {
+      const cancelledAttempt = [...view.attempts].reverse().find((attempt) => attempt.status === 'cancelled');
+      handlers.onError?.(
+        view.error ?? {
+          reason: cancelledAttempt?.reason ?? 'Execução cancelada pelo operador.',
+          capabilityUnavailable: false,
+        },
+        view.status,
+      );
     }
   };
 
@@ -262,6 +269,22 @@ export function observeSkillRun(
       startPolling();
     }
   });
+
+  // Reconcile once immediately as well as subscribing. A terminal SSE snapshot
+  // can race a very fast reload/proxy connection; the durable projection makes
+  // the attach deterministic without replacing live SSE progress.
+  void getSkillRunView(jobId)
+    .then((view) => {
+      if (closed) return;
+      handlers.onSnapshot?.(view);
+      if (isTerminalSkillRun(view.status)) {
+        settleTerminal(view);
+        stop();
+      }
+    })
+    .catch(() => {
+      // SSE remains active; its transport error handler owns polling fallback.
+    });
 
   return stop;
 }

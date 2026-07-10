@@ -113,6 +113,36 @@ describe('skill-runtime client', () => {
     expect(source.closed).toBe(true);
   });
 
+  it('observeSkillRun reports a terminal cancelled snapshot even when the job has no error payload', () => {
+    const source = new FakeEventSource();
+    const onError = vi.fn();
+    observeSkillRun('job-1', { onError }, { eventSourceFactory: () => source });
+
+    source.emit('snapshot', view({
+      status: 'cancelled',
+      attempts: [{ attempt: 1, status: 'cancelled', reason: 'cancelado no teste', startedAt: 't', endedAt: 't' }],
+    }));
+
+    expect(onError).toHaveBeenCalledWith(
+      { reason: 'cancelado no teste', capabilityUnavailable: false },
+      'cancelled',
+    );
+    expect(source.closed).toBe(true);
+  });
+
+  it('observeSkillRun reconciles a terminal projection immediately when SSE emits no snapshot', async () => {
+    const source = new FakeEventSource();
+    const onSnapshot = vi.fn();
+    const onDone = vi.fn();
+    fetchMock.mockResolvedValueOnce(jsonResponse(SUCCEEDED));
+
+    observeSkillRun('job-1', { onSnapshot, onDone }, { eventSourceFactory: () => source });
+
+    await vi.waitFor(() => expect(onDone).toHaveBeenCalledWith(expect.objectContaining({ jobId: 'job-1' })));
+    expect(onSnapshot).toHaveBeenCalledWith(SUCCEEDED);
+    expect(source.closed).toBe(true);
+  });
+
   it('observeSkillRun falls back to polling when EventSource is unavailable (AC3)', async () => {
     fetchMock.mockResolvedValueOnce(jsonResponse(view({ status: 'running' })));
     fetchMock.mockResolvedValueOnce(jsonResponse(SUCCEEDED));
