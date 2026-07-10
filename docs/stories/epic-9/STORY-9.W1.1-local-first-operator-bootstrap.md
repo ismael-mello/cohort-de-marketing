@@ -27,6 +27,8 @@ touched_paths:
   - "apps/academia-lendaria-ads-studio/src/components/login-form.tsx"
   - "apps/academia-lendaria-ads-studio/src/components/login-form.test.tsx"
   - "apps/academia-lendaria-ads-studio/src/index.css"
+  - "apps/academia-lendaria-ads-studio/supabase/migrations/20260710160000_local-bootstrap-state.sql"
+  - "apps/academia-lendaria-ads-studio/supabase/tests/local_bootstrap_state.sql"
   - "docs/stories/epic-9/STORY-9.W1.1-local-first-operator-bootstrap.md"
 ---
 
@@ -70,6 +72,8 @@ touched_paths:
 | `apps/academia-lendaria-ads-studio/src/components/login-form.tsx` | MODIFY |
 | `apps/academia-lendaria-ads-studio/src/components/login-form.test.tsx` | ADD |
 | `apps/academia-lendaria-ads-studio/src/index.css` | MODIFY |
+| `apps/academia-lendaria-ads-studio/supabase/migrations/20260710160000_local-bootstrap-state.sql` | ADD |
+| `apps/academia-lendaria-ads-studio/supabase/tests/local_bootstrap_state.sql` | ADD |
 | `docs/stories/epic-9/STORY-9.W1.1-local-first-operator-bootstrap.md` | MODIFY |
 
 ## Dev Agent Record
@@ -79,7 +83,10 @@ touched_paths:
 - Serviço BFF usa `auth.admin` e operações de workspace/membership somente no
   backend; cria usuário confirmado, workspace e owner, com compensação reversa.
 - Status é `empty` somente quando usuários, workspaces e memberships estão
-  todos vazios; lock por processo e rechecagem fecham o bootstrap one-shot.
+  todos vazios; claim durável service-role serializa processos e mantém um lease
+  recuperável em caso de encerramento abrupto.
+- O claim também marca o usuário e determina o UUID do workspace, permitindo
+  reconciliar recursos órfãos antes de uma retomada sem guardar senha.
 - Rotas exigem loopback e `x-local-runner-token`; respostas de criação e erros
   são sanitizadas e não incluem senha, service role ou boundary token.
 - UI oferece o primeiro acesso na tela de login e, após a criação, chama
@@ -87,18 +94,21 @@ touched_paths:
 
 ### Evidências
 
-- Backend: vazio, repetição, validação, ausência de token, loopback,
-  compensação e ausência de segredos cobertos em `server/local-bootstrap.test.ts`.
+- Backend: vazio, repetição, concorrência entre processos, retomada de claim
+  expirado, validação, ausência de token, loopback, compensação e ausência de
+  segredos cobertos em `server/local-bootstrap.test.ts` e pgTAP.
 - Cliente/UI: status sanitizado, submissão, login Supabase e fallback de login
   cobertos nos testes dedicados.
 
 ## QA Gate
 
-**Veredito:** PASS em 2026-07-10. Nenhum finding P0/P1/P2.
+**Veredito:** PASS em 2026-07-10. Nenhum finding aberto P0/P1/P2.
 
 - Boundary local permanece server-side; o serviço não usa `OPENAI_API_KEY` nem
   `CODEX_API_KEY`, e não expõe credenciais em response/log da nova superfície.
 - Autenticação continua sendo a sessão local do Codex CLI no runner existente.
+- A primeira revisão Codex encontrou o lock restrito ao processo; o finding P2
+  foi fechado com claim/lease durável, reconciliação e cobertura pgTAP.
 
 ## Change Log
 
@@ -108,8 +118,9 @@ touched_paths:
 
 ## Validação executada
 
-- Testes focados: 4 arquivos / 8 testes — PASS.
-- `npm test` com `VITE_SUPABASE_URL` e anon key local de teste: 36 arquivos / 276 testes — PASS.
+- Testes focados: 4 arquivos / 10 testes — PASS.
+- `npm test` com `VITE_SUPABASE_URL` e anon key local de teste: 36 arquivos / 278 testes — PASS.
+- `npx supabase test db`: 5 arquivos / 50 testes — PASS.
 - `npm run lint`: PASS.
 - `npm run typecheck`: PASS.
 - `npm run build`: PASS.

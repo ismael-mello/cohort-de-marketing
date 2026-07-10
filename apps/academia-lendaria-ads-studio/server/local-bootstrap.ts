@@ -11,13 +11,32 @@ export const localBootstrapInputSchema = z.object({
 export type LocalBootstrapInput = z.infer<typeof localBootstrapInputSchema>
 export type LocalBootstrapStatus = 'empty' | 'closed'
 
+export interface LocalBootstrapState {
+  status: 'available' | 'creating' | 'complete'
+  claimToken?: string
+  leaseExpiresAt?: string
+}
+
+export interface LocalBootstrapClaim {
+  claimed: boolean
+  claimToken?: string
+  previousUserId?: string
+  previousWorkspaceId?: string
+}
+
 export interface LocalBootstrapStore {
+  readBootstrapState(): Promise<LocalBootstrapState | null>
+  claimBootstrap(desiredClaimToken: string): Promise<LocalBootstrapClaim>
+  recordBootstrapProgress(claimToken: string, progress: { userId?: string; workspaceId?: string }): Promise<void>
+  completeBootstrap(claimToken: string): Promise<void>
+  releaseBootstrap(claimToken: string): Promise<void>
   countUsers(): Promise<number>
   countWorkspaces(): Promise<number>
   countMemberships(): Promise<number>
-  createUser(input: LocalBootstrapInput): Promise<string>
+  findUserIdsByBootstrapClaim(claimToken: string): Promise<string[]>
+  createUser(input: LocalBootstrapInput, claimToken: string): Promise<string>
   deleteUser(userId: string): Promise<void>
-  createWorkspace(name: string): Promise<string>
+  createWorkspace(name: string, workspaceId: string): Promise<string>
   deleteWorkspace(workspaceId: string): Promise<void>
   createMembership(workspaceId: string, userId: string): Promise<void>
   deleteMembership(workspaceId: string, userId: string): Promise<void>
@@ -37,52 +56,74 @@ export class LocalBootstrapClosedError extends Error {
 
 /** Backend-only one-shot bootstrap. It deliberately never returns auth data. */
 export function createLocalBootstrapService(store: LocalBootstrapStore): LocalBootstrapService {
-  let creating = false
+  async function countsAreEmpty(): Promise<boolean> {
+    const [users, workspaces, memberships] = await Promise.all([
+      store.countUsers(),
+      store.countWorkspaces(),
+      store.countMemberships(),
+    ])
+    return users === 0 && workspaces === 0 && memberships === 0
+  }
+
+  async function cleanupClaim(claimToken: string, recordedUserId?: string, recordedWorkspaceId?: string): Promise<void> {
+    const userIds = new Set(await store.findUserIdsByBootstrapClaim(claimToken))
+    if (recordedUserId) userIds.add(recordedUserId)
+    const workspaceId = recordedWorkspaceId ?? claimToken
+    for (const userId of userIds) await store.deleteMembership(workspaceId, userId)
+    await store.deleteWorkspace(workspaceId)
+    for (const userId of userIds) await store.deleteUser(userId)
+  }
+
   return {
     async status() {
-      const [users, workspaces, memberships] = await Promise.all([
-        store.countUsers(),
-        store.countWorkspaces(),
-        store.countMemberships(),
-      ])
-      return { status: users === 0 && workspaces === 0 && memberships === 0 ? 'empty' : 'closed' }
+      const state = await store.readBootstrapState()
+      if (state?.status === 'complete') return { status: 'closed' }
+      if (state?.status === 'creating' && state.leaseExpiresAt && Date.parse(state.leaseExpiresAt) > Date.now()) {
+        return { status: 'closed' }
+      }
+      if (state?.status === 'creating') return { status: 'empty' }
+      return { status: await countsAreEmpty() ? 'empty' : 'closed' }
     },
 
     async create(input) {
       const parsed = localBootstrapInputSchema.parse(input)
-      if (creating) throw new LocalBootstrapClosedError()
-      creating = true
-
+      const claimed = await store.claimBootstrap(randomUUID())
+      if (!claimed.claimed || !claimed.claimToken) throw new LocalBootstrapClosedError()
+      const claimToken = claimed.claimToken
       let userId: string | undefined
-      let workspaceId: string | undefined
-      let membershipCreated = false
+      const workspaceId = claimToken
       try {
-        const current = await this.status()
-        if (current.status !== 'empty') throw new LocalBootstrapClosedError()
+        await cleanupClaim(claimToken, claimed.previousUserId, claimed.previousWorkspaceId)
+        if (!await countsAreEmpty()) throw new LocalBootstrapClosedError()
+
+        userId = await store.createUser(parsed, claimToken)
+        await store.recordBootstrapProgress(claimToken, { userId })
+        await store.createWorkspace(parsed.workspaceName, workspaceId)
+        await store.recordBootstrapProgress(claimToken, { workspaceId })
+        await store.createMembership(workspaceId, userId)
+        await store.completeBootstrap(claimToken)
+        return { status: 'created' }
+      } catch (error) {
+        let cleaned = false
         try {
-          userId = await store.createUser(parsed)
-          workspaceId = await store.createWorkspace(parsed.workspaceName)
-          membershipCreated = true
-          await store.createMembership(workspaceId, userId)
-          return { status: 'created' }
-        } catch {
-          // Compensate in reverse dependency order. Cleanup errors are swallowed so
-          // the public response remains generic and never contains provider data.
-          if (membershipCreated && userId && workspaceId) {
-            await store.deleteMembership(workspaceId, userId).catch(() => undefined)
-          }
-          if (workspaceId) await store.deleteWorkspace(workspaceId).catch(() => undefined)
-          if (userId) await store.deleteUser(userId).catch(() => undefined)
-          throw new Error('Não foi possível concluir a configuração do primeiro acesso.')
+          await cleanupClaim(claimToken, userId, workspaceId)
+          cleaned = true
+        } finally {
+          if (cleaned) await store.releaseBootstrap(claimToken)
         }
-      } finally {
-        creating = false
+        if (error instanceof LocalBootstrapClosedError) throw error
+        throw new Error('Não foi possível concluir a configuração do primeiro acesso.')
       }
     },
   }
 }
 
 export function createSupabaseLocalBootstrapStore(client: SupabaseClient): LocalBootstrapStore {
+  async function rpcBoolean(name: string, args: Record<string, unknown>): Promise<void> {
+    const { data, error } = await client.rpc(name, args)
+    if (error || data !== true) throw new Error('Falha ao atualizar o estado do primeiro acesso.')
+  }
+
   async function count(table: 'workspaces' | 'workspace_members'): Promise<number> {
     const { count: total, error } = await client.from(table).select('*', { count: 'exact', head: true })
     if (error) throw new Error('Falha ao consultar o estado do primeiro acesso.')
@@ -90,6 +131,42 @@ export function createSupabaseLocalBootstrapStore(client: SupabaseClient): Local
   }
 
   return {
+    async readBootstrapState() {
+      const { data, error } = await client.rpc('get_local_bootstrap_state')
+      if (error) throw new Error('Falha ao consultar o estado do primeiro acesso.')
+      if (!data || typeof data !== 'object') return null
+      const row = data as Record<string, unknown>
+      if (row.status !== 'available' && row.status !== 'creating' && row.status !== 'complete') return null
+      return {
+        status: row.status,
+        ...(typeof row.claimToken === 'string' ? { claimToken: row.claimToken } : {}),
+        ...(typeof row.leaseExpiresAt === 'string' ? { leaseExpiresAt: row.leaseExpiresAt } : {}),
+      }
+    },
+    async claimBootstrap(desiredClaimToken) {
+      const { data, error } = await client.rpc('claim_local_bootstrap', { p_desired_claim_token: desiredClaimToken })
+      if (error || !data || typeof data !== 'object') throw new Error('Falha ao reservar o primeiro acesso.')
+      const row = data as Record<string, unknown>
+      return {
+        claimed: row.claimed === true,
+        ...(typeof row.claimToken === 'string' ? { claimToken: row.claimToken } : {}),
+        ...(typeof row.previousUserId === 'string' ? { previousUserId: row.previousUserId } : {}),
+        ...(typeof row.previousWorkspaceId === 'string' ? { previousWorkspaceId: row.previousWorkspaceId } : {}),
+      }
+    },
+    recordBootstrapProgress(claimToken, progress) {
+      return rpcBoolean('record_local_bootstrap_progress', {
+        p_claim_token: claimToken,
+        p_user_id: progress.userId ?? null,
+        p_workspace_id: progress.workspaceId ?? null,
+      })
+    },
+    completeBootstrap(claimToken) {
+      return rpcBoolean('complete_local_bootstrap', { p_claim_token: claimToken })
+    },
+    releaseBootstrap(claimToken) {
+      return rpcBoolean('release_local_bootstrap', { p_claim_token: claimToken })
+    },
     async countUsers() {
       let total = 0
       let page = 1
@@ -103,36 +180,53 @@ export function createSupabaseLocalBootstrapStore(client: SupabaseClient): Local
       }
       return total
     },
+    async findUserIdsByBootstrapClaim(claimToken) {
+      const ids: string[] = []
+      let page = 1
+      let hasMore = true
+      while (hasMore) {
+        const response = await client.auth.admin.listUsers({ page, perPage: 1000 })
+        if (response.error) throw new Error('Falha ao reconciliar o primeiro acesso.')
+        for (const user of response.data.users) {
+          if (user.user_metadata?.local_bootstrap_claim === claimToken) ids.push(user.id)
+        }
+        hasMore = response.data.users.length === 1000
+        page += 1
+      }
+      return ids
+    },
     countWorkspaces: () => count('workspaces'),
     countMemberships: () => count('workspace_members'),
-    async createUser(input) {
+    async createUser(input, claimToken) {
       const { data, error } = await client.auth.admin.createUser({
         email: input.email,
         password: input.password,
         email_confirm: true,
-        user_metadata: { display_name: input.email.split('@')[0] },
+        user_metadata: { display_name: input.email.split('@')[0], local_bootstrap_claim: claimToken },
       })
       if (error || !data.user) throw new Error('Falha ao criar o primeiro acesso.')
       return data.user.id
     },
     async deleteUser(userId) {
-      await client.auth.admin.deleteUser(userId)
+      const { error } = await client.auth.admin.deleteUser(userId)
+      if (error) throw new Error('Falha ao reconciliar o usuário do primeiro acesso.')
     },
-    async createWorkspace(name) {
-      const id = randomUUID()
-      const { error } = await client.from('workspaces').insert({ id, name })
+    async createWorkspace(name, workspaceId) {
+      const { error } = await client.from('workspaces').insert({ id: workspaceId, name })
       if (error) throw new Error('Falha ao criar o workspace local.')
-      return id
+      return workspaceId
     },
     async deleteWorkspace(workspaceId) {
-      await client.from('workspaces').delete().eq('id', workspaceId)
+      const { error } = await client.from('workspaces').delete().eq('id', workspaceId)
+      if (error) throw new Error('Falha ao reconciliar o workspace do primeiro acesso.')
     },
     async createMembership(workspaceId, userId) {
       const { error } = await client.from('workspace_members').insert({ workspace_id: workspaceId, user_id: userId, role: 'owner' })
       if (error) throw new Error('Falha ao criar a membership do primeiro acesso.')
     },
     async deleteMembership(workspaceId, userId) {
-      await client.from('workspace_members').delete().eq('workspace_id', workspaceId).eq('user_id', userId)
+      const { error } = await client.from('workspace_members').delete().eq('workspace_id', workspaceId).eq('user_id', userId)
+      if (error) throw new Error('Falha ao reconciliar a associação do primeiro acesso.')
     },
   }
 }

@@ -1,16 +1,38 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { buildApp } from './app.js'
-import { createLocalBootstrapService, type LocalBootstrapInput, type LocalBootstrapStore } from './local-bootstrap.js'
+import {
+  createLocalBootstrapService,
+  type LocalBootstrapInput,
+  type LocalBootstrapState,
+  type LocalBootstrapStore,
+} from './local-bootstrap.js'
 import { LOCAL_RUNNER_TOKEN_HEADER } from './local-runner-security.js'
 
 function fakeStore(overrides: Partial<LocalBootstrapStore> = {}): LocalBootstrapStore {
-  return {
+  let state: LocalBootstrapState | null = null
+  const store: LocalBootstrapStore = {
+    readBootstrapState: vi.fn(async () => state),
+    claimBootstrap: vi.fn(async (desiredClaimToken) => {
+      if (state?.status === 'complete') return { claimed: false }
+      if (state?.status === 'creating' && state.leaseExpiresAt && Date.parse(state.leaseExpiresAt) > Date.now()) {
+        return { claimed: false }
+      }
+      const claimToken = state?.status === 'creating' ? state.claimToken! : desiredClaimToken
+      state = { status: 'creating', claimToken, leaseExpiresAt: new Date(Date.now() + 60_000).toISOString() }
+      return { claimed: true, claimToken }
+    }),
+    recordBootstrapProgress: vi.fn(async (claimToken, progress) => {
+      state = { status: 'creating', claimToken, leaseExpiresAt: new Date(Date.now() + 60_000).toISOString(), ...progress }
+    }),
+    completeBootstrap: vi.fn(async (claimToken) => { state = { status: 'complete', claimToken } }),
+    releaseBootstrap: vi.fn(async () => { state = { status: 'available' } }),
     countUsers: vi.fn().mockResolvedValue(0), countWorkspaces: vi.fn().mockResolvedValue(0), countMemberships: vi.fn().mockResolvedValue(0),
+    findUserIdsByBootstrapClaim: vi.fn().mockResolvedValue([]),
     createUser: vi.fn().mockResolvedValue('user-id'), deleteUser: vi.fn().mockResolvedValue(undefined),
-    createWorkspace: vi.fn().mockResolvedValue('workspace-id'), deleteWorkspace: vi.fn().mockResolvedValue(undefined),
+    createWorkspace: vi.fn(async (_name, workspaceId) => workspaceId), deleteWorkspace: vi.fn().mockResolvedValue(undefined),
     createMembership: vi.fn().mockResolvedValue(undefined), deleteMembership: vi.fn().mockResolvedValue(undefined),
-    ...overrides,
   }
+  return Object.assign(store, overrides)
 }
 
 const input: LocalBootstrapInput = { email: 'owner@example.com', password: 'strong-password', workspaceName: 'Meu workspace' }
@@ -25,8 +47,10 @@ describe('local first-run bootstrap', () => {
     const service = createLocalBootstrapService(store)
     await expect(service.status()).resolves.toEqual({ status: 'empty' })
     await expect(service.create(input)).resolves.toEqual({ status: 'created' })
-    expect(store.createUser).toHaveBeenCalledWith(expect.objectContaining(input))
-    expect(store.createMembership).toHaveBeenCalledWith('workspace-id', 'user-id')
+    expect(store.createUser).toHaveBeenCalledWith(expect.objectContaining(input), expect.any(String))
+    const workspaceId = vi.mocked(store.createWorkspace).mock.calls[0]![1]
+    expect(store.createMembership).toHaveBeenCalledWith(workspaceId, 'user-id')
+    await expect(service.status()).resolves.toEqual({ status: 'closed' })
 
     const closedStore = fakeStore({ countUsers: vi.fn().mockResolvedValue(1) })
     await expect(createLocalBootstrapService(closedStore).create(input)).rejects.toThrow('já foi configurado')
@@ -36,9 +60,40 @@ describe('local first-run bootstrap', () => {
   it('compensates user, workspace and membership after an intermediate failure', async () => {
     const store = fakeStore({ createMembership: vi.fn().mockRejectedValue(new Error('db failure')) })
     await expect(createLocalBootstrapService(store).create(input)).rejects.toThrow('Não foi possível concluir')
-    expect(store.deleteMembership).toHaveBeenCalledWith('workspace-id', 'user-id')
-    expect(store.deleteWorkspace).toHaveBeenCalledWith('workspace-id')
+    const workspaceId = vi.mocked(store.createWorkspace).mock.calls[0]![1]
+    expect(store.deleteMembership).toHaveBeenCalledWith(workspaceId, 'user-id')
+    expect(store.deleteWorkspace).toHaveBeenCalledWith(workspaceId)
     expect(store.deleteUser).toHaveBeenCalledWith('user-id')
+    expect(store.releaseBootstrap).toHaveBeenCalledWith(workspaceId)
+  })
+
+  it('serializes two BFF processes through the durable claim', async () => {
+    let finishUser!: (userId: string) => void
+    const store = fakeStore({
+      createUser: vi.fn(() => new Promise<string>((resolve) => { finishUser = resolve })),
+    })
+    const first = createLocalBootstrapService(store).create(input)
+    await vi.waitFor(() => expect(store.createUser).toHaveBeenCalledTimes(1))
+
+    await expect(createLocalBootstrapService(store).create(input)).rejects.toBeInstanceOf(Error)
+    expect(store.createUser).toHaveBeenCalledTimes(1)
+    finishUser('user-id')
+    await expect(first).resolves.toEqual({ status: 'created' })
+  })
+
+  it('reconciles resources from a stale claim before retrying', async () => {
+    const claimToken = '93000000-0000-0000-0000-000000000001'
+    const store = fakeStore({
+      readBootstrapState: vi.fn().mockResolvedValue({ status: 'creating', claimToken, leaseExpiresAt: '2020-01-01T00:00:00.000Z' }),
+      claimBootstrap: vi.fn().mockResolvedValue({ claimed: true, claimToken, previousUserId: 'recorded-user', previousWorkspaceId: claimToken }),
+      findUserIdsByBootstrapClaim: vi.fn().mockResolvedValue(['unrecorded-user']),
+    })
+
+    await expect(createLocalBootstrapService(store).create(input)).resolves.toEqual({ status: 'created' })
+    expect(store.deleteUser).toHaveBeenCalledWith('recorded-user')
+    expect(store.deleteUser).toHaveBeenCalledWith('unrecorded-user')
+    expect(store.deleteWorkspace).toHaveBeenCalledWith(claimToken)
+    expect(store.createWorkspace).toHaveBeenCalledWith(input.workspaceName, claimToken)
   })
 
   it('protects routes with loopback and boundary token and never returns credentials', async () => {
