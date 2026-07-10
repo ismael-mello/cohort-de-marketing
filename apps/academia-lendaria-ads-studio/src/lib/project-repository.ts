@@ -341,6 +341,12 @@ export interface UpdateSkillRunInput {
   status?: SkillRun['status'];
   proposal?: Record<string, unknown>;
   error?: string | null;
+  /**
+   * Hash real da SKILL.md, conhecido só quando o backend conclui o run
+   * (STORY-8.W2.2 / QA-W2B1-02). Na criação usa-se um sentinela; a transição
+   * `needs_review` grava o hash autoritativo devolvido pelo journal durável.
+   */
+  skillHash?: string;
 }
 
 export interface CreateCampaignPlanInput {
@@ -423,6 +429,7 @@ export function skillRunUpdate(input: UpdateSkillRunInput): Record<string, unkno
   if (input.status !== undefined) patch.status = input.status;
   if (input.proposal !== undefined) patch.proposal = input.proposal;
   if (input.error !== undefined) patch.error = input.error;
+  if (input.skillHash !== undefined) patch.skill_hash = input.skillHash;
   return patch;
 }
 

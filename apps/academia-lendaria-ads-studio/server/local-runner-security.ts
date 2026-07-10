@@ -8,7 +8,8 @@
  * Cobre:
  *   - AC1: resolução do host de bind com loopback (`127.0.0.1`) por padrão.
  *   - AC2: comparação de token em tempo constante (401 sem token / 403 inválido).
- *   - AC4: sanitização do ambiente do subprocesso Codex (remove chaves OpenAI).
+ *   - AC4: sanitização do ambiente do subprocesso Codex por ALLOWLIST operacional
+ *     (só PATH/HOME, locale e temporários chegam ao filho; segredos nunca).
  *   - AC5: limites de concorrência, payload e timeout (com kill escalonado).
  */
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
@@ -17,11 +18,55 @@ import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 export const LOCAL_RUNNER_TOKEN_HEADER = 'x-local-runner-token';
 
 /**
- * Variáveis de ambiente removidas do subprocesso Codex (AC4). O Codex CLI local
- * autentica-se pela sessão do próprio CLI; nenhuma chave OpenAI deve vazar para
- * o processo filho agentic.
+ * Allowlist operacional do ambiente do subprocesso Codex (AC4 / QA-W2B1-04).
+ *
+ * O modelo é allowlist, não denylist: por padrão o processo filho agentic NÃO
+ * herda nada de `process.env` além do mínimo que o Codex CLI local precisa para
+ * rodar — localizar binários (`PATH`), autenticar pela sessão do próprio CLI
+ * (`HOME`/`CODEX_HOME` → `~/.codex`), locale e temporários. Assim segredos como
+ * `SUPABASE_SERVICE_ROLE_KEY`, `LOCAL_SKILL_RUNNER_TOKEN`, `APIFY_TOKEN`,
+ * `OPENAI_API_KEY`/`CODEX_API_KEY` e QUALQUER outra variável arbitrária nunca
+ * chegam ao filho — mesmo que um SKILL.md/brief prompt-injetado tente lê-los e
+ * embuti-los na proposta (o canal de saída legítimo do filho).
  */
-export const CODEX_STRIPPED_ENV_KEYS = ['OPENAI_API_KEY', 'CODEX_API_KEY'] as const;
+export const CODEX_ENV_ALLOWLIST = [
+  'PATH',
+  'HOME',
+  'SHELL',
+  'USER',
+  'LOGNAME',
+  'TERM',
+  'TMPDIR',
+  'TEMP',
+  'TMP',
+  'LANG',
+  'LANGUAGE',
+  'TZ',
+  // Diretório de config/sessão do Codex CLI (caminho, não segredo): sem ele o
+  // CLI perderia a autenticação de sessão local quando o operador o customiza.
+  'CODEX_HOME',
+  // Base dirs XDG (caminhos) — resolução de config/cache do CLI, nunca segredos.
+  'XDG_CONFIG_HOME',
+  'XDG_CACHE_HOME',
+  'XDG_DATA_HOME',
+  'XDG_RUNTIME_DIR',
+] as const;
+
+/** Prefixos sempre liberados: todas as categorias de locale (`LC_ALL`, `LC_CTYPE`, ...). */
+const CODEX_ENV_ALLOWLIST_PREFIXES = ['LC_'] as const;
+
+/**
+ * Escape hatch controlado pelo operador: chaves extras liberadas EXPLICITAMENTE
+ * via `CODEX_ENV_ALLOWLIST` (lista separada por vírgula). Vazio por padrão — a
+ * postura segura nunca depende dessa lista, que só existe para o caso de o CLI
+ * passar a precisar de uma variável operacional nova sem exigir mudança de código.
+ */
+function operatorEnvAllowlist(env: NodeJS.ProcessEnv): string[] {
+  return (env.CODEX_ENV_ALLOWLIST ?? '')
+    .split(',')
+    .map((key) => key.trim())
+    .filter((key) => key.length > 0);
+}
 
 /** Host de loopback padrão — nunca escuta em interface pública sem opt-in. */
 export const DEFAULT_LOCAL_BIND_HOST = '127.0.0.1';
@@ -163,13 +208,52 @@ export function createConcurrencyLimiter(max: number): ConcurrencyLimiter {
 }
 
 /**
- * Copia o ambiente removendo as chaves OpenAI/Codex (AC4). Retorna uma cópia
- * rasa; o `process.env` original permanece intacto.
+ * Constrói o ambiente do subprocesso Codex por ALLOWLIST (AC4 / QA-W2B1-04):
+ * apenas as chaves operacionais essenciais (`CODEX_ENV_ALLOWLIST` + prefixos de
+ * locale + o escape hatch do operador) são copiadas. Tudo o mais — incluindo
+ * qualquer segredo herdado — é descartado por padrão. Retorna uma cópia nova; o
+ * `process.env` original permanece intacto.
  */
 export function sanitizeCodexEnv(env: NodeJS.ProcessEnv = process.env): NodeJS.ProcessEnv {
-  const sanitized: NodeJS.ProcessEnv = { ...env };
-  for (const key of CODEX_STRIPPED_ENV_KEYS) {
-    delete sanitized[key];
+  const allowed = new Set<string>([...CODEX_ENV_ALLOWLIST, ...operatorEnvAllowlist(env)]);
+  const sanitized: NodeJS.ProcessEnv = {};
+  for (const [key, value] of Object.entries(env)) {
+    if (value === undefined) continue;
+    if (key === 'CODEX_ENV_ALLOWLIST') continue; // config do próprio boundary, não repassa
+    const permitted = allowed.has(key) || CODEX_ENV_ALLOWLIST_PREFIXES.some((prefix) => key.startsWith(prefix));
+    if (permitted) sanitized[key] = value;
   }
   return sanitized;
+}
+
+/** Erro de integridade de tenant: workspace informado não bate com o do projeto (QA-W2B1-03). */
+export class WorkspaceMismatchError extends Error {
+  readonly projectId: string;
+  constructor(projectId: string) {
+    super(`Workspace informado não corresponde ao projeto ${projectId}.`);
+    this.name = 'WorkspaceMismatchError';
+    this.projectId = projectId;
+  }
+}
+
+/**
+ * Resolve o eixo de tenant (`workspace_id`) de uma escrita service-role sobre um
+ * projeto (QA-W2B1-03). O writer service-role IGNORA a RLS, então o workspace
+ * NUNCA pode ser asserido pelo cliente contra um valor derivado:
+ *   - `derived` presente (workspace do projeto, lido de `marketing_projects`):
+ *     um `provided` divergente é rejeitado (`WorkspaceMismatchError`); um
+ *     `provided` ausente ou igual usa o derivado.
+ *   - `derived` ausente (sem DB / fallback in-memory de dev, sem writer
+ *     service-role a proteger): usa `provided` ou, na falta, o próprio `projectId`.
+ */
+export function resolveTenantWorkspaceId(
+  projectId: string,
+  provided: string | undefined,
+  derived: string | null,
+): string {
+  if (derived) {
+    if (provided && provided !== derived) throw new WorkspaceMismatchError(projectId);
+    return derived;
+  }
+  return provided ?? projectId;
 }

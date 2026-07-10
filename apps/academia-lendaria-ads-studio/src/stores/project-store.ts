@@ -236,6 +236,12 @@ export interface ProjectState {
   updateArtifact: (artifactId: string, patch: Partial<ProjectArtifact>) => void;
   startSkillRun: (projectId: string, skillId: string, inputSnapshot?: Record<string, unknown>) => string;
   updateSkillRun: (runId: string, patch: Partial<SkillRun>) => void;
+  /**
+   * Insere/substitui um skill run já persistido no repository (STORY-8.W2.2 /
+   * QA-W2B1-02). O controller chama isto SÓ após a escrita real ter sucesso, para
+   * o cache espelhar o SOT com o `id` autoritativo do banco (não o inventado localmente).
+   */
+  upsertSkillRun: (run: SkillRun) => void;
   upsertCampaignPlan: (plan: CampaignPlanRevision) => void;
   upsertWeeklyPanel: (panel: WeeklyPanel) => void;
   resetDemo: () => void;
@@ -496,6 +502,9 @@ export function createProjectStore(
             ),
           }));
         },
+        upsertSkillRun: (run) => set((state) => ({
+          skillRuns: [...state.skillRuns.filter((candidate) => candidate.id !== run.id), run],
+        })),
         upsertCampaignPlan: (plan) => set((state) => ({
           campaignPlans: [...state.campaignPlans.filter((candidate) => candidate.id !== plan.id), plan],
         })),

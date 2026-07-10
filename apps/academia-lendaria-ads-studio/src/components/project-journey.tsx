@@ -5,6 +5,9 @@ import { skillCatalog } from '@/generated/skill-catalog';
 import { evaluateProjectSkills, nextProjectAction, type SkillEvaluation } from '@/lib/readiness';
 import { activeBriefFor, useProjectStore } from '@/stores/project-store';
 import type { SkillRun } from '@/lib/project-domain';
+import { useOptionalProjectWorkspaceActions } from '@/components/project-hydration-boundary';
+import { toCacheRunPatch, type PersistSkillRunStartInput } from '@/hooks/use-project-workspace';
+import type { UpdateSkillRunInput } from '@/lib/project-repository';
 import {
   cancelSkillRun,
   isSkillProposal,
@@ -80,17 +83,49 @@ export function ProjectJourney({ projectId }: { projectId: string }) {
   const startRun = useProjectStore((state) => state.startSkillRun);
   const updateRun = useProjectStore((state) => state.updateSkillRun);
   const addArtifact = useProjectStore((state) => state.addArtifact);
+  // Seam opcional (QA-W2B1-02): dentro da boundary (modo real) as ações do
+  // workspace persistem o skill run pelo repository; fora dela (demo/testes
+  // isolados) é `null` e caímos no cache local — sem enfraquecer a persistência real.
+  const workspaceActions = useOptionalProjectWorkspaceActions();
   const [viewMode, setViewMode] = useState<ViewMode>('flow');
   const [query, setQuery] = useState('');
   const [phase, setPhase] = useState('all');
   const [executing, setExecuting] = useState(false);
   const [runtimeError, setRuntimeError] = useState<string | null>(null);
   const [operatorInput, setOperatorInput] = useState('');
+  // jobId com retry em voo — desabilita o botão Repetir (guard visual). O guard
+  // duro (síncrono, contra double-click) vive em `retryInFlightRef`.
+  const [retryingJobId, setRetryingJobId] = useState<string | null>(null);
+  const retryInFlightRef = useRef<Set<string>>(new Set());
   // Live progress projection per jobId (SSE/polling). Persisted status/proposal
   // live in the store; this is the ephemeral timeline rehydrated on reload.
   const [runViews, setRunViews] = useState<Record<string, SkillRunView>>({});
   const observedRef = useRef<Set<string>>(new Set());
   const unsubsRef = useRef<Map<string, () => void>>(new Map());
+
+  // Início durável de um skill run: repository+cache em modo real (ações do
+  // workspace presentes); só cache quando renderizado fora da boundary.
+  const persistRunStart = useCallback(async (input: PersistSkillRunStartInput): Promise<SkillRun> => {
+    if (workspaceActions) return workspaceActions.persistSkillRunStart(input);
+    const runId = startRun(input.projectId, input.skillId, input.inputSnapshot);
+    updateRun(runId, { status: 'running' });
+    const run = useProjectStore.getState().skillRuns.find((candidate) => candidate.id === runId);
+    if (!run) throw new Error('Skill run local não encontrado após criação.');
+    return run;
+  }, [workspaceActions, startRun, updateRun]);
+
+  // Transição durável de um skill run: repository+cache em modo real; só cache
+  // fora da boundary. Falha da escrita real é tratável (o journal do backend
+  // permanece íntegro e a reidratação reconcilia), então é apenas superficializada.
+  const persistRunUpdate = useCallback((runId: string, patch: UpdateSkillRunInput) => {
+    if (workspaceActions) {
+      void workspaceActions.persistSkillRunUpdate(runId, patch).catch((error: unknown) => {
+        setRuntimeError(error instanceof Error ? error.message : 'Falha ao salvar o estado da execução.');
+      });
+    } else {
+      updateRun(runId, toCacheRunPatch(patch));
+    }
+  }, [workspaceActions, updateRun]);
 
   const attach = useCallback((runId: string, jobId: string) => {
     if (observedRef.current.has(jobId)) return;
@@ -118,7 +153,9 @@ export function ProjectJourney({ projectId }: { projectId: string }) {
         return { ...prev, [jobId]: { ...current, status: payload.status, attempt: payload.attempt, steps, logs } };
       }),
       onDone: ({ proposal, skillHash }) => {
-        updateRun(runId, {
+        // Persiste a transição terminal com a proposta e o skillHash REAL
+        // devolvido pelo journal durável (QA-W2B1-02).
+        persistRunUpdate(runId, {
           status: 'needs_review',
           skillHash,
           proposal: proposal as unknown as Record<string, unknown>,
@@ -126,12 +163,12 @@ export function ProjectJourney({ projectId }: { projectId: string }) {
         release();
       },
       onError: (error, status) => {
-        updateRun(runId, { status: status === 'cancelled' ? 'cancelled' : 'failed', error: error.reason });
+        persistRunUpdate(runId, { status: status === 'cancelled' ? 'cancelled' : 'failed', error: error.reason });
         release();
       },
     });
     unsubsRef.current.set(jobId, unsubscribe);
-  }, [updateRun]);
+  }, [persistRunUpdate]);
 
   // Resume non-terminal runs by jobId — no dependency on the original request (AC6).
   useEffect(() => {
@@ -210,13 +247,29 @@ export function ProjectJourney({ projectId }: { projectId: string }) {
         },
         operatorInput: operatorInput.trim() || undefined,
       });
-      const runId = startRun(projectId, selectedEvaluation.skillId, {
-        briefRevisionId,
-        artifactIds: confirmedArtifacts.map((artifact) => artifact.id),
-        jobId: start.jobId,
-      });
-      updateRun(runId, { status: 'running' });
-      attach(runId, start.jobId);
+      // Pointer durável da UI (QA-W2B1-02): grava o skill run pelo repository
+      // carregando o jobId, ANTES de reatar. Se o pointer falhar, o job de
+      // backend já é durável → compensa cancelando-o para não deixar órfão rodando.
+      let run: SkillRun;
+      try {
+        run = await persistRunStart({
+          projectId,
+          skillId: selectedEvaluation.skillId,
+          inputSnapshot: {
+            briefRevisionId,
+            artifactIds: confirmedArtifacts.map((artifact) => artifact.id),
+            jobId: start.jobId,
+          },
+        });
+      } catch {
+        try {
+          await cancelSkillRun(start.jobId);
+        } catch {
+          // best-effort: o journal registra o cancelamento; nada a recuperar aqui.
+        }
+        throw new Error('Não foi possível registrar a execução para retomada. A execução foi cancelada; tente de novo.');
+      }
+      attach(run.id, start.jobId);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Falha ao executar a skill.';
       setRuntimeError(message);
@@ -239,13 +292,22 @@ export function ProjectJourney({ projectId }: { projectId: string }) {
   async function retryRun(run: SkillRun) {
     const jobId = jobIdOf(run);
     if (!jobId) return;
+    // Guard duro síncrono (QA-W2B1-01): um double-click não pode emitir dois
+    // POST /retry concorrentes deste cliente. O `retryInFlightRef` fecha a janela
+    // antes de qualquer re-render; `retryingJobId` desabilita o botão.
+    if (retryInFlightRef.current.has(jobId)) return;
+    retryInFlightRef.current.add(jobId);
+    setRetryingJobId(jobId);
     setRuntimeError(null);
     try {
       await retrySkillRun(jobId);
-      updateRun(run.id, { status: 'running', error: undefined });
+      persistRunUpdate(run.id, { status: 'running', error: null });
       attach(run.id, jobId);
     } catch (error) {
       setRuntimeError(error instanceof Error ? error.message : 'Falha ao repetir a execução.');
+    } finally {
+      retryInFlightRef.current.delete(jobId);
+      setRetryingJobId((current) => (current === jobId ? null : current));
     }
   }
 
@@ -413,7 +475,7 @@ export function ProjectJourney({ projectId }: { projectId: string }) {
           {latestRun && (latestRun.status === 'failed' || latestRun.status === 'cancelled') && latestJobId ? (
             <div className="cms-run-controls">
               {latestRun.error ? <span className="cms-inline-error">{latestRun.error}</span> : null}
-              <Button size="sm" variant="outline" onClick={() => void retryRun(latestRun)}>
+              <Button size="sm" variant="outline" disabled={retryingJobId === latestJobId} onClick={() => void retryRun(latestRun)}>
                 <Icon name="refresh-double" size={12} /> Repetir
               </Button>
             </div>

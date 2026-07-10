@@ -47,10 +47,12 @@ import { getWorkerHealth } from './worker/index.js'
 import { createLocalSkillRunnerFromEnv, type LocalSkillRunner } from './local-skill-runner.js'
 import {
   LOCAL_RUNNER_TOKEN_HEADER,
+  WorkspaceMismatchError,
   authorizeLocalRunnerRequest,
   createConcurrencyLimiter,
   resolveLocalRunnerLimits,
   resolveLocalRunnerToken,
+  resolveTenantWorkspaceId,
   type LocalRunnerLimits,
 } from './local-runner-security.js'
 import { z } from 'zod'
@@ -91,6 +93,12 @@ export interface BuildAppOptions {
   skillRunLeaseMs?: number
   /** Recupera jobs não-terminais no boot (AC5). `false` desliga (testes). */
   recoverOnBoot?: boolean
+  /**
+   * Deriva o `workspace_id` autoritativo de um projeto (QA-W2B1-03). Injetável
+   * para testes; por padrão consulta `marketing_projects` via Supabase backend
+   * (ou `null` quando não há credenciais — fallback de dev sem writer service-role).
+   */
+  deriveProjectWorkspaceId?: (projectId: string) => Promise<string | null>
 }
 
 export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyInstance> {
@@ -224,22 +232,37 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
     operatorInput: z.string().max(20_000).optional(),
   })
 
-  /**
-   * Resolve o workspace_id (eixo RLS/tenant). Usa o valor enviado pela UI quando
-   * presente; senão deriva de `marketing_projects` (Supabase) ou usa o projectId
-   * como chave de tenant no fallback in-memory (dev sem DB).
-   */
-  async function resolveWorkspaceId(projectId: string, provided?: string): Promise<string> {
-    if (provided) return provided
-    if (backendSupabase) {
-      const { data } = await backendSupabase
+  // Derivação autoritativa do workspace do projeto (QA-W2B1-03): lê
+  // `marketing_projects` via Supabase backend. Sem credenciais, resolve `null`
+  // (fallback de dev in-memory, sem writer service-role a proteger).
+  const deriveProjectWorkspaceId: (projectId: string) => Promise<string | null> =
+    options.deriveProjectWorkspaceId ??
+    (async (projectId: string) => {
+      if (!backendSupabase) return null
+      const { data, error } = await backendSupabase
         .from('marketing_projects')
         .select('workspace_id')
         .eq('id', projectId)
         .maybeSingle()
-      if (data?.workspace_id) return data.workspace_id as string
-    }
-    return projectId
+      if (error) {
+        throw new Error(`[skill-run-jobs] project workspace lookup failed: ${error.message}`)
+      }
+      const workspaceId = data?.workspace_id as string | undefined
+      if (!workspaceId) {
+        throw new Error(`[skill-run-jobs] project ${projectId} has no authoritative workspace`)
+      }
+      return workspaceId
+    })
+
+  /**
+   * Resolve o `workspace_id` (eixo RLS/tenant) para a escrita service-role no
+   * journal durável. NUNCA confia num valor enviado pela UI contra o workspace
+   * derivado do projeto: um `provided` divergente é rejeitado antes de qualquer
+   * escrita (QA-W2B1-03). Sem DB, cai no fallback de dev (`provided`/`projectId`).
+   */
+  async function resolveWorkspaceId(projectId: string, provided?: string): Promise<string> {
+    const derived = await deriveProjectWorkspaceId(projectId)
+    return resolveTenantWorkspaceId(projectId, provided, derived)
   }
 
   /**
@@ -306,6 +329,14 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
       return reply.status(202).send({ jobId: job.jobId, status: job.status })
     } catch (error) {
       limiter.release()
+      // Integridade de tenant (QA-W2B1-03): workspace informado ≠ workspace do
+      // projeto. Rejeita ANTES de qualquer escrita service-role no journal.
+      if (error instanceof WorkspaceMismatchError) {
+        return reply.status(400).send({
+          code: 'SKILL_RUN_WORKSPACE_MISMATCH',
+          message: error.message,
+        })
+      }
       req.log.error(error, `failed to enqueue local skill ${skillId}`)
       return reply.status(500).send({
         code: 'LOCAL_SKILL_ENQUEUE_FAILED',

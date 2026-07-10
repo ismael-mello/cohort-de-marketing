@@ -22,7 +22,7 @@ import type {
   SkillRunLogLine,
   SkillRunStep,
 } from './types.js'
-import { projectSkillRun } from './types.js'
+import { SKILL_RUN_TERMINAL_STATUSES, projectSkillRun } from './types.js'
 import {
   computeSkillRunCancel,
   computeSkillRunClaim,
@@ -250,8 +250,21 @@ export function createSupabaseSkillRunJobStore(
       if (!row) return undefined
       const next = computeSkillRunRetry(rowToRecord(row), now())
       if (!next) return undefined
-      const persisted = await persist(next)
-      return persisted ? rowToRecord(persisted) : undefined
+      // Atomic terminal-state compare-and-swap (QA-W2B1-01): only the retry that
+      // observes the job STILL terminal flips it → queued. A concurrent second
+      // retry (double-click / duplicate POST) races here: both read a terminal
+      // row and both compute a fresh attempt, but only the first UPDATE matches
+      // (WHERE status IN terminal); the loser's UPDATE hits zero rows → returns
+      // undefined, so the endpoint replies 409 and never schedules a duplicate
+      // Codex child. Same guard shape as cancel()/claim().
+      const { data, error } = await table()
+        .update(mutableColumns(next))
+        .eq('id', next.jobId)
+        .in('status', [...SKILL_RUN_TERMINAL_STATUSES])
+        .select(SELECT_COLUMNS)
+        .maybeSingle()
+      if (error) throw new Error(`[skill-run-jobs] retry failed: ${error.message}`)
+      return data ? rowToRecord(data as SkillRunJobRow) : undefined
     },
 
     async findRecoverable() {

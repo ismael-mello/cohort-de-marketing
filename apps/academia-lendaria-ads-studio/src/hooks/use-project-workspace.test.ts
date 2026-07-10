@@ -393,6 +393,57 @@ describe('use-project-workspace — round-trip entre sessões', () => {
     controllerB.destroy();
   });
 
+  it('persiste um skill run pelo repository e reidrata em nova sessão com jobId, status terminal, proposta e skillHash (QA-W2B1-02)', async () => {
+    const repository = createFakeRepository();
+
+    const storeA = createProjectStore({ demoEnabled: false });
+    const controllerA = createProjectWorkspaceController({
+      workspaceId: WORKSPACE_ID,
+      repository,
+      store: storeA,
+      demoEnabled: false,
+    });
+    const projectId = await controllerA.createProject('Projeto Skill Run');
+
+    // Início do run (202 → pointer durável): grava via repository e espelha no
+    // cache só após sucesso, com o id AUTORITATIVO do banco.
+    const started = await controllerA.persistSkillRunStart({
+      projectId,
+      skillId: 'offerbook',
+      inputSnapshot: { jobId: 'job-42', briefRevisionId: 'brief-x', artifactIds: [] },
+    });
+    expect(started.status).toBe('running');
+    expect(started.skillHash).toBe('pending');
+    expect(storeA.getState().skillRuns.find((r) => r.id === started.id)?.status).toBe('running');
+
+    // Transição terminal: needs_review com proposta e o skillHash REAL.
+    await controllerA.persistSkillRunUpdate(started.id, {
+      status: 'needs_review',
+      skillHash: 'sha-real-123',
+      proposal: { summary: 'ok', resultMarkdown: '# r', artifacts: [], fields: [], questions: [], warnings: [] },
+    });
+    controllerA.destroy();
+
+    // "Nova sessão": store e controller completamente novos, mesmo repository fake.
+    const storeB = createProjectStore({ demoEnabled: false });
+    const controllerB = createProjectWorkspaceController({
+      workspaceId: WORKSPACE_ID,
+      repository,
+      store: storeB,
+      demoEnabled: false,
+    });
+    await controllerB.hydrate();
+
+    const run = storeB.getState().skillRuns.find((r) => r.projectId === projectId);
+    expect(run?.id).toBe(started.id);
+    expect(run?.status).toBe('needs_review');
+    expect(run?.skillHash).toBe('sha-real-123');
+    expect((run?.inputSnapshot as { jobId?: string }).jobId).toBe('job-42');
+    expect(run?.proposal).toMatchObject({ summary: 'ok' });
+
+    controllerB.destroy();
+  });
+
   it('um novo controller/store sobre o mesmo repository recupera campaign plans e weekly panels do projeto (AC5)', async () => {
     const repository = createFakeRepository();
 

@@ -77,6 +77,27 @@ touched_paths:
 - `apps/academia-lendaria-ads-studio/src/components/project-journey.tsx` (MODIFY — progresso/cancelar/retry/retomada)
 - `apps/academia-lendaria-ads-studio/src/components/project-journey.test.tsx` (ADD)
 
+### Recuperação de quality gate (QA batch 1) — arquivos adicionais
+
+Correção dos 2 P2 bloqueantes + 2 P3 do gate `.aiox/waves/epic-8-wave-2/qa-batch-1.yaml`.
+Alguns tocam arquivos originalmente da W2.1 — o próprio gate (QA-W2B1-02) recomendou
+resolver a persistência do skill run cruzando a costura W2.1/W2.2; ownership ampliado
+para esta recuperação:
+
+- `apps/academia-lendaria-ads-studio/server/jobs/supabase-skill-job-store.ts` (MODIFY — guard atômico de `startRetry`, QA-W2B1-01)
+- `apps/academia-lendaria-ads-studio/server/jobs/supabase-skill-job-store.test.ts` (ADD — regressão do guard de retry)
+- `apps/academia-lendaria-ads-studio/server/local-runner-security.ts` (MODIFY — allowlist de env do Codex, QA-W2B1-04; `resolveTenantWorkspaceId`/`WorkspaceMismatchError`, QA-W2B1-03)
+- `apps/academia-lendaria-ads-studio/server/app.ts` (MODIFY — `resolveWorkspaceId` derivado do projeto + rejeição de mismatch, QA-W2B1-03)
+- `apps/academia-lendaria-ads-studio/server/__tests__/local-skill-runner.test.ts` (MODIFY — allowlist de env, tenant e endpoint de mismatch)
+- `apps/academia-lendaria-ads-studio/src/lib/project-repository.ts` (MODIFY — `skillHash` no `UpdateSkillRunInput`/`skillRunUpdate`, QA-W2B1-02) — *W2.1 seam*
+- `apps/academia-lendaria-ads-studio/src/stores/project-store.ts` (MODIFY — `upsertSkillRun` no cache, QA-W2B1-02) — *W2.1 seam*
+- `apps/academia-lendaria-ads-studio/src/hooks/use-project-workspace.ts` (MODIFY — `persistSkillRunStart`/`persistSkillRunUpdate` no controller/hook, QA-W2B1-02) — *W2.1 seam*
+- `apps/academia-lendaria-ads-studio/src/hooks/use-project-workspace.test.ts` (MODIFY — round-trip real-mode do skill run) — *W2.1 seam*
+- `apps/academia-lendaria-ads-studio/src/components/project-hydration-boundary.tsx` (MODIFY — actions do skill run no contexto + `useOptionalProjectWorkspaceActions` + `ProjectWorkspaceActionsProvider`, QA-W2B1-02) — *W2.1 seam*
+- `apps/academia-lendaria-ads-studio/src/components/project-hydration-boundary.test.tsx` (MODIFY — fixture do mock do hook) — *W2.1 seam*
+- `apps/academia-lendaria-ads-studio/src/components/project-journey.tsx` (MODIFY — persistência durável do run + compensação + guard in-flight de retry, QA-W2B1-01/02)
+- `apps/academia-lendaria-ads-studio/src/components/project-journey.test.tsx` (MODIFY — guard in-flight + round-trip real-mode)
+
 ## Dev Agent Record
 
 ### Agent
@@ -119,6 +140,62 @@ touched_paths:
 `.env` (gitignored) criado localmente a partir de `.env.example` para os testes que
 importam `@/lib/supabase` (fora do ownership) rodarem — sem esse arquivo o módulo falha
 no load. Não é regressão desta story.
+
+### Recuperação de quality gate (QA batch 1)
+
+Gate `.aiox/waves/epic-8-wave-2/qa-batch-1.yaml` retornou **BLOCK** com 2 P2 + 2 P3.
+Correção end-to-end (sem tocar o design visual), executor **@dev** em worktree isolada:
+
+- **QA-W2B1-01 (P2 — retry double-submit / duplicação de Codex).** `startRetry` do
+  adapter Supabase virou um **compare-and-swap de estado terminal**: o UPDATE carrega
+  `.in('status', ['succeeded','failed','cancelled'])` (mesma forma de `cancel()`/`claim()`),
+  então dois retries concorrentes que leem o job ainda terminal produzem exatamente UM
+  vencedor (agenda 1 run) — o perdedor bate em zero linhas, devolve `undefined` e o
+  endpoint responde 409 sem despachar um segundo filho. Teste de regressão novo
+  (`supabase-skill-job-store.test.ts`) com fake fiel do cliente Supabase provando o guard.
+  Defense-in-depth na UI: `ProjectJourney.retryRun` ganhou **guard in-flight duro**
+  (`retryInFlightRef`, síncrono contra double-click) + botão Repetir desabilitado durante o
+  retry — dois cliques emitem só um POST.
+- **QA-W2B1-02 (P2 — AC6 retomada após reload não entregue em modo real).** O skill run
+  passa a ter um **pointer durável no `skill_runs` via `ProjectRepository`**, reusando o
+  `ProjectWorkspaceController`/`ProjectHydrationBoundary`: `persistSkillRunStart`
+  (status `running`, `input_snapshot` com o `jobId`) após o 202, e `persistSkillRunUpdate`
+  para cada transição relevante (needs_review com proposta + `skillHash` real, failed/
+  cancelled, retry running). O cache Zustand só recebe o run via `upsertSkillRun` **após**
+  sucesso do repository (id autoritativo do banco). Modo demo permanece local; os testes
+  que renderizam `ProjectJourney` fora da boundary continuam via um **seam opcional**
+  (`useOptionalProjectWorkspaceActions` → `null` → cache), sem enfraquecer a persistência
+  real. **Compensação (saga):** se o job de backend já é durável mas a criação do pointer
+  de domínio falha, a UI cancela o job de backend e mostra erro acionável — sem órfão
+  rodando. `UpdateSkillRunInput`/`skillRunUpdate` estendidos com `skillHash`. Round-trip
+  real provado num store/controller novo (jobId, status terminal, proposta e skillHash) +
+  persistência/reattach no nível do `ProjectJourney`.
+- **QA-W2B1-03 (P3 — confiança no workspace do cliente).** `resolveWorkspaceId` (app.ts)
+  agora **deriva o workspace do projeto** e delega a `resolveTenantWorkspaceId`: um
+  `workspace_id` do cliente divergente do derivado é **rejeitado (400)** antes de qualquer
+  escrita service-role; sem DB (fallback dev, sem writer service-role) mantém o
+  comportamento anterior. Derivação injetável (`deriveProjectWorkspaceId`) para teste de
+  endpoint + teste unitário do decisor puro.
+- **QA-W2B1-04 (P3 — env leak herdado).** `sanitizeCodexEnv` trocou a **denylist de 2
+  chaves** por uma **allowlist operacional mínima** (PATH/HOME, locale via prefixo `LC_`,
+  temporários, `CODEX_HOME`/XDG; escape hatch `CODEX_ENV_ALLOWLIST` para o operador). O
+  filho Codex não herda mais `SUPABASE_SERVICE_ROLE_KEY`, `LOCAL_SKILL_RUNNER_TOKEN`,
+  `APIFY_TOKEN`, chaves OpenAI/Codex nem segredos arbitrários — testes provam o corte.
+
+**Gates re-executados (worktree, verdes):** `npm test` (25 arquivos / 175 testes) ·
+`npm run lint` · `npm run typecheck` · `npm run build` · `npm run build:server` ·
+`npm run lint:db` · `npm run test:db` (Files=3, Tests=15) · `git diff --check` limpo.
+
+### Riscos residuais (recuperação)
+
+- **Decisão de revisão (`approveProposal`/`rejectProposal`) segue cache-only.** A transição
+  done/cancelled da revisão humana e a materialização de artefatos aprovados são escopo da
+  **STORY-8.W2.3** (aprovação de artefato em duas fases); persistir só o status do run aqui
+  criaria inconsistência com os artefatos não persistidos. Após reload pós-aprovação o run
+  ainda aparece como `needs_review` até a W2.3 fechar essa costura.
+- **`resolveTenantWorkspaceId` no fallback sem DB** ainda confia no `provided` — aceitável
+  porque nesse caminho não há writer service-role (RLS-bypassing) a proteger; a proteção
+  real vale exatamente onde o Supabase backend existe.
 
 ## Implementation Notes
 

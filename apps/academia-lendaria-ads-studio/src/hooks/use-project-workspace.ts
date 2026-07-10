@@ -5,6 +5,7 @@ import {
   RevisionConflictError,
   createSupabaseProjectRepository,
   type ProjectRepository,
+  type UpdateSkillRunInput,
 } from '@/lib/project-repository';
 import {
   LEGACY_BRIEF_SCHEMA_VERSION,
@@ -38,6 +39,31 @@ import {
  */
 export const AUTOSAVE_DEBOUNCE_MS = 800;
 
+/**
+ * Hash sentinela de um skill run recém-iniciado (STORY-8.W2.2 / QA-W2B1-02): o
+ * hash real da SKILL.md só é conhecido quando o backend conclui (`onDone`), então
+ * o pointer durável nasce com este valor e é sobrescrito na transição terminal.
+ */
+export const PENDING_SKILL_HASH = 'pending';
+
+/** Entrada para persistir o INÍCIO de um skill run como pointer durável da UI. */
+export interface PersistSkillRunStartInput {
+  projectId: string;
+  skillId: string;
+  /** Deve carregar o `jobId` do backend para reidratar/reatar o run após reload. */
+  inputSnapshot: Record<string, unknown>;
+}
+
+/** Converte um patch do repository no patch de cache (`error: null` → `undefined`). */
+export function toCacheRunPatch(patch: UpdateSkillRunInput): Partial<SkillRun> {
+  const next: Partial<SkillRun> = {};
+  if (patch.status !== undefined) next.status = patch.status;
+  if (patch.skillHash !== undefined) next.skillHash = patch.skillHash;
+  if (patch.proposal !== undefined) next.proposal = patch.proposal;
+  if (patch.error !== undefined) next.error = patch.error ?? undefined;
+  return next;
+}
+
 export interface ProjectWorkspaceDeps {
   workspaceId: string;
   repository?: ProjectRepository;
@@ -53,6 +79,18 @@ export interface ProjectWorkspaceController {
   flush: (projectId: string) => Promise<void>;
   /** Recarrega a revisão ativa do repository e limpa o conflito, sem sobrescrever o servidor. */
   resolveConflict: (projectId: string) => Promise<void>;
+  /**
+   * Persiste o pointer durável de um skill run recém-iniciado (STORY-8.W2.2 /
+   * QA-W2B1-02): em modo real grava via `ProjectRepository` (status `running`) e
+   * só então espelha no cache com o `id` do banco; em modo demo permanece local.
+   * O run devolvido carrega o `id` que a UI usa para reatar e atualizar.
+   */
+  persistSkillRunStart: (input: PersistSkillRunStartInput) => Promise<SkillRun>;
+  /**
+   * Persiste uma transição do skill run (running/needs_review/failed/cancelled) —
+   * repository + cache em modo real; só cache em modo demo.
+   */
+  persistSkillRunUpdate: (runId: string, patch: UpdateSkillRunInput) => Promise<void>;
   retry: () => Promise<void>;
   destroy: () => void;
 }
@@ -246,6 +284,38 @@ export function createProjectWorkspaceController(deps: ProjectWorkspaceDeps): Pr
     }
   }
 
+  async function persistSkillRunStart(input: PersistSkillRunStartInput): Promise<SkillRun> {
+    if (demoEnabled) {
+      const local = store.getState();
+      const runId = local.startSkillRun(input.projectId, input.skillId, input.inputSnapshot);
+      local.updateSkillRun(runId, { status: 'running' });
+      const run = store.getState().skillRuns.find((candidate) => candidate.id === runId);
+      if (!run) throw new Error('Skill run demo não encontrado após criação.');
+      return run;
+    }
+    // Modo real: o repository é o SOT — cria o pointer (status running) e só então
+    // espelha no cache com o id autoritativo do banco (upsert pós-sucesso).
+    const run = await repository.createSkillRun({
+      workspaceId,
+      projectId: input.projectId,
+      skillId: input.skillId,
+      skillHash: PENDING_SKILL_HASH,
+      status: 'running',
+      inputSnapshot: input.inputSnapshot,
+    });
+    if (!destroyed) store.getState().upsertSkillRun(run);
+    return run;
+  }
+
+  async function persistSkillRunUpdate(runId: string, patch: UpdateSkillRunInput): Promise<void> {
+    if (demoEnabled) {
+      store.getState().updateSkillRun(runId, toCacheRunPatch(patch));
+      return;
+    }
+    const run = await repository.updateSkillRun(workspaceId, runId, patch);
+    if (!destroyed) store.getState().upsertSkillRun(run);
+  }
+
   async function retry(): Promise<void> {
     await hydrate();
   }
@@ -263,7 +333,16 @@ export function createProjectWorkspaceController(deps: ProjectWorkspaceDeps): Pr
     if (!demoEnabled) store.getState().bindPersistence(null);
   }
 
-  return { hydrate, createProject, flush, resolveConflict, retry, destroy };
+  return {
+    hydrate,
+    createProject,
+    flush,
+    resolveConflict,
+    persistSkillRunStart,
+    persistSkillRunUpdate,
+    retry,
+    destroy,
+  };
 }
 
 export interface UseProjectWorkspaceResult {
@@ -272,6 +351,10 @@ export interface UseProjectWorkspaceResult {
   conflict: HydrationConflict | null;
   /** Cria um projeto persistente (repository) fora do demo; local no demo. */
   createProject: (name: string) => Promise<string>;
+  /** Persiste o pointer durável de um skill run recém-iniciado (repo+cache real; cache no demo). */
+  persistSkillRunStart: (input: PersistSkillRunStartInput) => Promise<SkillRun>;
+  /** Persiste uma transição do skill run (repo+cache real; cache no demo). */
+  persistSkillRunUpdate: (runId: string, patch: UpdateSkillRunInput) => Promise<void>;
   retry: () => void;
   resolveConflict: () => void;
 }
@@ -301,6 +384,16 @@ export function useProjectWorkspace(workspaceId: string | null): UseProjectWorks
     return controllerRef.current.createProject(name);
   }, []);
 
+  const persistSkillRunStart = useCallback(async (input: PersistSkillRunStartInput): Promise<SkillRun> => {
+    if (!controllerRef.current) throw new Error('Workspace ainda não hidratado.');
+    return controllerRef.current.persistSkillRunStart(input);
+  }, []);
+
+  const persistSkillRunUpdate = useCallback(async (runId: string, patch: UpdateSkillRunInput): Promise<void> => {
+    if (!controllerRef.current) throw new Error('Workspace ainda não hidratado.');
+    return controllerRef.current.persistSkillRunUpdate(runId, patch);
+  }, []);
+
   const retry = useCallback(() => {
     void controllerRef.current?.retry();
   }, []);
@@ -315,6 +408,8 @@ export function useProjectWorkspace(workspaceId: string | null): UseProjectWorks
     error: hydration.error,
     conflict: hydration.conflict,
     createProject,
+    persistSkillRunStart,
+    persistSkillRunUpdate,
     retry,
     resolveConflict,
   };

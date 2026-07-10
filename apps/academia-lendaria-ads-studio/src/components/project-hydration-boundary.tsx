@@ -3,12 +3,17 @@ import { Button, Icon } from '@/lib/lendaria-ds';
 import { useProjectWorkspace, type UseProjectWorkspaceResult } from '@/hooks/use-project-workspace';
 
 /**
- * Ações do controller de workspace expostas para as telas dentro da
- * boundary (ex.: `ProjectsHome` precisa de `createProject` persistente —
- * STORY-8.W2.1 tarefa 4). Só `createProject` é exposto: as demais mutações
- * continuam pela API legada de `useProjectStore` (autosave já embutido nela).
+ * Ações do controller de workspace expostas para as telas dentro da boundary:
+ *   - `createProject`: `ProjectsHome` cria projeto persistente (STORY-8.W2.1).
+ *   - `persistSkillRunStart`/`persistSkillRunUpdate`: `ProjectJourney` persiste o
+ *     pointer durável do skill run pelo `ProjectRepository` (STORY-8.W2.2 /
+ *     QA-W2B1-02), para o run e sua proposta sobreviverem a um reload em modo real.
+ * As demais mutações continuam pela API legada de `useProjectStore`.
  */
-type ProjectWorkspaceActions = Pick<UseProjectWorkspaceResult, 'createProject'>;
+export type ProjectWorkspaceActions = Pick<
+  UseProjectWorkspaceResult,
+  'createProject' | 'persistSkillRunStart' | 'persistSkillRunUpdate'
+>;
 
 const ProjectWorkspaceActionsContext = createContext<ProjectWorkspaceActions | null>(null);
 
@@ -20,6 +25,29 @@ export function useProjectWorkspaceActions(): ProjectWorkspaceActions {
     throw new Error('useProjectWorkspaceActions precisa estar dentro de <ProjectHydrationBoundary>.');
   }
   return context;
+}
+
+/**
+ * Variante opcional (STORY-8.W2.2 / QA-W2B1-02): devolve as ações do workspace se
+ * houver provider, ou `null` quando renderizado FORA da boundary. É o seam que
+ * permite ao `ProjectJourney` persistir via repository em produção sem quebrar os
+ * testes de componente que o renderizam isolado (modo demo/cache) — sem
+ * enfraquecer a persistência real.
+ */
+// eslint-disable-next-line react-refresh/only-export-components -- hook do contexto vive ao lado do provider
+export function useOptionalProjectWorkspaceActions(): ProjectWorkspaceActions | null {
+  return useContext(ProjectWorkspaceActionsContext);
+}
+
+/** Provider das ações do workspace — usado pela boundary e, em testes, para injetar duplos. */
+export function ProjectWorkspaceActionsProvider({
+  value,
+  children,
+}: {
+  value: ProjectWorkspaceActions;
+  children: ReactNode;
+}) {
+  return <ProjectWorkspaceActionsContext.Provider value={value}>{children}</ProjectWorkspaceActionsContext.Provider>;
 }
 
 function CenteredState({ testId, children }: { testId: string; children: ReactNode }) {
@@ -95,8 +123,14 @@ export function ProjectHydrationBoundary({
   }
 
   return (
-    <ProjectWorkspaceActionsContext.Provider value={{ createProject: workspace.createProject }}>
+    <ProjectWorkspaceActionsProvider
+      value={{
+        createProject: workspace.createProject,
+        persistSkillRunStart: workspace.persistSkillRunStart,
+        persistSkillRunUpdate: workspace.persistSkillRunUpdate,
+      }}
+    >
       {children}
-    </ProjectWorkspaceActionsContext.Provider>
+    </ProjectWorkspaceActionsProvider>
   );
 }

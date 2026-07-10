@@ -19,6 +19,8 @@ function baseResult(overrides: Partial<UseProjectWorkspaceResult>): UseProjectWo
     error: null,
     conflict: null,
     createProject: vi.fn().mockResolvedValue('project-1'),
+    persistSkillRunStart: vi.fn(),
+    persistSkillRunUpdate: vi.fn().mockResolvedValue(undefined),
     retry: vi.fn(),
     resolveConflict: vi.fn(),
     ...overrides,

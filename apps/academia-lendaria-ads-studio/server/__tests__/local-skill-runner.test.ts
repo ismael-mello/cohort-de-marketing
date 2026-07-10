@@ -8,10 +8,12 @@ import {
 } from '../local-skill-runner.js';
 import {
   LOCAL_RUNNER_TOKEN_HEADER,
+  WorkspaceMismatchError,
   authorizeLocalRunnerRequest,
   createConcurrencyLimiter,
   resolveLocalBindHost,
   resolveLocalRunnerToken,
+  resolveTenantWorkspaceId,
   sanitizeCodexEnv,
   timingSafeEqualStrings,
 } from '../local-runner-security.js';
@@ -118,6 +120,78 @@ describe('local skill runner endpoint', () => {
     });
     expect(response.statusCode).toBe(400);
     expect(called).toBe(false);
+  });
+
+  // --- QA-W2B1-03: integridade de tenant do workspace na escrita service-role ---
+
+  it('derives the workspace from the project and rejects a mismatched client workspace before writing (QA-W2B1-03)', async () => {
+    const app = await buildApp({
+      campaignRepo: null,
+      skillRunner: stubRunner(),
+      localRunnerToken: TOKEN,
+      // Deriva o workspace autoritativo do projeto (simula `marketing_projects`).
+      deriveProjectWorkspaceId: async () => 'ws-real',
+    });
+    apps.push(app);
+
+    // Mismatch: o cliente afirma um workspace ≠ do projeto → 400 ANTES de qualquer
+    // escrita service-role no journal (o job nunca é criado nem despachado).
+    const mismatch = await app.inject({
+      method: 'POST',
+      url: '/api/local/skills/offerbook/run',
+      headers: AUTH,
+      payload: { workspaceId: 'ws-attacker', projectId: 'project-1', brief: { project: { slug: 'demo' } } },
+    });
+    expect(mismatch.statusCode).toBe(400);
+    expect(mismatch.json().code).toBe('SKILL_RUN_WORKSPACE_MISMATCH');
+
+    // Workspace informado igual ao derivado → aceito (202) e executa.
+    const matching = await app.inject({
+      method: 'POST',
+      url: '/api/local/skills/offerbook/run',
+      headers: AUTH,
+      payload: { workspaceId: 'ws-real', projectId: 'project-1', brief: { project: { slug: 'demo' } } },
+    });
+    expect(matching.statusCode).toBe(202);
+    await pollUntil(app, matching.json().jobId, (view) => view.status === 'succeeded');
+
+    // Workspace omitido → usa o derivado (nunca client-asserted) → 202.
+    const derived = await app.inject({
+      method: 'POST',
+      url: '/api/local/skills/offerbook/run',
+      headers: AUTH,
+      payload: { projectId: 'project-1', brief: { project: { slug: 'demo' } } },
+    });
+    expect(derived.statusCode).toBe(202);
+  });
+
+  it('fails closed when the authoritative workspace lookup fails before writing', async () => {
+    let dispatched = false;
+    const app = await buildApp({
+      campaignRepo: null,
+      skillRunner: stubRunner({
+        async run() {
+          dispatched = true;
+          throw new Error('must not run');
+        },
+      }),
+      localRunnerToken: TOKEN,
+      deriveProjectWorkspaceId: async () => {
+        throw new Error('workspace lookup unavailable');
+      },
+    });
+    apps.push(app);
+
+    const response = await app.inject({
+      method: 'POST',
+      url: '/api/local/skills/offerbook/run',
+      headers: AUTH,
+      payload: { workspaceId: 'ws-attacker', projectId: 'project-1', brief: { project: { slug: 'demo' } } },
+    });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.json().code).toBe('LOCAL_SKILL_ENQUEUE_FAILED');
+    expect(dispatched).toBe(false);
   });
 
   // --- AC2: boundary autenticado por token (hardening W1.2 preservado) ---
@@ -452,6 +526,70 @@ describe('local runner security primitives', () => {
     expect(sanitized.CODEX_API_KEY).toBeUndefined();
     expect(sanitized.PATH).toBe('/usr/bin');
     expect(source.OPENAI_API_KEY).toBe('a');
+  });
+
+  it('passes only operational essentials to the child — no inherited secrets (AC4 / QA-W2B1-04)', () => {
+    const source: NodeJS.ProcessEnv = {
+      // Essenciais operacionais → devem passar.
+      PATH: '/usr/bin',
+      HOME: '/home/op',
+      LANG: 'pt_BR.UTF-8',
+      LC_ALL: 'pt_BR.UTF-8',
+      TMPDIR: '/tmp',
+      CODEX_HOME: '/home/op/.codex',
+      // Segredos herdados → NUNCA podem chegar ao filho agentic.
+      SUPABASE_SERVICE_ROLE_KEY: 'service-role-secret',
+      SUPABASE_URL: 'https://project.supabase.co',
+      LOCAL_SKILL_RUNNER_TOKEN: 'runner-token-secret',
+      APIFY_TOKEN: 'apify-secret',
+      OPENAI_API_KEY: 'sk-secret',
+      CODEX_API_KEY: 'codex-secret',
+      SOME_ARBITRARY_SECRET: 'nope',
+    };
+    const sanitized = sanitizeCodexEnv(source);
+
+    expect(sanitized.PATH).toBe('/usr/bin');
+    expect(sanitized.HOME).toBe('/home/op');
+    expect(sanitized.LANG).toBe('pt_BR.UTF-8');
+    expect(sanitized.LC_ALL).toBe('pt_BR.UTF-8');
+    expect(sanitized.TMPDIR).toBe('/tmp');
+    expect(sanitized.CODEX_HOME).toBe('/home/op/.codex');
+
+    expect(sanitized.SUPABASE_SERVICE_ROLE_KEY).toBeUndefined();
+    expect(sanitized.SUPABASE_URL).toBeUndefined();
+    expect(sanitized.LOCAL_SKILL_RUNNER_TOKEN).toBeUndefined();
+    expect(sanitized.APIFY_TOKEN).toBeUndefined();
+    expect(sanitized.OPENAI_API_KEY).toBeUndefined();
+    expect(sanitized.CODEX_API_KEY).toBeUndefined();
+    expect(sanitized.SOME_ARBITRARY_SECRET).toBeUndefined();
+    // Nenhum vazamento do valor do segredo em nenhuma chave do resultado.
+    expect(Object.values(sanitized)).not.toContain('service-role-secret');
+    expect(source.SUPABASE_SERVICE_ROLE_KEY).toBe('service-role-secret'); // fonte intacta
+  });
+
+  it('honors the operator escape hatch CODEX_ENV_ALLOWLIST without leaking it or other secrets', () => {
+    const source: NodeJS.ProcessEnv = {
+      CODEX_ENV_ALLOWLIST: 'FOO_OPS,BAR_OPS',
+      FOO_OPS: 'ok',
+      BAR_OPS: 'ok',
+      SUPABASE_SERVICE_ROLE_KEY: 'still-secret',
+    };
+    const sanitized = sanitizeCodexEnv(source);
+    expect(sanitized.FOO_OPS).toBe('ok');
+    expect(sanitized.BAR_OPS).toBe('ok');
+    // A própria config do boundary não é repassada, e nada fora da lista passa.
+    expect(sanitized.CODEX_ENV_ALLOWLIST).toBeUndefined();
+    expect(sanitized.SUPABASE_SERVICE_ROLE_KEY).toBeUndefined();
+  });
+
+  it('never trusts a client workspace against the derived one (QA-W2B1-03)', () => {
+    // Derivado presente: provided divergente é rejeitado; igual/ausente usa o derivado.
+    expect(resolveTenantWorkspaceId('p1', 'ws-a', 'ws-a')).toBe('ws-a');
+    expect(resolveTenantWorkspaceId('p1', undefined, 'ws-a')).toBe('ws-a');
+    expect(() => resolveTenantWorkspaceId('p1', 'ws-b', 'ws-a')).toThrow(WorkspaceMismatchError);
+    // Sem derivado (fallback dev, sem writer service-role): usa provided ou projectId.
+    expect(resolveTenantWorkspaceId('p1', 'ws-x', null)).toBe('ws-x');
+    expect(resolveTenantWorkspaceId('p1', undefined, null)).toBe('p1');
   });
 
   it('caps concurrency and recovers slots on release (AC5)', () => {
