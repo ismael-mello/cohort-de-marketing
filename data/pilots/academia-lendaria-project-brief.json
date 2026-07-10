@@ -183,6 +183,7 @@
     "curriculum": true,
     "offerbook": true,
     "a3-prd": true,
-    "squad-trafego-readme": true
+    "squad-trafego-readme": true,
+    "copy": true
   }
 }
