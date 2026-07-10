@@ -262,6 +262,7 @@ export function ProjectBriefing({ projectId, sectionId }: { projectId: string; s
             onChange={(event) => {
               const file = event.target.files?.[0];
               if (file) void importFile(file);
+              event.currentTarget.value = '';
             }}
           />
           <button className="asx-iconbtn" type="button" onClick={() => inputRef.current?.click()} title="Importar briefing legado" aria-label="Importar briefing legado">

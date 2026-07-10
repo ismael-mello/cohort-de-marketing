@@ -47,6 +47,22 @@ export const AUTOSAVE_DEBOUNCE_MS = 800;
  */
 export const PENDING_SKILL_HASH = 'pending';
 
+function canonicalJsonValue(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(canonicalJsonValue);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>)
+        .sort(([left], [right]) => left.localeCompare(right))
+        .map(([key, child]) => [key, canonicalJsonValue(child)]),
+    );
+  }
+  return value;
+}
+
+function sameJsonValue(left: unknown, right: unknown): boolean {
+  return JSON.stringify(canonicalJsonValue(left)) === JSON.stringify(canonicalJsonValue(right));
+}
+
 /** Entrada para persistir o INÍCIO de um skill run como pointer durável da UI. */
 export interface PersistSkillRunStartInput {
   projectId: string;
@@ -148,7 +164,10 @@ export function createProjectWorkspaceController(deps: ProjectWorkspaceDeps): Pr
     campaignPlans: CampaignPlanRevision[];
     weeklyPanels: WeeklyPanel[];
   }> {
-    const projects = await repository.listProjects(workspaceId);
+    // Projetos sem pointer ativo são transações interrompidas. Eles continuam
+    // acessíveis ao importador para retomada, mas nunca entram no snapshot da UI.
+    const projects = (await repository.listProjects(workspaceId))
+      .filter((project) => Boolean(project.activeBriefRevisionId));
     const [briefRevisions, artifacts, skillRuns, campaignPlans, weeklyPanels] = await Promise.all([
       Promise.all(projects.map((project) => repository.listBriefRevisions(workspaceId, project.id))).then((lists) =>
         lists.flat(),
@@ -218,20 +237,31 @@ export function createProjectWorkspaceController(deps: ProjectWorkspaceDeps): Pr
     const slug = String(input.project.slug);
     const name = String(input.project.name || slug);
     const existing = await repository.getProjectBySlug(workspaceId, slug);
-    if (existing) throw new RevisionConflictError('marketing_projects');
 
-    // O cache só é alterado depois que todas as escritas do import terminaram.
-    const project = await repository.createProject({ workspaceId, slug, name });
-    const brief = await repository.createBriefRevision({
+    // `activeBriefRevisionId` funciona como commit marker. Um projeto sem esse
+    // pointer é uma importação interrompida e pode ser retomado; um projeto já
+    // ativo continua sendo conflito de slug e nunca é sobrescrito.
+    if (existing?.activeBriefRevisionId || (existing && existing.name !== name)) {
+      throw new RevisionConflictError('marketing_projects');
+    }
+    const project = existing ?? await repository.createProject({ workspaceId, slug, name });
+    const persistedRevisions = existing ? await repository.listBriefRevisions(workspaceId, project.id) : [];
+    if (persistedRevisions.length > 1) throw new RevisionConflictError('project_brief_revisions');
+    const persistedBrief = persistedRevisions[0];
+    if (persistedBrief && (
+      persistedBrief.revision !== 1
+      || !sameJsonValue(persistedBrief.data, migrated.document.data)
+      || !sameJsonValue(persistedBrief.fieldSources, migrated.document.fieldSources)
+    )) {
+      throw new RevisionConflictError('project_brief_revisions');
+    }
+    const brief = persistedBrief ?? await repository.createBriefRevision({
       workspaceId,
       projectId: project.id,
       revision: 1,
       status: 'active',
       data: migrated.document.data,
       fieldSources: migrated.document.fieldSources,
-    });
-    const updatedProject = await repository.updateProject(workspaceId, project.id, {
-      activeBriefRevisionId: brief.id,
     });
     const declarations = await Promise.all(
       migrated.declaredArtifactTypes.map((artifactType) => repository.upsertArtifact({
@@ -245,6 +275,9 @@ export function createProjectWorkspaceController(deps: ProjectWorkspaceDeps): Pr
         source: 'migration',
       })),
     );
+    const updatedProject = await repository.updateProject(workspaceId, project.id, {
+      activeBriefRevisionId: brief.id,
+    });
     if (!destroyed) store.getState().applyCreatedProject(updatedProject, brief);
     for (const artifact of declarations) {
       if (!destroyed) store.getState().upsertArtifact(artifact);

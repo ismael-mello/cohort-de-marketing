@@ -283,16 +283,55 @@ describe('use-project-workspace — hidratação e criação', () => {
 
   it('não atualiza cache quando a persistência da primeira revisão falha', async () => {
     const base = createFakeRepository();
+    const createBriefRevision = vi.fn()
+      .mockRejectedValueOnce(new Error('falha parcial'))
+      .mockImplementation(base.createBriefRevision);
     const repository: ProjectRepository = {
       ...base,
-      createBriefRevision: vi.fn().mockRejectedValue(new Error('falha parcial')),
+      createBriefRevision,
     };
     const store = createProjectStore({ demoEnabled: false });
     const controller = createProjectWorkspaceController({ workspaceId: WORKSPACE_ID, repository, store, demoEnabled: false });
-    await expect(controller.importProjectBrief({ schemaVersion: '0.1.0', project: { slug: 'falha' } })).rejects.toThrow('falha parcial');
+    const input = { schemaVersion: '0.1.0' as const, project: { slug: 'falha' } };
+    await expect(controller.importProjectBrief(input)).rejects.toThrow('falha parcial');
     expect(store.getState().projects).toHaveLength(0);
     expect(store.getState().briefRevisions).toHaveLength(0);
+
+    const projectId = await controller.importProjectBrief(input);
+    expect(projectId).toBeTruthy();
+    expect(store.getState().projects).toHaveLength(1);
+    expect(createBriefRevision).toHaveBeenCalledTimes(2);
     controller.destroy();
+  });
+
+  it('retoma declarações de artefato após falha sem sobrescrever um projeto completo', async () => {
+    const base = createFakeRepository();
+    const upsertArtifact = vi.fn()
+      .mockRejectedValueOnce(new Error('artefato indisponível'))
+      .mockImplementation(base.upsertArtifact);
+    const repository: ProjectRepository = { ...base, upsertArtifact };
+    const firstStore = createProjectStore({ demoEnabled: false });
+    const first = createProjectWorkspaceController({ workspaceId: WORKSPACE_ID, repository, store: firstStore, demoEnabled: false });
+    const input = { schemaVersion: '0.1.0' as const, project: { slug: 'retomavel' }, artifacts: { offerbook: true } };
+
+    await expect(first.importProjectBrief(input)).rejects.toThrow('artefato indisponível');
+    expect(firstStore.getState().projects).toHaveLength(0);
+    first.destroy();
+
+    const interruptedStore = createProjectStore({ demoEnabled: false });
+    const interrupted = createProjectWorkspaceController({ workspaceId: WORKSPACE_ID, repository, store: interruptedStore, demoEnabled: false });
+    await interrupted.hydrate();
+    expect(interruptedStore.getState().projects).toHaveLength(0);
+    interrupted.destroy();
+
+    const retryStore = createProjectStore({ demoEnabled: false });
+    const retry = createProjectWorkspaceController({ workspaceId: WORKSPACE_ID, repository, store: retryStore, demoEnabled: false });
+    const projectId = await retry.importProjectBrief(input);
+    expect(retryStore.getState().projects[0]?.id).toBe(projectId);
+    expect(retryStore.getState().artifacts[0]?.artifactType).toBe('offerbook');
+
+    await expect(retry.importProjectBrief(input)).rejects.toBeInstanceOf(RevisionConflictError);
+    retry.destroy();
   });
 
   it('recusa slug duplicado sem sobrescrever o projeto existente', async () => {

@@ -70,7 +70,13 @@ touched_paths:
 
 - Controller real valida/migra o `0.1.0`, verifica slug duplicado, persiste projeto, revisão, ponteiro ativo e artefatos antes de espelhar no cache.
 - O caminho demo segue explícito em `importLegacyBrief`; fora dele, Zustand continua sendo somente cache.
-- Validação retorna todos os caminhos inválidos e mantém o arquivo original selecionado para correção/reenvio.
+- Validação retorna todos os caminhos inválidos sem alterar o arquivo original;
+  o seletor é liberado para permitir o reenvio do mesmo caminho após correção.
+- O pointer da revisão ativa funciona como commit marker: falhas antes dele
+  deixam a importação retomável, enquanto um projeto completo mantém o conflito
+  de slug sem sobrescrita.
+- A hidratação ignora transações interrompidas sem pointer ativo, evitando que
+  um projeto parcial apareça na UI entre a falha e a retomada.
 - Conflitos de slug/revisão são rejeitados sem sobrescrita; valores `0`, `false`, `unknown` e `not_applicable` permanecem intactos.
 
 ## Evidências
@@ -87,6 +93,7 @@ touched_paths:
 
 **Veredito:** PASS em 2026-07-10. Nenhum finding P0/P1/P2.
 
-- Sucesso, migração, conflito de slug, falha parcial sem atualização de cache, round-trip em novo controller e regressões de tipos foram cobertos.
+- Sucesso, migração, conflito de slug, retomada após falha parcial sem atualização
+  de cache, round-trip em novo controller e regressões de tipos foram cobertos.
 - O typecheck detectou e foi corrigido o seam de compatibilidade dos consumidores existentes do contexto; lint e builds finais passaram.
 - Não houve alteração fora dos `touched_paths`, nem uso de `OPENAI_API_KEY`/`CODEX_API_KEY`.
