@@ -113,7 +113,20 @@ describe('ProjectsHome filesystem intake', () => {
       .mockResolvedValueOnce(new Response(JSON.stringify({
         code: 'secret-rejected',
         message: 'Arquivo rejeitado por conter segredo conhecido: .env',
-      }), { status: 400 }));
+      }), { status: 400 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        projectId: DEMO_PROJECT_ID,
+        projectSlug: 'maquina-de-receita-com-ia',
+        manifest: {
+          hash: 'manifest-retry',
+          sourcePath: 'projetos/academia-lendaria',
+          fileCount: 0,
+          allowlist: ['**/*.md'],
+          allowlistVersion: 'filesystem-project-intake-allowlist.v1',
+        },
+        files: [],
+        conflicts: [],
+      }), { status: 200 }));
     vi.stubGlobal('fetch', fetchMock);
 
     const user = userEvent.setup();
@@ -124,7 +137,54 @@ describe('ProjectsHome filesystem intake', () => {
     await user.click(screen.getByRole('button', { name: /revisar materiais/i }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent('Essa pasta contém um arquivo privado');
-    expect(screen.getByRole('button', { name: 'Tentar novamente' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Tentar novamente' }));
+
+    expect(await screen.findByText('Pronto para revisar')).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenLastCalledWith(
+      '/api/local/project-intake/preview',
+      expect.objectContaining({ method: 'POST' }),
+    );
+  });
+
+  it('retries confirmation without discarding the approved preview', async () => {
+    const preview = {
+      projectId: DEMO_PROJECT_ID,
+      projectSlug: 'maquina-de-receita-com-ia',
+      manifest: {
+        hash: 'manifest-hash',
+        sourcePath: 'projetos/academia-lendaria',
+        fileCount: 0,
+        allowlist: ['**/*.md'],
+        allowlistVersion: 'filesystem-project-intake-allowlist.v1',
+      },
+      files: [],
+      conflicts: [],
+    };
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify([
+        { slug: 'academia-lendaria', root: 'projetos/academia-lendaria' },
+      ]), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify(preview), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ message: 'conflict' }), { status: 409 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        manifestHash: 'manifest-hash', imported: 1, unchanged: 0,
+      }), { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const user = userEvent.setup();
+    render(<ProjectsHome />);
+    await user.click(screen.getByRole('button', { name: /trazer materiais/i }));
+    await screen.findByRole('option', { name: 'Academia Lendaria' });
+    await user.click(screen.getByRole('button', { name: /revisar materiais/i }));
+    await screen.findByText('Pronto para revisar');
+    await user.click(screen.getByRole('button', { name: /adicionar materiais/i }));
+    await user.click(await screen.findByRole('button', { name: 'Tentar novamente' }));
+
+    expect(await screen.findByText('Materiais adicionados')).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenLastCalledWith(
+      '/api/local/project-intake/confirm',
+      expect.objectContaining({ method: 'POST' }),
+    );
   });
 
   it('keeps project data and offers an in-place retry when creation fails', async () => {

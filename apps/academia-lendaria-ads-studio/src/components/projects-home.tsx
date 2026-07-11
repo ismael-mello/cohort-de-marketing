@@ -42,6 +42,8 @@ interface IntakeConfirmation {
   unchanged: number;
 }
 
+type IntakeRetry = 'sources' | 'preview' | 'confirm';
+
 async function readProjectIntakeError(response: Response): Promise<string> {
   const payload = (await response.json().catch(() => ({}))) as { message?: string };
   return payload.message ?? `Intake respondeu ${response.status}.`;
@@ -110,6 +112,7 @@ export function ProjectsHome() {
   const [intakeLoading, setIntakeLoading] = useState(false);
   const [confirmingIntake, setConfirmingIntake] = useState(false);
   const [intakeError, setIntakeError] = useState<string | null>(null);
+  const [intakeRetry, setIntakeRetry] = useState<IntakeRetry>('sources');
   const [intakeSuccess, setIntakeSuccess] = useState<string | null>(null);
   const [createError, setCreateError] = useState<string | null>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -133,6 +136,7 @@ export function ProjectsHome() {
         sources.some((source) => source.slug === current) ? current : sources[0]?.slug || ''
       ));
     } catch (error) {
+      setIntakeRetry('sources');
       setIntakeError(studentFacingImportError(error instanceof Error ? error.message : ''));
     } finally {
       setIntakeLoading(false);
@@ -154,7 +158,10 @@ export function ProjectsHome() {
           sources.some((source) => source.slug === current) ? current : sources[0]?.slug || ''
         ));
       } catch (error) {
-        if (active) setIntakeError(studentFacingImportError(error instanceof Error ? error.message : ''));
+        if (active) {
+          setIntakeRetry('sources');
+          setIntakeError(studentFacingImportError(error instanceof Error ? error.message : ''));
+        }
       } finally {
         if (active) setIntakeLoading(false);
       }
@@ -215,6 +222,7 @@ export function ProjectsHome() {
       setIntakePreview(await fetchProjectIntakePreview({ projectId: intakeProjectId, sourceSlug: intakeSourceSlug }));
     } catch (error) {
       setIntakePreview(null);
+      setIntakeRetry('preview');
       setIntakeError(studentFacingImportError(error instanceof Error ? error.message : ''));
     } finally {
       setIntakeLoading(false);
@@ -235,10 +243,17 @@ export function ProjectsHome() {
       setIntakeSuccess(`${result.imported} material(is) adicionado(s) e ${result.unchanged} já estava(m) atualizado(s).`);
       setIntakePreview((current) => current ? { ...current, manifest: { ...current.manifest, hash: result.manifestHash } } : current);
     } catch (error) {
+      setIntakeRetry('confirm');
       setIntakeError(studentFacingImportError(error instanceof Error ? error.message : ''));
     } finally {
       setConfirmingIntake(false);
     }
+  }
+
+  function retryIntake() {
+    if (intakeRetry === 'confirm') return void confirmIntake();
+    if (intakeRetry === 'preview') return void previewIntake();
+    return void loadIntakeSources();
   }
 
   return (
@@ -389,7 +404,7 @@ export function ProjectsHome() {
             {intakeError ? (
               <div className="cms-inline-recovery" role="alert">
                 <span>{intakeError}</span>
-                <Button variant="ghost" onClick={() => void loadIntakeSources()}>Tentar novamente</Button>
+                <Button variant="ghost" onClick={retryIntake}>Tentar novamente</Button>
               </div>
             ) : null}
             {intakeSuccess ? (

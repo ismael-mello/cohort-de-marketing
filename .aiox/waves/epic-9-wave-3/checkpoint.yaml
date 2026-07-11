@@ -19,7 +19,7 @@ parallel_group_0:
     result: qa_pass
     evidence: docs/qa/epic-9-student-onboarding.md
 validation:
-  focused_tests: "12 passed"
+  focused_tests: "13 passed"
   typecheck: pass
   lint: "pass with one pre-existing warning in concurrent use-project-workspace.ts changes"
   playwright:
@@ -30,6 +30,14 @@ validation:
     rejects_pending_metrics: pass
     rejects_pii: pass
     rejects_duplicate_steps: pass
+    rejects_go_with_assistance: pass
+    rejects_go_with_failed_step: pass
+    rejects_go_with_blocker: pass
+review_repairs:
+  - story_id: 9.W3.1
+    result: go_gate_now_requires_no_assistance_successful_steps_and_no_blocker
+  - story_id: 9.W3.2
+    result: intake_retry_now_repeats_the_failed_preview_or_confirmation
 next:
   story_id: 9.W3.1
   action: run the documented field session and sanitize the resulting evidence

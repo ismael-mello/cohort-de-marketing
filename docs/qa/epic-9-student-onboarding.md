@@ -35,7 +35,7 @@ internos ao aluno.
 
 ## Evidência executada
 
-- 12 testes focados em primeiro acesso, login, projetos, próxima ação e estado do sistema: PASS.
+- 13 testes focados em primeiro acesso, login, projetos, retries por etapa, próxima ação e estado do sistema: PASS.
 - ESLint: PASS.
 - TypeScript client/server: PASS.
 - Playwright direto em `1280x900` e `390x844`: conteúdo presente, sem overlay,
@@ -45,3 +45,9 @@ internos ao aluno.
   própria interface no caminho “Verificar novamente”. Não houve outro erro de console.
 - Capturas locais: `/tmp/story-9-w3-2-evidence/desktop-readiness.png` e
   `/tmp/story-9-w3-2-evidence/mobile-readiness.png`.
+
+## Revisão independente
+
+O review pós-merge encontrou que o CTA de recuperação da importação sempre
+recarregava as pastas. O fluxo agora repete o preview ou a confirmação conforme
+a etapa que falhou, com cobertura específica para ambos os casos.

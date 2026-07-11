@@ -170,7 +170,49 @@
             },
             "required": ["realityCheck"]
           }
-        }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "recommendation": {
+                  "type": "object",
+                  "properties": { "gate": { "const": "go" } },
+                  "required": ["gate"]
+                }
+              },
+              "required": ["recommendation"]
+            },
+            "then": {
+              "properties": {
+                "session": {
+                  "type": "object",
+                  "properties": { "developmentAssistance": { "const": "none" } }
+                },
+                "steps": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "status": { "const": "completed" },
+                      "result": { "const": "success" }
+                    }
+                  }
+                },
+                "findings": {
+                  "type": "array",
+                  "not": {
+                    "contains": {
+                      "type": "object",
+                      "properties": { "classification": { "const": "blocker" } },
+                      "required": ["classification"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
       }
     }
   ]
