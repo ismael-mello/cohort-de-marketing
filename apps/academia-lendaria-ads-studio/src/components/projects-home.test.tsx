@@ -165,7 +165,7 @@ describe('ProjectsHome filesystem intake', () => {
         { slug: 'academia-lendaria', root: 'projetos/academia-lendaria' },
       ]), { status: 200 }))
       .mockResolvedValueOnce(new Response(JSON.stringify(preview), { status: 200 }))
-      .mockResolvedValueOnce(new Response(JSON.stringify({ message: 'conflict' }), { status: 409 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ message: 'service temporarily unavailable' }), { status: 503 }))
       .mockResolvedValueOnce(new Response(JSON.stringify({
         manifestHash: 'manifest-hash', imported: 1, unchanged: 0,
       }), { status: 200 }));
@@ -185,6 +185,49 @@ describe('ProjectsHome filesystem intake', () => {
       '/api/local/project-intake/confirm',
       expect.objectContaining({ method: 'POST' }),
     );
+  });
+
+  it('returns to preview when confirmation detects a changed manifest', async () => {
+    const preview = {
+      projectId: DEMO_PROJECT_ID,
+      projectSlug: 'maquina-de-receita-com-ia',
+      manifest: {
+        hash: 'manifest-old',
+        sourcePath: 'projetos/academia-lendaria',
+        fileCount: 0,
+        allowlist: ['**/*.md'],
+        allowlistVersion: 'filesystem-project-intake-allowlist.v1',
+      },
+      files: [],
+      conflicts: [],
+    };
+    const refreshedPreview = {
+      ...preview,
+      manifest: { ...preview.manifest, hash: 'manifest-new' },
+    };
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify([
+        { slug: 'academia-lendaria', root: 'projetos/academia-lendaria' },
+      ]), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify(preview), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ message: 'manifest hash conflict' }), { status: 409 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify(refreshedPreview), { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const user = userEvent.setup();
+    render(<ProjectsHome />);
+    await user.click(screen.getByRole('button', { name: /trazer materiais/i }));
+    await screen.findByRole('option', { name: 'Academia Lendaria' });
+    await user.click(screen.getByRole('button', { name: /revisar materiais/i }));
+    await screen.findByText('Pronto para revisar');
+    await user.click(screen.getByRole('button', { name: /adicionar materiais/i }));
+    await user.click(await screen.findByRole('button', { name: 'Tentar novamente' }));
+
+    await waitFor(() => expect(fetchMock).toHaveBeenLastCalledWith(
+      '/api/local/project-intake/preview',
+      expect.objectContaining({ method: 'POST' }),
+    ));
+    expect(screen.getByText('Pronto para revisar')).toBeInTheDocument();
   });
 
   it('keeps project data and offers an in-place retry when creation fails', async () => {

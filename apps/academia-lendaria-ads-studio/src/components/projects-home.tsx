@@ -243,8 +243,9 @@ export function ProjectsHome() {
       setIntakeSuccess(`${result.imported} material(is) adicionado(s) e ${result.unchanged} já estava(m) atualizado(s).`);
       setIntakePreview((current) => current ? { ...current, manifest: { ...current.manifest, hash: result.manifestHash } } : current);
     } catch (error) {
-      setIntakeRetry('confirm');
-      setIntakeError(studentFacingImportError(error instanceof Error ? error.message : ''));
+      const message = error instanceof Error ? error.message : '';
+      setIntakeRetry(/conflito|conflict|hash|manifest/i.test(message) ? 'preview' : 'confirm');
+      setIntakeError(studentFacingImportError(message));
     } finally {
       setConfirmingIntake(false);
     }

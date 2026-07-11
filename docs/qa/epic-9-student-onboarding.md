@@ -35,7 +35,7 @@ internos ao aluno.
 
 ## Evidência executada
 
-- 13 testes focados em primeiro acesso, login, projetos, retries por etapa, próxima ação e estado do sistema: PASS.
+- 14 testes focados em primeiro acesso, login, projetos, retries por etapa, conflito de manifesto, próxima ação e estado do sistema: PASS.
 - ESLint: PASS.
 - TypeScript client/server: PASS.
 - Playwright direto em `1280x900` e `390x844`: conteúdo presente, sem overlay,
@@ -50,4 +50,5 @@ internos ao aluno.
 
 O review pós-merge encontrou que o CTA de recuperação da importação sempre
 recarregava as pastas. O fluxo agora repete o preview ou a confirmação conforme
-a etapa que falhou, com cobertura específica para ambos os casos.
+a etapa que falhou. Conflito de manifesto volta ao preview para obter o hash
+atual; falha transitória de confirmação mantém a revisão e repete a confirmação.
