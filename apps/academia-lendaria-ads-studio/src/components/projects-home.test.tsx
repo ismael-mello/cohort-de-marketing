@@ -165,7 +165,10 @@ describe('ProjectsHome filesystem intake', () => {
         { slug: 'academia-lendaria', root: 'projetos/academia-lendaria' },
       ]), { status: 200 }))
       .mockResolvedValueOnce(new Response(JSON.stringify(preview), { status: 200 }))
-      .mockResolvedValueOnce(new Response(JSON.stringify({ message: 'service temporarily unavailable' }), { status: 503 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        code: 'persist-failed',
+        message: 'hash constraint temporarily unavailable',
+      }), { status: 503 }))
       .mockResolvedValueOnce(new Response(JSON.stringify({
         manifestHash: 'manifest-hash', imported: 1, unchanged: 0,
       }), { status: 200 }));
@@ -210,7 +213,10 @@ describe('ProjectsHome filesystem intake', () => {
         { slug: 'academia-lendaria', root: 'projetos/academia-lendaria' },
       ]), { status: 200 }))
       .mockResolvedValueOnce(new Response(JSON.stringify(preview), { status: 200 }))
-      .mockResolvedValueOnce(new Response(JSON.stringify({ message: 'manifest hash conflict' }), { status: 409 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        code: 'manifest-stale',
+        message: 'manifest hash conflict',
+      }), { status: 409 }))
       .mockResolvedValueOnce(new Response(JSON.stringify(refreshedPreview), { status: 200 }));
     vi.stubGlobal('fetch', fetchMock);
 

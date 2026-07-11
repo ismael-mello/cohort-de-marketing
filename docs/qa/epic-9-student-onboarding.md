@@ -51,4 +51,5 @@ internos ao aluno.
 O review pós-merge encontrou que o CTA de recuperação da importação sempre
 recarregava as pastas. O fluxo agora repete o preview ou a confirmação conforme
 a etapa que falhou. Conflito de manifesto volta ao preview para obter o hash
-atual; falha transitória de confirmação mantém a revisão e repete a confirmação.
+atual usando o código estável `manifest-stale`; falha transitória de confirmação
+mantém a revisão e repete a confirmação, sem inferência pelo texto da mensagem.

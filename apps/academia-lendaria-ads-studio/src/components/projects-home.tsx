@@ -44,9 +44,22 @@ interface IntakeConfirmation {
 
 type IntakeRetry = 'sources' | 'preview' | 'confirm';
 
-async function readProjectIntakeError(response: Response): Promise<string> {
-  const payload = (await response.json().catch(() => ({}))) as { message?: string };
-  return payload.message ?? `Intake respondeu ${response.status}.`;
+class ProjectIntakeRequestError extends Error {
+  readonly code: string | null;
+
+  constructor(code: string | null, message: string) {
+    super(message);
+    this.name = 'ProjectIntakeRequestError';
+    this.code = code;
+  }
+}
+
+async function readProjectIntakeError(response: Response): Promise<ProjectIntakeRequestError> {
+  const payload = (await response.json().catch(() => ({}))) as { code?: string; message?: string };
+  return new ProjectIntakeRequestError(
+    payload.code ?? null,
+    payload.message ?? `Intake respondeu ${response.status}.`,
+  );
 }
 
 function studentFacingImportError(message: string): string {
@@ -65,7 +78,7 @@ function sourceName(source: IntakeSource): string {
 
 async function fetchProjectIntakeSources(): Promise<IntakeSource[]> {
   const response = await fetch('/api/local/project-intake/sources');
-  if (!response.ok) throw new Error(await readProjectIntakeError(response));
+  if (!response.ok) throw await readProjectIntakeError(response);
   return (await response.json()) as IntakeSource[];
 }
 
@@ -75,7 +88,7 @@ async function fetchProjectIntakePreview(input: { projectId: string; sourceSlug:
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(input),
   });
-  if (!response.ok) throw new Error(await readProjectIntakeError(response));
+  if (!response.ok) throw await readProjectIntakeError(response);
   return (await response.json()) as IntakePreview;
 }
 
@@ -89,7 +102,7 @@ async function confirmProjectIntake(input: {
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(input),
   });
-  if (!response.ok) throw new Error(await readProjectIntakeError(response));
+  if (!response.ok) throw await readProjectIntakeError(response);
   return (await response.json()) as IntakeConfirmation;
 }
 
@@ -244,7 +257,7 @@ export function ProjectsHome() {
       setIntakePreview((current) => current ? { ...current, manifest: { ...current.manifest, hash: result.manifestHash } } : current);
     } catch (error) {
       const message = error instanceof Error ? error.message : '';
-      setIntakeRetry(/conflito|conflict|hash|manifest/i.test(message) ? 'preview' : 'confirm');
+      setIntakeRetry(error instanceof ProjectIntakeRequestError && error.code === 'manifest-stale' ? 'preview' : 'confirm');
       setIntakeError(studentFacingImportError(message));
     } finally {
       setConfirmingIntake(false);
