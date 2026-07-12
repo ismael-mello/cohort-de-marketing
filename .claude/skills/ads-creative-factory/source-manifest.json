@@ -73,7 +73,7 @@
       "kind": "source",
       "origin": {
         "repository": "private-upstream",
-        "commit": "26ec0a87f10cd139295b6d282b3b224665962790"
+        "commit": "f5622a4dafde015b82125287921f456eb57ee57b"
       },
       "license": {
         "spdx": "MIT",
@@ -84,7 +84,7 @@
         "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
       },
       "bytes": 8658,
-      "sha256": "ca8d043a84f457903f6ec2fc5234fe6ffe150f309f9531af103720b3888cf791"
+      "sha256": "b7fc21090cfacc9429b6cf259972b0d0ed88e7153e6f2e219bebc8807ee16aee"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -319,8 +319,8 @@
       "package": "public",
       "kind": "source",
       "origin": {
-        "repository": "sinkra-hub",
-        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+        "repository": "private-upstream",
+        "commit": "f5622a4dafde015b82125287921f456eb57ee57b"
       },
       "license": {
         "spdx": "MIT",
@@ -330,8 +330,8 @@
         "status": "cleared",
         "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
       },
-      "bytes": 21690,
-      "sha256": "152ca233c1dead8c8842d7cd3ac178942a893ee1ee86797047c75d07f1ade4d3"
+      "bytes": 22378,
+      "sha256": "c4b80c3d52f75087915c1e15a358e9e15601b0f76dfea347714f62c8025b4de4"
     },
     {
       "path": "scripts/anchors.py",
@@ -585,8 +585,8 @@
       "package": "public",
       "kind": "source",
       "origin": {
-        "repository": "sinkra-hub",
-        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+        "repository": "private-upstream",
+        "commit": "f5622a4dafde015b82125287921f456eb57ee57b"
       },
       "license": {
         "spdx": "MIT",
@@ -596,8 +596,8 @@
         "status": "cleared",
         "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
       },
-      "bytes": 8884,
-      "sha256": "7d564838e999a3c1efdcf971f6482310edc71c42a356a0133082c56a3b72c262"
+      "bytes": 8683,
+      "sha256": "d1df89f7c5b2e7de02502a16fb248c63a084732a94d70319e9590bfa238dfd4a"
     },
     {
       "path": "scripts/generate.py",

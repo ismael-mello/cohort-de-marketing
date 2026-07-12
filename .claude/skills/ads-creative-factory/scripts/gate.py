@@ -76,13 +76,8 @@ def _contrast_proxy(arr_rgb: np.ndarray, text_hex: str) -> float:
 
 
 def _theme_text_hex(brand: dict, theme: str) -> str:
-    palette = brand.get("palette", {})
-    if theme == "light":
-        brand_ink = str(palette.get("cream_ink") or "").strip()
-        if brand_ink:
-            return brand_ink
-        return str(palette["primary"]).strip()
-    return str(palette["foreground"] if palette.get("foreground") else palette["text"]).strip()
+    ink = alib.style_palette(brand, theme=theme)["ink"]
+    return "#{:02x}{:02x}{:02x}".format(*ink)
 
 
 # --------------------------------------------------------------------------- #
@@ -199,7 +194,7 @@ def evaluate(img_path: str, brand: dict, theme: str = "dark") -> dict:
             f"(min {min_contrast})"
         )
 
-    if not neon_ok or slop > AI_SLOP_FAIL_THRESHOLD:
+    if not neon_ok or not contrast_ok or slop > AI_SLOP_FAIL_THRESHOLD:
         verdict = "fail"
     elif reasons:
         verdict = "warn"

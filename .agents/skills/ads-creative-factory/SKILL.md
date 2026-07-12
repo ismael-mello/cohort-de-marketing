@@ -1,7 +1,7 @@
 ---
 name: ads-creative-factory
 description: "Motor agnóstico de criativos de performance. De 1 briefing → N criativos em arquétipos distintos, usando packs externos versionados, multi-formato e gate anti-AI-slop."
-version: "2.1.0"
+version: "2.1.1"
 user-invocable: true
 argument-hint: "[request.json]"
 ---

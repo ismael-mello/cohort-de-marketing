@@ -346,21 +346,47 @@ def style_palette(brand: dict[str, Any], theme: str = "dark") -> dict[str, tuple
                 return str(value)
         raise ValueError(f"brand pack nao declara nenhuma das cores: {', '.join(keys)}")
 
-    primary = pick("primary", "cream_ink", "text")
-    secondary = pick("secondary", "text_muted", "accent", "gold")
-    background = pick("background", "surface")
-    foreground = pick("foreground", "text", "cream")
-    accent = pick("accent", "gold")
+    primary = hex_to_rgb(pick("primary", "cream_ink", "text"))
+    secondary = hex_to_rgb(pick("secondary", "text_muted", "accent", "gold"))
+    background_value = palette.get("background") or palette.get("surface") or "#121212"
+    background = hex_to_rgb(str(background_value))
+    foreground = hex_to_rgb(pick("foreground", "text", "cream"))
+    accent = hex_to_rgb(pick("accent", "gold"))
+    declared = list(dict.fromkeys([primary, secondary, background, foreground, accent]))
+
     if theme == "light":
-        surface = pick("cream", "foreground", "text")
-        return {"ink": hex_to_rgb(primary), "dim": hex_to_rgb(secondary),
-                "gold": hex_to_rgb(accent), "mono": hex_to_rgb(accent),
-                "cta": hex_to_rgb(primary), "line": hex_to_rgb(secondary),
-                "track": hex_to_rgb(secondary), "surface": hex_to_rgb(surface)}
-    return {"ink": hex_to_rgb(foreground), "dim": hex_to_rgb(secondary),
-            "gold": hex_to_rgb(accent), "mono": hex_to_rgb(accent),
-            "cta": hex_to_rgb(foreground), "line": hex_to_rgb(secondary),
-            "track": hex_to_rgb(secondary), "surface": hex_to_rgb(background)}
+        surface = max(declared, key=luminance)
+        if luminance(surface) < 0.82:
+            surface = (244, 244, 244)
+        preferred_ink = primary
+    else:
+        surface = min(declared, key=luminance)
+        if luminance(surface) > 0.18:
+            surface = (18, 18, 18)
+        preferred_ink = foreground
+
+    best_declared = max(declared, key=lambda color: contrast_ratio(color, surface))
+    if contrast_ratio(preferred_ink, surface) >= 4.5:
+        ink = preferred_ink
+    elif contrast_ratio(best_declared, surface) >= 4.5:
+        ink = best_declared
+    else:
+        ink = max([(255, 255, 255), (0, 0, 0)],
+                  key=lambda color: contrast_ratio(color, surface))
+
+    def accessible(preferred: tuple[int, int, int]) -> tuple[int, int, int]:
+        return preferred if contrast_ratio(preferred, surface) >= 4.5 else ink
+
+    return {
+        "ink": ink,
+        "dim": accessible(secondary),
+        "gold": accessible(accent),
+        "mono": accessible(accent),
+        "cta": ink,
+        "line": secondary,
+        "track": secondary,
+        "surface": surface,
+    }
 
 
 # --------------------------------------------------------------------------- #
