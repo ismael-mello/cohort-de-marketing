@@ -31,18 +31,24 @@ const epic14Files = new Map([
   ['scripts/variation.py', 'source'],
 ]);
 
+const hotfixFiles = new Map([
+  ['SKILL.md', 'source'],
+  ['scripts/alib.py', 'source'],
+  ['scripts/catalog_loader.py', 'source'],
+]);
+
 function sha256(buffer) {
   return createHash('sha256').update(buffer).digest('hex');
 }
 
-function publicMetadata(path, kind) {
+function publicMetadata(path, kind, change = 'epic-14') {
   return {
     path,
     package: 'public',
     kind,
     origin: {
       repository: 'cohort-de-marketing',
-      commit: 'epic-14',
+      commit: change,
     },
     license: {
       spdx: 'MIT',
@@ -50,7 +56,9 @@ function publicMetadata(path, kind) {
     },
     redistribution: {
       status: 'cleared',
-      reason: 'Authored in the public repository and reviewed for Epic 14.',
+      reason: change === 'story-15.W1.1'
+        ? 'Authored in the public repository and reviewed for the 2.2.1 transparency hotfix.'
+        : 'Authored in the public repository and reviewed for Epic 14.',
     },
   };
 }
@@ -61,15 +69,21 @@ if (!existsSync(manifestPath)) {
 
 const previous = JSON.parse(readFileSync(manifestPath, 'utf8'));
 const byPath = new Map((previous.files ?? []).map((entry) => [entry.path, entry]));
-const allowList = [...new Set([...(previous.allowList ?? []), ...epic14Files.keys()])].sort();
+const allowList = [...new Set([
+  ...(previous.allowList ?? []),
+  ...epic14Files.keys(),
+  ...hotfixFiles.keys(),
+])].sort();
 
 const files = allowList.map((path) => {
   const absolutePath = join(skillRoot, path);
   if (!existsSync(absolutePath)) throw new Error(`Allow-listed file is missing: ${path}`);
   const buffer = readFileSync(absolutePath);
-  const metadata = epic14Files.has(path)
-    ? publicMetadata(path, epic14Files.get(path))
-    : byPath.get(path);
+  const metadata = hotfixFiles.has(path)
+    ? publicMetadata(path, hotfixFiles.get(path), 'story-15.W1.1')
+    : epic14Files.has(path)
+      ? publicMetadata(path, epic14Files.get(path))
+      : byPath.get(path);
   if (!metadata) throw new Error(`Missing provenance metadata for: ${path}`);
   return {
     ...metadata,
@@ -83,7 +97,7 @@ const manifest = {
   ...previous,
   schemaVersion: '2.0.0',
   artifact: 'ads-creative-factory',
-  releaseVersion: '2.2.0',
+  releaseVersion: '2.2.1',
   publication: {
     status: 'released',
     verdict: 'PASS',

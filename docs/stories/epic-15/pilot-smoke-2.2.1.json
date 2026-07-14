@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0.0",
+  "executed_at": "2026-07-14",
+  "campaign": "aula-03-decisao-semanal-v2",
+  "factory_version": "2.2.1",
+  "catalog_hash": "10779ba03badd5c6dca823698c0e120f6ecf732c22eb831f4097cabb38665040",
+  "extension_packs": [
+    {
+      "id": "al-aula-03-extension",
+      "version": "1.0.0",
+      "namespace": "al03",
+      "min_factory_version": "2.2.0"
+    }
+  ],
+  "persona": {
+    "included": false,
+    "reason": "Não existe consentimento verificável para os assets de likeness encontrados."
+  },
+  "items": [
+    {
+      "id": "decision-weekly-al03-traffic-ledger-0",
+      "status": "OK",
+      "archetype": "al03.traffic-ledger",
+      "selected_entities": {
+        "copy_mechanism_id": "al03.evidence-decision",
+        "visual_mechanism_id": "al03.weekly-signal",
+        "gate_profile_id": "al03.traffic-strict"
+      },
+      "gate": {
+        "verdict": "pass",
+        "ai_slop_score": 0.0,
+        "brand_adherence_pct": 100.0
+      },
+      "assets": [
+        {
+          "format": "feed",
+          "width": 1080,
+          "height": 1350,
+          "sha256": "69bb7994b2aaed1d0ee90ef1b1f73432f94d2b9d41db767e4dfc1711675cdb95"
+        },
+        {
+          "format": "story",
+          "width": 1080,
+          "height": 1920,
+          "sha256": "0f417a26f7094db333732ca900081ccb928a821e34af165626a16c61dae50b3b"
+        }
+      ]
+    },
+    {
+      "id": "decision-weekly-ugc_native-0",
+      "status": "OK",
+      "archetype": "ugc_native",
+      "selected_entities": {
+        "copy_mechanism_id": "al03.evidence-decision",
+        "visual_mechanism_id": "al03.weekly-signal",
+        "ugc_scene_id": "al03.ops-desk",
+        "gate_profile_id": "builtin.default-native"
+      },
+      "gate": {
+        "verdict": "pass",
+        "ai_slop_score": 0.0,
+        "brand_adherence_pct": 100.0
+      },
+      "assets": [
+        {
+          "format": "story",
+          "width": 1080,
+          "height": 1920,
+          "sha256": "6a38b2eca5d5e4f2ae0b31cf89788eb1206bd61fed70e22edf41e98d24581a03"
+        }
+      ]
+    }
+  ],
+  "logo_transparency": {
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "corner_alpha": 0,
+    "visual_rectangle_detected": false
+  },
+  "review": {
+    "visual_inspection_completed": true,
+    "automatic_promotion": false,
+    "meta_publication_completed": false,
+    "meta_publication_requires_human": true
+  },
+  "privacy": {
+    "absolute_path": false,
+    "secret": false,
+    "pii": false,
+    "generated_asset_embedded": false
+  }
+}
