@@ -482,7 +482,10 @@ def _magick(*args) -> subprocess.CompletedProcess:
 
 
 def recolor_asset(src, hex_color: str, dst) -> bool:
-    result = _magick(src, "-channel", "RGB", "-fill", hex_color,
+    # ImageMagick may rasterize an SVG onto an opaque white canvas unless the
+    # background is declared before the input. Preserve the source alpha so a
+    # logo remains a mark, not a colored/white rectangle when composited.
+    result = _magick("-background", "none", src, "-channel", "RGB", "-fill", hex_color,
                      "-colorize", "100", "+channel", dst)
     return result.returncode == 0 and Path(dst).exists()
 

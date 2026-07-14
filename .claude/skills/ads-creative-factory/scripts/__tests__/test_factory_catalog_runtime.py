@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import sys
 import tempfile
 import unittest
@@ -122,7 +123,7 @@ class FactoryCatalogRuntimeTests(unittest.TestCase):
         ):
             result = factory.run_campaign(str(self.campaign))
 
-        self.assertEqual(result["factory_version"], "2.2.0")
+        self.assertEqual(result["factory_version"], "2.2.1")
         self.assertEqual(result["catalog_hash"], captured["hash"])
         self.assertEqual(result["extension_packs"][0]["id"], "acme-extension")
         self.assertIn("mechanism legado", result["compatibility_warnings"][0])
@@ -231,6 +232,23 @@ class FactoryCatalogRuntimeTests(unittest.TestCase):
         result = gate.evaluate(str(image), brand, profile=profile)
         self.assertEqual(result["gate_profile_id"], "acme.strict")
         self.assertEqual(result["checks"]["dark_first"]["pass"], True)
+
+    @unittest.skipUnless(shutil.which("magick"), "ImageMagick não disponível")
+    def test_recolor_asset_preserves_svg_transparency(self) -> None:
+        source = self.root / "mark.svg"
+        source.write_text(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">'
+            '<circle cx="10" cy="10" r="6" fill="white"/></svg>',
+            encoding="utf-8",
+        )
+        output = self.root / "mark.png"
+
+        self.assertTrue(factory.alib.recolor_asset(source, "#C9B298", output))
+
+        rendered = Image.open(output).convert("RGBA")
+        self.assertEqual(rendered.getpixel((0, 0))[3], 0)
+        self.assertGreater(rendered.getpixel((10, 10))[3], 0)
+        self.assertEqual(rendered.getpixel((10, 10))[:3], (201, 178, 152))
 
 
 if __name__ == "__main__":

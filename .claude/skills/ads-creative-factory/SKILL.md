@@ -2,7 +2,7 @@
 name: ads-creative-factory
 description: "Motor extensível de criativos de performance. Cria, valida e usa packs versionados de brand, persona, arquétipos, mecanismos, cenas UGC, variações, referências e gates."
 metadata:
-  version: "2.2.0"
+  version: "2.2.1"
   user-invocable: true
   argument-hint: "[request.json] | entidade ação opções"
 ---

@@ -16,7 +16,7 @@ from pack_loader import LoadedPack, PackLoadError, load_extension_pack
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
-FACTORY_VERSION = "2.2.0"
+FACTORY_VERSION = "2.2.1"
 ENTITY_GROUPS = ("archetypes", "mechanisms", "ugc_scenes", "variations", "references", "gate_profiles")
 FORMATS = {"feed", "story", "square"}
 

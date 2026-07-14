@@ -80,7 +80,7 @@
       "kind": "source",
       "origin": {
         "repository": "cohort-de-marketing",
-        "commit": "epic-14"
+        "commit": "story-15.W1.1"
       },
       "license": {
         "spdx": "MIT",
@@ -88,10 +88,10 @@
       },
       "redistribution": {
         "status": "cleared",
-        "reason": "Authored in the public repository and reviewed for Epic 14."
+        "reason": "Authored in the public repository and reviewed for the 2.2.1 transparency hotfix."
       },
       "bytes": 11202,
-      "sha256": "458f0073c925b1ee9273ec9266453d62e12d6122db248418a6f89f348394e1c0"
+      "sha256": "3c2f0a4108424712ce65642214ab918c3dd8ea5dbb1cef5da0f2f3064d30a249"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -383,8 +383,8 @@
       "package": "public",
       "kind": "source",
       "origin": {
-        "repository": "private-upstream",
-        "commit": "f5622a4dafde015b82125287921f456eb57ee57b"
+        "repository": "cohort-de-marketing",
+        "commit": "story-15.W1.1"
       },
       "license": {
         "spdx": "MIT",
@@ -392,10 +392,10 @@
       },
       "redistribution": {
         "status": "cleared",
-        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+        "reason": "Authored in the public repository and reviewed for the 2.2.1 transparency hotfix."
       },
-      "bytes": 22378,
-      "sha256": "c4b80c3d52f75087915c1e15a358e9e15601b0f76dfea347714f62c8025b4de4"
+      "bytes": 22631,
+      "sha256": "e4299896c8a3af4c693fe8bf10c4f554261e35542f07388659e40a746ddf4f6e"
     },
     {
       "path": "scripts/anchors.py",
@@ -555,7 +555,7 @@
       "kind": "source",
       "origin": {
         "repository": "cohort-de-marketing",
-        "commit": "epic-14"
+        "commit": "story-15.W1.1"
       },
       "license": {
         "spdx": "MIT",
@@ -563,10 +563,10 @@
       },
       "redistribution": {
         "status": "cleared",
-        "reason": "Authored in the public repository and reviewed for Epic 14."
+        "reason": "Authored in the public repository and reviewed for the 2.2.1 transparency hotfix."
       },
       "bytes": 12101,
-      "sha256": "86050391ad3b3ecf9180d835e7adabab3cb763c6ebdab781ea24aada524f11b3"
+      "sha256": "a578e5dd065f6520e84852e687488fcc072f2362856d28c79c5bd1d022051f15"
     },
     {
       "path": "scripts/collect_finals.py",
@@ -930,5 +930,5 @@
       "sha256": "04acd93f386aab960bf712257310faf2488c959704425d806225b9cc94504bc0"
     }
   ],
-  "releaseVersion": "2.2.0"
+  "releaseVersion": "2.2.1"
 }
