@@ -181,6 +181,11 @@ test('credenciais em texto livre falham fechado antes de import e autosave', asy
     'auth_token: auth_1234567890abcdefghijklmnop',
     'password=nao-e-uma-senha-real-1234567890',
     'senha: valor-ficticio-1234567890',
+    'password=P@ssw0rd!2026',
+    'senha: "Valor-ficticio!2026@quoted"',
+    'token: parte1:parte2:parte3!2026',
+    'api_key=abc.DEF-123_!@#$%^&*()',
+    'token=YOUR_TOKEN_HERE-real',
     'Authorization: Bearer abcdefghijklmnopqrstuvwxyz.1234567890',
     'Authorization: Basic ZmljdGljaW86dmFsb3ItZGUtdGVzdGU=',
     'sk-proj-1234567890abcdefghijklmnopqrstuvwxyz',
@@ -203,22 +208,29 @@ test('credenciais em texto livre falham fechado antes de import e autosave', asy
     assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort())), baselineStorage);
   }
 
-  await page.locator('[data-path="project.name"]').fill('Token real: ghp_1234567890abcdefghijklmnopqrstuvwxyz');
-  await page.waitForTimeout(800);
-  assert.match(await page.locator('#save-state').textContent(), /autosave recusado/i);
-  assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort())), baselineStorage);
+  const surfaceRegressionSamples = [
+    'password=P@ssw0rd!2026',
+    'senha: "Valor-ficticio!2026@quoted"',
+    'token: parte1:parte2:parte3!2026',
+    'api_key=abc.DEF-123_!@#$%^&*()',
+  ];
+  for (const credential of surfaceRegressionSamples) {
+    await page.locator('[data-path="project.name"]').fill(credential);
+    await page.waitForTimeout(800);
+    assert.match(await page.locator('#save-state').textContent(), /autosave recusado/i);
+    assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort())), baselineStorage);
 
-  const unexpectedDownload = page.waitForEvent('download', { timeout: 750 }).then(() => true, () => false);
-  await page.evaluate(() => exportJson());
-  await page.locator('#import-status').filter({ hasText: 'Exportação recusada' }).waitFor();
-  assert.equal(await unexpectedDownload, false);
-  assert.match(await page.locator('#import-status').textContent(), /exportação recusada/i);
-  assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort())), baselineStorage);
+    const unexpectedDownload = page.waitForEvent('download', { timeout: 750 }).then(() => true, () => false);
+    await page.evaluate(() => exportJson());
+    await page.locator('#import-status').filter({ hasText: 'Exportação recusada' }).waitFor();
+    assert.equal(await unexpectedDownload, false);
+    assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort())), baselineStorage);
 
-  await page.reload({ waitUntil: 'domcontentloaded' });
-  await page.locator('#save-state').filter({ hasText: 'salvo' }).waitFor();
-  assert.equal(await page.locator('[data-path="project.name"]').inputValue(), baselineName);
-  assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort())), baselineStorage);
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.locator('#save-state').filter({ hasText: 'salvo' }).waitFor();
+    assert.equal(await page.locator('[data-path="project.name"]').inputValue(), baselineName);
+    assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort())), baselineStorage);
+  }
   assert.deepEqual(pageErrors, []);
 });
 
@@ -232,6 +244,12 @@ test('politica de credenciais permite controles pedagogicos benignos', async (t)
     'Exemplo redigido: token=[REDACTED].',
     'Authorization: Bearer <TOKEN> é apenas a sintaxe documentada.',
     'Nunca publique uma PRIVATE KEY em materiais de aula.',
+    'token=YOUR_TOKEN_HERE',
+    'auth_token=SEU_TOKEN_AQUI',
+    'api_key=YOUR_API_KEY',
+    'token=example-token',
+    'access_token=<TOKEN>',
+    'password=[REDACTED]',
   ];
 
   for (const [index, content] of benignSamples.entries()) {
@@ -242,6 +260,12 @@ test('politica de credenciais permite controles pedagogicos benignos', async (t)
     await page.setInputFiles('#import-file', input);
     await page.locator('#import-status').filter({ hasText: 'ProjectBrief v1 importado' }).waitFor();
   }
+  await page.locator('[data-step="project"]').click();
+  await page.locator('[data-path="project.name"]').fill('token=YOUR_TOKEN_HERE');
+  await page.waitForTimeout(800);
+  assert.match(await page.locator('#save-state').textContent(), /^ salvo$|salvo/i);
+  const exported = await downloadJson(page);
+  assert.equal(exported.data.project.name, 'token=YOUR_TOKEN_HERE');
   assert.deepEqual(pageErrors, []);
 });
 
