@@ -3,7 +3,7 @@
   "epic_id": "17",
   "namespace": "PUB",
   "title": "Fundacao da Aula 4: dados",
-  "status": "Ready",
+  "status": "in_progress",
   "verification_verdict": "NOT_RUN",
   "created": "2026-07-14",
   "autonomy_level": "AL2",
@@ -17,7 +17,7 @@
     {
       "wave_id": "W1",
       "name": "Contratos e ledger",
-      "status": "ready",
+      "status": "in_progress",
       "parallel_groups": [
         [
           "17.W1.1"
@@ -30,7 +30,7 @@
         {
           "story_id": "17.W1.1",
           "title": "Validadores dos contratos de campanha e semana",
-          "status": "Ready",
+          "status": "Done",
           "task_mode": "CRIAR",
           "deploy_type": "none",
           "repo_target": "marketingLendario/cohort-de-marketing",
