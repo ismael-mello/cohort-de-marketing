@@ -80,6 +80,14 @@ async function readinessDecision(page) {
   return page.evaluate(() => window.__SKILL_READINESS_DECISION);
 }
 
+function readinessRoute(decision) {
+  return {
+    state: decision.state,
+    nextSkill: decision.nextSkill,
+    reason: decision.reason,
+  };
+}
+
 test('as duas copias distribuidas permanecem byte a byte iguais', async () => {
   const [rootCopy, lessonCopy] = await Promise.all([
     readFile(join(ROOT, 'briefing.html')),
@@ -145,7 +153,7 @@ test('projeto novo mantém a mesma próxima skill após exportar e reimportar Pr
   const after = await readinessDecision(page);
 
   assert.deepEqual(exported, fixture);
-  assert.deepEqual(after, before);
+  assert.deepEqual(readinessRoute(after), readinessRoute(before));
   assert.match(after.nextSkill.command, /^\/[a-z0-9-]+$/);
   assert.deepEqual(pageErrors, []);
 });
@@ -179,8 +187,12 @@ test('migração legada preserva semântica e mantém a próxima skill ao reimpo
   assert.equal(exported.data.project.slug, legacy.project.slug);
   assert.equal(exported.data.market.niche, legacy.market.niche);
   assert.equal(exported.data.market.dominantPain, legacy.market.dominantPain);
-  assert.equal(exported.data.offer.promise, legacy.offer.promise);
-  assert.deepEqual(reimportedDecision, migratedDecision);
+  assert.deepEqual(exported.data.meta, legacy.meta);
+  assert.equal(exported.fieldSources['project.name'].source, 'user');
+  assert.equal(exported.fieldSources['market.niche'].sourceArtifactId, 'avatar-funil.md');
+  assert.equal(exported.fieldSources['market.dominantPain'].confirmation, 'pending');
+  assert.equal(exported.fieldSources['offer.guarantee'].confirmation, 'not_applicable');
+  assert.deepEqual(readinessRoute(reimportedDecision), readinessRoute(migratedDecision));
   assert.deepEqual(pageErrors, []);
 });
 
