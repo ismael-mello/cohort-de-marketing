@@ -46,12 +46,27 @@ renderização com um único erro acionável.
   índice rejeitado limpa os desbloqueios somente em memória, preservando o valor
   do `localStorage` byte a byte; credencial rejeitada possui regressão dedicada.
 
+## Remediação do QG Round 2
+
+- O Round 1 foi fechado pelo QG2; o único blocker novo foi verdade vacuosa em
+  grupos `anyOf` sem restrição efetiva.
+- Todo grupo agora exige `label` não vazio e ao menos uma restrição não vazia em
+  `fields`, `artifacts` ou `matches`. Arrays e matches declarados vazios,
+  referências órfãs, valores não escalares e chaves extras falham fechado.
+- `notApplicableWhen` exige exatamente um predicado (`equals` XOR `in`); `in`
+  deve ser array não vazio com valores válidos e `reason` deve ser não vazio.
+- As regras oficiais passam e uma matriz de exatamente 32 fixtures adversariais
+  falha antes da avaliação. Nas duas URLs do mapa, regra vacuosa resulta em
+  `INVALID_UNLOCK_RULES`, sem publicar dados nem estados `available`,
+  `recommended` ou `done`.
+
 ## Validators
 
 - `node scripts/validate-skill-catalog.mjs` — PASS; 31 skills, 41 edges e mirror canônico verificado.
 - `node scripts/validate-mapa-wiring.mjs` — PASS; 69/69 `sampleUrl` válidas e HTTP PDF válido.
 - `node scripts/validate-mapa-preview.mjs` — PASS; canvas 810x1138, screenshot gerada e zero `pageerror`.
-- `node --test scripts/skill-surface-data-driven.test.mjs` — PASS; 9/9.
+- `node --test scripts/skill-surface-data-driven.test.mjs` — PASS; 10/10,
+  incluindo regras oficiais + 32 fixtures adversariais e ambas as URLs do mapa.
 - `node --test scripts/project-artifact-index.test.mjs` — PASS; 18/18.
 - `node --test data/contracts/fixtures/project-brief/project-brief-contract.test.mjs` — PASS; 19/19 e 120 paths.
 - `node --test scripts/project-brief-io.test.mjs` — PASS; 9/9.
@@ -90,3 +105,4 @@ pasta inexistente.
 - `29c23ac` — testes de contrato (RED).
 - `dfa2819` — implementação catálogo-driven (GREEN).
 - `5dbcb38` — remediação dos quatro blockers do QG Round 1.
+- `3b38c58` — remediação do blocker de verdade vacuosa do QG Round 2.

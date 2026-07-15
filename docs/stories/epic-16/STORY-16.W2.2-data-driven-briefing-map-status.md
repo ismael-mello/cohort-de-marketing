@@ -132,6 +132,10 @@ a transição obrigatória `Ready` → `InReview`.
   completo; storage rejeitado permanece byte a byte intacto.
 - Regressão pós-fix: superfícies 9/9, ArtifactIndex 18/18, ProjectBrief schema
   19/19, ProjectBrief browser I/O 9/9, catálogo/wiring/preview/browser/paridade PASS.
+- QG Round 2: o blocker de verdade vacuosa em `anyOf` foi reproduzido e
+  corrigido. Regras oficiais + 32 fixtures adversariais, ambas as distribuições
+  do mapa e a regressão consolidada de 56/56 casos passaram; a story permanece
+  `InReview` para QG3 independente.
 - OCC/segurança: nenhum segredo ou conteúdo bruto de artefato exposto; referências
   inválidas e estado local malformado falham fechado.
 - Evidência: `docs/stories/epic-16/evidence/STORY-16.W2.2.md`.
@@ -180,3 +184,4 @@ repo_target: "cohort-de-marketing"
 | 2026-07-15 | @po | Contrato enriquecido e validado para execução sequencial na PUB-16 W2. |
 | 2026-07-15 | @dev | Superfícies migradas para catálogo/regras/ProjectBrief/ArtifactIndex, testes e browser smoke concluídos; handoff em InReview. |
 | 2026-07-15 | @dev | QG Round 1 remediado: validator único completo, ProjectBrief/120 refs, contagens runtime e storage rejeitado imutável; pronto para QG2. |
+| 2026-07-15 | @dev | QG Round 2 remediado: grupos anyOf efetivos, predicados XOR e 32 fixtures adversariais; pronto para QG3. |
