@@ -10,6 +10,7 @@
 - QG1: `FAIL 52/100`, com reprodução independente de 24 exits `0` para somente 2 entradas finais e projeção de PII/decisão/conteúdo bruto por `source`.
 - RED da remediação: `bf61b2a` congela concorrência, lock stale/crash, timeout de owner e minimização de `source`/`premise`.
 - Remediação: `e3636f6` implementa lock cross-process, owner/token, CAS com retry e referências estruturadas.
+- Fechamento semântico: `fffec23` restringe todo `premiseRef` não nulo a `kind: assumption` e rejeita ledger prévio forjado sem reescrevê-lo.
 - `docs/stories/epic-17/epic-17-state.json` não foi alterado; o estado do epic permanece reservado ao fan-in.
 
 ## Contrato congelado

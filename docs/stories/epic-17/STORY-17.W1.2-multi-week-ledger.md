@@ -143,6 +143,7 @@ completion_notes:
   - "Replay idempotente não toca o arquivo; conflito, lote inválido, ledger forjado e falha de I/O preservam o destino."
   - "QG1 reproduziu perda de updates com writers concorrentes e vazamento por source/premise livres; ambos foram congelados em RED no commit bf61b2a."
   - "O commit e3636f6 adiciona lock cross-process com owner/token, timeout, recuperação stale/crash, CAS com retry e projeção referencial minimizada."
+  - "O commit fffec23 fecha premiseRef para kind assumption também na validação de ledger prévio e prova preservação byte a byte contra kind forjado."
   - "Executados 15/15 testes focais e 60/60 testes Node completos; 24 writers preservaram 24 entradas em oito repetições e também partindo de lock stale."
 file_list:
   - "data/contracts/weekly-ledger.v1.schema.json"
