@@ -431,7 +431,7 @@ test('o ruleset real declara política determinística para todas as skills', as
   }
 });
 
-test('briefing e mapa, raiz e Aula 3, exibem o mesmo comando e razão no browser', { timeout: 30_000 }, async (t) => {
+test('briefing e mapa, raiz e Aula 3, exibem o mesmo comando e razão em desktop e mobile', { timeout: 60_000 }, async (t) => {
   const { server, origin } = await startServer();
   const browser = await chromium.launch({ headless: true });
   t.after(async () => {
@@ -451,37 +451,50 @@ test('briefing e mapa, raiz e Aula 3, exibem o mesmo comando e razão no browser
   };
   const payload = JSON.stringify({ document: projectBrief, artifactIndex });
   const results = [];
+  const viewports = [
+    { name: 'desktop', width: 1440, height: 900 },
+    { name: 'mobile', width: 390, height: 844 },
+  ];
 
-  for (const pathname of ['/briefing.html', '/mapa-skills.html', '/aula-03/materiais/briefing.html', '/aula-03/materiais/mapa-skills.html']) {
-    const page = await browser.newPage();
-    const errors = [];
-    page.on('pageerror', (error) => errors.push(error.message));
-    await page.addInitScript(({ projectId, raw }) => {
-      localStorage.setItem('cohort.projectBrief.activeProject.v1', projectId);
-      localStorage.setItem(`cohort.projectBrief.v1:${encodeURIComponent(projectId)}`, raw);
-    }, { projectId: projectBrief.projectId, raw: payload });
-    let readinessResponse = null;
-    page.on('response', (response) => {
-      if (new URL(response.url()).pathname === '/scripts/lib/skill-readiness.mjs') readinessResponse = response;
-    });
-    const navigation = await page.goto(`${origin}${pathname}`, { waitUntil: 'networkidle' });
-    const csp = navigation.headers()['content-security-policy'];
-    assert.match(csp, /script-src 'self'/);
-    assert.doesNotMatch(csp.split(';').find((directive) => directive.trim().startsWith('script-src')) || '', /blob:/);
-    await page.waitForFunction(() => window.__SKILL_SURFACE_STATUS?.status === 'ready');
-    assert.match(readinessResponse?.headers()['content-type'] || '', /^application\/javascript/);
-    const result = await page.evaluate(() => ({
-      decision: window.__SKILL_READINESS_DECISION,
-      command: document.getElementById('next-skill-command')?.textContent
-        || document.getElementById('next-skill-pill')?.textContent,
-      reason: document.getElementById('next-skill-reason')?.textContent,
-    }));
-    assert.deepEqual(errors, [], `${pathname}: pageerror`);
-    assert.ok(result.decision?.nextSkill?.command, `${pathname}: próxima skill ausente`);
-    assert.equal(result.command, result.decision.nextSkill.command);
-    assert.equal(result.reason, result.decision.reason);
-    results.push(JSON.stringify(result.decision));
-    await page.close();
+  for (const viewport of viewports) {
+    for (const pathname of ['/briefing.html', '/mapa-skills.html', '/aula-03/materiais/briefing.html', '/aula-03/materiais/mapa-skills.html']) {
+      const page = await browser.newPage({ viewport });
+      const pageErrors = [];
+      const consoleErrors = [];
+      page.on('pageerror', (error) => pageErrors.push(error.message));
+      page.on('console', (message) => {
+        if (message.type() === 'error') consoleErrors.push(message.text());
+      });
+      await page.addInitScript(({ projectId, raw }) => {
+        localStorage.setItem('cohort.projectBrief.activeProject.v1', projectId);
+        localStorage.setItem(`cohort.projectBrief.v1:${encodeURIComponent(projectId)}`, raw);
+      }, { projectId: projectBrief.projectId, raw: payload });
+      let readinessResponse = null;
+      page.on('response', (response) => {
+        if (new URL(response.url()).pathname === '/scripts/lib/skill-readiness.mjs') readinessResponse = response;
+      });
+      const navigation = await page.goto(`${origin}${pathname}`, { waitUntil: 'networkidle' });
+      const csp = navigation.headers()['content-security-policy'];
+      assert.match(csp, /script-src 'self'/);
+      assert.doesNotMatch(csp.split(';').find((directive) => directive.trim().startsWith('script-src')) || '', /blob:/);
+      await page.waitForFunction(() => window.__SKILL_SURFACE_STATUS?.status === 'ready');
+      assert.match(readinessResponse?.headers()['content-type'] || '', /^application\/javascript/);
+      const result = await page.evaluate(() => ({
+        decision: window.__SKILL_READINESS_DECISION,
+        command: document.getElementById('next-skill-command')?.textContent
+          || document.getElementById('next-skill-pill')?.textContent,
+        reason: document.getElementById('next-skill-reason')?.textContent,
+        documentWidth: document.documentElement.scrollWidth,
+      }));
+      assert.deepEqual(pageErrors, [], `${viewport.name} ${pathname}: pageerror`);
+      assert.deepEqual(consoleErrors, [], `${viewport.name} ${pathname}: console error`);
+      assert.ok(result.decision?.nextSkill?.command, `${viewport.name} ${pathname}: próxima skill ausente`);
+      assert.equal(result.command, result.decision.nextSkill.command);
+      assert.equal(result.reason, result.decision.reason);
+      assert.ok(result.documentWidth > 0, `${viewport.name} ${pathname}: documento não renderizado`);
+      results.push(JSON.stringify(result.decision));
+      await page.close();
+    }
   }
-  assert.equal(new Set(results).size, 1, 'as quatro distribuições de UI devem mostrar a mesma decisão serializada');
+  assert.equal(new Set(results).size, 1, 'as quatro distribuições e duas viewports devem mostrar a mesma decisão serializada');
 });

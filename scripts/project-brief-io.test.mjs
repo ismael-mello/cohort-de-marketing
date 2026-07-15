@@ -75,6 +75,11 @@ async function downloadJson(page) {
   return JSON.parse(await readFile(path, 'utf8'));
 }
 
+async function readinessDecision(page) {
+  await page.waitForFunction(() => window.__SKILL_SURFACE_STATUS?.status === 'ready');
+  return page.evaluate(() => window.__SKILL_READINESS_DECISION);
+}
+
 test('as duas copias distribuidas permanecem byte a byte iguais', async () => {
   const [rootCopy, lessonCopy] = await Promise.all([
     readFile(join(ROOT, 'briefing.html')),
@@ -115,6 +120,36 @@ test('ProjectBrief v1 faz round-trip JSON e Markdown sem perder metadados', asyn
   assert.deepEqual(pageErrors, []);
 });
 
+test('projeto novo mantém a mesma próxima skill após exportar e reimportar ProjectBrief v1', async (t) => {
+  const fixture = JSON.parse(await readFile(VALID_V1, 'utf8'));
+  const raw = JSON.stringify({
+    document: fixture,
+    artifactIndex: {
+      schemaVersion: 'artifact-index-v1',
+      project: { slug: fixture.data.project.slug },
+      rules: { schemaVersion: '0.1.0', confirmationRequiredByDefault: true },
+      entries: [],
+      summary: { total: 0, confirmed: 0, pendingConfirmation: 0 },
+    },
+  });
+  const { page, pageErrors } = await openBriefing(t, '/briefing.html', {
+    activeProjectId: fixture.projectId,
+    raw,
+  });
+  const before = await readinessDecision(page);
+  const exported = await downloadJson(page);
+  const input = join(tmpdir(), `project-brief-v1-roundtrip-${process.pid}.json`);
+  await writeFile(input, JSON.stringify(exported));
+  await page.setInputFiles('#import-file', input);
+  await page.locator('#import-status').filter({ hasText: 'ProjectBrief v1 importado' }).waitFor();
+  const after = await readinessDecision(page);
+
+  assert.deepEqual(exported, fixture);
+  assert.deepEqual(after, before);
+  assert.match(after.nextSkill.command, /^\/[a-z0-9-]+$/);
+  assert.deepEqual(pageErrors, []);
+});
+
 test('importacao 0.1.0 migra explicitamente e exporta v1 valido', async (t) => {
   const { page, pageErrors } = await openBriefing(t, '/aula-03/materiais/briefing.html');
   await page.setInputFiles('#import-file', LEGACY);
@@ -124,6 +159,28 @@ test('importacao 0.1.0 migra explicitamente e exporta v1 valido', async (t) => {
   assert.equal(exported.data.schemaVersion, '0.1.0');
   assert.equal(exported.data.project.slug, 'acme-labs');
   assert.equal(exported.fieldSources['market.dominantPain'].confirmation, 'pending');
+  assert.deepEqual(pageErrors, []);
+});
+
+test('migração legada preserva semântica e mantém a próxima skill ao reimportar v1', async (t) => {
+  const legacy = JSON.parse(await readFile(LEGACY, 'utf8'));
+  const { page, pageErrors } = await openBriefing(t, '/aula-03/materiais/briefing.html');
+  await page.setInputFiles('#import-file', LEGACY);
+  await page.locator('#import-status').filter({ hasText: '0.1.0 migrado para ProjectBrief v1' }).waitFor();
+  const migratedDecision = await readinessDecision(page);
+  const exported = await downloadJson(page);
+  const input = join(tmpdir(), `project-brief-legacy-roundtrip-${process.pid}.json`);
+  await writeFile(input, JSON.stringify(exported));
+  await page.setInputFiles('#import-file', input);
+  await page.locator('#import-status').filter({ hasText: 'ProjectBrief v1 importado' }).waitFor();
+  const reimportedDecision = await readinessDecision(page);
+
+  assert.equal(exported.data.project.name, legacy.project.name);
+  assert.equal(exported.data.project.slug, legacy.project.slug);
+  assert.equal(exported.data.market.niche, legacy.market.niche);
+  assert.equal(exported.data.market.dominantPain, legacy.market.dominantPain);
+  assert.equal(exported.data.offer.promise, legacy.offer.promise);
+  assert.deepEqual(reimportedDecision, migratedDecision);
   assert.deepEqual(pageErrors, []);
 });
 
