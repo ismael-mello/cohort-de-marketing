@@ -96,6 +96,11 @@ versionado em `scripts/package-lock.json` e não adiciona dependência de runtim
   do contrato e nunca persiste credenciais; import inválido não altera o draft.
 - A validação browser deriva o mesmo conjunto recursivo de dot-paths canônicos
   da 16.W1.1, incluindo proveniência de objetos aninhados como `offer.upsell.name`.
+- O formato `date-time` não usa mais `Date.parse`: ano bissexto, dias do mês,
+  relógio e offset são validados de forma estrita antes de aceitar RFC3339.
+- Uma única política recursiva de credenciais roda antes de import, autosave e
+  export. `api_key`, `access_token`, `refresh_token`, `secret`, Bearer e formatos
+  reais de provedores falham fechado sem ecoar o valor ou sanitizar semântica.
 - A busca de PRs abertos no repositório público retornou lista vazia antes da
   implementação.
 
@@ -103,12 +108,18 @@ versionado em `scripts/package-lock.json` e não adiciona dependência de runtim
 
 - Testes congelados primeiro no commit `d9ddc8b`; no baseline, somente a
   paridade byte a byte passava e os seletores de import/export ainda não existiam.
-- `node --test scripts/project-brief-io.test.mjs`: PASS, 5/5.
+- `node --test scripts/project-brief-io.test.mjs`: PASS, 7/7.
 - `node --test data/contracts/fixtures/project-brief/project-brief-contract.test.mjs`:
   PASS, 19/19 (regressão integral da 16.W1.1).
+- Execução combinada dos testes browser e contrato: PASS, 26/26.
+- Matriz RFC3339 browser/AJV: 2 datas válidas e 4 datas impossíveis/fora do
+  calendário com a mesma decisão nos dois validadores.
+- Matriz de credenciais: 6 imports adversariais (`api_key`, `access_token`,
+  `refresh_token`, `secret`, Bearer e `sk-proj`) recusados sem alterar draft ou
+  `localStorage`; token GitHub em edição também bloqueia o autosave.
 - `node scripts/validate-project-brief-rules.mjs`: PASS, 120 campos, 31 skills e
   schemas AJV 2020 compilados.
-- `MAP_SCRATCH=/tmp/story-16-w1-2-mapa MAP_PORT=8872 node scripts/validate-mapa-wiring.mjs`:
+- `MAP_SCRATCH=/tmp/story-16-w1-2-qg-r1 MAP_PORT=8873 node scripts/validate-mapa-wiring.mjs`:
   PASS, 69/69 `sampleUrl`, HTTP e PDF válidos.
 - `npm audit --prefix scripts --audit-level=moderate`: PASS, 0 vulnerabilidades.
 - `cmp -s briefing.html aula-03/materiais/briefing.html`: PASS.
@@ -118,7 +129,11 @@ versionado em `scripts/package-lock.json` e não adiciona dependência de runtim
 
 - `d9ddc8b` - `test: freeze ProjectBrief browser round-trip [Story 16.W1.2]`
 - `021cb01` - `feat: add ProjectBrief v1 import export [Story 16.W1.2]`
+- `cf7d9ef` - `docs: hand off ProjectBrief IO for review [Story 16.W1.2]`
 - `b3d9d27` - `fix: accept nested ProjectBrief provenance [Story 16.W1.2]`
+- `2ce1d04` - `docs: record ProjectBrief IO hardening [Story 16.W1.2]`
+- `553224e` - `test: reproduce ProjectBrief IO QG findings [Story 16.W1.2]`
+- `5b5fb5c` - `fix: close ProjectBrief IO security gaps [Story 16.W1.2]`
 
 ## File List real
 
@@ -130,13 +145,16 @@ versionado em `scripts/package-lock.json` e não adiciona dependência de runtim
 
 ## QA prep
 
-- Reexecutar os 5 testes Playwright nas duas URLs e inspecionar os downloads
+- Reexecutar os 7 testes Playwright nas duas URLs e inspecionar os downloads
   JSON/Markdown, incluindo metadados, `currentStage` e ausência de `fieldSources`
   no resumo derivado.
 - Forçar schema desconhecido, propriedade adicional e referência de artefato
   insegura; o draft anterior deve permanecer intacto em todos os casos.
 - Confirmar isolamento entre dois `projectId`, reload do projeto ativo e ausência
   de nomes usuais de tokens nas entradas do `localStorage`.
+- Revalidar no Round 2 o calendário impossível sem `Date.parse`, a matriz de
+  conformidade AJV e a preservação byte a byte do storage diante dos sete
+  padrões de credencial exercitados por import e autosave.
 - O executor mantém a story em `InReview`; somente o PASS independente de `@qa`
   autoriza `Done` e o fan-in da wave.
 
@@ -146,3 +164,18 @@ versionado em `scripts/package-lock.json` e não adiciona dependência de runtim
   implementados, regressões aprovadas e story encaminhada para QA independente.
 - 2026-07-14: validação browser alinhada aos dot-paths recursivos do contrato,
   com round-trip adicional para proveniência de objeto aninhado.
+- 2026-07-15: QG Round 1 remediado com calendário RFC3339 estrito, matriz
+  browser/AJV e política fail-closed de credenciais antes de toda persistência.
+
+## QA Results
+
+### Round 1
+
+- Quality Gate independente: FAIL.
+- Score: 64/100.
+- QG-001 HIGH: `Date.parse` aceitava datas impossíveis; remediado por validação
+  explícita de calendário e matriz comparativa com AJV.
+- QG-002 HIGH: ausência de política pré-persistência para credenciais em texto
+  livre; remediado por rejeição recursiva fail-closed em import/autosave/export.
+- QG-003 LOW: inventário de commits incompleto; corrigido nesta atualização.
+- Estado após remediation: `InReview`, aguardando QG Round 2 independente.
