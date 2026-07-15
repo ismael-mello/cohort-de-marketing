@@ -2,7 +2,7 @@
 story_id: "16.W1.2"
 epic_id: "16"
 wave: "W1"
-status: InReview
+status: Done
 executor: "@dev"
 quality_gate: "@qa"
 quality_gate_tools: ["node:test", "playwright"]
@@ -13,7 +13,7 @@ effort: "7h"
 deploy_type: "none"
 accountable: "rafaelcosta"
 appetite: "1d"
-hill_phase: "reviewing"
+hill_phase: "done"
 confidence_level: "know-how"
 task_mode: "CRIAR"
 involves_ui: true
@@ -23,7 +23,7 @@ involves_ui: true
 
 ## Status
 
-InReview
+Done
 
 ## Dependências
 
@@ -161,6 +161,7 @@ versionado em `scripts/package-lock.json` e não adiciona dependência de runtim
 - `38cf5fc` - `docs: record deterministic credential parsing [Story 16.W1.2]`
 - `409ea1c` - `test: reject placeholder lookalike suffixes [Story 16.W1.2]`
 - `2cbc052` - `fix: require exact placeholder boundaries [Story 16.W1.2]`
+- `d6d9b86` - `docs: record final ProjectBrief IO remediation [Story 16.W1.2]`
 
 ## File List real
 
@@ -234,3 +235,14 @@ versionado em `scripts/package-lock.json` e não adiciona dependência de runtim
 - Remediation: parser determinístico de assignments, classificação posterior,
   allow-list normalizada por igualdade exata e regressões nas três superfícies.
 - Estado após remediation: `InReview`, aguardando QG Round 4 independente.
+
+### Round 4
+
+- Quality Gate independente: PASS.
+- Score: 96/100.
+- Findings bloqueantes: nenhum.
+- QG-001, QG-002 e QG-003: fechados.
+- Reprobes confirmaram recusa fail-closed nas três superfícies, placeholders
+  exatos aceitos, lookalikes recusados, ausência de eco e preservação byte a
+  byte de draft/storage.
+- Todos os ACs e stop conditions: PASS; story encerrada como `Done`.

@@ -13,11 +13,11 @@
     {
       "wave_id": "W1",
       "name": "Contrato e round-trip",
-      "status": "in_progress",
+      "status": "completed",
       "parallel_groups": [["16.W1.1"], ["16.W1.2"]],
       "stories": [
         { "story_id": "16.W1.1", "status": "Done", "depends_on": [], "executor": "@dev", "quality_gate": "@architect" },
-        { "story_id": "16.W1.2", "status": "InReview", "depends_on": ["16.W1.1"], "executor": "@dev", "quality_gate": "@qa" }
+        { "story_id": "16.W1.2", "status": "Done", "depends_on": ["16.W1.1"], "executor": "@dev", "quality_gate": "@qa" }
       ]
     },
     {
