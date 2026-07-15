@@ -10,6 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script src="/skill-surface-contract.js"></script>
   <script src="mapa-skills-artifacts.js"></script>
 </head>
 <body>
@@ -205,7 +206,7 @@
     <div class="hub-stat-grid">
       <div class="hub-stat">
         <div class="hub-stat__label">Skills totais</div>
-        <div class="hub-stat__value">25</div>
+        <div class="hub-stat__value" id="catalog-skill-count">—</div>
       </div>
       <div class="hub-stat">
         <div class="hub-stat__label">Ordem canônica</div>
@@ -1450,7 +1451,12 @@ function loadSavedProjectState() {
   if (!raw) return { projectBrief: {}, artifactIndex: null };
   try {
     const saved = JSON.parse(raw);
-    return { projectBrief: saved.document || {}, artifactIndex: saved.artifactIndex || null };
+    if (!saved || typeof saved !== 'object' || !saved.document) {
+      const error = new Error('O estado local não contém um ProjectBrief v1 válido.');
+      error.code = 'INVALID_LOCAL_PROJECT_STATE';
+      throw error;
+    }
+    return { projectBrief: saved.document, artifactIndex: saved.artifactIndex || null };
   } catch {
     const error = new Error('O estado local do ProjectBrief está malformado.');
     error.code = 'INVALID_LOCAL_PROJECT_STATE';
@@ -1459,15 +1465,25 @@ function loadSavedProjectState() {
 }
 
 async function loadSurfaceContracts() {
-  const [catalogResponse, rulesResponse] = await Promise.all([
+  const [catalogResponse, rulesResponse, legacySchemaResponse, projectBriefSchemaResponse] = await Promise.all([
     fetch('/data/skill-catalog.json'),
     fetch('/data/skill-unlock-rules.json'),
+    fetch('/data/project-brief.schema.json'),
+    fetch('/data/contracts/project-brief.v1.schema.json'),
   ]);
-  if (!catalogResponse.ok || !rulesResponse.ok) throw new Error('Catálogo ou regra pública não foi encontrada.');
-  const [catalog, rules] = await Promise.all([catalogResponse.json(), rulesResponse.json()]);
-  const contract = window.SkillSurfaceContract.validateContracts(catalog, rules);
+  if (![catalogResponse, rulesResponse, legacySchemaResponse, projectBriefSchemaResponse].every((response) => response.ok)) {
+    throw new Error('Um contrato público não foi encontrado.');
+  }
+  const [catalog, rules, legacySchema, projectBriefSchema] = await Promise.all([
+    catalogResponse.json(),
+    rulesResponse.json(),
+    legacySchemaResponse.json(),
+    projectBriefSchemaResponse.json(),
+  ]);
+  const inputs = { catalog, rules, legacySchema, projectBriefSchema };
+  const contract = window.SkillSurfaceContract.validateContracts(inputs);
   const { projectBrief, artifactIndex } = loadSavedProjectState();
-  const evaluated = window.SkillSurfaceContract.evaluateSkills({ catalog, rules, projectBrief, artifactIndex });
+  const evaluated = window.SkillSurfaceContract.evaluateSkills({ ...inputs, projectBrief, artifactIndex });
 
   SKILLS = contract.skills;
   FLOW_EDGES = contract.edges.map((edge) => [edge.from, edge.to, edge.type]);
@@ -1479,6 +1495,7 @@ async function loadSurfaceContracts() {
     ...skill.outputs.map((output) => [output.split('/').at(-1).toLowerCase(), skill.id]),
   ]));
   document.getElementById('surface-count').textContent = `${SKILLS.length} skills · ${FLOW_EDGES.length} conexões · catálogo canônico`;
+  document.getElementById('catalog-skill-count').textContent = SKILLS.length;
   window.__SKILL_SURFACE_DATA = { skills: SKILLS, edges: contract.edges, evaluated };
 }
 
