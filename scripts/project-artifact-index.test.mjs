@@ -139,6 +139,24 @@ test('symlink cujo destino escapa do projeto falha fechado', async (t) => {
   );
 });
 
+test('recusa assinatura forte de credencial no path relativo sem ecoar o filename', async (t) => {
+  const { projectRoot } = await fixture(t);
+  const sensitiveName = `dossie-ghp_${'a'.repeat(24)}.md`;
+  await writeFile(path.join(projectRoot, sensitiveName), 'conteudo benigno');
+  await assert.rejects(
+    buildArtifactIndex({
+      projectRoot,
+      rules: { ...RULES, artifactGlobs: { dossier: ['dossie-*.md'] } },
+    }),
+    (error) => {
+      assert.ok(error instanceof ArtifactIndexError);
+      assert.equal(error.code, 'SENSITIVE_PATH');
+      assert.ok(!error.message.includes(sensitiveName));
+      return true;
+    },
+  );
+});
+
 test('confirmacao explicita altera somente a entrada alvo', async (t) => {
   const { projectRoot } = await fixture(t);
   await writeFile(path.join(projectRoot, 'project-brief.json'), '{}');
