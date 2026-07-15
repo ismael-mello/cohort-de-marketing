@@ -2,9 +2,9 @@
 
 ## Status
 
-Em progresso na W3. W1 e W2 estão concluídas; `17.W3.1` está `Done` após
-QG3 `PASS 98/100`, e `17.W3.2` está `Ready` com implementação autorizada para
-executar o gate público final.
+Concluída. W1, W2 e W3 estão `Done`; `17.W3.1` passou no QG3 com `98/100` e
+`17.W3.2` passou no gate público independente com `99/100`, confiança `0.99`
+e zero findings. O epic tem veredito final `PASS` local.
 
 ## Problema
 

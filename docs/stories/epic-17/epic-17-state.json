@@ -3,8 +3,8 @@
   "epic_id": "17",
   "namespace": "PUB",
   "title": "Fundacao da Aula 4: dados",
-  "status": "in_progress",
-  "verification_verdict": "NOT_RUN",
+  "status": "completed",
+  "verification_verdict": "PASS",
   "created": "2026-07-14",
   "autonomy_level": "AL2",
   "baseline_ref": "f989ce67264b24a29b0b92aeacd30ae61903685e",
@@ -131,7 +131,7 @@
     {
       "wave_id": "W3",
       "name": "Material e release",
-      "status": "in_progress",
+      "status": "completed",
       "parallel_groups": [
         [
           "17.W3.1"
@@ -155,7 +155,7 @@
         {
           "story_id": "17.W3.2",
           "title": "Gate publico da Aula 4",
-          "status": "Ready",
+          "status": "Done",
           "implementation_authorized": true,
           "depends_on": [
             "17.W3.1"
