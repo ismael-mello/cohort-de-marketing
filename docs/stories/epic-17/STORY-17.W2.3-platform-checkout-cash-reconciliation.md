@@ -138,6 +138,10 @@ completion_notes:
   - "O RED Round3 24fd5c3 reproduz telefone numérico de 11 dígitos aceito com exit 0 e cobre telefone, CPF e CNPJ nas duas superfícies, no input e no schema de saída."
   - "O GREEN Round3 92fbcc2 exige ao menos uma letra a-f em todo nonce opaco e adiciona ao guard recursivo sequências numéricas isoladas de 11/14 dígitos."
   - "Round3 passou em 14/14 focais, gate Node adjacente, seis casos numéricos novos de input e output e dois nonces numeric-shaped válidos sem falso positivo; story permanece InReview para QG3."
+  - "QG3 reprovou o HEAD c6eacae com FAIL 82: o scan numérico global confundia valores monetários válidos de 11/14 dígitos com identificadores pessoais."
+  - "O RED Round4 92a06f3 reproduz o falso positivo monetário e amplia a matriz para nonces válidos com letra a-f no início, meio e fim, em comprimentos 11/14."
+  - "O GREEN Round4 1574f2c restringe o scan de 11/14 dígitos a reconciliationId/id; valores monetários permanecem sob o schema decimal e IDs sob os schemas opacos tipados."
+  - "Round4 passou em 15/15 focais; o gate adjacente passou integralmente exceto por um teste de lock inalterado da baseline, reproduzido isoladamente, e passou com essa flake excluída. Story permanece InReview para QG4."
 file_list:
   - "data/contracts/source-reconciliation.v1.schema.json"
   - "scripts/reconcile-aula-04-sources.mjs"
@@ -156,7 +160,7 @@ file_list:
 quality_gate_report:
   story_id: "17.W2.3"
   verdict: "FAIL"
-  score: 84
+  score: 82
   rounds:
     - round: 1
       verdict: "FAIL"
@@ -170,14 +174,20 @@ quality_gate_report:
       reviewed_head: "7aa10e5"
       blocking_findings:
         - "Nonces hex exclusivamente numéricos de 11/14 dígitos ainda aceitavam telefone, CPF ou CNPJ em reconciliationId e provenanceRef.id."
+    - round: 3
+      verdict: "FAIL"
+      score: 82
+      reviewed_head: "c6eacae"
+      blocking_findings:
+        - "O scan global de sequências numéricas de 11/14 dígitos rejeitava valores monetários válidos, apesar do contexto decimal tipado."
   remediation:
-    status: "READY_FOR_QG3"
-    red_head: "24fd5c3"
-    implementation_head: "92fbcc2"
-    focal_tests: "14/14"
+    status: "READY_FOR_QG4"
+    red_head: "92a06f3"
+    implementation_head: "1574f2c"
+    focal_tests: "15/15"
     privacy_input_cases: 38
     privacy_output_cases: 14
-    false_positive_cases: 42
+    false_positive_cases: 48
   reviewed_by: "@architect"
   reviewed_at: "2026-07-15"
 ```
@@ -193,3 +203,5 @@ quality_gate_report:
 | 2026-07-15 | @dev | Round2 RED/GREEN fecha todas as superfícies com allowlists positivas, 13/13 focais e matriz sem falsos positivos; story mantida em `InReview`. |
 | 2026-07-15 | @architect | QG2 `FAIL 84`: nonces exclusivamente numéricos ainda comportavam telefone, CPF e CNPJ. |
 | 2026-07-15 | @dev | Round3 RED/GREEN exige letra em nonce opaco, fecha sequências de 11/14 dígitos e passa 14/14 focais; story mantida em `InReview`. |
+| 2026-07-15 | @architect | QG3 `FAIL 82`: scan numérico global gerava falso positivo em valores monetários válidos. |
+| 2026-07-15 | @dev | Round4 RED/GREEN torna o guard numérico contextual, preserva IDs fail-closed e passa 15/15 focais; story mantida em `InReview`. |

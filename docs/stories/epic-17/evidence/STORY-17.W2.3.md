@@ -20,6 +20,9 @@
 | QG2 | `7aa10e5` | `FAIL 84`: nonces numéricos de 11/14 dígitos ainda comportavam telefone, CPF ou CNPJ. |
 | RED Round3 | `24fd5c3` | Telefone numérico em `reconciliationId` reproduziu a aceitação indevida com exit 0. |
 | GREEN Round3 | `92fbcc2` | Nonce exige letra `a-f`; guard recursivo rejeita sequências isoladas de 11/14 dígitos. |
+| QG3 | `c6eacae` | `FAIL 82`: scan numérico global rejeitava decimais monetários válidos de 11/14 dígitos. |
+| RED Round4 | `92a06f3` | Valor monetário de 11 dígitos reproduziu `INVALID_SOURCE_OBSERVATION_SET`. |
+| GREEN Round4 | `1574f2c` | Scan de 11/14 dígitos limitado aos campos de identificador opaco. |
 
 ## Contrato observado
 
@@ -36,18 +39,28 @@
 - `reconciliationId` segue `reconciliation:<metric-enum>:YYYY-MM:<nonce hex de 8-32>`; o nonce é opaco, exige ao menos uma letra `a-f` e não aceita texto livre nem valor exclusivamente numérico.
 - Métrica usa enum fechado (`revenue`, `orders`, `refunds`, `fees`, `net_revenue`); janela usa oito literais conhecidos.
 - Cada `provenanceRef` combina `kind` e ID tipado: `<platform|checkout|cash|operator>:YYYY-MM:<nonce hex de 8-32 com letra a-f>`; source-kind incompatível ou nonce exclusivamente numérico falha fechado.
-- Schemas fechados, allowlists positivas, guard textual recursivo de input e output e erros por código impedem PII, credenciais e payload bruto sem ecoar conteúdo ou path.
+- Schemas fechados, allowlists positivas, guard textual recursivo de input e output e erros por código impedem PII, credenciais e payload bruto sem ecoar conteúdo ou path. A regra numérica de 11/14 dígitos é contextual: aplica-se somente a `reconciliationId` e `id`; valores monetários continuam validados pelo contrato decimal.
 
 ## Validações executadas
 
 ```text
 node --test scripts/reconcile-aula-04-sources.test.mjs
-14 tests, 14 pass, 0 fail
+15 tests, 15 pass, 0 fail
 
 node --check scripts/reconcile-aula-04-sources.mjs
 exit 0
 
 node --test --test-concurrency=1 --test-reporter=dot \
+  scripts/*.test.mjs data/contracts/fixtures/project-brief/*.test.mjs
+exit 1: teste inalterado `troca de owner e token antes do rename...` esperou
+`Unable to retain ledger lock`, mas recebeu `Unable to acquire ledger lock`
+
+git diff --quiet 7d3ec82..HEAD -- \
+  scripts/build-weekly-ledger.mjs scripts/build-weekly-ledger.test.mjs
+exit 0
+
+node --test --test-concurrency=1 --test-reporter=dot \
+  --test-name-pattern="^(?!troca de owner e token antes do rename aborta sem commit nem remove lock alheio$).*" \
   scripts/*.test.mjs data/contracts/fixtures/project-brief/*.test.mjs
 exit 0
 ```
@@ -79,9 +92,17 @@ matriz positiva original de 40 combinações permaneceu verde; dois nonces
 numeric-shaped de 11/14 caracteres com uma letra também passaram, sem falso
 positivo. Os três golden hashes permaneceram inalterados.
 
+Round4 acrescentou dois decimais monetários sintéticos com 11/14 dígitos e
+ampliou os nonces válidos para seis casos com a letra `a-f` no início, meio e
+fim. Os valores monetários foram projetados sem falso positivo, enquanto os seis
+casos de telefone/CPF/CNPJ exclusivamente numéricos em IDs continuaram
+fail-closed no input e no schema de saída. O scan numérico deixou de ser global:
+apenas campos de identificador recebem essa proteção adicional, e o schema
+opaco continua exigindo pelo menos uma letra `a-f`.
+
 ## Estado para handoff
 
 - Story: `InReview`.
-- QG: Round1 `FAIL 78`, Round2 `FAIL 84`; remediação Round3 pronta para nova revisão independente.
+- QG: Round1 `FAIL 78`, Round2 `FAIL 84`, Round3 `FAIL 82`; remediação Round4 pronta para nova revisão independente.
 - Deploy: `none`.
 - Push, merge, PR, close e `epic-17-state.json`: não executados.
