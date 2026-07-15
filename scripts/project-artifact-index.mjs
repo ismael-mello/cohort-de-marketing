@@ -13,6 +13,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const INDEX_SCHEMA_VERSION = 'artifact-index-v1';
+export const ARTIFACT_GLOB_MATCHER_VERSION = '1.0.0';
 const SAFE_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const SAFE_TYPE = /^[A-Za-z][A-Za-z0-9]*$/;
 const SENSITIVE_REFERENCE_PATTERNS = [
@@ -65,14 +66,55 @@ function assertSafeReference(value) {
   }
 }
 
+export function matchArtifactSegment(value, pattern) {
+  if (typeof value !== 'string' || typeof pattern !== 'string' || value.includes('/') || pattern.includes('/')) return false;
+  let previous = Array(pattern.length + 1).fill(false);
+  previous[0] = true;
+  for (let patternIndex = 1; patternIndex <= pattern.length; patternIndex += 1) {
+    if (pattern[patternIndex - 1] === '*') previous[patternIndex] = previous[patternIndex - 1];
+  }
+  for (let valueIndex = 1; valueIndex <= value.length; valueIndex += 1) {
+    const current = Array(pattern.length + 1).fill(false);
+    for (let patternIndex = 1; patternIndex <= pattern.length; patternIndex += 1) {
+      const token = pattern[patternIndex - 1];
+      if (token === '*') current[patternIndex] = current[patternIndex - 1] || previous[patternIndex];
+      else if (token === '?' || token === value[valueIndex - 1]) current[patternIndex] = previous[patternIndex - 1];
+    }
+    previous = current;
+  }
+  return previous[pattern.length];
+}
+
+export function matchesArtifactGlob(relativePath, pattern) {
+  if (!portablePath(relativePath) || !portablePath(pattern)
+    || pattern.split('/').some((part) => part === '**' ? false : part.includes('**'))) return false;
+  const valueSegments = relativePath.split('/');
+  const patternSegments = pattern.split('/');
+  const memo = new Map();
+
+  function matches(valueIndex, patternIndex) {
+    const key = `${valueIndex}:${patternIndex}`;
+    if (memo.has(key)) return memo.get(key);
+    let result;
+    if (patternIndex === patternSegments.length) result = valueIndex === valueSegments.length;
+    else if (patternSegments[patternIndex] === '**') {
+      result = matches(valueIndex, patternIndex + 1)
+        || (valueIndex < valueSegments.length && matches(valueIndex + 1, patternIndex));
+    } else {
+      result = valueIndex < valueSegments.length
+        && matchArtifactSegment(valueSegments[valueIndex], patternSegments[patternIndex])
+        && matches(valueIndex + 1, patternIndex + 1);
+    }
+    memo.set(key, result);
+    return result;
+  }
+
+  return matches(0, 0);
+}
+
 function insideRoot(root, candidate) {
   const relative = path.relative(root, candidate);
   return relative === '' || (!relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative));
-}
-
-function segmentMatcher(segment) {
-  const escaped = segment.replace(/[.+^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(`^${escaped.replaceAll('*', '.*').replaceAll('?', '.')}$`, 'u');
 }
 
 function validateRules(rules) {
@@ -194,9 +236,8 @@ async function expandPattern(root, pattern) {
     } catch {
       fail('FILESYSTEM_ERROR', 'Não foi possível percorrer um glob declarado.');
     }
-    const matcher = segmentMatcher(segment);
     for (const child of children.sort((a, b) => a.name.localeCompare(b.name))) {
-      if (!matcher.test(child.name)) continue;
+      if (!matchArtifactSegment(child.name, segment)) continue;
       const childPath = path.join(current, child.name);
       const inspected = await safeCandidate(root, childPath);
       if (!inspected) continue;
@@ -277,7 +318,7 @@ export async function buildArtifactIndex({ projectRoot, rules }) {
       confirmed: entries.filter((entry) => entry.confirmationStatus === 'confirmed').length,
       pendingConfirmation: entries.filter((entry) => entry.confirmationStatus === 'pending_confirmation').length,
     },
-  });
+  }, rules);
 }
 
 function exactKeys(value, expected) {
@@ -285,23 +326,24 @@ function exactKeys(value, expected) {
     && Object.keys(value).sort().join('|') === [...expected].sort().join('|');
 }
 
-export function validateArtifactIndex(index) {
+export function validateArtifactIndex(index, rules) {
+  const globs = validateRules(rules);
   if (!exactKeys(index, ['schemaVersion', 'project', 'rules', 'entries', 'summary'])
     || index.schemaVersion !== INDEX_SCHEMA_VERSION
     || !exactKeys(index.project, ['slug'])
     || !SAFE_SLUG.test(index.project.slug)
     || !exactKeys(index.rules, ['schemaVersion', 'confirmationRequiredByDefault'])
-    || typeof index.rules.schemaVersion !== 'string'
-    || typeof index.rules.confirmationRequiredByDefault !== 'boolean'
+    || index.rules.schemaVersion !== String(rules.schemaVersion || 'unknown')
+    || index.rules.confirmationRequiredByDefault !== rules.artifactIndex.confirmationRequiredByDefault
     || !Array.isArray(index.entries)
     || !exactKeys(index.summary, ['total', 'confirmed', 'pendingConfirmation'])) {
     fail('INVALID_INDEX', 'O ArtifactIndex não corresponde ao contrato v1.');
   }
   const identities = new Set();
   for (const entry of index.entries) {
-    assertSafeReference(entry.path || '');
     if (!exactKeys(entry, ENTRY_KEYS)
       || !SAFE_TYPE.test(entry.artifactType)
+      || !Object.hasOwn(globs, entry.artifactType)
       || !portablePath(entry.path)
       || !/^[a-f0-9]{64}$/.test(entry.sha256)
       || !Number.isSafeInteger(entry.sizeBytes) || entry.sizeBytes < 0
@@ -309,14 +351,20 @@ export function validateArtifactIndex(index) {
       || entry.origin.kind !== 'declared_glob'
       || entry.origin.rule !== `artifactGlobs.${entry.artifactType}`
       || !Array.isArray(entry.origin.patterns) || entry.origin.patterns.length === 0
-      || !entry.origin.patterns.every(portablePath)
       || !['confirmed', 'pending_confirmation'].includes(entry.confirmationStatus)
       || entry.satisfiesCriticalRequirement !== (entry.confirmationStatus === 'confirmed')) {
       fail('INVALID_INDEX', 'Uma entrada do ArtifactIndex é inválida.');
     }
-    const identity = `${entry.artifactType}:${entry.path}`;
-    if (identities.has(identity)) fail('INVALID_INDEX', 'O ArtifactIndex contém uma entrada duplicada.');
-    identities.add(identity);
+    for (const reference of [entry.artifactType, entry.path, entry.origin.kind, entry.origin.rule, ...entry.origin.patterns]) {
+      assertSafeReference(reference);
+    }
+    const canonicalPatterns = globs[entry.artifactType];
+    if (!entry.origin.patterns.every((pattern) => portablePath(pattern) && canonicalPatterns.includes(pattern))
+      || !entry.origin.patterns.some((pattern) => matchesArtifactGlob(entry.path, pattern))) {
+      fail('INVALID_INDEX', 'A proveniência de uma entrada não corresponde ao path indexado.');
+    }
+    if (identities.has(entry.path)) fail('INVALID_INDEX', 'O ArtifactIndex contém um path global duplicado.');
+    identities.add(entry.path);
   }
   const confirmed = index.entries.filter((entry) => entry.confirmationStatus === 'confirmed').length;
   if (index.summary.total !== index.entries.length
@@ -327,8 +375,8 @@ export function validateArtifactIndex(index) {
   return index;
 }
 
-export function confirmArtifact(index, { artifactType, path: artifactPath }) {
-  validateArtifactIndex(index);
+export function confirmArtifact(index, { artifactType, path: artifactPath }, rules) {
+  validateArtifactIndex(index, rules);
   if (!SAFE_TYPE.test(artifactType || '') || !portablePath(artifactPath)) {
     fail('INVALID_CONFIRMATION', 'A confirmação de artefato é inválida.');
   }
@@ -339,7 +387,7 @@ export function confirmArtifact(index, { artifactType, path: artifactPath }) {
   target.satisfiesCriticalRequirement = true;
   clone.summary.confirmed = clone.entries.filter((entry) => entry.confirmationStatus === 'confirmed').length;
   clone.summary.pendingConfirmation = clone.entries.length - clone.summary.confirmed;
-  return validateArtifactIndex(clone);
+  return validateArtifactIndex(clone, rules);
 }
 
 function parseArgs(argv) {
@@ -370,7 +418,7 @@ async function runCli() {
   for (const value of args.confirmations) {
     const separator = value?.indexOf(':') ?? -1;
     if (separator <= 0) fail('INVALID_CONFIRMATION', 'Use --confirm tipo:path-relativo.');
-    index = confirmArtifact(index, { artifactType: value.slice(0, separator), path: value.slice(separator + 1) });
+    index = confirmArtifact(index, { artifactType: value.slice(0, separator), path: value.slice(separator + 1) }, rules);
   }
   const serialized = `${JSON.stringify(index, null, 2)}\n`;
   if (args.outputPath) await writeFile(args.outputPath, serialized, { flag: 'wx' });

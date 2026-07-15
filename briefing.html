@@ -451,6 +451,7 @@
     const STORAGE_PREFIX = 'cohort.projectBrief.v1:';
     const ACTIVE_PROJECT_KEY = 'cohort.projectBrief.activeProject.v1';
     const ARTIFACT_INDEX_SCHEMA_VERSION = 'artifact-index-v1';
+    const ARTIFACT_GLOB_MATCHER_VERSION = '1.0.0';
     const SAVE_IDLE_MS = 650;
     const SENSITIVE_CREDENTIAL_KEY = /^(?:api[_-]?key|access[_-]?token|refresh[_-]?token|auth[_-]?token|token|client[_-]?secret|secret|password|senha)$/i;
     const SENSITIVE_ASSIGNMENT_SOURCE = '\\b(api[_-]?key|access[_-]?token|refresh[_-]?token|auth[_-]?token|token|client[_-]?secret|secret|password|senha)\\s*[:=]\\s*';
@@ -593,6 +594,7 @@
     let saveTimer = null;
     let currentDocument = null;
     let artifactIndex = null;
+    let draftRecoveryNotice = '';
     let importedIdentity = false;
     let state = {
       schemaVersion: '0.1.0',
@@ -1025,16 +1027,44 @@
 
     function storageKey(projectId) { return `${STORAGE_PREFIX}${encodeURIComponent(projectId)}`; }
 
+    function emptyArtifactState() {
+      return Object.fromEntries(Object.keys(rules.artifactGlobs || {}).map((type) => [type, false]));
+    }
+
+    function deriveArtifactsFromIndex(index) {
+      const artifacts = emptyArtifactState();
+      for (const entry of index.entries) {
+        if (entry.confirmationStatus === 'confirmed') artifacts[entry.artifactType] = true;
+      }
+      return artifacts;
+    }
+
     function loadDraft() {
       const activeProjectId = localStorage.getItem(ACTIVE_PROJECT_KEY);
       if (activeProjectId) {
         try {
           const saved = JSON.parse(localStorage.getItem(storageKey(activeProjectId)) || 'null');
           if (saved?.document?.schemaVersion === '1.0.0') {
-            currentDocument = saved.document;
-            state = { ...clone(currentDocument.data), artifacts: saved.artifacts || {} };
-            artifactIndex = saved.artifactIndex || null;
-            activeStep = saved.ui?.activeStep || 'project';
+            assertNoPlaintextCredentials(saved.document);
+            const documentErrors = validateV1(saved.document);
+            if (documentErrors.length) throw new Error('ProjectBrief salvo inválido');
+            currentDocument = clone(saved.document);
+            state = { ...clone(currentDocument.data), artifacts: emptyArtifactState() };
+            artifactIndex = null;
+            if (saved.artifactIndex != null) {
+              try {
+                assertNoPlaintextCredentials(saved.artifactIndex);
+                const validatedIndex = validateArtifactIndexDocument(saved.artifactIndex);
+                if (validatedIndex.project.slug !== currentDocument.data.project.slug) throw new Error('projeto divergente');
+                artifactIndex = clone(validatedIndex);
+                state.artifacts = deriveArtifactsFromIndex(artifactIndex);
+              } catch {
+                artifactIndex = null;
+                state.artifacts = emptyArtifactState();
+                draftRecoveryNotice = 'Índice salvo recusado; desbloqueios foram limpos e o ProjectBrief seguro foi preservado.';
+              }
+            }
+            activeStep = steps.some((step) => step.id === saved.ui?.activeStep) ? saved.ui.activeStep : 'project';
             importedIdentity = true;
             return;
           }
@@ -1044,10 +1074,10 @@
       if (rawLegacy) {
         try {
           const legacy = JSON.parse(rawLegacy);
-          const artifacts = legacy.artifacts || {};
           delete legacy.artifacts;
           currentDocument = migrateLegacyDocument(legacy);
-          state = { ...clone(currentDocument.data), artifacts };
+          artifactIndex = null;
+          state = { ...clone(currentDocument.data), artifacts: emptyArtifactState() };
           importedIdentity = true;
           localStorage.removeItem(LEGACY_STORAGE_KEY);
           saveNow();
@@ -1503,6 +1533,54 @@
         && !value.split('/').some((part) => !part || part === '.' || part === '..');
     }
 
+    function matchArtifactSegment(value, pattern) {
+      if (typeof value !== 'string' || typeof pattern !== 'string' || value.includes('/') || pattern.includes('/')) return false;
+      let previous = Array(pattern.length + 1).fill(false);
+      previous[0] = true;
+      for (let patternIndex = 1; patternIndex <= pattern.length; patternIndex += 1) {
+        if (pattern[patternIndex - 1] === '*') previous[patternIndex] = previous[patternIndex - 1];
+      }
+      for (let valueIndex = 1; valueIndex <= value.length; valueIndex += 1) {
+        const current = Array(pattern.length + 1).fill(false);
+        for (let patternIndex = 1; patternIndex <= pattern.length; patternIndex += 1) {
+          const token = pattern[patternIndex - 1];
+          if (token === '*') current[patternIndex] = current[patternIndex - 1] || previous[patternIndex];
+          else if (token === '?' || token === value[valueIndex - 1]) current[patternIndex] = previous[patternIndex - 1];
+        }
+        previous = current;
+      }
+      return previous[pattern.length];
+    }
+
+    function matchesArtifactGlob(relativePath, pattern) {
+      if (!portableArtifactPath(relativePath) || !portableArtifactPath(pattern)
+        || pattern.split('/').some((part) => part === '**' ? false : part.includes('**'))) return false;
+      const valueSegments = relativePath.split('/');
+      const patternSegments = pattern.split('/');
+      const memo = new Map();
+      function matches(valueIndex, patternIndex) {
+        const key = `${valueIndex}:${patternIndex}`;
+        if (memo.has(key)) return memo.get(key);
+        let result;
+        if (patternIndex === patternSegments.length) result = valueIndex === valueSegments.length;
+        else if (patternSegments[patternIndex] === '**') {
+          result = matches(valueIndex, patternIndex + 1)
+            || (valueIndex < valueSegments.length && matches(valueIndex + 1, patternIndex));
+        } else {
+          result = valueIndex < valueSegments.length
+            && matchArtifactSegment(valueSegments[valueIndex], patternSegments[patternIndex])
+            && matches(valueIndex + 1, patternIndex + 1);
+        }
+        memo.set(key, result);
+        return result;
+      }
+      return matches(0, 0);
+    }
+
+    function assertSafeArtifactReference(value) {
+      assertNoPlaintextCredentials({ artifactReference: value });
+    }
+
     function exactObjectKeys(value, expected) {
       return value && typeof value === 'object' && !Array.isArray(value)
         && Object.keys(value).sort().join('|') === [...expected].sort().join('|');
@@ -1516,12 +1594,12 @@
         || !exactObjectKeys(candidate.rules, ['schemaVersion', 'confirmationRequiredByDefault'])
         || typeof candidate.rules.schemaVersion !== 'string'
         || candidate.rules.schemaVersion !== String(rules.schemaVersion)
-        || typeof candidate.rules.confirmationRequiredByDefault !== 'boolean'
+        || candidate.rules.confirmationRequiredByDefault !== rules.artifactIndex.confirmationRequiredByDefault
         || !Array.isArray(candidate.entries)
         || !exactObjectKeys(candidate.summary, ['total', 'confirmed', 'pendingConfirmation'])) {
         throw new Error('ArtifactIndex v1 inválido');
       }
-      const identities = new Set();
+      const paths = new Set();
       for (const entry of candidate.entries) {
         if (!exactObjectKeys(entry, ['artifactType', 'path', 'sha256', 'sizeBytes', 'origin', 'confirmationStatus', 'satisfiesCriticalRequirement'])
           || !Object.hasOwn(rules.artifactGlobs || {}, entry.artifactType)
@@ -1532,15 +1610,20 @@
           || entry.origin.kind !== 'declared_glob'
           || entry.origin.rule !== `artifactGlobs.${entry.artifactType}`
           || !Array.isArray(entry.origin.patterns) || !entry.origin.patterns.length
-          || !entry.origin.patterns.every((pattern) => portableArtifactPath(pattern)
-            && rules.artifactGlobs[entry.artifactType].includes(pattern))
           || !['confirmed', 'pending_confirmation'].includes(entry.confirmationStatus)
           || entry.satisfiesCriticalRequirement !== (entry.confirmationStatus === 'confirmed')) {
           throw new Error('Entrada inválida no ArtifactIndex v1');
         }
-        const identity = `${entry.artifactType}:${entry.path}`;
-        if (identities.has(identity)) throw new Error('Entrada duplicada no ArtifactIndex v1');
-        identities.add(identity);
+        for (const reference of [entry.artifactType, entry.path, entry.origin.kind, entry.origin.rule, ...entry.origin.patterns]) {
+          assertSafeArtifactReference(reference);
+        }
+        const canonicalPatterns = rules.artifactGlobs[entry.artifactType];
+        if (!entry.origin.patterns.every((pattern) => portableArtifactPath(pattern) && canonicalPatterns.includes(pattern))
+          || !entry.origin.patterns.some((pattern) => matchesArtifactGlob(entry.path, pattern))) {
+          throw new Error('Proveniência não corresponde ao path no ArtifactIndex v1');
+        }
+        if (paths.has(entry.path)) throw new Error('Path global duplicado no ArtifactIndex v1');
+        paths.add(entry.path);
       }
       const confirmed = candidate.entries.filter((entry) => entry.confirmationStatus === 'confirmed').length;
       if (candidate.summary.total !== candidate.entries.length
@@ -1563,10 +1646,7 @@
           throw new Error('o índice pertence a outro projeto');
         }
         artifactIndex = clone(candidate);
-        state.artifacts = Object.fromEntries(Object.keys(rules.artifactGlobs || {}).map((type) => [type, false]));
-        for (const entry of artifactIndex.entries) {
-          if (entry.confirmationStatus === 'confirmed') state.artifacts[entry.artifactType] = true;
-        }
+        state.artifacts = deriveArtifactsFromIndex(artifactIndex);
         scheduleSave();
         render();
         showImportStatus(`ArtifactIndex v1 importado: ${artifactIndex.summary.confirmed} confirmados, ${artifactIndex.summary.pendingConfirmation} pendentes`);
@@ -1706,6 +1786,7 @@
       loadDraft();
       render();
       saveNow();
+      if (draftRecoveryNotice) showImportStatus(draftRecoveryNotice, true);
 
       byId('prev-step').addEventListener('click', () => {
         const idx = steps.findIndex((item) => item.id === activeStep);
