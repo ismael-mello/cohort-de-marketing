@@ -76,7 +76,7 @@ InReview
 ## Acceptance Criteria
 
 - [x] AC1: Cada entrada do `weekly-ledger.v1` referencia `projectId`, `campaignId`, `weekStart`, `revision`, `weeklyPanelId`, `schemaVersion` e o hash canônico do registro validado.
-- [x] AC2: Toda métrica preserva valor ou ausência explícita, selo, fonte, janela de atribuição, premissa aplicável e confirmação humana; métrica sem proveniência válida falha fechado.
+- [x] AC2: Toda métrica preserva valor ou ausência explícita, selo, referência estruturada de fonte, janela de atribuição, referência estruturada de premissa aplicável e confirmação humana; proveniência livre ou inválida falha fechado sem ecoar o valor.
 - [x] AC3: Repetir a mesma identidade e hash é idempotente; a mesma identidade com hash diferente retorna conflito, exit code não zero e não modifica o ledger existente.
 - [x] AC4: Revisão posterior é anexada sem sobrescrever a anterior, e a fixture de três semanas produz índice consultável por projeto, campanha e semana em ordem determinística.
 - [x] AC5: A saída contém somente referências, metadados e métricas do contrato; testes provam que conteúdo bruto, decisões históricas e dados pessoais não são copiados nem reescritos.
@@ -110,6 +110,8 @@ A File List é uma allow-list inicial. Criação, alteração ou renomeação fo
 - A identidade idempotente deve incluir projeto, campanha, semana e revisão. Filename nunca pode ser a única chave.
 - Calcule o hash sobre representação canônica documentada do registro validado, não sobre bytes acidentais do arquivo de origem.
 - Escreva em arquivo temporário e substitua o destino apenas depois de validar o conjunto completo; conflito ou I/O inválido preserva o ledger anterior.
+- Serialize writers com lock cross-process identificado por owner/token desde a leitura até o rename; recupere somente locks mortos e stale, aplique CAS antes do rename e libere apenas o lock do próprio owner.
+- `source` e `premise` de entrada devem ser referências `ref:<kind>:<id>` permitidas. O ledger projeta somente `{kind,id}` em `sourceRef`/`premiseRef`, nunca a string bruta.
 - O ledger é um índice de fatos e referências; não copie criativos, prompts, PII ou documentos inteiros.
 - O escopo documental é exclusivo desta story e de sua evidência; `epic-17-state.json` pertence ao fan-in.
 - `deploy_type: none`: a prova é local, por testes Node e execução do builder.
@@ -139,7 +141,9 @@ completion_notes:
   - "TDD RED congelou identidade composta, serialização JSON canônica, SHA-256, fixtures e envelopes de saída no commit 65c6b75."
   - "Builder valida WeeklyPanel v1 pelo contrato de W1.1, valida o ledger completo e só então faz rename atômico do temporário."
   - "Replay idempotente não toca o arquivo; conflito, lote inválido, ledger forjado e falha de I/O preservam o destino."
-  - "Executados 10/10 testes focais e 55/55 testes Node completos, além de prova manual por hash antes/depois."
+  - "QG1 reproduziu perda de updates com writers concorrentes e vazamento por source/premise livres; ambos foram congelados em RED no commit bf61b2a."
+  - "O commit e3636f6 adiciona lock cross-process com owner/token, timeout, recuperação stale/crash, CAS com retry e projeção referencial minimizada."
+  - "Executados 15/15 testes focais e 60/60 testes Node completos; 24 writers preservaram 24 entradas em oito repetições e também partindo de lock stale."
 file_list:
   - "data/contracts/weekly-ledger.v1.schema.json"
   - "scripts/build-weekly-ledger.mjs"
@@ -165,3 +169,5 @@ file_list:
 | 2026-07-14 | @po | Contrato enriquecido e validado para execução na PUB-17 W1. |
 | 2026-07-15 | @dev | TDD RED congelou schema, identidade composta, hash canônico, fixtures e garantias de imutabilidade. |
 | 2026-07-15 | @dev | Desenvolvimento e evidências concluídos; story movida para `InReview` com 10/10 testes focais e 55/55 testes Node verdes. |
+| 2026-07-15 | @architect | QG1 `FAIL 52`: concorrência perdia entradas e proveniência livre permitia PII/decisão/conteúdo bruto. |
+| 2026-07-15 | @dev | Remediação RED/GREEN concluída com lock+CAS, recuperação de owner e referências minimizadas; story mantida `InReview` para QG2 independente. |
