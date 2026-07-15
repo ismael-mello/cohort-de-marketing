@@ -1,5 +1,5 @@
 ---
-status: InProgress
+status: InReview
 story_id: "17.W3.1"
 title: "Módulo didático e fluxo local da Aula 4"
 epic: 17
@@ -8,7 +8,7 @@ parent_epic: "docs/stories/epic-17/EPIC-17-AULA-04-DATA-FOUNDATION.md"
 effort: 8h
 deploy_type: none
 appetite: 1d
-hill_phase: uphill
+hill_phase: downhill
 confidence_level: know-how
 involves_ui: true
 task_mode: CRIAR
@@ -64,7 +64,7 @@ affected_paths:
 
 ## Status
 
-InProgress — dependências e autorização `Ready` confirmadas; execução isolada em `wave/17-w3/story-17.W3.1`.
+InReview — implementação e evidência local concluídas; aguarda QG independente `@architect`.
 
 ## Story
 
@@ -82,23 +82,23 @@ InProgress — dependências e autorização `Ready` confirmadas; execução iso
 
 ## Acceptance Criteria
 
-- [ ] AC1: `aula-04/README.md` e `aula-04/GUIA-DO-ALUNO.html` apresentam uma única sequência numerada, pré-requisitos locais, contratos gerados e critérios de parada; todo comando usa caminho relativo ao checkout.
-- [ ] AC2: As instruções HTML nunca prometem abertura automática e informam separadamente como abrir o caminho local no macOS, Windows e Linux, sem executar browser pelo walkthrough.
-- [ ] AC3: O exemplo público contém exatamente três `WeeklyPanelV1` válidos, de semanas distintas, sem PII, credencial, payload bruto ou dependência privada; o fluxo gera `WeeklyLedger 1.1.0` com três entradas e proveniência verificável.
-- [ ] AC4: O walkthrough gera `HistoricalMetricsReading 1.0.0`, `SourceReconciliation 1.0.0`, `DecisionOutcomeEvaluationRequest 1.0.0` e `DecisionOutcomeDiagnosis 1.0.0`; o diagnóstico final é `inconclusivo`, tem um único reason code canônico, zero alavancas e decisão humana `pending`.
-- [ ] AC5: Os quatro templates públicos ficam cobertos explicitamente: `weekly-ledger.yaml`, `leitura-historica.yaml`, `reconciliacao-fontes.yaml` e `diagnostico-longitudinal.yaml`; nenhum template ou guia instrui mutação na Meta.
-- [ ] AC6: O runner aceita somente diretório de exemplo e diretório de saída vazio, escreve apenas os seis artefatos públicos declarados, não abre navegador, não acessa rede/Studio/API e falha fechado com códigos sanitizados para input, contrato ou destino inválido.
-- [ ] AC7: Testes executam o walkthrough em diretório temporário como checkout limpo, validam links/caminhos locais, contratos, determinismo, imutabilidade dos inputs, ausência de PII/segredos/paths absolutos e a regra de não autoabrir HTML.
+- [x] AC1: `aula-04/README.md` e `aula-04/GUIA-DO-ALUNO.html` apresentam uma única sequência numerada, pré-requisitos locais, contratos gerados e critérios de parada; todo comando usa caminho relativo ao checkout.
+- [x] AC2: As instruções HTML nunca prometem abertura automática e informam separadamente como abrir o caminho local no macOS, Windows e Linux, sem executar browser pelo walkthrough.
+- [x] AC3: O exemplo público contém exatamente três `WeeklyPanelV1` válidos, de semanas distintas, sem PII, credencial, payload bruto ou dependência privada; o fluxo gera `WeeklyLedger 1.1.0` com três entradas e proveniência verificável.
+- [x] AC4: O walkthrough gera `HistoricalMetricsReading 1.0.0`, `SourceReconciliation 1.0.0`, `DecisionOutcomeEvaluationRequest 1.0.0` e `DecisionOutcomeDiagnosis 1.0.0`; o diagnóstico final é `inconclusivo`, tem um único reason code canônico, zero alavancas e decisão humana `pending`.
+- [x] AC5: Os quatro templates públicos ficam cobertos explicitamente: `weekly-ledger.yaml`, `leitura-historica.yaml`, `reconciliacao-fontes.yaml` e `diagnostico-longitudinal.yaml`; nenhum template ou guia instrui mutação na Meta.
+- [x] AC6: O runner aceita somente diretório de exemplo e diretório de saída vazio, escreve apenas os seis artefatos públicos declarados, não abre navegador, não acessa rede/Studio/API e falha fechado com códigos sanitizados para input, contrato ou destino inválido.
+- [x] AC7: Testes executam o walkthrough em diretório temporário como checkout limpo, validam links/caminhos locais, contratos, determinismo, imutabilidade dos inputs, ausência de PII/segredos/paths absolutos e a regra de não autoabrir HTML.
 
 ## Tasks
 
 - [x] Confirmar baseline `aa1745d`, W2 concluída, autorização W3.1 e ausência de PR aberto cobrindo `17.W3.1`.
 - [x] Ler integralmente epic, state, contratos/stories W2 e CLIs consumidores antes de definir a fronteira.
 - [x] Rematerializar a story mínima em contrato completo e mover `Ready` para `InProgress` antes do código.
-- [ ] Congelar REDs de módulo, três semanas, diagnóstico inconclusivo, checkout limpo, links e sanitização.
-- [ ] Implementar somente dentro da File List aprovada.
-- [ ] Executar testes focais, adjacentes, walkthrough e validação de distribuição.
-- [ ] Registrar evidência sanitizada e mover para `InReview`; epic-state permanece reservado ao fan-in `@devops`.
+- [x] Congelar REDs de módulo, três semanas, diagnóstico inconclusivo, checkout limpo, links e sanitização.
+- [x] Implementar somente dentro da File List aprovada.
+- [x] Executar testes focais, adjacentes, walkthrough e validação de distribuição.
+- [x] Registrar evidência sanitizada e mover para `InReview`; epic-state permanece reservado ao fan-in `@devops`.
 
 ## File List
 
@@ -142,10 +142,11 @@ Esta lista é uma allowlist exata. Não há `**`, diretório implícito ou autor
 - O walkthrough escrever fora do diretório de saída explicitamente informado.
 - A implementação exigir mudança em contrato W2 ou expansão não rematerializada da allowlist.
 
-## Validação planejada
+## Validação executada
 
 - `node --test scripts/run-aula-04-walkthrough.test.mjs`
 - `node --test --test-concurrency=1 scripts/run-aula-04-walkthrough.test.mjs scripts/read-aula-04-history.test.mjs scripts/reconcile-aula-04-sources.test.mjs scripts/diagnose-aula-04-decision.test.mjs`
+- `node --test --test-concurrency=1 data/contracts/fixtures/project-brief/project-brief-contract.test.mjs scripts/*.test.mjs scripts/lib/skill-readiness.test.mjs services/meta-ads/index.test.js`
 - Walkthrough em dois diretórios temporários vazios e comparação byte a byte.
 - `git diff --check aa1745d..HEAD` e auditoria da File List.
 
@@ -156,7 +157,24 @@ agent_model: "GPT-5 Codex"
 completion_notes:
   - "Baseline aa1745d, W2 concluída, W3.1 Ready/authorized e PR coverage vazio confirmados em 2026-07-15."
   - "Story rematerializada antes do código com allowlist exata, contratos W2 consumidores, gates e stop conditions."
+  - "RED bc90b11 congelou sete grupos; 0/7 passaram antes do módulo, runner, exemplo e template existirem."
+  - "GREEN beb163a compõe somente as funções públicas W2 e entrega README, guia HTML, template, exemplo e seis outputs determinísticos."
+  - "RED 579e2cb fechou confiança no expected e texto sensível em decisão; GREEN 94617b3 exige invariantes inconclusivo/zero alavancas/pending e bloqueia republicação sensível."
+  - "Focal 7/7, adjacente W2 44/44 e gate Node completo 159/159 passaram; inputs permanecem imutáveis e duas execuções são byte-equivalentes."
+  - "Story movida para InReview; QG, fechamento, epic-state, fan-in, push e deploy permanecem fora da autoridade do executor."
 file_list:
+  - "aula-04/README.md"
+  - "aula-04/GUIA-DO-ALUNO.html"
+  - "aula-04/templates/weekly-ledger.yaml"
+  - "aula-04/exemplos/projeto-tres-semanas/README.md"
+  - "aula-04/exemplos/projeto-tres-semanas/weekly-panels.jsonl"
+  - "aula-04/exemplos/projeto-tres-semanas/source-observations.json"
+  - "aula-04/exemplos/projeto-tres-semanas/previous-decision.json"
+  - "aula-04/exemplos/projeto-tres-semanas/expected-walkthrough.json"
+  - "scripts/run-aula-04-walkthrough.mjs"
+  - "scripts/run-aula-04-walkthrough.test.mjs"
+  - "README.md"
+  - "aula-03/docs/conexao-aula-04.md"
   - "docs/stories/epic-17/STORY-17.W3.1-aula-04-student-module.md"
   - "docs/stories/epic-17/evidence/STORY-17.W3.1.md"
 ```
@@ -166,3 +184,5 @@ file_list:
 | Data | Agente | Mudança |
 |---|---|---|
 | 2026-07-15 | @dev | Preflight e leitura integral concluídos; story rematerializada de `Ready` para `InProgress` antes do código. |
+| 2026-07-15 | @dev | RED/GREEN entregou módulo, exemplo de três semanas, walkthrough local e documentação multiplataforma. |
+| 2026-07-15 | @dev | Trust boundaries endurecidas; 159/159 testes Node verdes e story movida para `InReview`. |
