@@ -14,6 +14,7 @@
 - QG2: `FAIL 64/100`; privacidade e concorrência normal passaram, mas 24 contenders sobre o mesmo lock stale produziram 22 exits `0`, 2 exits `2` e somente 22 entradas. Trocar owner/token antes do rename também não impedia o owner antigo de commitar.
 - RED Round3: `4bf2f0b` congela recovery stale 24/24, replay concorrente, ENOENT no gap de inicialização, hijack, SIGKILL e symlink.
 - Remediação Round3: `2d354d5` reclama o owner observado por rename para quarantine, remove somente diretório vazio por `rmdir`, repete ENOENT transitório e aplica fencing de inode, PID e token antes da leitura, do CAS e do rename.
+- QG3 independente: `PASS 98/100`, alta confiança e zero blockers no HEAD `d27a1017d320552e263f3468b7ed907c548cb1f6`.
 - `docs/stories/epic-17/epic-17-state.json` não foi alterado; o estado do epic permanece reservado ao fan-in.
 
 ## Contrato congelado
@@ -85,4 +86,4 @@ O ledger produzido também foi comparado byte a byte com `ledger-three-weeks.exp
 
 ## Veredito do executor
 
-`READY_FOR_QUALITY_GATE_3`. Os findings de concorrência stale e fencing do QG2 estão cobertos por RED/GREEN; a story permanece `InReview` e `Done` depende de novo Quality Gate independente de `@architect`.
+`SDC_COMPLETE`. QG3 independente aprovou a story com `PASS 98/100`, alta confiança e zero blockers. A story está `Done`; deploy foi dispensado por `deploy_type: none`, e epic-state/fan-in permanecem reservados ao `@devops`.

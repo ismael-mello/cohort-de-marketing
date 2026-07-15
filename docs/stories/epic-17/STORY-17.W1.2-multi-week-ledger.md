@@ -1,5 +1,5 @@
 ---
-status: InReview
+status: Done
 story_id: "17.W1.2"
 title: "Ledger multi-semana com proveniência"
 epic: 17
@@ -8,7 +8,7 @@ parent_epic: "docs/stories/epic-17/EPIC-17-AULA-04-DATA-FOUNDATION.md"
 effort: 7h
 deploy_type: none
 appetite: 1d
-hill_phase: verifying
+hill_phase: done
 confidence_level: know-how
 involves_ui: false
 task_mode: CRIAR
@@ -67,7 +67,7 @@ affected_paths:
 
 ## Status
 
-InReview
+Done
 
 ## Dependências
 
@@ -148,6 +148,7 @@ completion_notes:
   - "O RED 4bf2f0b congela recovery concorrente, gap mkdir/owner, fencing antes do rename, replay, SIGKILL e symlink."
   - "O commit 2d354d5 substitui remoção cega por claim do owner em quarantine mais rmdir atômico, repete ENOENT e aplica fencing dev/ino, PID e token antes da leitura, CAS e rename."
   - "Executados 21/21 testes focais e 66/66 testes Node completos; recovery stale 24/24 passou em oito repetições adicionais e hijack abortou sem commit."
+  - "QG3 independente aprovou o HEAD d27a101 com PASS 98/100, alta confiança e zero blockers; story fechada como Done sem alterar epic-state."
 file_list:
   - "data/contracts/weekly-ledger.v1.schema.json"
   - "scripts/build-weekly-ledger.mjs"
@@ -158,6 +159,38 @@ file_list:
   - "aula-04/fixtures/ledger-conflict.input.jsonl"
   - "docs/stories/epic-17/STORY-17.W1.2-multi-week-ledger.md"
   - "docs/stories/epic-17/evidence/STORY-17.W1.2.md"
+```
+
+## QA Results
+
+```yaml
+quality_gate_report:
+  story_id: "17.W1.2"
+  verdict: "PASS"
+  score: 98
+  confidence: high
+  blocking_findings: 0
+  rounds:
+    - round: 1
+      verdict: "FAIL"
+      score: 52
+      findings:
+        - "Writers concorrentes perdiam updates."
+        - "Source/premise livres permitiam copiar PII, decisão e conteúdo bruto."
+    - round: 2
+      verdict: "FAIL"
+      score: 64
+      findings:
+        - "Recovery concorrente de lock stale removia locks recém-adquiridos."
+        - "Owner antigo ainda commitava após troca de owner/token."
+    - round: 3
+      verdict: "PASS"
+      score: 98
+      confidence: high
+      blocking_findings: 0
+  reviewed_by: "@architect"
+  reviewed_at: "2026-07-15"
+  reviewed_head: "d27a1017d320552e263f3468b7ed907c548cb1f6"
 ```
 
 ## Stop Conditions
@@ -177,3 +210,5 @@ file_list:
 | 2026-07-15 | @dev | Remediação RED/GREEN concluída com lock+CAS, recuperação de owner e referências minimizadas; story mantida `InReview` para QG2 independente. |
 | 2026-07-15 | @architect | QG2 `FAIL 64`: recovery stale concorrente removia lock novo e owner antigo ainda commitava após hijack. |
 | 2026-07-15 | @dev | Remediação Round3 concluída com quarantine+rmdir, retry de ENOENT e fencing de owner/token; story mantida `InReview` para QG3 independente. |
+| 2026-07-15 | @architect | QG3 `PASS 98`: alta confiança, zero blockers e todos os probes de recovery, fencing, privacidade e regressão verdes no HEAD `d27a101`. |
+| 2026-07-15 | @po | Story fechada como `Done`, hill phase `done`; atualização do epic state e fan-in reservados ao `@devops`. |
