@@ -2,7 +2,7 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import { createHash, randomBytes } from 'node:crypto';
 import {
-  mkdir, open, readFile, rename, rm, stat, unlink, writeFile,
+  link, lstat, mkdir, open, readFile, rename, rm, rmdir, stat, unlink, writeFile,
 } from 'node:fs/promises';
 import path, { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -22,6 +22,7 @@ const DEFAULT_LOCK_TIMEOUT_MS = 10_000;
 const DEFAULT_LOCK_RETRY_MS = 20;
 const DEFAULT_LOCK_STALE_MS = 30_000;
 const DEFAULT_CAS_RETRIES = 64;
+const LOCK_INITIALIZATION_GRACE_MS = 1_000;
 const EMPTY_LEDGER = Object.freeze({
   contract: 'WeeklyLedger',
   schemaVersion: LEDGER_VERSION,
@@ -84,36 +85,161 @@ function processIsAlive(pid) {
   }
 }
 
-async function readLockOwner(lockPath) {
+function sameFileIdentity(left, right) {
+  return left?.dev === right?.dev && left?.ino === right?.ino;
+}
+
+function validLockOwner(owner) {
+  const createdAtMs = Date.parse(owner?.createdAt);
+  if (
+    owner?.version !== 1
+    || !Number.isSafeInteger(owner.pid)
+    || typeof owner.token !== 'string'
+    || owner.token.length === 0
+    || !Number.isFinite(createdAtMs)
+    || createdAtMs > Date.now() + 60_000
+  ) return null;
+  return owner;
+}
+
+async function readOwnerFile(ownerPath) {
   try {
-    const owner = JSON.parse(await readFile(path.join(lockPath, 'owner.json'), 'utf8'));
-    const createdAtMs = Date.parse(owner?.createdAt);
-    if (
-      owner?.version !== 1
-      || !Number.isSafeInteger(owner.pid)
-      || typeof owner.token !== 'string'
-      || !Number.isFinite(createdAtMs)
-      || createdAtMs > Date.now() + 60_000
-    ) return null;
-    return owner;
+    return validLockOwner(JSON.parse(await readFile(ownerPath, 'utf8')));
   } catch {
     return null;
   }
 }
 
-async function removeAbandonedLock(lockPath, staleMs) {
-  const owner = await readLockOwner(lockPath);
-  if (owner) {
-    const ageMs = Date.now() - Date.parse(owner.createdAt);
-    if (processIsAlive(owner.pid) || ageMs < staleMs) return false;
-    await rm(lockPath, { recursive: true, force: true });
-    return true;
+async function readLockState(lockPath) {
+  let lockStat;
+  try {
+    lockStat = await lstat(lockPath);
+  } catch (error) {
+    if (error.code === 'ENOENT') return null;
+    throw error;
+  }
+  if (!lockStat.isDirectory() || lockStat.isSymbolicLink()) {
+    return { lockStat, owner: null, ownerStat: null };
+  }
+
+  const ownerPath = path.join(lockPath, 'owner.json');
+  try {
+    const ownerStat = await lstat(ownerPath);
+    if (!ownerStat.isFile() || ownerStat.isSymbolicLink()) {
+      return { lockStat, owner: null, ownerStat };
+    }
+    return { lockStat, ownerStat, owner: await readOwnerFile(ownerPath) };
+  } catch (error) {
+    if (error.code === 'ENOENT') return { lockStat, owner: null, ownerStat: null };
+    throw error;
+  }
+}
+
+function lockMatchesState(lock, state) {
+  return Boolean(
+    state?.owner
+    && state.owner.pid === lock.pid
+    && state.owner.token === lock.token
+    && sameFileIdentity(state.lockStat, lock.lockStat)
+    && sameFileIdentity(state.ownerStat, lock.ownerStat),
+  );
+}
+
+function ownerMatchesState(owner, ownerStat, state) {
+  return Boolean(
+    owner
+    && state?.owner
+    && owner.pid === state.owner.pid
+    && owner.token === state.owner.token
+    && owner.createdAt === state.owner.createdAt
+    && sameFileIdentity(ownerStat, state.ownerStat),
+  );
+}
+
+async function restoreQuarantinedOwner(quarantinePath, ownerPath) {
+  try {
+    await link(quarantinePath, ownerPath);
+  } catch {
+    // Never overwrite a replacement owner while restoring a disputed claim.
+  }
+  await unlink(quarantinePath).catch(() => {});
+}
+
+async function removeClaimedDirectoryLock(lockPath, state) {
+  if (!state?.owner || !state.ownerStat) return false;
+  const ownerPath = path.join(lockPath, 'owner.json');
+  const quarantinePath = `${lockPath}.owner.${process.pid}.${randomBytes(8).toString('hex')}.quarantine`;
+  try {
+    await rename(ownerPath, quarantinePath);
+  } catch {
+    return false;
+  }
+
+  let quarantineStat;
+  let quarantineOwner;
+  try {
+    quarantineStat = await lstat(quarantinePath);
+    quarantineOwner = await readOwnerFile(quarantinePath);
+  } catch {
+    await restoreQuarantinedOwner(quarantinePath, ownerPath);
+    return false;
+  }
+  if (!ownerMatchesState(quarantineOwner, quarantineStat, state)) {
+    await restoreQuarantinedOwner(quarantinePath, ownerPath);
+    return false;
   }
 
   try {
-    const lockStat = await stat(lockPath);
-    if (Date.now() - lockStat.mtimeMs < staleMs) return false;
-    await rm(lockPath, { recursive: true, force: true });
+    await rmdir(lockPath);
+  } catch {
+    await restoreQuarantinedOwner(quarantinePath, ownerPath);
+    return false;
+  }
+  await unlink(quarantinePath).catch(() => {});
+  return true;
+}
+
+async function quarantineNonDirectoryLock(lockPath, observedStat) {
+  const quarantinePath = `${lockPath}.${process.pid}.${randomBytes(8).toString('hex')}.quarantine`;
+  try {
+    await rename(lockPath, quarantinePath);
+  } catch {
+    return false;
+  }
+  try {
+    const quarantineStat = await lstat(quarantinePath);
+    if (!sameFileIdentity(quarantineStat, observedStat)) {
+      try {
+        await lstat(lockPath);
+      } catch (error) {
+        if (error.code === 'ENOENT') await rename(quarantinePath, lockPath).catch(() => {});
+      }
+      return false;
+    }
+    await rm(quarantinePath, { recursive: true, force: true });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function removeAbandonedLock(lockPath, staleMs) {
+  const state = await readLockState(lockPath);
+  if (!state) return true;
+  if (!state.lockStat.isDirectory() || state.lockStat.isSymbolicLink()) {
+    if (Date.now() - state.lockStat.mtimeMs < staleMs) return false;
+    return quarantineNonDirectoryLock(lockPath, state.lockStat);
+  }
+  if (state.owner) {
+    const ageMs = Date.now() - Date.parse(state.owner.createdAt);
+    if (processIsAlive(state.owner.pid) || ageMs < staleMs) return false;
+    return removeClaimedDirectoryLock(lockPath, state);
+  }
+
+  try {
+    const minimumAgeMs = Math.max(staleMs, LOCK_INITIALIZATION_GRACE_MS);
+    if (Date.now() - state.lockStat.mtimeMs < minimumAgeMs) return false;
+    await rmdir(lockPath);
     return true;
   } catch (error) {
     return error.code === 'ENOENT';
@@ -129,33 +255,60 @@ async function acquireLedgerLock(ledgerPath) {
 
   while (Date.now() <= deadline) {
     const token = randomBytes(16).toString('hex');
+    let createdLockDirectory = false;
     try {
       await mkdir(lockPath);
+      createdLockDirectory = true;
       const owner = {
         version: 1,
         pid: process.pid,
         token,
         createdAt: new Date().toISOString(),
       };
+      const initializationDelayMs = integerOption(
+        'WEEKLY_LEDGER_TEST_LOCK_INIT_DELAY_MS',
+        0,
+        0,
+      );
+      if (initializationDelayMs > 0) await delay(initializationDelayMs);
       await writeFile(path.join(lockPath, 'owner.json'), `${JSON.stringify(owner)}\n`, { flag: 'wx' });
-      return { lockPath, token };
-    } catch (error) {
-      if (error.code !== 'EEXIST') {
-        await rm(lockPath, { recursive: true, force: true }).catch(() => {});
-        return null;
+      const state = await readLockState(lockPath);
+      if (
+        state?.owner?.pid === process.pid
+        && state.owner.token === token
+        && state.ownerStat
+      ) {
+        return {
+          lockPath,
+          pid: process.pid,
+          token,
+          lockStat: state.lockStat,
+          ownerStat: state.ownerStat,
+        };
       }
-      await removeAbandonedLock(lockPath, staleMs);
-      if (Date.now() <= deadline) await delay(retryMs);
+    } catch (error) {
+      if (!createdLockDirectory && error.code !== 'EEXIST') return null;
+      if (createdLockDirectory) {
+        await rmdir(lockPath).catch(() => {});
+        if (error.code !== 'ENOENT' && error.code !== 'EEXIST') return null;
+      }
     }
+    await removeAbandonedLock(lockPath, staleMs);
+    if (Date.now() <= deadline) await delay(retryMs);
   }
   return null;
 }
 
+async function ledgerLockIsOwned(lock) {
+  if (!lock) return false;
+  return lockMatchesState(lock, await readLockState(lock.lockPath));
+}
+
 async function releaseLedgerLock(lock) {
   if (!lock) return;
-  const owner = await readLockOwner(lock.lockPath);
-  if (owner?.token !== lock.token || owner.pid !== process.pid) return;
-  await rm(lock.lockPath, { recursive: true, force: true });
+  const state = await readLockState(lock.lockPath);
+  if (!lockMatchesState(lock, state)) return;
+  await removeClaimedDirectoryLock(lock.lockPath, state);
 }
 
 function provenanceReference(value, allowedKinds) {
@@ -373,7 +526,7 @@ async function destinationSnapshot(destination) {
   }
 }
 
-async function atomicWrite(destination, contents, expectedSnapshot) {
+async function atomicWrite(destination, contents, expectedSnapshot, lock) {
   const temporary = path.join(
     path.dirname(destination),
     `.${path.basename(destination)}.${process.pid}.${randomBytes(8).toString('hex')}.tmp`,
@@ -385,6 +538,17 @@ async function atomicWrite(destination, contents, expectedSnapshot) {
     await handle.sync();
     await handle.close();
     handle = null;
+    const beforeRenameDelayMs = integerOption(
+      'WEEKLY_LEDGER_TEST_BEFORE_RENAME_DELAY_MS',
+      0,
+      0,
+    );
+    if (beforeRenameDelayMs > 0) await delay(beforeRenameDelayMs);
+    if (!await ledgerLockIsOwned(lock)) {
+      const error = new Error('Ledger lock ownership changed before CAS.');
+      error.code = 'LEDGER_LOCK_OWNERSHIP_LOST';
+      throw error;
+    }
     const currentSnapshot = await destinationSnapshot(destination);
     if (
       currentSnapshot.exists !== expectedSnapshot.exists
@@ -392,6 +556,11 @@ async function atomicWrite(destination, contents, expectedSnapshot) {
     ) {
       const error = new Error('Ledger changed while the update was being prepared.');
       error.code = 'LEDGER_CAS_MISMATCH';
+      throw error;
+    }
+    if (!await ledgerLockIsOwned(lock)) {
+      const error = new Error('Ledger lock ownership changed before rename.');
+      error.code = 'LEDGER_LOCK_OWNERSHIP_LOST';
       throw error;
     }
     await rename(temporary, destination);
@@ -487,6 +656,10 @@ async function main(args) {
 
     let retryAfterCasMismatch = false;
     try {
+      if (!await ledgerLockIsOwned(lock)) {
+        process.stderr.write('Unable to retain ledger lock.\n');
+        return 2;
+      }
       const existing = await readExistingLedger(ledgerPath);
       if (existing.ioError) {
         process.stderr.write('Unable to read existing ledger.\n');
@@ -518,10 +691,14 @@ async function main(args) {
             ledgerPath,
             `${JSON.stringify(result.ledger, null, 2)}\n`,
             existing.snapshot,
+            lock,
           );
         } catch (error) {
           if (error.code === 'LEDGER_CAS_MISMATCH') {
             retryAfterCasMismatch = true;
+          } else if (error.code === 'LEDGER_LOCK_OWNERSHIP_LOST') {
+            process.stderr.write('Unable to retain ledger lock.\n');
+            return 2;
           } else {
             process.stderr.write('Unable to write ledger atomically.\n');
             return 2;
