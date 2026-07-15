@@ -56,8 +56,8 @@
   "$defs": {
     "reconciliationIdentifier": {
       "type": "string",
-      "description": "Typed opaque identifier: allowlisted metric, calendar month and an 8-32 character lowercase hexadecimal nonce.",
-      "pattern": "^reconciliation:(?:revenue|orders|refunds|fees|net_revenue):[0-9]{4}-(?:0[1-9]|1[0-2]):[a-f0-9]{8,32}$"
+      "description": "Typed opaque identifier: allowlisted metric, calendar month and an 8-32 character lowercase hexadecimal nonce containing at least one a-f letter.",
+      "pattern": "^reconciliation:(?:revenue|orders|refunds|fees|net_revenue):[0-9]{4}-(?:0[1-9]|1[0-2]):(?=[a-f0-9]{8,32}$)(?=[a-f0-9]*[a-f])[a-f0-9]+$"
     },
     "metric": {
       "type": "string",
@@ -148,7 +148,7 @@
       "required": ["kind", "id"],
       "properties": {
         "kind": { "const": "platform-export" },
-        "id": { "type": "string", "pattern": "^platform:[0-9]{4}-(?:0[1-9]|1[0-2]):[a-f0-9]{8,32}$" }
+        "id": { "type": "string", "pattern": "^platform:[0-9]{4}-(?:0[1-9]|1[0-2]):(?=[a-f0-9]{8,32}$)(?=[a-f0-9]*[a-f])[a-f0-9]+$" }
       }
     },
     "checkoutProvenanceRef": {
@@ -157,7 +157,7 @@
       "required": ["kind", "id"],
       "properties": {
         "kind": { "const": "checkout-export" },
-        "id": { "type": "string", "pattern": "^checkout:[0-9]{4}-(?:0[1-9]|1[0-2]):[a-f0-9]{8,32}$" }
+        "id": { "type": "string", "pattern": "^checkout:[0-9]{4}-(?:0[1-9]|1[0-2]):(?=[a-f0-9]{8,32}$)(?=[a-f0-9]*[a-f])[a-f0-9]+$" }
       }
     },
     "cashProvenanceRef": {
@@ -166,7 +166,7 @@
       "required": ["kind", "id"],
       "properties": {
         "kind": { "const": "cash-export" },
-        "id": { "type": "string", "pattern": "^cash:[0-9]{4}-(?:0[1-9]|1[0-2]):[a-f0-9]{8,32}$" }
+        "id": { "type": "string", "pattern": "^cash:[0-9]{4}-(?:0[1-9]|1[0-2]):(?=[a-f0-9]{8,32}$)(?=[a-f0-9]*[a-f])[a-f0-9]+$" }
       }
     },
     "operatorProvenanceRef": {
@@ -175,7 +175,7 @@
       "required": ["kind", "id"],
       "properties": {
         "kind": { "const": "operator-declaration" },
-        "id": { "type": "string", "pattern": "^operator:[0-9]{4}-(?:0[1-9]|1[0-2]):[a-f0-9]{8,32}$" }
+        "id": { "type": "string", "pattern": "^operator:[0-9]{4}-(?:0[1-9]|1[0-2]):(?=[a-f0-9]{8,32}$)(?=[a-f0-9]*[a-f])[a-f0-9]+$" }
       }
     },
     "observation": {

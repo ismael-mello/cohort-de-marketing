@@ -33,6 +33,7 @@ const SENSITIVE_VALUE_PATTERNS = Object.freeze([
   /\b(?:sk|pk)_(?:live|test)_[a-z0-9]+\b/i,
   /-----BEGIN [A-Z ]*PRIVATE KEY-----/,
   /(?:^|[^a-z])(?:buyer|customer|client|pessoa|nome|name|address|endereco|rua|avenida|street|cpf|cnpj|document|phone|telefone|mobile|token|secret|password)(?:[^a-z]|$)/i,
+  /(?:^|[^0-9])(?:[0-9]{11}|[0-9]{14})(?:[^0-9]|$)/,
 ]);
 
 let validatorsPromise;
