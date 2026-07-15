@@ -2,7 +2,8 @@
 
 ## Status
 
-NOT_RUN. Este arquivo define evidência obrigatória; não afirma execução.
+PASS. W1/W2 estão integradas e o gate W3.1 foi aprovado localmente pelo
+quality gate independente de arquitetura.
 
 ## Matriz
 
@@ -17,14 +18,17 @@ NOT_RUN. Este arquivo define evidência obrigatória; não afirma execução.
 
 ## Gates transversais
 
-- [ ] Sem capability loss do briefing e mapa atuais.
-- [ ] ProjectBrief v1 é a única fonte persistente.
-- [ ] Configuração mutável fica em JSON/YAML validado, não hardcoded.
-- [ ] Mirrors canônico e Codex permanecem equivalentes quando alterados.
-- [ ] Evidência sanitizada, reproduzível e sem dados de cliente.
-- [ ] Sign-offs de Product Owner, Architect e QA registrados.
+- [x] Sem capability loss do briefing e mapa atuais.
+- [x] ProjectBrief v1 é a única fonte persistente dos dados de briefing; ArtifactIndex permanece um contrato separado.
+- [x] Configuração mutável fica em JSON/YAML validado, não hardcoded.
+- [x] Mirrors canônico e Codex permanecem equivalentes quando alterados.
+- [x] Evidência sanitizada, reproduzível e sem dados de cliente.
+- [x] Sign-offs de Product Owner, Architect e QA registrados.
 
 ## Veredito
 
-PENDING.
+PASS. QA executor aprovou o gate técnico; Architect aprovou o quality gate com
+`98/100`, confiança alta e zero findings no HEAD `dfbdf10`. Os registros PO/QA
+são evidências de fases sequenciais do SDC, não identidades humanas adicionais.
 
+Evidência detalhada: `docs/stories/epic-16/evidence/STORY-16.W3.1.md`.

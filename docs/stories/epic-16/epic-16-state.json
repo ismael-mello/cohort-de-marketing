@@ -3,8 +3,8 @@
   "epic_id": "16",
   "namespace": "PUB",
   "title": "Projeto canonico como fonte de verdade",
-  "status": "InProgress",
-  "verification_verdict": "NOT_RUN",
+  "status": "Done",
+  "verification_verdict": "PASS",
   "created": "2026-07-14",
   "depends_on": ["GATE-0"],
   "implementation_authorized": true,
@@ -73,10 +73,23 @@
     {
       "wave_id": "W3",
       "name": "Release gate",
-      "status": "planned",
+      "status": "completed",
       "parallel_groups": [["16.W3.1"]],
       "stories": [
-        { "story_id": "16.W3.1", "status": "Draft", "depends_on": ["16.W1.2", "16.W2.2", "16.W2.3"] }
+        {
+          "story_id": "16.W3.1",
+          "title": "Gate público de contrato e distribuição",
+          "status": "Done",
+          "task_mode": "VALIDAR",
+          "deploy_type": "none",
+          "repo_target": "cohort-de-marketing",
+          "effort": "8h",
+          "executor": "@qa",
+          "quality_gate": "@architect",
+          "model": "opus",
+          "depends_on": ["16.W1.2", "16.W2.2", "16.W2.3"],
+          "consumes_artifacts_of": ["16.W1.1", "16.W1.2", "16.W2.1", "16.W2.2", "16.W2.3"]
+        }
       ]
     }
   ]
