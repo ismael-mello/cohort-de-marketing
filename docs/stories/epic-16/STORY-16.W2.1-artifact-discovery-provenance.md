@@ -145,6 +145,14 @@ repo_target: "cohort-de-marketing"
 - As duas cópias do briefing validam o contrato com chaveamento fechado,
   recusam paths não portáteis, regras divergentes e resumos inconsistentes, e
   derivam readiness somente de entradas `confirmed`.
+- O matcher glob segmentado possui versão explícita e a mesma implementação no
+  Node e nas duas cópias do browser. Cada `entry.path` precisa casar ao menos um
+  pattern de origem canônico; paths são únicos globalmente, inclusive entre tipos.
+- A policy do índice precisa ser idêntica à policy carregada das unlock rules e
+  toda a provenance passa pela verificação de referências sensíveis.
+- `loadDraft()` revalida o ArtifactIndex persistido integralmente. Índice
+  adulterado é removido, todos os desbloqueios são limpos e o ProjectBrief
+  validado permanece disponível, sem propagar `pageerror`.
 - Quando existe índice importado, a marcação manual fica bloqueada: o operador
   confirma pelo helper CLI e reimporta, preservando a proveniência.
 - A busca por PRs abertos antes da implementação retornou lista vazia.
@@ -153,13 +161,16 @@ repo_target: "cohort-de-marketing"
 
 - Test-first: commit `c1121f9`; a suíte falhou inicialmente com
   `ERR_MODULE_NOT_FOUND`, comprovando ausência do indexador no baseline.
-- `node --test scripts/project-artifact-index.test.mjs`: PASS, 13/13.
+- `node --test scripts/project-artifact-index.test.mjs`: PASS, 16/16.
 - Casos adversariais: projeto ausente, raiz inválida, absoluto, traversal,
   duplicidade, ambiguidade entre tipos e symlink de escape.
 - Reprodutibilidade e minimização: duas execuções idênticas; índice sem conteúdo
   bruto e sem raiz absoluta; CLI confirmado por processo filho.
 - Smoke HTTP/Playwright: PASS nas duas URLs distribuídas, importação do mesmo
   índice, artefato confirmado refletido e zero `pageerror`.
+- Reidratação Playwright: índice válido preserva confirmação; schema `v999`,
+  propriedade adicional, path/pattern adulterado, policy divergente e path
+  global duplicado limpam unlocks, preservam o ProjectBrief e regravam storage seguro.
 - `node scripts/validate-project-brief-rules.mjs`: PASS, 120 campos, 31 skills e
   schemas AJV 2020 compilados.
 - `node scripts/validate-skill-catalog.mjs`: PASS, 31 skills e 41 edges.
@@ -176,6 +187,9 @@ repo_target: "cohort-de-marketing"
 - `722e851` - `docs: hand off artifact index for review [Story 16.W2.1]`
 - `948e1df` - `test: reject credential signatures in artifact paths [Story 16.W2.1]`
 - `66b3909` - `fix: sanitize artifact path metadata [Story 16.W2.1]`
+- `9827ced` - `docs: record artifact path hardening [Story 16.W2.1]`
+- `dcca6e7` - `test: reproduce artifact index provenance gaps [Story 16.W2.1]`
+- `c5030e6` - `fix: bind artifact provenance to canonical rules [Story 16.W2.1]`
 
 ## File List real
 
@@ -208,3 +222,19 @@ repo_target: "cohort-de-marketing"
 | 2026-07-15 | @po | Contrato enriquecido e validado para execução na PUB-16 W2. |
 | 2026-07-15 | @dev | Indexador confinado, importação do ArtifactIndex e evidências encaminhados para arquitetura. |
 | 2026-07-15 | @dev | Reprobe adicional passou a recusar assinaturas fortes de credenciais também nos paths serializados. |
+| 2026-07-15 | @dev | QG Round 1 remediado com matcher espelhado, provenance canônica e reidratação fail-closed. |
+
+## QA Results
+
+### Round 1
+
+- Quality Gate independente: FAIL.
+- Score: 68/100.
+- QG-001: o validator aceitava path que não casava o pattern de origem declarado.
+- QG-002: policy e unicidade global não eram vinculadas às unlock rules correntes.
+- QG-003: provenance não passava integralmente pela proteção de referências sensíveis.
+- QG-004: `loadDraft()` confiava em `saved.artifactIndex` e `saved.artifacts` sem
+  revalidação, permitindo desbloqueio após adulteração do storage.
+- Remediation: matcher determinístico espelhado, vínculo canônico completo,
+  path global único e reidratação fail-closed com 16 testes Node/Playwright.
+- Estado: `InReview`, aguardando QG Round 2 independente de `@architect`.

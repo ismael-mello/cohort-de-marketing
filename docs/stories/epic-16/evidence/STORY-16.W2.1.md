@@ -13,12 +13,13 @@ independente de `@architect`. Nenhum push, PR, merge ou deploy foi realizado.
 - Test-first: `c1121f9`.
 - Implementação: `71fdf32`.
 - Hardening de paths sensíveis: teste `948e1df`, correção `66b3909`.
+- QG Round 1: FAIL 68/100; reprodução `dcca6e7`, correção `c5030e6`.
 
 ## Matriz executada
 
 | Prova | Resultado |
 |---|---|
-| Unitários, adversariais, CLI e Playwright | PASS, 13/13 |
+| Unitários, adversariais, CLI e Playwright | PASS, 16/16 |
 | Reprodutibilidade do índice | PASS |
 | Projeto ausente ou raiz inválida | Recusa tipada |
 | Absoluto, traversal e symlink de escape | Recusa tipada e sanitizada |
@@ -27,6 +28,13 @@ independente de `@architect`. Nenhum push, PR, merge ou deploy foi realizado.
 | Confirmação exata | Somente a entrada alvo muda |
 | Conteúdo bruto e path da máquina | Ausentes da serialização |
 | Assinatura forte de credencial em filename | Recusa tipada sem eco |
+| Path sem casar pattern de origem | Recusa fail-closed |
+| Policy divergente das unlock rules | Recusa fail-closed |
+| Path repetido entre tipos | Recusa global |
+| Provenance com assinatura sensível | Recusa sem eco |
+| Storage com schema v999 ou propriedade extra | Unlocks limpos; ProjectBrief preservado |
+| Storage com path/pattern/policy adulterado | Unlocks limpos; ProjectBrief preservado |
+| Storage com índice válido | Confirmações derivadas novamente |
 | Briefings distribuídos | Byte a byte idênticos |
 | Smoke HTTP das duas URLs | PASS, zero `pageerror` |
 | ProjectBrief rules | PASS, 120 campos e 31 skills |
@@ -46,6 +54,10 @@ independente de `@architect`. Nenhum push, PR, merge ou deploy foi realizado.
   permanece `pending_confirmation` e não satisfaz requisito crítico.
 - A UI não lê diretórios. Ela aceita somente `ArtifactIndex v1` fechado e
   alinhado à versão corrente de `skill-unlock-rules.json`.
+- Node e browser usam o matcher `1.0.0` espelhado e provado pela mesma matriz;
+  provenance canônica não é apenas declarada, precisa casar o path.
+- O storage nunca restaura o mapa booleano legado como autoridade. Somente um
+  índice integralmente revalidado pode reconstruir os desbloqueios.
 
 ## Limites e handoff
 
