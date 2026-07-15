@@ -89,6 +89,8 @@ InReview
 - [x] AC4: Comparação só fica `comparable` quando as observações selecionadas têm o mesmo nome, a mesma janela literal não nula e valores numéricos confirmados. Janela divergente/nula, selo ausente, valor ausente ou falta de confirmação humana gera estado explícito, aviso e `requiresHumanDecision: true`, sem delta, agregação ou tendência.
 - [x] AC5: CPA, ROAS e qualquer tendência são apenas ecoados como observações quando existem no ledger; nunca são derivados. A saída de uma única semana usa o mesmo contrato e retorna comparação `insufficient_history`, preservando compatibilidade de leitura da Aula 3.
 - [x] AC6: A skill canônica e seu espelho documentam o modo histórico, o comando, o contrato não-inferir e a fronteira pública; mirror parity e golden outputs cobrem semanas compatíveis, incompatíveis, ausências e uma única semana.
+- [x] AC7: WeeklyLedger `1.1.0` preserva o `canonicalHash` do WeeklyPanel e acrescenta digest SHA-256 versionado da projeção completa; builder e reader recomputam a mesma representação canônica e rejeitam valor, fonte ou hash adulterado.
+- [x] AC8: Histórico suficiente exige ao menos dois `weekStart` distintos, independentemente da quantidade de revisões, e lexemas inteiros/decimais fora da faixa segura são rejeitados antes de `JSON.parse` sem arredondamento.
 
 ## Tasks
 
@@ -120,7 +122,9 @@ A File List é uma allow-list inicial. Criação, alteração ou renomeação fo
 ## Dev Notes
 
 - Baseline integrado: `d0bc5ed1aff114d616402e98b7ec17e25b7c2309`; W1 está concluída e esta story pode executar em paralelo com 17.W2.3.
-- O reader consome o `WeeklyLedgerV1` persistido; não abre WeeklyPanel bruto, projeto privado, Studio, API, credencial ou export de plataforma.
+- O reader consome o `WeeklyLedgerV1` persistido na versão `1.1.0`; não abre WeeklyPanel bruto, projeto privado, Studio, API, credencial ou export de plataforma.
+- `canonicalHash` continua sendo o hash de proveniência do WeeklyPanel completo. `projectionDigest` é SHA-256 sobre a entrada persistida sem o próprio digest, serializada por chaves recursivamente ordenadas conforme `projectionDigestVersion: 1.0.0`.
+- Ledgers `1.0.0` não recebem integridade retroativa: devem ser reconstruídos a partir dos WeeklyPanels validados para produzir `1.1.0`.
 - `sourceRef` e `premiseRef` são referências estruturadas já minimizadas por 17.W1.2. Nunca resolva essas referências nem copie artefatos apontados por elas.
 - Não preencha lacunas com zero. Um slot ausente só pode ser materializado para um nome de métrica literalmente presente em outra entrada da seleção; nomes externos ou catálogo implícito são proibidos.
 - Não use aritmética para produzir delta, média, taxa, tendência, CPA ou ROAS. A comparabilidade é somente um estado estrutural; a interpretação continua humana.
@@ -156,6 +160,10 @@ completion_notes:
   - "O commit d3b7842 implementa validação AJV 2020-12 e semântica do índice, projeção read-only, agrupamento por selo e estados sem cálculo derivado."
   - "Testes focais 8/8, adjacentes 37/37 e suíte Node completa 76/76 passaram; mirrors têm SHA-256 idêntico."
   - "Story movida para InReview; epic state permanece reservado ao fan-in após QG independente."
+  - "QG1 reprovou o HEAD 0bbb009 com FAIL 58 por integridade não verificável, revisões contadas como semanas e rounding numérico."
+  - "A allow-list foi expandida no commit 647e66e antes de tocar builder/schema; RED Round2 no commit 0aaf771 reproduziu 14 falhas."
+  - "O commit ad63a79 versiona WeeklyLedger 1.1.0, preserva canonicalHash, adiciona digest recomputável, conta semanas distintas e bloqueia números inseguros antes do parse."
+  - "Remediação passou em 35/35 testes focais e 82/82 testes Node completos; story permanece InReview para QG2 independente."
 file_list:
   - ".claude/skills/leitor-de-metricas/SKILL.md"
   - ".agents/skills/leitor-de-metricas/SKILL.md"
@@ -188,6 +196,11 @@ quality_gate_report:
         - "A projeção persistida não tinha digest recomputável; valor ou sourceRef adulterado passava na leitura."
         - "Múltiplas revisões da mesma semana eram contadas como histórico suficiente."
         - "Lexemas numéricos fora da faixa JSON segura podiam ser arredondados antes da saída."
+  remediation:
+    status: "READY_FOR_QG2"
+    implementation_head: "ad63a79"
+    focal_tests: "35/35"
+    full_tests: "82/82"
 ```
 
 ## Stop conditions
@@ -204,3 +217,4 @@ quality_gate_report:
 | 2026-07-15 | @dev | TDD RED, implementação fail-closed e documentação da skill concluídos; 76/76 testes Node verdes e story movida para `InReview`. |
 | 2026-07-15 | @architect | QG1 `FAIL 58`: digest de projeção ausente, contagem por revisão e arredondamento de lexema numérico bloquearam o fan-in. |
 | 2026-07-15 | @dev | File List expandida antes da remediação para versionar WeeklyLedger, builder, schema e fixture esperada. |
+| 2026-07-15 | @dev | Round2 RED/GREEN concluído com digest versionado, semanas distintas e lexer numérico seguro; story mantida em `InReview` para QG2. |
