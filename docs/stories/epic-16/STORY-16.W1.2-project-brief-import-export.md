@@ -105,6 +105,13 @@ versionado em `scripts/package-lock.json` e não adiciona dependência de runtim
 - Limite deliberado: a política não é um scanner de entropia ou DLP genérico.
   Ela exige assignment com valor ou prefixo forte conhecido, permitindo menções
   pedagógicas e placeholders redigidos; formatos novos exigem ampliar a matriz.
+- Gramática de assignment: somente nomes sensíveis explícitos seguidos por `:`
+  ou `=`; valor quoted termina na aspa correspondente e valor unquoted termina
+  em quebra de linha, vírgula, ponto e vírgula ou delimitador estrutural. Toda
+  pontuação interna é preservada antes da classificação.
+- Allow-list normalizada e exata: `YOUR_TOKEN_HERE`, `SEU_TOKEN_AQUI`,
+  `YOUR_API_KEY`, `example-token`, `<TOKEN>` e `[REDACTED]`; variações com
+  prefixo/sufixo adicional falham fechado.
 - A busca de PRs abertos no repositório público retornou lista vazia antes da
   implementação.
 
@@ -118,14 +125,17 @@ versionado em `scripts/package-lock.json` e não adiciona dependência de runtim
 - Execução combinada dos testes browser e contrato: PASS, 27/27.
 - Matriz RFC3339 browser/AJV: 2 datas válidas e 4 datas impossíveis/fora do
   calendário com a mesma decisão nos dois validadores.
-- Matriz de credenciais: 16 imports adversariais cobrindo assignments, headers,
+- Matriz de credenciais: 21 imports adversariais cobrindo assignments, headers,
   chave privada e formatos de provedores recusados sem alterar draft ou
   `localStorage`; edição sensível bloqueia autosave e export antes do download.
-- Controles benignos: 6 frases pedagógicas/placeholders redigidos aceitos. Reload
-  após os bloqueios restaura o draft seguro e o storage byte a byte original.
+- Regressões de superfície: os quatro valores com pontuação, aspas ou segmentos
+  separados por `:` falham em import, autosave e export sem ecoar conteúdo.
+- Controles benignos: 12 frases pedagógicas/placeholders explícitos aceitos;
+  placeholder permitido também passa por autosave e export JSON. Reload após os
+  bloqueios restaura o draft seguro e o storage byte a byte original.
 - `node scripts/validate-project-brief-rules.mjs`: PASS, 120 campos, 31 skills e
   schemas AJV 2020 compilados.
-- `MAP_SCRATCH=/tmp/story-16-w1-2-qg-r2 MAP_PORT=8874 node scripts/validate-mapa-wiring.mjs`:
+- `MAP_SCRATCH=/tmp/story-16-w1-2-qg-r3 MAP_PORT=8875 node scripts/validate-mapa-wiring.mjs`:
   PASS, 69/69 `sampleUrl`, HTTP e PDF válidos.
 - `npm audit --prefix scripts --audit-level=moderate`: PASS, 0 vulnerabilidades.
 - `cmp -s briefing.html aula-03/materiais/briefing.html`: PASS.
@@ -143,6 +153,9 @@ versionado em `scripts/package-lock.json` e não adiciona dependência de runtim
 - `c2dc188` - `docs: record ProjectBrief IO QG remediation [Story 16.W1.2]`
 - `078d9ac` - `test: reproduce credential policy gaps [Story 16.W1.2]`
 - `803eed5` - `fix: broaden credential policy safely [Story 16.W1.2]`
+- `a7c471f` - `docs: record credential policy remediation [Story 16.W1.2]`
+- `9837bb8` - `test: reproduce credential value parsing gaps [Story 16.W1.2]`
+- `76c6b6a` - `fix: parse credential assignments deterministically [Story 16.W1.2]`
 
 ## File List real
 
@@ -161,8 +174,9 @@ versionado em `scripts/package-lock.json` e não adiciona dependência de runtim
   insegura; o draft anterior deve permanecer intacto em todos os casos.
 - Confirmar isolamento entre dois `projectId`, reload do projeto ativo e ausência
   de nomes usuais de tokens nas entradas do `localStorage`.
-- Revalidar no Round 3 os 16 padrões adversariais, os 6 controles benignos e a
-  preservação byte a byte do storage/draft em import, autosave, export e reload.
+- Revalidar no Round 4 os 21 padrões adversariais, os 12 controles benignos, a
+  igualdade exata da allow-list e a preservação byte a byte do storage/draft em
+  import, autosave, export e reload.
 - O executor mantém a story em `InReview`; somente o PASS independente de `@qa`
   autoriza `Done` e o fan-in da wave.
 
@@ -176,6 +190,8 @@ versionado em `scripts/package-lock.json` e não adiciona dependência de runtim
   browser/AJV e política fail-closed de credenciais antes de toda persistência.
 - 2026-07-15: QG Round 2 remediado ampliando assinaturas de credenciais sem
   bloquear conteúdo pedagógico benigno e cobrindo export/reload do draft seguro.
+- 2026-07-15: QG Round 3 remediado separando extração completa de assignment da
+  classificação e introduzindo allow-list exata de placeholders normalizados.
 
 ## QA Results
 
@@ -199,4 +215,15 @@ versionado em `scripts/package-lock.json` e não adiciona dependência de runtim
   autenticação Basic, chave privada e formatos redistribuíveis comuns.
 - Remediation: política centralizada ampliada, 16 negativos, 6 controles benignos
   e prova de import/autosave/export/reload sem alterar o storage persistido.
-- Estado após remediation: `InReview`, aguardando QG Round 3 independente.
+- Estado após remediation: `InReview`.
+
+### Round 3
+
+- Quality Gate independente: FAIL.
+- Score: 82/100.
+- QG-001 e QG-003: fechados.
+- QG-002 HIGH: a classe de caracteres do detector truncava valores com
+  pontuação e não distinguia placeholders explícitos de segredos semelhantes.
+- Remediation: parser determinístico de assignments, classificação posterior,
+  allow-list normalizada por igualdade exata e regressões nas três superfícies.
+- Estado após remediation: `InReview`, aguardando QG Round 4 independente.
