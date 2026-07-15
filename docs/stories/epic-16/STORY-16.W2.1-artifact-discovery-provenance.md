@@ -1,5 +1,5 @@
 ---
-status: InReview
+status: Done
 story_id: "16.W2.1"
 title: "Descoberta segura de artefatos e proveniência"
 epic: 16
@@ -8,7 +8,7 @@ parent_epic: "docs/stories/epic-16/EPIC-16-CANONICAL-PROJECT.md"
 effort: 8h
 deploy_type: none
 appetite: 1d
-hill_phase: verifying
+hill_phase: done
 confidence_level: know-how
 involves_ui: true
 task_mode: CRIAR
@@ -54,7 +54,7 @@ affected_paths:
 
 ## Status
 
-InReview
+Done
 
 ## Story
 
@@ -231,6 +231,7 @@ repo_target: "cohort-de-marketing"
 | 2026-07-15 | @dev | Reprobe adicional passou a recusar assinaturas fortes de credenciais também nos paths serializados. |
 | 2026-07-15 | @dev | QG Round 1 remediado com matcher espelhado, provenance canônica e reidratação fail-closed. |
 | 2026-07-15 | @dev | QG Round 2 remediado com path portátil paritário, provenance integral e `**` terminal fail-closed. |
+| 2026-07-15 | @architect | QG Round 3 PASS 100/100 — todos os ACs e probes aprovados; story encerrada como Done. |
 
 ## QA Results
 
@@ -258,3 +259,12 @@ repo_target: "cohort-de-marketing"
 - Remediation: matriz portátil compartilhada com C0/C1, `every()` para todos os
   patterns e rejeição explícita de `**` terminal em rules/matcher/validator/builder.
 - Estado: `InReview`, aguardando QG Round 3 independente de `@architect`.
+
+### Round 3
+
+- Quality Gate independente: PASS.
+- Score: 100/100.
+- Findings bloqueantes: nenhum.
+- 65/65 caracteres C0/C1 recusados em Node/browser; provenance integral,
+  `**` terminal, persistence/tampering, confinement e idempotência aprovados.
+- Todos os ACs e stop conditions: PASS; story encerrada como `Done`.
