@@ -68,7 +68,7 @@ leitor:
 
 ## Modo histórico da Aula 4
 
-Quando o aluno já tiver um `WeeklyLedger v1` criado pelo fluxo da Aula 4, leia-o
+Quando o aluno já tiver um `WeeklyLedger v1.1` criado pelo fluxo da Aula 4, leia-o
 somente pelo CLI público e local:
 
 ```bash
@@ -82,6 +82,9 @@ Para reproduzir uma única semana, acrescente `--week-start AAAA-MM-DD`. O reade
 
 - preserva literalmente valor ou ausência, selo, janela, fonte, premissa,
   confirmação humana, revisão, `weeklyPanelId` e hash;
+- verifica o digest versionado da projeção antes de expor qualquer métrica e
+  rejeita ledgers legados sem essa prova, sem fabricar integridade retroativa;
+- rejeita lexemas numéricos fora da faixa segura antes do parse, sem arredondar;
 - separa `Real`, `Estimado` e `nao_fornecido` e aponta janelas incompatíveis;
 - não deriva delta, média, CPA, ROAS, taxa ou tendência;
 - não resolve referências, não abre artefatos brutos e não acessa Studio, API ou

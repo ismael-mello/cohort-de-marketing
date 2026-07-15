@@ -3,9 +3,12 @@ import addFormats from 'ajv-formats';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { jsonHasUnsafeNumber, projectionDigestForEntry } from './build-weekly-ledger.mjs';
 
 const READING_VERSION = '1.0.0';
-const LEDGER_VERSION = '1.0.0';
+const LEDGER_VERSION = '1.1.0';
+const PROJECTION_DIGEST_VERSION = '1.0.0';
+const PROJECTION_DIGEST_ALGORITHM = 'sha256';
 const LEDGER_SCHEMA_URL = new URL('../data/contracts/weekly-ledger.v1.schema.json', import.meta.url);
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const ALLOWED_ARGUMENTS = new Set(['--ledger', '--project-id', '--campaign-id', '--week-start']);
@@ -87,6 +90,8 @@ function ledgerSemanticsAreValid(ledger) {
     ledger.contract !== 'WeeklyLedger'
     || ledger.schemaVersion !== LEDGER_VERSION
     || ledger.hashAlgorithm !== 'sha256'
+    || ledger.projectionDigestVersion !== PROJECTION_DIGEST_VERSION
+    || ledger.projectionDigestAlgorithm !== PROJECTION_DIGEST_ALGORITHM
   ) return false;
 
   const identities = new Set();
@@ -96,6 +101,7 @@ function ledgerSemanticsAreValid(ledger) {
     const identity = identityKey(entry);
     if (identities.has(identity)) return false;
     identities.add(identity);
+    if (projectionDigestForEntry(entry) !== entry.projectionDigest) return false;
     const metricNames = new Set();
     for (const metric of entry.metrics) {
       if (metricNames.has(metric.name)) return false;
@@ -126,6 +132,7 @@ function projectEntry(entry) {
     revision: entry.revision,
     weeklyPanelId: entry.weeklyPanelId,
     canonicalHash: entry.canonicalHash,
+    projectionDigest: entry.projectionDigest,
     metrics: [...entry.metrics]
       .sort((left, right) => compareText(left.name, right.name))
       .map(projectMetric),
@@ -139,6 +146,7 @@ function sampleFor(entry, metricName) {
     revision: entry.revision,
     weeklyPanelId: entry.weeklyPanelId,
     canonicalHash: entry.canonicalHash,
+    projectionDigest: entry.projectionDigest,
   };
   if (!metric) {
     return {
@@ -163,7 +171,7 @@ function cleanSample(sample) {
 }
 
 function classifySamples(samples) {
-  if (samples.length < 2) {
+  if (new Set(samples.map((sample) => sample.weekStart)).size < 2) {
     return {
       status: 'insufficient_history',
       requiresHumanDecision: true,
@@ -248,6 +256,8 @@ export async function readHistoricalMetrics(ledger, selection) {
       contract: ledger.contract,
       schemaVersion: ledger.schemaVersion,
       hashAlgorithm: ledger.hashAlgorithm,
+      projectionDigestVersion: ledger.projectionDigestVersion,
+      projectionDigestAlgorithm: ledger.projectionDigestAlgorithm,
     },
     entries: entries.map(projectEntry),
     series,
@@ -270,6 +280,11 @@ async function main(args) {
     content = await readFile(selection.ledgerPath, 'utf8');
   } catch {
     process.stderr.write('UNREADABLE_LEDGER\n');
+    return 2;
+  }
+
+  if (jsonHasUnsafeNumber(content)) {
+    process.stderr.write('UNSAFE_JSON_NUMBER\n');
     return 2;
   }
 

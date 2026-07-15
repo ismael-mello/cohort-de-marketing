@@ -2,14 +2,24 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://marketinglendario.local/cohort/weekly-ledger.v1.schema.json",
   "title": "Weekly Ledger v1",
-  "description": "Append-only index of validated WeeklyPanel v1 records. canonicalHash is SHA-256 over recursively key-sorted, compact JSON of the complete validated WeeklyPanel record.",
+  "description": "Append-only index of validated WeeklyPanel v1 records. canonicalHash preserves the SHA-256 provenance hash of the complete validated WeeklyPanel. projectionDigest is independently recomputable over the persisted entry projection using the declared projection digest version and algorithm.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["contract", "schemaVersion", "hashAlgorithm", "entries", "index"],
+  "required": [
+    "contract",
+    "schemaVersion",
+    "hashAlgorithm",
+    "projectionDigestVersion",
+    "projectionDigestAlgorithm",
+    "entries",
+    "index"
+  ],
   "properties": {
     "contract": { "type": "string", "const": "WeeklyLedger" },
-    "schemaVersion": { "type": "string", "const": "1.0.0" },
+    "schemaVersion": { "type": "string", "const": "1.1.0" },
     "hashAlgorithm": { "type": "string", "const": "sha256" },
+    "projectionDigestVersion": { "type": "string", "const": "1.0.0" },
+    "projectionDigestAlgorithm": { "type": "string", "const": "sha256" },
     "entries": {
       "type": "array",
       "items": { "$ref": "#/$defs/entry" }
@@ -121,6 +131,7 @@
         "weeklyPanelId",
         "schemaVersion",
         "canonicalHash",
+        "projectionDigest",
         "metrics"
       ],
       "properties": {
@@ -131,6 +142,7 @@
         "weeklyPanelId": { "type": "string", "minLength": 1 },
         "schemaVersion": { "type": "string", "const": "1.0.0" },
         "canonicalHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "projectionDigest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
         "metrics": {
           "type": "array",
           "items": { "$ref": "#/$defs/metric" }
