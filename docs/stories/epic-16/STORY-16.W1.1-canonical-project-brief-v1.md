@@ -2,7 +2,7 @@
 story_id: "16.W1.1"
 epic_id: "16"
 wave: "W1"
-status: InReview
+status: Done
 executor: "@dev"
 quality_gate: "@architect"
 quality_gate_tools: ["node:test", "json-schema"]
@@ -12,7 +12,7 @@ effort: "6h"
 deploy_type: "none"
 accountable: "rafaelcosta"
 appetite: "1d"
-hill_phase: "validating"
+hill_phase: "done"
 confidence_level: "know-how"
 task_mode: "CRIAR"
 involves_ui: false
@@ -22,7 +22,7 @@ involves_ui: false
 
 ## Status
 
-InReview
+Done
 
 ## Dependências
 
@@ -132,6 +132,7 @@ Ampliação aprovada no remediation do QG Round 1: `scripts/package.json` e
 - `fa971fd` - `fix: normalize portable artifact references [Story 16.W1.1]`
 - `9811423` - `docs: record ProjectBrief Round 2 remediation [Story 16.W1.1]`
 - `bb75b99` - `fix: canonicalize v1 artifact references [Story 16.W1.1]`
+- `7026f38` - `docs: record ProjectBrief Round 3 remediation [Story 16.W1.1]`
 
 ## File List real
 
@@ -169,8 +170,20 @@ Delta QG-005-R3 confirmado dentro da File List existente:
   altera apenas separadores, sem reduzir a validação dos dot-paths canônicos.
 - No Round 4, revisar `bb75b99` contra QG-005-R3: Windows deve continuar aceito
   no legado, enquanto backslash deve falhar no `sourceArtifactId` v1.
-- O status permanece `InReview`; nenhum veredito de quality gate foi
-  autoatribuído pelo executor.
+- Antes do gate final, o executor manteve o status `InReview`; o encerramento
+  como `Done` foi registrado somente após o PASS independente da rodada 4.
+
+## QA Results
+
+- Quality Gate independente: PASS.
+- Rodada final: 4.
+- Score: 100/100.
+- Findings bloqueantes: nenhum.
+- ACs verificados: 5/5 PASS.
+- Evidências: 19/19 testes de contrato, AJV 2020 strict, 120 campos e 31
+  skills validados, audit com 0 vulnerabilidades e adversarial probes de
+  normalização legacy/v1 aprovados.
+- Decisão: story apta a fechar e seguir para fan-in local.
 
 ## Change Log
 
@@ -182,3 +195,5 @@ Delta QG-005-R3 confirmado dentro da File List existente:
   com normalização determinística e rejeições de segurança separadamente testadas.
 - 2026-07-14: QG Round 3 remediado separando o formato legado do formato v1,
   que agora possui uma única representação canônica POSIX de proveniência.
+- 2026-07-14: QG Round 4 aprovado com score 100, todos os ACs satisfeitos e
+  nenhum finding; story formalmente encerrada como `Done`.
