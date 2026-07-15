@@ -26,6 +26,8 @@ const FORBIDDEN_KEYS = new Set([
   'token', 'accesstoken', 'refreshtoken', 'authorization', 'apikey', 'secret',
   'payload', 'buyerpayload', 'customerpayload', 'buyer', 'customer',
 ]);
+const OPAQUE_IDENTIFIER_KEYS = new Set(['reconciliationid', 'id']);
+const SENSITIVE_NUMERIC_IDENTIFIER_PATTERN = /(?:^|[^0-9])(?:[0-9]{11}|[0-9]{14})(?:[^0-9]|$)/;
 const SENSITIVE_VALUE_PATTERNS = Object.freeze([
   /[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+/i,
   /\bbearer\s+[a-z0-9._~+/=-]+/i,
@@ -33,7 +35,6 @@ const SENSITIVE_VALUE_PATTERNS = Object.freeze([
   /\b(?:sk|pk)_(?:live|test)_[a-z0-9]+\b/i,
   /-----BEGIN [A-Z ]*PRIVATE KEY-----/,
   /(?:^|[^a-z])(?:buyer|customer|client|pessoa|nome|name|address|endereco|rua|avenida|street|cpf|cnpj|document|phone|telefone|mobile|token|secret|password)(?:[^a-z]|$)/i,
-  /(?:^|[^0-9])(?:[0-9]{11}|[0-9]{14})(?:[^0-9]|$)/,
 ]);
 
 let validatorsPromise;
@@ -44,6 +45,10 @@ function normalizeKey(key) {
 
 function containsSensitiveData(value, parentKey = '') {
   if (typeof value === 'string') {
+    if (
+      OPAQUE_IDENTIFIER_KEYS.has(normalizeKey(parentKey))
+      && SENSITIVE_NUMERIC_IDENTIFIER_PATTERN.test(value)
+    ) return true;
     if (SENSITIVE_VALUE_PATTERNS.some((pattern) => pattern.test(value))) return true;
     return false;
   }
