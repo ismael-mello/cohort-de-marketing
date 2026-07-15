@@ -14,12 +14,15 @@
 | RED | `2c51cd3` | Três fixtures e dez grupos de testes; 0/10 passaram porque script e schema ainda não existiam. |
 | GREEN | `755f236` | Schema, CLI e template implementaram reconciliação determinística e fail-closed. |
 | Self-review | `a10c954` | Razão relativa exata, scan de identificadores sensíveis e probes adicionais de moeda/proveniência/duplicata. |
+| QG1 | `eba476b` | `FAIL 78`: charsets genéricos não impediam PII em quatro superfícies textuais republicadas. |
+| RED Round2 | `7a265cb` | 32 mutações de input; `reconciliationId:name` reproduziu o vazamento com exit 0. |
+| GREEN Round2 | `82e6abf` | IDs opacos tipados, enums positivos e guard textual recursivo antes da saída. |
 
 ## Contrato observado
 
 - `SourceObservationSet 1.0.0` aceita no máximo uma observação por fonte `platform`, `checkout` e `cash`.
 - Valores monetários são strings decimais não negativas com até 30 dígitos inteiros e 12 casas; nenhuma passagem por `Number` ocorre no cálculo.
-- Moeda precisa constar no vocabulário ISO 4217 do runtime; janela permanece literal e período/observação exigem RFC3339 válido.
+- Moeda precisa constar no enum ISO 4217 congelado no schema; janela permanece literal dentro de oito valores públicos conhecidos e período/observação exigem RFC3339 válido.
 - Períodos em offsets diferentes são comparáveis somente quando `start` e `end` representam os mesmos instantes; os literais originais permanecem intactos na saída.
 - Ordem da entrada não altera os bytes de saída: fontes saem como `platform`, `checkout`, `cash`; pares saem como plataforma-checkout, plataforma-caixa, checkout-caixa.
 - Gap absoluto usa aritmética `BigInt` alinhada por escala. Gap relativo é simétrico (`abs(a-b)/max(abs(a),abs(b))`), oferece decimal half-up de seis casas e `relativeGapExact` como razão reduzida sem perda.
@@ -27,13 +30,16 @@
 - Fonte omitida ou explicitamente ausente produz apenas `nao_fornecido` e campos nulos; `"0"` continua sendo valor fornecido.
 - `cashConfirmed` é projetado literalmente. A CLI não lê eventos nem promove plataforma/checkout a confirmação de caixa.
 - O resultado sempre exige revisão humana e não contém campo de verdade, vencedor, prioridade ou correção automática.
-- Schemas fechados, allow-list de proveniência, scan semântico e erros por código impedem PII, credenciais e payload bruto sem ecoar conteúdo ou path.
+- `reconciliationId` segue `reconciliation:<metric-enum>:YYYY-MM:<nonce hex de 8-32>`; o nonce é opaco e não aceita texto livre.
+- Métrica usa enum fechado (`revenue`, `orders`, `refunds`, `fees`, `net_revenue`); janela usa oito literais conhecidos.
+- Cada `provenanceRef` combina `kind` e ID tipado: `<platform|checkout|cash|operator>:YYYY-MM:<nonce hex de 8-32>`; source-kind incompatível falha fechado.
+- Schemas fechados, allowlists positivas, guard textual recursivo de input e output e erros por código impedem PII, credenciais e payload bruto sem ecoar conteúdo ou path.
 
 ## Validações executadas
 
 ```text
 node --test scripts/reconcile-aula-04-sources.test.mjs
-10 tests, 10 pass, 0 fail
+13 tests, 13 pass, 0 fail
 
 node --check scripts/reconcile-aula-04-sources.mjs
 exit 0
@@ -46,16 +52,24 @@ exit 0
 Golden outputs, incluindo newline final:
 
 ```text
-match:    3ec33eadcb9c33dd82a3da3c336e21d00b7716c508979aadac8c873ff0ebccea
-mismatch: 4aa249c9cc22ba4018c76078ea62d3e5820a630aba6e563211904b66188289a9
-missing:  0ddf335fede12fbbde2bd6ad74fe0ce9abcf476dc83a1477c4f0faf7f1507715
+match:    16638aa9ab1ab402d88cea79cbdbd31f57856e86a3d3033dfc75aefd59f1d60a
+mismatch: 2da030422d90a9595eabad189e94174af773934e69083e977cd8d90d04aec015
+missing:  595702cc4cf6c6e5c33495bc05bd3c5303ad0ed0932dd65b934fbeb7cc478597
 ```
 
 Probes adversariais cobriram moeda inexistente, versões desconhecidas, RFC3339 inválido, período não crescente, duplicata, proveniência incompatível com a fonte, PII, email, telefone formatado, token, documento, payload de comprador, zero, fonte parcial, ordem permutada e decimais acima de `Number.MAX_SAFE_INTEGER`.
 
+Round2 executou 32 casos de input: nome sintético, endereço, documento,
+telefone, token e buyer forms foram injetados em `reconciliationId`, `metric`,
+`window` e `provenanceRef.id`; as demais oito superfícies textuais também foram
+adulteradas. Todos retornaram somente `INVALID_SOURCE_OBSERVATION_SET`, sem eco.
+O schema de saída rejeitou outras oito adulterações. A matriz positiva percorreu
+cinco métricas por oito janelas (40 casos) e uma referência opaca do operador sem
+falso positivo.
+
 ## Estado para handoff
 
 - Story: `InReview`.
-- QG: pendente do `@architect` independente.
+- QG: Round1 `FAIL 78`; remediação Round2 pronta para nova revisão independente.
 - Deploy: `none`.
 - Push, merge, PR, close e `epic-17-state.json`: não executados.

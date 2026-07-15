@@ -130,6 +130,10 @@ completion_notes:
   - "O commit a10c954 endurece precisão relativa, ISO 4217, duplicatas, proveniência por fonte e scan de telefone/documento formatado."
   - "Testes focais 10/10 e gate Node adjacente passaram; input permanece byte a byte imutável e os três golden outputs são determinísticos."
   - "Story movida para InReview; QA independente, fechamento e epic-state permanecem fora da autoridade do executor."
+  - "QG1 reprovou o HEAD eba476b com FAIL 78: reconciliationId, metric, window e provenanceRef.id ainda republicavam texto arbitrário permitido pelo charset genérico."
+  - "O RED Round2 7a265cb cobre 32 mutações de input e todas as superfícies textuais republicadas; o caso reconciliationId:name reproduziu o vazamento."
+  - "O GREEN Round2 82e6abf troca charsets genéricos por IDs opacos tipados, enums de métrica/janela/moeda/referência e aplica o guard textual recursivo também à saída."
+  - "Round2 passou em 13/13 focais, matriz positiva 5 métricas x 8 janelas sem falsos positivos e gate Node adjacente controlado; story permanece InReview para QG2."
 file_list:
   - "data/contracts/source-reconciliation.v1.schema.json"
   - "scripts/reconcile-aula-04-sources.mjs"
@@ -144,7 +148,29 @@ file_list:
 
 ## QA Results
 
-Pendente de revisão independente pelo `@architect`.
+```yaml
+quality_gate_report:
+  story_id: "17.W2.3"
+  verdict: "FAIL"
+  score: 78
+  rounds:
+    - round: 1
+      verdict: "FAIL"
+      score: 78
+      reviewed_head: "eba476b"
+      blocking_findings:
+        - "Campos textuais republicados aceitavam nomes, endereços e identificadores sensíveis sob charsets genéricos; scan heurístico não provava ausência de PII."
+  remediation:
+    status: "READY_FOR_QG2"
+    red_head: "7a265cb"
+    implementation_head: "82e6abf"
+    focal_tests: "13/13"
+    privacy_input_cases: 32
+    privacy_output_cases: 8
+    false_positive_cases: 40
+  reviewed_by: "@architect"
+  reviewed_at: "2026-07-15"
+```
 
 ## Change Log
 
@@ -153,3 +179,5 @@ Pendente de revisão independente pelo `@architect`.
 | 2026-07-15 | @po | Story W2.3 validada como `Ready` sobre a baseline integrada da PUB-17 W2. |
 | 2026-07-15 | @dev | TDD RED congelou contrato, fixtures e matriz adversarial antes do código. |
 | 2026-07-15 | @dev | Implementação e evidência concluídas; 10/10 focais e gate Node adjacente verdes; status movido para `InReview`. |
+| 2026-07-15 | @architect | QG1 `FAIL 78`: superfícies textuais permitiam republicação de PII sob charsets genéricos. |
+| 2026-07-15 | @dev | Round2 RED/GREEN fecha todas as superfícies com allowlists positivas, 13/13 focais e matriz sem falsos positivos; story mantida em `InReview`. |
