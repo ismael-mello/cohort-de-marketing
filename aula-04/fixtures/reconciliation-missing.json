@@ -1,0 +1,38 @@
+{
+  "contract": "SourceObservationSet",
+  "schemaVersion": "1.0.0",
+  "reconciliationId": "reconciliation:missing:2026-07",
+  "metric": "revenue",
+  "observations": [
+    {
+      "source": "platform",
+      "status": "provided",
+      "value": "0",
+      "currency": "BRL",
+      "window": "calendar_month",
+      "period": {
+        "start": "2026-07-01T00:00:00-03:00",
+        "end": "2026-08-01T00:00:00-03:00"
+      },
+      "observedAt": "2026-08-01T09:00:00-03:00",
+      "confirmedByHuman": true,
+      "cashConfirmed": false,
+      "provenanceRef": {
+        "kind": "platform-export",
+        "id": "platform-2026-07"
+      }
+    },
+    {
+      "source": "checkout",
+      "status": "nao_fornecido",
+      "value": null,
+      "currency": null,
+      "window": null,
+      "period": null,
+      "observedAt": null,
+      "confirmedByHuman": false,
+      "cashConfirmed": false,
+      "provenanceRef": null
+    }
+  ]
+}
