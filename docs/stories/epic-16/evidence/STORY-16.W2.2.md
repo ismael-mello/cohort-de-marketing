@@ -26,11 +26,36 @@ renderização com um único erro acionável.
 - Fixtures cobertas: inserção e remoção de skill, edge órfã, skill sem regra,
   requisito de artefato órfão e ArtifactIndex malformado.
 
+## Remediação do QG Round 1
+
+- Os quatro blockers foram congelados em regressões antes da correção; a bateria
+  de superfície cresceu de 6 para 9 testes.
+- `skill-surface-contract.js` tornou-se a única implementação compartilhada por
+  briefing, mapa e `scripts/project-artifact-index.mjs`; as cópias divergentes
+  foram removidas dos HTMLs e do arquivo de amostras.
+- O contrato exige as versões públicas exatas, os 120 paths do schema canônico,
+  valida referências de campos/artefatos em `anyOf` e `notApplicableWhen` e
+  valida o ProjectBrief v1 persistido antes de avaliar qualquer skill.
+- O ArtifactIndex reusa a semântica completa da W2.1: policy/version, path
+  portátil, hash, tamanho, origem, glob/proveniência, confirmação, resumo e
+  unicidade global. Fixture forjada bloqueia o mapa nas duas distribuições e não
+  produz estado `done`.
+- Nenhuma contagem de skills permanece literal nas superfícies ou validator; as
+  quantidades são derivadas do catálogo em runtime.
+- Um registro local carregado não é reserializado no bootstrap. ProjectBrief ou
+  índice rejeitado limpa os desbloqueios somente em memória, preservando o valor
+  do `localStorage` byte a byte; credencial rejeitada possui regressão dedicada.
+
 ## Validators
 
 - `node scripts/validate-skill-catalog.mjs` — PASS; 31 skills, 41 edges e mirror canônico verificado.
 - `node scripts/validate-mapa-wiring.mjs` — PASS; 69/69 `sampleUrl` válidas e HTTP PDF válido.
 - `node scripts/validate-mapa-preview.mjs` — PASS; canvas 810x1138, screenshot gerada e zero `pageerror`.
+- `node --test scripts/skill-surface-data-driven.test.mjs` — PASS; 9/9.
+- `node --test scripts/project-artifact-index.test.mjs` — PASS; 18/18.
+- `node --test data/contracts/fixtures/project-brief/project-brief-contract.test.mjs` — PASS; 19/19 e 120 paths.
+- `node --test scripts/project-brief-io.test.mjs` — PASS; 9/9.
+- Auditoria de literais `31 skills`, `25 skills`, `25/25`, `>25<` e `length === 31` nas duas distribuições e validators — zero ocorrências.
 - `git diff --check` — PASS.
 - `cmp -s` entre raiz e `aula-03/materiais/` — PASS para briefing, mapa e artefatos JS.
 
@@ -54,11 +79,14 @@ pasta inexistente.
 - O mapa lê apenas o ProjectBrief/ArtifactIndex persistido pelo briefing, sem
   renderizar conteúdo bruto dos artefatos.
 - O ArtifactIndex só libera estado `done` para entradas confirmadas e com resumo
-  coerente; índice de outro projeto ou schema divergente falha fechado.
+  coerente; índice de outro projeto, schema, policy, hash ou proveniência
+  divergente falha fechado.
+- Estado local recusado não é mutado silenciosamente durante o bootstrap; a UI
+  bloqueia os artefatos e mantém o registro original para recuperação/auditoria.
 - Nenhum segredo, caminho absoluto de máquina ou conteúdo privado foi registrado.
 
 ## Commits
 
 - `29c23ac` — testes de contrato (RED).
 - `dfa2819` — implementação catálogo-driven (GREEN).
-
+- `5dbcb38` — remediação dos quatro blockers do QG Round 1.

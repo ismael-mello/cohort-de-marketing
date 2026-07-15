@@ -41,6 +41,10 @@ touched_paths:
   - "scripts/validate-mapa-wiring.mjs"
   - "scripts/validate-skill-catalog.mjs"
   - "scripts/skill-surface-data-driven.test.mjs"
+  - "scripts/project-artifact-index.mjs"
+  - "scripts/project-artifact-index.test.mjs"
+  - "scripts/project-brief-io.test.mjs"
+  - "skill-surface-contract.js"
   - "docs/stories/epic-16/STORY-16.W2.2-data-driven-briefing-map-status.md"
   - "docs/stories/epic-16/evidence/STORY-16.W2.2.md"
   - "docs/stories/epic-16/epic-16-state.json"
@@ -56,6 +60,10 @@ affected_paths:
   - "scripts/validate-mapa-wiring.mjs"
   - "scripts/validate-skill-catalog.mjs"
   - "scripts/skill-surface-data-driven.test.mjs"
+  - "scripts/project-artifact-index.mjs"
+  - "scripts/project-artifact-index.test.mjs"
+  - "scripts/project-brief-io.test.mjs"
+  - "skill-surface-contract.js"
   - "docs/stories/epic-16/STORY-16.W2.2-data-driven-briefing-map-status.md"
   - "docs/stories/epic-16/evidence/STORY-16.W2.2.md"
   - "docs/stories/epic-16/epic-16-state.json"
@@ -96,23 +104,34 @@ affected_paths:
 - `aula-03/materiais/briefing.html`
 - `aula-03/materiais/mapa-skills.html`
 - `aula-03/materiais/mapa-skills-artifacts.js`
+- `skill-surface-contract.js`
+- `scripts/project-artifact-index.mjs`
+- `scripts/project-artifact-index.test.mjs`
+- `scripts/project-brief-io.test.mjs`
 - `scripts/skill-surface-data-driven.test.mjs`
+- `scripts/validate-skill-catalog.mjs`
 - `docs/stories/epic-16/STORY-16.W2.2-data-driven-briefing-map-status.md`
 - `docs/stories/epic-16/evidence/STORY-16.W2.2.md`
 - `docs/stories/epic-16/epic-16-state.json`
 
-Todos os paths modificados pertencem à allow-list reconciliada. Catálogo, regras e
-validators existentes foram consumidos sem alteração; o novo teste cobre o
-contrato das duas superfícies. O `epic-16-state.json` foi incluído na allow-list
-antes do handoff para materializar a transição obrigatória `Ready` → `InReview`.
+Todos os paths modificados pertencem à allow-list reconciliada, incluindo a
+expansão do QG Round 1 para fatorar `skill-surface-contract.js` como única fonte
+executável dos contratos do browser e do validator Node da W2.1. O
+`epic-16-state.json` foi incluído na allow-list antes do handoff para materializar
+a transição obrigatória `Ready` → `InReview`.
 
 ## Dev Agent Record
 
 - Executor: `@dev` via `sinkra-full-cycle`, branch isolada `wave/16-w2/story-16.W2.2`.
 - Test-first: commit RED `29c23ac`; implementação GREEN `dfa2819`.
 - Entidade: `ArtifactIndex verified-or-pending-confirmation` → `PublicSkillSurfaces catalog-driven`.
-- Validação: 6/6 testes, catálogo 31/41, wiring 69/69, preview sem pageerror,
+- Validação inicial: 6/6 testes, catálogo 31/41, wiring 69/69, preview sem pageerror,
   browser smoke das quatro URLs sem erro e paridade byte a byte.
+- QG Round 1: quatro blockers reproduzidos e corrigidos; contrato compartilhado
+  valida versões exatas, 120 paths canônicos, ProjectBrief v1 e ArtifactIndex
+  completo; storage rejeitado permanece byte a byte intacto.
+- Regressão pós-fix: superfícies 9/9, ArtifactIndex 18/18, ProjectBrief schema
+  19/19, ProjectBrief browser I/O 9/9, catálogo/wiring/preview/browser/paridade PASS.
 - OCC/segurança: nenhum segredo ou conteúdo bruto de artefato exposto; referências
   inválidas e estado local malformado falham fechado.
 - Evidência: `docs/stories/epic-16/evidence/STORY-16.W2.2.md`.
@@ -160,3 +179,4 @@ repo_target: "cohort-de-marketing"
 |---|---|---|
 | 2026-07-15 | @po | Contrato enriquecido e validado para execução sequencial na PUB-16 W2. |
 | 2026-07-15 | @dev | Superfícies migradas para catálogo/regras/ProjectBrief/ArtifactIndex, testes e browser smoke concluídos; handoff em InReview. |
+| 2026-07-15 | @dev | QG Round 1 remediado: validator único completo, ProjectBrief/120 refs, contagens runtime e storage rejeitado imutável; pronto para QG2. |
