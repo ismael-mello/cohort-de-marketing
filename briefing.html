@@ -785,6 +785,11 @@
       return CREDENTIAL_PLACEHOLDERS.has(normalizeCredentialPlaceholder(value));
     }
 
+    function assignmentValueEndsAt(remainder, endIndex) {
+      const suffix = remainder.slice(endIndex).trimStart();
+      return !suffix || /^[,;}\]]/.test(suffix) || /^[.!?]\s*$/.test(suffix);
+    }
+
     function extractCredentialAssignmentValue(line, startIndex) {
       const remainder = line.slice(startIndex).trimStart();
       if (!remainder) return '';
@@ -792,7 +797,11 @@
       if (opener === '"' || opener === "'") {
         let escaped = false;
         for (let index = 1; index < remainder.length; index++) {
-          if (!escaped && remainder[index] === opener) return remainder.slice(1, index).trim();
+          if (!escaped && remainder[index] === opener) {
+            return assignmentValueEndsAt(remainder, index + 1)
+              ? remainder.slice(1, index).trim()
+              : remainder.trim();
+          }
           escaped = !escaped && remainder[index] === '\\';
           if (remainder[index] !== '\\') escaped = false;
         }
@@ -800,11 +809,19 @@
       }
       if (opener === '<') {
         const closing = remainder.indexOf('>');
-        if (closing >= 0) return remainder.slice(0, closing + 1).trim();
+        if (closing >= 0) {
+          return assignmentValueEndsAt(remainder, closing + 1)
+            ? remainder.slice(0, closing + 1).trim()
+            : remainder.trim();
+        }
       }
       if (opener === '[') {
         const closing = remainder.indexOf(']');
-        if (closing >= 0) return remainder.slice(0, closing + 1).trim();
+        if (closing >= 0) {
+          return assignmentValueEndsAt(remainder, closing + 1)
+            ? remainder.slice(0, closing + 1).trim()
+            : remainder.trim();
+        }
       }
       const delimiters = [',', ';', '}', ']']
         .map((delimiter) => remainder.indexOf(delimiter))
