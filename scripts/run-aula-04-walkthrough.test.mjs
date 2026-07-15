@@ -186,11 +186,33 @@ test('runner falha fechado para uso, exemplo e destino inválidos sem ecoar path
   const panels = (await readFile(panelsFile, 'utf8')).trimEnd().split('\n');
   panels[0] = panels[0].replace('"schemaVersion":"1.0.0"', '"schemaVersion":"9.9.9"');
   await writeFile(panelsFile, `${panels.join('\n')}\n`);
+  const sensitive = await temporaryDirectory(t, 'aula-04-sensitive-');
+  await cp(EXAMPLE, sensitive, { recursive: true });
+  const sensitiveDecisionFile = path.join(sensitive, 'previous-decision.json');
+  const sensitiveDecision = await readJson(sensitiveDecisionFile);
+  sensitiveDecision.hypothesis.text = 'Contato privado aluno@example.invalid';
+  await writeFile(sensitiveDecisionFile, `${JSON.stringify(sensitiveDecision, null, 2)}\n`);
+  const sensitiveOutput = await temporaryDirectory(t, 'aula-04-sensitive-output-');
+
+  const forged = await temporaryDirectory(t, 'aula-04-forged-');
+  await cp(EXAMPLE, forged, { recursive: true });
+  const forgedObservationsFile = path.join(forged, 'source-observations.json');
+  const forgedObservations = await readJson(forgedObservationsFile);
+  forgedObservations.observations.forEach((observation) => { observation.value = '1100'; });
+  await writeFile(forgedObservationsFile, `${JSON.stringify(forgedObservations, null, 2)}\n`);
+  const forgedExpectedFile = path.join(forged, 'expected-walkthrough.json');
+  const forgedExpected = await readJson(forgedExpectedFile);
+  forgedExpected.verdict = 'sustentou';
+  forgedExpected.reasonCode = 'SUCCESS_CRITERION_MET';
+  await writeFile(forgedExpectedFile, `${JSON.stringify(forgedExpected, null, 2)}\n`);
+  const forgedOutput = await temporaryDirectory(t, 'aula-04-forged-output-');
   const cases = [
     [[], 2, 'USAGE'],
     [[path.join(empty, 'missing'), empty], 2, 'INVALID_EXAMPLE'],
     [[EXAMPLE, nonEmpty], 2, 'OUTPUT_NOT_EMPTY'],
     [[invalid, empty], 1, 'INVALID_WEEKLY_PANEL'],
+    [[sensitive, sensitiveOutput], 1, 'INVALID_PREVIOUS_DECISION'],
+    [[forged, forgedOutput], 1, 'UNEXPECTED_WALKTHROUGH_RESULT'],
   ];
   for (const [args, code, message] of cases) {
     const result = await run(args);
@@ -200,6 +222,8 @@ test('runner falha fechado para uso, exemplo e destino inválidos sem ecoar path
     assert.doesNotMatch(result.stderr, /\/Users\/|token|secret/i);
   }
   assert.equal(await readFile(path.join(nonEmpty, 'sentinel.txt'), 'utf8'), 'preserve\n');
+  assert.deepEqual(await readdir(sensitiveOutput), []);
+  assert.deepEqual(await readdir(forgedOutput), []);
 });
 
 test('templates cobrem os quatro contratos e runner não contém integração externa', async () => {
