@@ -113,6 +113,58 @@ test('campos e artefatos órfãos, inclusive anyOf e notApplicableWhen, falham f
   }
 });
 
+test('regras oficiais passam e 32 fixtures condicionais adversariais falham fechado', async () => {
+  const contract = await loadContract();
+  const inputs = await surfaceInputs();
+  assert.doesNotThrow(() => contract.validateContracts(inputs));
+  const setAnyOf = (value) => (rules) => { rules.skills['avatar-funil'].anyOf = value; };
+  const setNotApplicable = (value) => (rules) => { rules.skills.offerbook.notApplicableWhen = value; };
+  const fixtures = [
+    ['anyOf não-array', setAnyOf('inválido')],
+    ['anyOf vazio', setAnyOf([])],
+    ['grupo nulo', setAnyOf([null])],
+    ['label ausente', setAnyOf([{ fields: ['project.slug'] }])],
+    ['label vazio', setAnyOf([{ label: '', fields: ['project.slug'] }])],
+    ['label em branco', setAnyOf([{ label: '   ', fields: ['project.slug'] }])],
+    ['restrição ausente', setAnyOf([{ label: 'vazio' }])],
+    ['fields não-array', setAnyOf([{ label: 'x', fields: 'project.slug' }])],
+    ['fields vazio', setAnyOf([{ label: 'x', fields: [] }])],
+    ['field vazio', setAnyOf([{ label: 'x', fields: [''] }])],
+    ['field órfão', setAnyOf([{ label: 'x', fields: ['project.inexistente'] }])],
+    ['artifacts não-array', setAnyOf([{ label: 'x', artifacts: 'avatar' }])],
+    ['artifacts vazio', setAnyOf([{ label: 'x', artifacts: [] }])],
+    ['artifact vazio', setAnyOf([{ label: 'x', artifacts: [''] }])],
+    ['artifact órfão', setAnyOf([{ label: 'x', artifacts: ['inexistente'] }])],
+    ['matches string', setAnyOf([{ label: 'x', matches: 'project.slug' }])],
+    ['matches array', setAnyOf([{ label: 'x', matches: [] }])],
+    ['matches objeto vazio', setAnyOf([{ label: 'x', matches: {} }])],
+    ['match field órfão', setAnyOf([{ label: 'x', matches: { 'project.inexistente': 'x' } }])],
+    ['match string vazia', setAnyOf([{ label: 'x', matches: { 'project.slug': '' } }])],
+    ['match array vazia', setAnyOf([{ label: 'x', matches: { 'project.slug': [] } }])],
+    ['match array inválida', setAnyOf([{ label: 'x', matches: { 'project.slug': [{}] } }])],
+    ['match objeto', setAnyOf([{ label: 'x', matches: { 'project.slug': {} } }])],
+    ['grupo com chave extra', setAnyOf([{ label: 'x', fields: ['project.slug'], unexpected: true }])],
+    ['notApplicable não-array', setNotApplicable('inválido')],
+    ['notApplicable vazio', setNotApplicable([])],
+    ['condição nula', setNotApplicable([null])],
+    ['equals e in juntos', setNotApplicable([{ field: 'project.startingPoint', equals: 'sem-projeto', in: ['sem-projeto'], reason: 'x' }])],
+    ['predicado ausente', setNotApplicable([{ field: 'project.startingPoint', reason: 'x' }])],
+    ['in vazio', setNotApplicable([{ field: 'project.startingPoint', in: [], reason: 'x' }])],
+    ['in com valor inválido', setNotApplicable([{ field: 'project.startingPoint', in: [{}], reason: 'x' }])],
+    ['reason vazio', setNotApplicable([{ field: 'project.startingPoint', equals: 'sem-projeto', reason: '   ' }])],
+  ];
+  assert.equal(fixtures.length, 32);
+  for (const [label, mutate] of fixtures) {
+    const rules = clone(inputs.rules);
+    mutate(rules);
+    assert.throws(
+      () => contract.evaluateSkills({ ...inputs, rules, projectBrief: null, artifactIndex: null }),
+      (error) => ['INVALID_UNLOCK_RULES', 'RULE_ORPHAN_FIELD', 'RULE_ORPHAN_ARTIFACT'].includes(error?.code),
+      label,
+    );
+  }
+});
+
 test('estado é derivado de ProjectBrief v1 e ArtifactIndex confirmado', async () => {
   const contract = await loadContract();
   const inputs = await surfaceInputs();
@@ -221,6 +273,27 @@ test('mapa revalida localStorage e não renderiza done para índice forjado', { 
     await page.waitForFunction(() => window.__SKILL_SURFACE_STATUS?.status !== 'loading');
     assert.equal(await page.evaluate(() => window.__SKILL_SURFACE_STATUS.code), 'INVALID_ARTIFACT_INDEX');
     assert.equal(await page.locator('.flow-node.state-done').count(), 0);
+    assert.deepEqual(pageErrors, []);
+    await page.close();
+  }
+
+  const invalidRules = clone((await surfaceInputs()).rules);
+  invalidRules.skills['avatar-funil'].anyOf = [{ label: 'restrição vazia' }];
+  for (const pathname of ['/mapa-skills.html', '/aula-03/materiais/mapa-skills.html']) {
+    const page = await browser.newPage();
+    const pageErrors = [];
+    page.on('pageerror', (error) => pageErrors.push(error.message));
+    await page.route('**/*', (route) => route.request().url().startsWith(origin) ? route.continue() : route.abort());
+    await page.route('**/data/skill-unlock-rules.json', (route) => route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify(invalidRules),
+    }));
+    await page.goto(`${origin}${pathname}`, { waitUntil: 'domcontentloaded' });
+    await page.waitForFunction(() => window.__SKILL_SURFACE_STATUS?.status !== 'loading');
+    assert.equal(await page.evaluate(() => window.__SKILL_SURFACE_STATUS.code), 'INVALID_UNLOCK_RULES');
+    assert.equal(await page.evaluate(() => window.__SKILL_SURFACE_DATA), undefined);
+    assert.equal(await page.locator('.state-available, .state-recommended, .state-done').count(), 0);
     assert.deepEqual(pageErrors, []);
     await page.close();
   }

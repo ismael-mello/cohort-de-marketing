@@ -295,22 +295,54 @@
       if (!Array.isArray(values)) fail('INVALID_UNLOCK_RULES', 'Uma lista de artefatos da regra é inválida.');
       if (values.some((artifact) => !artifactTypes.has(artifact))) fail('RULE_ORPHAN_ARTIFACT', 'Uma regra referencia artefato inexistente.');
     };
+    const validMatchValue = (value) => {
+      const scalar = (candidate) => ['string', 'number', 'boolean'].includes(typeof candidate)
+        && (typeof candidate !== 'string' || candidate.trim().length > 0)
+        && (typeof candidate !== 'number' || Number.isFinite(candidate));
+      return scalar(value) || (Array.isArray(value) && value.length > 0 && value.every(scalar));
+    };
     for (const [skillId, rule] of Object.entries(rules.skills)) {
       if (!isRecord(rule) || rule.command !== `/${skillId}`) fail('INVALID_UNLOCK_RULES', 'Uma regra de skill está ausente ou incompleta.');
       for (const key of ['primaryArtifacts', 'requiredArtifacts', 'recommendedArtifacts']) assertArtifacts(rule[key] || []);
       for (const key of ['requiredFields', 'recommendedFields']) assertFields(skillId, rule[key] || []);
-      if (!Array.isArray(rule.anyOf || []) || !Array.isArray(rule.notApplicableWhen || [])) fail('INVALID_UNLOCK_RULES', 'Uma condição da regra é inválida.');
+      if ((Object.hasOwn(rule, 'anyOf') && (!Array.isArray(rule.anyOf) || rule.anyOf.length === 0))
+        || (Object.hasOwn(rule, 'notApplicableWhen')
+          && (!Array.isArray(rule.notApplicableWhen) || rule.notApplicableWhen.length === 0))) {
+        fail('INVALID_UNLOCK_RULES', 'Uma condição declarada da regra deve ser uma lista não vazia.');
+      }
       for (const group of rule.anyOf || []) {
-        if (!isRecord(group) || typeof group.label !== 'string') fail('INVALID_UNLOCK_RULES', 'Um grupo anyOf é inválido.');
+        if (!isRecord(group) || typeof group.label !== 'string' || group.label.trim().length === 0
+          || Object.keys(group).some((key) => !['label', 'fields', 'artifacts', 'matches'].includes(key))) {
+          fail('INVALID_UNLOCK_RULES', 'Um grupo anyOf é inválido.');
+        }
+        const hasFields = Object.hasOwn(group, 'fields');
+        const hasArtifacts = Object.hasOwn(group, 'artifacts');
+        const hasMatches = Object.hasOwn(group, 'matches');
+        if ((hasFields && (!Array.isArray(group.fields) || group.fields.length === 0))
+          || (hasArtifacts && (!Array.isArray(group.artifacts) || group.artifacts.length === 0))
+          || (hasMatches && (!isRecord(group.matches) || Object.keys(group.matches).length === 0))
+          || (!hasFields && !hasArtifacts && !hasMatches)) {
+          fail('INVALID_UNLOCK_RULES', 'Um grupo anyOf precisa declarar ao menos uma restrição efetiva.');
+        }
         assertFields(skillId, group.fields || []);
         assertArtifacts(group.artifacts || []);
-        if (group.matches != null && (!isRecord(group.matches) || Object.keys(group.matches).some((field) => !fieldPaths.has(field)))) {
-          fail('RULE_ORPHAN_FIELD', 'Um grupo anyOf referencia campo inexistente.');
+        if (hasMatches && Object.entries(group.matches).some(([field, expected]) => !fieldPaths.has(field) || !validMatchValue(expected))) {
+          fail('RULE_ORPHAN_FIELD', 'Um grupo anyOf referencia match inexistente ou inválido.');
         }
       }
       for (const condition of rule.notApplicableWhen || []) {
-        if (!isRecord(condition) || !fieldPaths.has(condition.field) || typeof condition.reason !== 'string') {
+        const hasEquals = isRecord(condition) && Object.hasOwn(condition, 'equals');
+        const hasIn = isRecord(condition) && Object.hasOwn(condition, 'in');
+        if (isRecord(condition) && typeof condition.field === 'string' && !fieldPaths.has(condition.field)) {
           fail('RULE_ORPHAN_FIELD', 'Uma condição notApplicableWhen referencia campo inexistente.');
+        }
+        if (!isRecord(condition) || !fieldPaths.has(condition.field)
+          || typeof condition.reason !== 'string' || condition.reason.trim().length === 0
+          || hasEquals === hasIn
+          || (hasEquals && !validMatchValue(condition.equals))
+          || (hasIn && (!Array.isArray(condition.in) || condition.in.length === 0 || !condition.in.every((value) => validMatchValue(value))))
+          || Object.keys(condition).some((key) => !['field', 'equals', 'in', 'reason'].includes(key))) {
+          fail('INVALID_UNLOCK_RULES', 'Uma condição notApplicableWhen é inexistente, ambígua ou inválida.');
         }
       }
     }
@@ -408,7 +440,10 @@
       return false;
     };
     const groupMatches = (group) => {
-      if (group.matches && Object.entries(group.matches).some(([field, expected]) => valueAt(briefData, field) !== expected)) return false;
+      if (group.matches && Object.entries(group.matches).some(([field, expected]) => {
+        const value = valueAt(briefData, field);
+        return Array.isArray(expected) ? !expected.includes(value) : value !== expected;
+      })) return false;
       return (group.fields || []).every((field) => filled(valueAt(briefData, field)))
         && (group.artifacts || []).every((artifact) => Boolean(artifacts[artifact]));
     };
