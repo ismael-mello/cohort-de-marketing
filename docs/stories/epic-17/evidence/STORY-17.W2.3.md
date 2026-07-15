@@ -23,6 +23,7 @@
 | QG3 | `c6eacae` | `FAIL 82`: scan numérico global rejeitava decimais monetários válidos de 11/14 dígitos. |
 | RED Round4 | `92a06f3` | Valor monetário de 11 dígitos reproduziu `INVALID_SOURCE_OBSERVATION_SET`. |
 | GREEN Round4 | `1574f2c` | Scan de 11/14 dígitos limitado aos campos de identificador opaco. |
+| QG4 | `2042ff4` | `PASS 98/100`, confiança alta e zero blockers. |
 
 ## Contrato observado
 
@@ -64,6 +65,12 @@ node --test --test-concurrency=1 --test-reporter=dot \
 retry integral: exit 0
 ```
 
+A ocorrência inicial no teste de lock do ledger foi classificada como ruído
+transitório não bloqueante: os arquivos desse módulo são byte a byte os da
+baseline desta story, o teste focal de reconciliação permaneceu verde e o retry
+integral do mesmo gate terminou com exit `0`. Nenhuma remediação fora da File
+List foi aplicada.
+
 Golden outputs, incluindo newline final:
 
 ```text
@@ -101,7 +108,14 @@ opaco continua exigindo pelo menos uma letra `a-f`.
 
 ## Estado para handoff
 
-- Story: `InReview`.
-- QG: Round1 `FAIL 78`, Round2 `FAIL 84`, Round3 `FAIL 82`; remediação Round4 pronta para nova revisão independente.
+- Story: `Done`; hill phase: `done`.
+- QG independente: Round1 `FAIL 78`, Round2 `FAIL 84`, Round3 `FAIL 82`, Round4 `PASS 98/100` com confiança alta e zero blockers no HEAD `2042ff4`.
 - Deploy: `none`.
 - Push, merge, PR, close e `epic-17-state.json`: não executados.
+- Fan-in local: `READY_FOR_DEVOPS`.
+
+## Veredito do executor
+
+`SDC_COMPLETE`. Critérios de aceite, tasks, File List e evidência foram
+conferidos; o `@architect` aprovou o QG4 e o handoff está pronto para o fan-in
+exclusivo do `@devops`.

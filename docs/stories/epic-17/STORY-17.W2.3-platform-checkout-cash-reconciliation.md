@@ -1,5 +1,5 @@
 ---
-status: InReview
+status: Done
 story_id: "17.W2.3"
 title: "Reconciliação plataforma, checkout e caixa"
 epic: 17
@@ -8,7 +8,7 @@ parent_epic: "docs/stories/epic-17/EPIC-17-AULA-04-DATA-FOUNDATION.md"
 effort: 7h
 deploy_type: none
 appetite: 1d
-hill_phase: executing
+hill_phase: done
 confidence_level: know-how
 involves_ui: false
 task_mode: CRIAR
@@ -54,7 +54,7 @@ affected_paths:
 
 ## Status
 
-InReview
+Done
 
 ## Dependências
 
@@ -142,6 +142,8 @@ completion_notes:
   - "O RED Round4 92a06f3 reproduz o falso positivo monetário e amplia a matriz para nonces válidos com letra a-f no início, meio e fim, em comprimentos 11/14."
   - "O GREEN Round4 1574f2c restringe o scan de 11/14 dígitos a reconciliationId/id; valores monetários permanecem sob o schema decimal e IDs sob os schemas opacos tipados."
   - "Round4 passou em 15/15 focais; o gate adjacente teve uma ocorrência transitória em teste de lock inalterado da baseline, reproduzida isoladamente, e o retry integral exato passou com exit 0. Story permanece InReview para QG4."
+  - "QG4 independente aprovou o HEAD 2042ff4 com PASS 98/100, confiança alta e zero blockers."
+  - "Story fechada como Done e hill phase done; epic-state, merge, push e fan-in permanecem reservados ao @devops."
 file_list:
   - "data/contracts/source-reconciliation.v1.schema.json"
   - "scripts/reconcile-aula-04-sources.mjs"
@@ -159,8 +161,10 @@ file_list:
 ```yaml
 quality_gate_report:
   story_id: "17.W2.3"
-  verdict: "FAIL"
-  score: 82
+  verdict: "PASS"
+  score: 98
+  confidence: high
+  blocking_findings: 0
   rounds:
     - round: 1
       verdict: "FAIL"
@@ -180,8 +184,14 @@ quality_gate_report:
       reviewed_head: "c6eacae"
       blocking_findings:
         - "O scan global de sequências numéricas de 11/14 dígitos rejeitava valores monetários válidos, apesar do contexto decimal tipado."
+    - round: 4
+      verdict: "PASS"
+      score: 98
+      confidence: high
+      blocking_findings: 0
+      reviewed_head: "2042ff4"
   remediation:
-    status: "READY_FOR_QG4"
+    status: "COMPLETE"
     red_head: "92a06f3"
     implementation_head: "1574f2c"
     focal_tests: "15/15"
@@ -190,6 +200,11 @@ quality_gate_report:
     false_positive_cases: 48
   reviewed_by: "@architect"
   reviewed_at: "2026-07-15"
+  reviewed_head: "2042ff4"
+closure_acknowledgements:
+  quality_gate: "@architect PASS 98/100, high confidence, zero blockers"
+  executor: "@dev SDC_COMPLETE; AC, tasks, File List e evidência final conferidos"
+  fan_in: "READY_FOR_DEVOPS; epic-state, merge, push e deploy não executados"
 ```
 
 ## Change Log
@@ -205,3 +220,5 @@ quality_gate_report:
 | 2026-07-15 | @dev | Round3 RED/GREEN exige letra em nonce opaco, fecha sequências de 11/14 dígitos e passa 14/14 focais; story mantida em `InReview`. |
 | 2026-07-15 | @architect | QG3 `FAIL 82`: scan numérico global gerava falso positivo em valores monetários válidos. |
 | 2026-07-15 | @dev | Round4 RED/GREEN torna o guard numérico contextual, preserva IDs fail-closed e passa 15/15 focais; story mantida em `InReview`. |
+| 2026-07-15 | @architect | QG4 `PASS 98/100`, confiança alta e zero blockers no HEAD `2042ff4`; story aceita. |
+| 2026-07-15 | @dev | SDC fechado, story movida para `Done`, hill phase `done` e fan-in liberado exclusivamente para `@devops`. |
