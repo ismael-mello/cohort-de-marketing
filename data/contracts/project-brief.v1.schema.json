@@ -25,7 +25,14 @@
     "status": { "enum": ["draft", "active", "superseded"] },
     "createdAt": { "type": "string", "format": "date-time" },
     "updatedAt": { "type": "string", "format": "date-time" },
-    "data": { "$ref": "../project-brief.schema.json" },
+    "data": {
+      "type": "object",
+      "$ref": "https://marketinglendario.local/cohort/project-brief.schema.json",
+      "description": "Os 120 campos canônicos são reutilizados por referência; fieldMeta migra para fieldSources.",
+      "properties": {
+        "fieldMeta": false
+      }
+    },
     "fieldSources": {
       "type": "object",
       "additionalProperties": {
@@ -43,4 +50,3 @@
     }
   }
 }
-

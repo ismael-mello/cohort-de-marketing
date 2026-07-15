@@ -11,6 +11,7 @@ const fixture = (name) => JSON.parse(
 
 test('migra 0.1.0 de forma deterministica e preserva dados e proveniencia', () => {
   const legacy = fixture('legacy-0.1.0.valid.json');
+  const original = structuredClone(legacy);
   const expected = fixture('migrated-1.0.0.valid.json');
 
   const first = migrateLegacyProjectBrief(legacy);
@@ -18,6 +19,7 @@ test('migra 0.1.0 de forma deterministica e preserva dados e proveniencia', () =
 
   assert.deepEqual(first, expected);
   assert.deepEqual(second, expected);
+  assert.deepEqual(legacy, original);
   assert.equal(first.document.data.fieldMeta, undefined);
   assert.equal(first.document.fieldSources['project.name'].source, 'user');
   assert.equal(first.document.fieldSources['market.niche'].source, 'artifact');
@@ -57,8 +59,8 @@ test('schema v1 usa o schema legado por referencia e nao duplica os 120 campos',
   const schema = fixture('../../project-brief.v1.schema.json');
 
   assert.equal(schema.$schema, 'https://json-schema.org/draft/2020-12/schema');
-  assert.deepEqual(schema.properties.data, { $ref: '../project-brief.schema.json' });
-  assert.equal(schema.properties.data.properties, undefined);
+  assert.equal(schema.properties.data.$ref, 'https://marketinglendario.local/cohort/project-brief.schema.json');
+  assert.deepEqual(schema.properties.data.properties, { fieldMeta: false });
   assert.deepEqual(schema.required, [
     'schemaVersion',
     'id',
@@ -71,4 +73,20 @@ test('schema v1 usa o schema legado por referencia e nao duplica os 120 campos',
     'data',
     'fieldSources',
   ]);
+});
+
+test('contrato publico nao carrega acoplamentos do Studio privado', () => {
+  const contract = readFileSync(
+    fileURLToPath(new URL('../../project-brief.v1.schema.json', import.meta.url)),
+    'utf8',
+  );
+  const migration = readFileSync(
+    fileURLToPath(new URL('../../../../scripts/migrate-project-brief.mjs', import.meta.url)),
+    'utf8',
+  );
+
+  for (const privateMarker of ['supabase', 'academia-lendaria-ads-studio', '/Users/', 'studioProjectId']) {
+    assert.equal(contract.includes(privateMarker), false, `schema contem marcador privado: ${privateMarker}`);
+    assert.equal(migration.includes(privateMarker), false, `migracao contem marcador privado: ${privateMarker}`);
+  }
 });
