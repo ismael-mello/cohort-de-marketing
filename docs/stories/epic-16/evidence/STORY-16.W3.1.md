@@ -41,7 +41,7 @@ fixture. Nenhuma correção de runtime foi necessária.
 | AC4 | Quatro distribuições em desktop `1440x900` e mobile `390x844`, com CSP/MIME, pageerror e console monitorados; PASS. Preview PDF/canvas também PASS. |
 | AC5 | Diff allow-listed e evidência sanitizada; scans de secrets, PII, paths de máquina e artefatos de cliente com zero achados. |
 | AC6 | `docs/releases/project-brief-v1.md` registra sete versões/IDs de contrato, compatibilidade, comandos, limitações e rollback sem declarar deploy. |
-| AC7 | Entidade e comandos estão registrados; PO e QA têm evidência, Architect segue pendente e a story permanece `InReview`. |
+| AC7 | Entidade e comandos estão registrados; fases PO/QA têm evidência e o Architect independente aprovou o HEAD `dfbdf10` com `PASS 98/100`, confiança alta e zero findings. |
 
 ## Resultados executáveis
 
@@ -128,6 +128,12 @@ allow-list da story.
 checkout limpo, a distribuição pública permaneceu coerente e a evidência não
 depende de dados privados.
 
-Veredito `@qa`: **PASS técnico para revisão independente**. A story não está
-`Done`; o `@architect` deve executar o quality gate e registrar o veredito.
-Não houve push, PR, merge, deploy ou publicação.
+Veredito `@qa`: **PASS técnico**. Veredito independente `@architect`:
+**PASS 98/100**, confiança alta, zero findings, no HEAD
+`dfbdf1025c225f7b75de0fb51f55915925298551`. Os registros PO e QA são
+evidências das fases sequenciais da mesma execução SDC; não representam
+identidades humanas adicionais. O quality gate de arquitetura é o sign-off
+independente que autorizou o fechamento.
+
+Veredito final local: **PASS**. A story está `Done` e pronta para fan-in por
+`@devops`. Não houve push, PR, merge, deploy ou publicação.

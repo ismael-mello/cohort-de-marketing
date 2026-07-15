@@ -3,8 +3,8 @@
   "epic_id": "16",
   "namespace": "PUB",
   "title": "Projeto canonico como fonte de verdade",
-  "status": "InProgress",
-  "verification_verdict": "IN_REVIEW",
+  "status": "Done",
+  "verification_verdict": "PASS",
   "created": "2026-07-14",
   "depends_on": ["GATE-0"],
   "implementation_authorized": true,
@@ -73,13 +73,13 @@
     {
       "wave_id": "W3",
       "name": "Release gate",
-      "status": "in_progress",
+      "status": "completed",
       "parallel_groups": [["16.W3.1"]],
       "stories": [
         {
           "story_id": "16.W3.1",
           "title": "Gate público de contrato e distribuição",
-          "status": "InReview",
+          "status": "Done",
           "task_mode": "VALIDAR",
           "deploy_type": "none",
           "repo_target": "cohort-de-marketing",

@@ -1,5 +1,5 @@
 ---
-status: InReview
+status: Done
 story_id: "16.W3.1"
 title: "Gate público de contrato e distribuição"
 epic: 16
@@ -8,7 +8,7 @@ parent_epic: "docs/stories/epic-16/EPIC-16-CANONICAL-PROJECT.md"
 effort: 8h
 deploy_type: none
 appetite: 1d
-hill_phase: executing
+hill_phase: done
 confidence_level: know-how
 involves_ui: false
 task_mode: VALIDAR
@@ -103,7 +103,7 @@ affected_paths:
 - [x] AC4: Smokes em viewport desktop e mobile carregam briefing e mapa por HTTP, sem `pageerror`, erro de console, falha CSP/MIME ou divergência na próxima skill apresentada.
 - [x] AC5: Um scan reproduzível do diff e das evidências não encontra segredo, credencial, PII, path absoluto de máquina nem artefato de cliente; evidências registram somente fixtures sintéticas e resultados sanitizados.
 - [x] AC6: `docs/releases/project-brief-v1.md` registra versões exatas dos contratos consumidos, matriz de compatibilidade, comandos de verificação, limitações e rollback local sem declarar push, publicação ou deploy.
-- [ ] AC7: A evidência liga `PublicProjectContract` a `PublicProjectContractReleaseGate`, inclui resultados de checkout limpo e todos os comandos; a story permanece `InReview` até vereditos independentes de PO, Architect e QA.
+- [x] AC7: A evidência liga `PublicProjectContract` a `PublicProjectContractReleaseGate`, inclui resultados de checkout limpo e todos os comandos; a story permanece `InReview` até vereditos independentes de PO, Architect e QA.
 
 ## Tasks
 
@@ -189,8 +189,15 @@ deploy_type: none
 ### Quality gate independente
 
 - Reviewer: `@architect`
-- Resultado: PENDENTE.
-- A story permanece `InReview`; este executor não atribui o sign-off de arquitetura.
+- Resultado: `PASS 98/100`.
+- Confiança: alta.
+- Blocking findings: 0.
+- HEAD avaliado: `dfbdf1025c225f7b75de0fb51f55915925298551`.
+- Decisão: gate aprovado sem remediação adicional; story autorizada a fechar.
+
+Os registros de `@po` e `@qa` acima são evidências das fases sequenciais desta
+execução SDC, não identidades humanas adicionais. O veredito de `@architect` é
+o quality gate independente recebido após o handoff `InReview`.
 
 ## Stop Conditions
 
@@ -208,3 +215,5 @@ deploy_type: none
 | 2026-07-15 | @qa | Novas provas congeladas em RED no commit `39769eb`; diferença do ArtifactIndex separado e assertion incompatível com a fixture foram identificadas. |
 | 2026-07-15 | @qa | Assertions alinhadas ao contrato público no commit `6943694`; 69 testes, checkout limpo, validators, paridade, smokes e scans aprovados sem correção de runtime. |
 | 2026-07-15 | @qa | Release manifest e evidência sanitizada registrados; story movida para `InReview` e entregue ao `@architect`. |
+| 2026-07-15 | @architect | QG independente `PASS 98/100`, confiança alta e zero findings no HEAD `dfbdf10`. |
+| 2026-07-15 | @qa | SDC fechado após o QG; `status: Done`, `hill_phase: done` e fan-in liberado exclusivamente para `@devops`. |

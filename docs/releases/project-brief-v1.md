@@ -4,7 +4,7 @@ Data do gate: 2026-07-15
 
 Story: `16.W3.1`
 
-Status: **pronto para revisão independente; não publicado**
+Status: **gate local aprovado; pronto para fan-in; não publicado**
 
 ## Versões congeladas
 
@@ -84,6 +84,10 @@ bloqueada até novo veredito PO/Architect/QA.
 |---|---|---|
 | Product Owner | contrato validado | materialização SDC em `83b6b0a` |
 | QA executor | PASS técnico | matriz, checkout limpo, smokes e scans em `STORY-16.W3.1.md` |
-| Architect quality gate | pendente | revisão independente obrigatória antes de `Done` |
+| Architect quality gate | PASS 98/100 | confiança alta, zero findings, HEAD `dfbdf10` |
 
-Veredito de release: **PENDING ARCHITECT REVIEW**.
+Os registros de Product Owner e QA correspondem às fases sequenciais desta
+execução SDC. O Architect executou o quality gate independente.
+
+Veredito de release local: **PASS — READY FOR DEVOPS FAN-IN**. Este veredito
+não declara publicação, push, merge ou deploy.
