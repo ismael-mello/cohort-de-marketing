@@ -245,5 +245,18 @@ acervo auto-curado. Pessoa = foto REAL via EDIT (nunca likeness gerada do zero).
 Identidade, logos, pessoas, referências e exemplos de campanha vivem somente
 em packs externos explicitamente selecionados; não existem defaults de cliente.
 
+## Publicação (ponte para o Squad de Tráfego)
+
+Depois da curadoria humana, os PNGs aprovados sobem para a biblioteca da conta
+Meta com o adapter externo (fora desta skill):
+
+```bash
+node scripts/acf-upload.mjs --dir=projetos/{slug}/criativos/factory --json
+```
+
+Ele devolve `{arquivo → image_hash}`; os hashes entram em `criativos[].image_hash`
+do plano do `estruturador` (`scripts/estruturador-publish.mjs`), que cria os
+anúncios PAUSED. Upload não é publicação — mas só suba o que o aluno aprovou.
+
 Nunca versionar `out/`, `tmp/`, `__pycache__/`, `.last`, manifests de execução
 ou imagens geradas para projetos reais dentro da pasta da skill.

@@ -39,3 +39,6 @@ secrets.json
 CHANGELOG.md
 projetos/
 scripts/lib/.test-out/
+
+# runtime do squad de tráfego (log de publicações, snapshots)
+outputs/

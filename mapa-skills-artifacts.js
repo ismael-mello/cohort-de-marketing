@@ -1,5 +1,5 @@
 /**
- * Exemplos ilustrativos de artefatos — todas as 25 skills.
+ * Exemplos ilustrativos de artefatos — todas as 31 skills.
  * Usados no mapa-skills.html para preview clicável.
  */
 (function () {
@@ -55,7 +55,7 @@
 ## Checklist
 - [x] Git atualizado (branch rafaelscosta)
 - [x] Node.js v20+
-- [x] Skills carregadas (25/25)
+- [x] Skills carregadas (31/31)
 - [x] APIFY_API_TOKEN no .env
 - [ ] Primeiro projeto criado em \`projetos/\`
 
@@ -390,6 +390,416 @@ WhatsApp: "Quer tentar em 2x?"
 
     "status-funil": [
       md("status-md", "status.md", "status.md")
+    ],
+
+    "zelador": [
+      mdInline("zelador-painel", "Painel — auditoria (Modo API)", "trafego/PAINEL-DA-SEMANA.yaml", `\`\`\`yaml
+## Bloco escrito pelo Zelador no PAINEL-DA-SEMANA.yaml
+## (depois da compra-teste confirmada pelo aluno — ver relatório ao lado)
+
+zelador:
+  modo: "api"
+  ultima_checagem: "2026-07-15"
+  bm_ativo: true                    # fonte: api
+  conta_anuncios_ativa: true        # fonte: api
+  pixel_disparando: true            # fonte: api
+  capi_ativo: true                  # fonte: api
+  evento_compra_deduplicado: true   # fonte: aluno (compra-teste confirmada em 2026-07-15)
+  dominio_verificado: null          # fonte: nao_verificavel_api — pendente, não bloqueia
+  pagamento_aprovado: true          # fonte: api
+  pagina_vinculada: true            # fonte: api
+  api_escrita_habilitada: true      # fonte: api (--testar-escrita, preflight OK)
+  status_geral: "PARCIAL"           # só falta dominio_verificado — não bloqueia o Estruturador
+  observacoes:
+    - "[dominio_verificado] a Graph API v24.0 não expõe verificação de domínio para System User — confira manualmente em Business Manager > Configurações > Segurança da Marca > Domínios."
+    - "[evento_compra_deduplicado] confirmado pelo aluno: compra-teste apareceu 1x no Events Manager, com event_id presente nos dois canais (servidor + navegador)."
+\`\`\``),
+
+      mdInline("zelador-relatorio", "Relatório da auditoria", "trafego/zelador-relatorio.md", `# Zelador — Auditoria de conta Meta via Graph API v24.0
+
+Data: 2026-07-15
+
+\`\`\`
+ ✔ token_valido                  [API] tipo USER, expira em 2026-10-02 (79 dias), 2 escopos
+ ✔ bm_ativo                      [API] BM "Academia Fit Treinos" acessível — verificação da empresa: verified
+ ✔ conta_anuncios_ativa          [API] "Academia Fit — Ads" — Ativa (BRL, America/Sao_Paulo)
+ ✔ pagamento_aprovado            [API] meio de pagamento cadastrado e sem pendência de cobrança
+ ✔ pixel_disparando              [API] pixel "Academia Fit — Conversão" (987654321098765) disparou há 5h (último: 2026-07-14T21:12:00+0000)
+ ✔ capi_ativo                    [API] 96 eventos de servidor e 141 de navegador na janela 2026-07-08 → 2026-07-15
+ △ evento_compra_deduplicado     [API] sinal positivo: eventos chegando por servidor E navegador — a dedup por event_id precisa de teste manual
+     → Faça uma compra-teste e confirme no Events Manager que o evento aparece UMA vez, com event_id presente nos dois canais.
+ △ dominio_verificado            [manual] a Graph API v24.0 não expõe verificação de domínio para System User
+     → Confira manualmente: Business Manager > Configurações > Segurança da Marca > Domínios.
+ ✔ pagina_vinculada              [API] página "Academia Fit" (112233445566778) acessível e publicada
+ ✔ api_escrita_habilitada        [API] conta aceita escrita deste app — Estruturador pode publicar via API
+
+Eventos recentes no pixel: PURCHASE=14, ViewContent=286, AddToCart=47, PageView=812
+
+STATUS GERAL (API): PARCIAL
+
+Pendências manuais (a skill zelador confirma com você):
+ △ evento_compra_deduplicado: Faça uma compra-teste e confirme no Events Manager que o evento aparece UMA vez, com event_id presente nos dois canais.
+ △ dominio_verificado: Confira manualmente: Business Manager > Configurações > Segurança da Marca > Domínios.
+\`\`\`
+
+Depois que o aluno confirmou a compra-teste (event_id único nos dois canais), o Zelador
+atualizou evento_compra_deduplicado para true no Painel — status geral segue PARCIAL só
+por causa do domínio (não crítico, não bloqueia o Estruturador).`),
+    ],
+
+    "briefista": [
+      mdInline("briefista-bateria-md", "painel-briefista.md", "trafego/painel-briefista.md", `# briefista — bateria_gerada (Painel da Semana)
+
+Ângulos herdados da Aula 2, cada um já com \`nivel_consciencia\` declarado — o
+Briefista recusa gerar para qualquer ângulo sem esse campo preenchido.
+
+\`\`\`yaml
+briefista:
+  gerado_em: "2026-07-15"
+  bateria_gerada:
+    - id: "hook-dor-01"
+      angulo: "Cansaço de recomeçar toda segunda-feira"
+      nivel_consciencia: "Inconsciente"
+      hook: "Você evita foto de corpo inteiro? Não é falta de força de vontade."
+      copy: "Não é sobre disciplina. É sobre um ciclo que ninguém te explicou direito."
+      formato: "reels 9:16 | feed"
+      categoria_hook: "dor"
+    - id: "hook-curiosidade-01"
+      angulo: "Cansaço de recomeçar toda segunda-feira"
+      nivel_consciencia: "Inconsciente"
+      hook: "Tem uma coisa que quase toda mulher acima de 35 sente e não fala em voz alta..."
+      copy: "Não é frescura. É um padrão que se repete — e tem um motivo por trás dele."
+      formato: "reels 9:16 | feed"
+      categoria_hook: "curiosidade"
+    - id: "hook-historia-01"
+      angulo: "Cansaço de recomeçar toda segunda-feira"
+      nivel_consciencia: "Inconsciente"
+      hook: "Há 6 meses a Fernanda parou de se pesar todo dia. O que ela viu no caminho mudou a relação dela com o espelho."
+      copy: "Ela não mudou a dieta primeiro. Mudou outra coisa. Conta aqui."
+      formato: "reels 9:16 | feed"
+      categoria_hook: "historia"
+    - id: "hook-dor-02"
+      angulo: "Efeito sanfona: por que a dieta sempre volta"
+      nivel_consciencia: "Consciente-do-Problema"
+      hook: "Cansada do efeito sanfona? Você recomeça toda segunda e volta ao mesmo peso em semanas."
+      copy: "O problema não é a força de vontade da segunda-feira. É o que acontece no resto da semana."
+      formato: "reels 9:16 | feed"
+      categoria_hook: "dor"
+    - id: "hook-curiosidade-02"
+      angulo: "Efeito sanfona: por que a dieta sempre volta"
+      nivel_consciencia: "Consciente-do-Problema"
+      hook: "O motivo real por trás do efeito sanfona não é o que a maioria dos personal trainers costuma dizer."
+      copy: "Tem uma peça que quase nunca entra na conversa sobre emagrecimento. Essa é ela."
+      formato: "reels 9:16 | feed"
+      categoria_hook: "curiosidade"
+    - id: "hook-contrarian-01"
+      angulo: "Efeito sanfona: por que a dieta sempre volta"
+      nivel_consciencia: "Consciente-do-Problema"
+      hook: "Pare de contar caloria. O problema nunca foi disciplina."
+      copy: "Contar caloria não resolveu da última vez. Talvez o ponto de partida esteja errado."
+      formato: "reels 9:16 | feed"
+      categoria_hook: "contrarian"
+  finalistas_curados:
+    - "hook-dor-01"
+    - "hook-curiosidade-02"
+\`\`\`
+
+Curadoria completa do aluno em \`trafego/curadoria-hooks.md\`.`),
+
+      mdInline("briefista-curadoria-md", "curadoria-hooks.md", "trafego/curadoria-hooks.md", `# Curadoria do aluno — bateria do Briefista
+
+O Briefista gerou 6 variações (3 por ângulo), cobrindo dor, curiosidade,
+história e contrarian. A curadoria é decisão humana — o Briefista nunca
+escolhe os finalistas sozinho.
+
+## Finalistas escolhidos
+
+| Hook | Ângulo | Nível | Categoria | Por quê |
+|---|---|---|---|---|
+| \`hook-dor-01\` | Cansaço de recomeçar toda segunda-feira | Inconsciente | Dor | Fala da vergonha de foto de corpo inteiro sem nomear "dieta" — bateu com o comentário mais recorrente nos directs da marca. |
+| \`hook-curiosidade-02\` | Efeito sanfona: por que a dieta sempre volta | Consciente-do-Problema | Curiosidade | Nomeia o problema que a audiência já sente, mas segura a solução — bom encaixe pra quem já pesquisa "por que a dieta não pega". |
+
+## Descartados (motivo rápido)
+- \`hook-historia-01\`: história boa, mas longa pra 3 segundos de scroll em reels.
+- \`hook-contrarian-01\`: tom "pare de fazer X" já saturado no nicho — risco de fadiga rápida.
+- \`hook-dor-02\` e \`hook-curiosidade-01\`: variações válidas, guardadas pra próxima leva se os finalistas fadigarem.
+
+## Próximo passo
+Os 2 finalistas seguem para \`/ads-creative-factory\` — criativo visual
+multi-formato, com a mesma curadoria humana antes do upload.`)
+    ],
+
+    "estruturador": [
+      mdInline("estruturador-plano", "campanha.json — plano aprovado", "trafego/campanha.json", `\`\`\`json
+{
+  "nome": "[COHORT1]_[academia-fit]_[2026-07-15]",
+  "objetivo": "OUTCOME_SALES",
+  "evento_conversao": "PURCHASE",
+  "verba_diaria_reais": 30,
+  "periodo_dias": 7,
+  "pais": "BR",
+  "interesse_guarda_chuva": null,
+  "link_destino": "https://academiafit.com.br/oferta?utm_source=meta&utm_medium=paid&utm_campaign=cohort1_academia-fit_2026-07-15&utm_content={{ad.name}}",
+  "cta": "LEARN_MORE",
+  "pixel_id": "987654321098765",
+  "page_id": "112233445566778",
+  "criativos": [
+    {
+      "id": "hook-dor-01",
+      "titulo": "Chega de recomeçar toda segunda",
+      "copy": "Você já tentou de tudo e volta a ganhar o peso de volta? O Método Consistência 90 tira você desse ciclo em 3 fases — sem contar caloria a vida toda.",
+      "image_hash": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4"
+    },
+    {
+      "id": "hook-curiosidade-02",
+      "titulo": "O erro que 9 em 10 mulheres cometem na dieta",
+      "copy": "Não é falta de força de vontade. É o método errado. Descubra o que muda tudo no Consistência 90.",
+      "image_hash": "f6e5d4c3b2a1f6e5d4c3b2a1f6e5d4c3"
+    }
+  ],
+  "aprovado_pelo_aluno_em": "2026-07-15"
+}
+\`\`\``),
+
+      mdInline("estruturador-painel", "Painel — estruturador (pós --criar)", "trafego/PAINEL-DA-SEMANA.yaml", `\`\`\`yaml
+## Bloco escrito pelo Estruturador no PAINEL-DA-SEMANA.yaml
+## (gerado por "node scripts/estruturador-publish.mjs --criar" — Gate 2, tudo PAUSED)
+
+estruturador:
+  montado_em: "2026-07-15"
+  publicada_via: "api"
+  campaign_id: "120210000000123"
+  adset_id: "120210000000456"
+  ad_ids: ["120210000000789","120210000000790"]
+  verba_diaria: 30
+  periodo_dias: 7
+  fim_automatico: "2026-07-22"
+  status: "criada_pausada"
+  aprovada_pelo_aluno_em: "2026-07-15"
+  ativada_em: ""
+\`\`\``),
+
+      mdInline("estruturador-criar-log", "Saída do --criar (Gate 2)", "trafego/estruturador-criar.log", `\`\`\`
+Plano validado — "[COHORT1]_[academia-fit]_[2026-07-15]"
+  OUTCOME_SALES / PURCHASE · R$30/dia × 7 dias (teto total ~R$210.00, com fim automático)
+  Público: amplo/frio Advantage+ (BR)
+  2 criativos · pixel 987654321098765 · página 112233445566778
+  Aprovado pelo aluno em: 2026-07-15
+
+ ✔ pré-flight de escrita passou (o app pode publicar nesta conta)
+ ✔ campanha criada (PAUSED): 120210000000123
+ ✔ conjunto criado (PAUSED, fim automático em 2026-07-22): 120210000000456
+ ✔ anúncio "hook-dor-01" criado (PAUSED): 120210000000789
+ ✔ anúncio "hook-curiosidade-02" criado (PAUSED): 120210000000790
+
+TUDO CRIADO EM PAUSED — nada está gastando.
+Revise no gerenciador: https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=123450000067890&selected_campaign_ids=120210000000123
+
+Para ativar (após revisão do aluno):
+  node scripts/estruturador-publish.mjs --ativar --campaign-id=120210000000123 --confirmo-ativacao
+
+Gate 3 é decisão do aluno: sem --confirmo-ativacao, o script recusa ativar.
+7 dias sem mexer depois disso — salvo circuit-breaker (gasto ≥ 2× CPA-alvo com 0 conversões e CTR < 0,5%).
+\`\`\``),
+    ],
+
+    "leitor-de-metricas": [
+      mdInline("leitor-painel-md", "leitor-metricas-painel.md", "trafego/leitor-metricas-painel.md", `# Leitor de Métricas — bloco para o PAINEL-DA-SEMANA.yaml
+
+Campanha \`120210000000123\` · Modo API · janela \`last_7d\` (2026-07-15 → 2026-07-19), lida em 2026-07-19.
+
+Todo sinal abaixo veio pronto da Graph API — nada foi calculado ou completado por inferência. O ROAS sai com selo **Estimado** porque é atribuição da própria plataforma, não venda confirmada no caixa.
+
+\`\`\`yaml
+leitor:
+  modo: "api"
+  ultima_leitura: "2026-07-19"
+  fonte: "Graph API v24.0 (campanha 120210000000123)"
+  janela_atribuicao: "7d clique / 1d view"
+  sinais:
+    - { metrica: "Gasto (R$)", valor: 118.43, selo: "Real", fonte: "API Graph v24.0 em 2026-07-19" }
+    - { metrica: "Impressões", valor: 41200, selo: "Real", fonte: "API Graph v24.0 em 2026-07-19" }
+    - { metrica: "Alcance", valor: 33900, selo: "Real", fonte: "API Graph v24.0 em 2026-07-19" }
+    - { metrica: "Cliques (todos)", valor: 512, selo: "Real", fonte: "API Graph v24.0 em 2026-07-19" }
+    - { metrica: "Cliques no link", valor: 388, selo: "Real", fonte: "API Graph v24.0 em 2026-07-19" }
+    - { metrica: "CTR (%)", valor: 1.24, selo: "Real", fonte: "API Graph v24.0 em 2026-07-19" }
+    - { metrica: "CPM (R$)", valor: 2.87, selo: "Real", fonte: "API Graph v24.0 em 2026-07-19" }
+    - { metrica: "CPC (R$)", valor: 0.23, selo: "Real", fonte: "API Graph v24.0 em 2026-07-19" }
+    - { metrica: "Frequência", valor: 1.22, selo: "Real", fonte: "API Graph v24.0 em 2026-07-19" }
+    - { metrica: "Compras (atribuídas)", valor: 4, selo: "Real", fonte: "API Graph v24.0 em 2026-07-19", premissa: "evento reportado pela plataforma" }
+    - { metrica: "CPA compra (R$)", valor: 29.61, selo: "Real", fonte: "API Graph v24.0 em 2026-07-19", premissa: "custo por resultado reportado pela plataforma" }
+    - { metrica: "ROAS (omni_purchase)", valor: 1.9, selo: "Estimado", fonte: "API Graph v24.0 em 2026-07-19", premissa: "atribuição da plataforma, NÃO confirmado no caixa — só vira Real com venda conferida pelo aluno" }
+  amostra_suficiente_para_cpa: false
+  nota_amostra: "amostra insuficiente para CPA (4 conversões < 10) — leia sinal de topo (CTR, CPM, CPC, cliques no link)"
+\`\`\`
+
+Handoff: este bloco é o insumo obrigatório do Diagnosticador — sem ele, a skill \`diagnosticador\` para e pede pra rodar o Leitor primeiro.`),
+
+      mdInline("leitor-terminal-md", "leitor-metricas-terminal.md", "trafego/leitor-metricas-terminal.md", `# Leitor de Métricas — saída no terminal (Modo API)
+
+Comando: \`node scripts/leitor-metricas.mjs --campaign-id=120210000000123\`
+
+\`\`\`
+Leitor de Métricas — campanha 120210000000123 · janela last_7d · 2026-07-19
+Janela de atribuição: 7d clique / 1d view
+
+ ✔ Gasto (R$)               118.43   [Real]
+ ✔ Impressões               41200   [Real]
+ ✔ Alcance                  33900   [Real]
+ ✔ Cliques (todos)          512   [Real]
+ ✔ Cliques no link          388   [Real]
+ ✔ CTR (%)                  1.24   [Real]
+ ✔ CPM (R$)                 2.87   [Real]
+ ✔ CPC (R$)                 0.23   [Real]
+ ✔ Frequência                1.22   [Real]
+ ✔ Compras (atribuídas)      4   [Real] — evento reportado pela plataforma
+ ✔ CPA compra (R$)           29.61   [Real] — custo por resultado reportado pela plataforma
+ ≈ ROAS (omni_purchase)      1.9   [Estimado] — atribuição da plataforma, NÃO confirmado no caixa — só vira Real com venda conferida pelo aluno
+
+amostra insuficiente para CPA (4 conversões < 10) — leia sinal de topo (CTR, CPM, CPC, cliques no link)
+
+Bloco para o PAINEL-DA-SEMANA.yaml: (ver artefato "leitor-metricas-painel.md")
+\`\`\`
+
+✔ = selo Real (dado pronto da API) · ≈ = selo Estimado (premissa declarada). Nenhum valor acima foi calculado pelo Leitor — só traduzido e rotulado.`)
+    ],
+
+    "diagnosticador": [
+      mdInline("diag-painel-md", "diagnosticador-painel.md", "trafego/diagnosticador-painel.md", `# Diagnosticador — bloco para o PAINEL-DA-SEMANA.yaml
+
+Lido \`leitor.sinais\` (campanha 120210000000123, janela last_7d): CTR 1,24% [Real], \`amostra_suficiente_para_cpa: false\` (4 conversões < 10) — ainda não dá pra diagnosticar em cima de CPA, só sinal de topo.
+
+Passo 0 rodou o circuit-breaker com os dados reais e voltou **NÃO acionado** — a regra dos 7 dias segue de pé, sem furar prazo. Uma alavanca só: o gargalo aqui é o ângulo, não a verba nem a oferta.
+
+\`\`\`yaml
+diagnosticador:
+  diagnosticado_em: "2026-07-19"
+  hipotese: "CTR de 1,24% em público frio (Real, Leitor de Métricas) com amostra insuficiente para CPA (4 conversões) — o ângulo 'hook-curiosidade-02' provavelmente está num nível de consciência alto demais pra esse público frio"
+  alavanca_unica: "Trocar a bateria pelo ângulo de dor (nível Inconsciente), via Briefista"
+  criterio_sucesso: "CTR sobe para >1,8% em 3 dias após a troca"
+  criterio_reversao: "Se CTR continuar <1,2% em 5 dias após a troca, reverter pro ângulo anterior e escalar pra revisão de oferta (A1)"
+  aprovado_pelo_aluno: true
+  circuit_breaker_acionado: false
+\`\`\`
+
+Handoff: com \`aprovado_pelo_aluno: true\`, quem executa é o Briefista — gera a nova bateria no ângulo de dor. O Diagnosticador nunca troca o criativo sozinho.`),
+
+      mdInline("diag-circuit-breaker-md", "circuit-breaker-terminal.md", "trafego/circuit-breaker-terminal.md", `# Diagnosticador — circuit-breaker.mjs (stop-loss)
+
+Comando: \`node scripts/circuit-breaker.mjs --campaign-id=120210000000123 --cpa-alvo=55\`
+
+Único gatilho que autoriza furar a regra dos 7 dias do Estruturador: gasto ≥ 2× CPA-alvo **E** 0 conversões **E** CTR < 0,5%. Aqui só uma das três condições bate — o gatilho fica fora, e o prazo dos 7 dias se mantém.
+
+\`\`\`
+Circuit-breaker — campanha 120210000000123 (2026-07-15 → 2026-07-19)
+
+ ⚠ SIM  gasto >= 2x CPA-alvo (R$110.00)
+ · não  zero conversões
+ · não  CTR < 0.5%
+
+ Gasto: R$118.43 · Conversões: 4 · CTR: 1.24%
+
+🟢 NÃO ACIONADO — Gatilho NÃO acionado: respeite os 7 dias sem mexer. Fora deste gatilho nomeado, edição reseta o aprendizado do algoritmo.
+\`\`\`
+
+O Diagnosticador registra \`circuit_breaker_acionado: false\` no Painel e segue com a alavanca de ângulo — nunca trata este relatório como ordem de pausa automática; ele só informa, quem decide é o aluno.`)
+    ],
+
+    "ads-creative-factory": [
+      mdInline("acf-legendas-md", "legendas.md", "criativos/factory/legendas.md", `# legendas.md — lote final (Ads Creative Factory)
+
+Campanha destino: \`[COHORT1]_[academia-fit]_[2026-07-15]\` · finalistas
+curados pelo \`briefista\` (\`hook-dor-01\`, \`hook-curiosidade-02\`).
+
+## hook-dor-01 · arquétipo \`dark_editorial\`
+
+**Caption:**
+Você evita foto de corpo inteiro? Não é falta de força de vontade — é um
+ciclo que ninguém te explicou direito.
+
+**Link description:**
+Descubra por que o "recomeço de segunda" nunca resolveu de verdade.
+
+| Formato | Arquivo |
+|---|---|
+| feed 4:5 | \`hook-dor-01-feed.png\` |
+| story 9:16 | \`hook-dor-01-story.png\` |
+| square 1:1 | \`hook-dor-01-square.png\` |
+
+## hook-curiosidade-02 · arquétipo \`didactic_compare\`
+
+**Caption:**
+O motivo real por trás do efeito sanfona não é o que a maioria dos personal
+trainers costuma dizer.
+
+**Link description:**
+✕ Dieta restritiva de novo · ✓ Ciclo de 3 fases — compare o que trava com o
+que sustenta.
+
+| Formato | Arquivo |
+|---|---|
+| feed 4:5 | \`hook-curiosidade-02-feed.png\` |
+| story 9:16 | \`hook-curiosidade-02-story.png\` |
+| square 1:1 | \`hook-curiosidade-02-square.png\` |
+
+---
+Revisão final humana obrigatória antes do upload — arquétipo é a diversidade
+(a espécie da peça), nunca o mesmo molde com a frase trocada.`),
+
+      mdInline("acf-manifest-upload-md", "manifest + upload.md", "criativos/factory/manifest-upload.md", `# manifest.json (trecho) + upload — lote academia-fit
+
+Trecho do manifesto que o \`factory.py\` grava para o lote acima (arquétipos
+distintos por hook, 3 formatos cada):
+
+\`\`\`json
+{
+  "campaign": "[COHORT1]_[academia-fit]_[2026-07-15]",
+  "brand_id": "brand-academia-fit",
+  "output_root": "criativos/factory",
+  "hooks": [
+    {
+      "id": "hook-dor-01",
+      "archetype": "dark_editorial",
+      "formats": ["feed", "story", "square"],
+      "files": [
+        "criativos/factory/hook-dor-01-feed.png",
+        "criativos/factory/hook-dor-01-story.png",
+        "criativos/factory/hook-dor-01-square.png"
+      ]
+    },
+    {
+      "id": "hook-curiosidade-02",
+      "archetype": "didactic_compare",
+      "formats": ["feed", "story", "square"],
+      "files": [
+        "criativos/factory/hook-curiosidade-02-feed.png",
+        "criativos/factory/hook-curiosidade-02-story.png",
+        "criativos/factory/hook-curiosidade-02-square.png"
+      ]
+    }
+  ]
+}
+\`\`\`
+
+Depois da aprovação humana dos PNGs, upload pra biblioteca da conta:
+
+\`\`\`bash
+node scripts/acf-upload.mjs --dir=projetos/academia-fit/criativos/factory --json
+\`\`\`
+
+\`\`\`json
+{
+  "enviadas": {
+    "hook-dor-01-feed.png": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+    "hook-curiosidade-02-feed.png": "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6a1"
+  },
+  "erros": []
+}
+\`\`\`
+
+Os \`image_hash\` acima entram em \`criativos[].image_hash\` no plano do
+\`estruturador\` (\`node scripts/estruturador-publish.mjs --criar --plano=campanha.json\`).
+Upload não é publicação — o anúncio nasce PAUSED mesmo assim.`)
     ]
   };
 

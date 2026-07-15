@@ -2,6 +2,11 @@
 
 Marque somente com evidência disponível.
 
+> **Modo API:** se o seu `.env` tem as credenciais Meta (bloco META GRAPH API
+> do `.env.example`), rode `node scripts/zelador-audit.mjs` — a maioria dos
+> itens abaixo é confirmada automaticamente pela Graph API, e o script indica
+> quais restam para conferência manual (tipicamente deduplicação e domínio).
+
 - [ ] Pixel/dataset identificado
 - [ ] Evento de conversão identificado
 - [ ] Domínio verificado

@@ -6,6 +6,18 @@ semana: "<YYYY-MM-DD a YYYY-MM-DD>"
 fonte: "<Meta Ads, Google Ads ou outra fonte confirmada>"
 janela_atribuicao: "nao fornecido"
 
+estruturador:
+  publicada_via: ""            # "api" | "manual"
+  campaign_id: ""              # preenchido pelo Modo API (estruturador-publish.mjs)
+  adset_id: ""
+  ad_ids: []
+  verba_diaria: null
+  periodo_dias: null
+  fim_automatico: ""
+  status: ""                   # "pronta_para_submit" | "criada_pausada" | "ativa"
+  aprovada_pelo_aluno_em: ""   # decisão humana registrada — nunca preenchida pela IA
+  ativada_em: ""
+
 sinais:
   - metrica: "Gasto"
     valor: null

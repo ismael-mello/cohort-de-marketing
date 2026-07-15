@@ -46,7 +46,15 @@ Anúncios para Meta Ads, feed/reels: vertical 9:16, legenda embutida na tela qua
 
 ## Regra de detecção de fadiga (para rodadas futuras da rotina semanal)
 
-Quando o aluno trouxer dados de campanhas já rodando (via Leitor de Métricas), sinalize fadiga criativa se: CTR caiu 20%+ do pico em 7 dias, frequência > 3,0 (Meta), ou o mesmo criativo rodando 14+ dias sem iteração. Nesses casos, gere uma nova leva a partir dos mesmos ângulos vencedores.
+Sinalize fadiga criativa se: CTR caiu 20%+ do pico em 7 dias, frequência > 3,0 (Meta), ou o mesmo criativo rodando 14+ dias sem iteração. Nesses casos, gere uma nova leva a partir dos mesmos ângulos vencedores.
+
+**Modo API:** se o Painel tem `estruturador.campaign_id` e o `.env` tem credenciais, rode a análise com dados reais por anúncio — os 3 gatilhos acima são computados sobre a série diária de verdade (pico de CTR observável, frequência real, idade do criativo):
+
+```bash
+node scripts/leitor-metricas.mjs --campaign-id=<id> --fadiga --json
+```
+
+Sem credenciais, use os números que o aluno trouxer via Leitor de Métricas, como sempre. A geração da bateria continua 100% sua + curadoria do aluno — a API só entra para detectar fadiga.
 
 ## Formato de saída (cole no Painel da Semana)
 
