@@ -178,7 +178,7 @@ test('sourcePath relativo valido migra para referencia portatil deterministica',
   );
 });
 
-function assertLegacySourcePathRejected(sourcePath, expected = /portable-artifact-reference/) {
+function assertLegacySourcePathRejected(sourcePath, expected = /portable-legacy-source-path/) {
   const document = fixture('relative-source-path.valid.json');
   document.fieldMeta['project.slug'].sourcePath = sourcePath;
   assert.throws(() => migrateLegacyProjectBrief(document), expected);
@@ -210,6 +210,20 @@ test('sourcePath rejeita referencia privada', () => {
 
 test('sourcePath rejeita valor nao-string', () => {
   assertLegacySourcePathRejected(42, /sourcePath.*string/);
+});
+
+test('v1 aceita somente sourceArtifactId POSIX canônico', () => {
+  const canonical = fixture('project-brief-1.0.0.valid.json');
+  canonical.fieldSources['market.niche'].sourceArtifactId = 'projetos/acme/avatar/avatar-funil.md';
+
+  assert.deepEqual(migrateLegacyProjectBrief(canonical).document, canonical);
+
+  const windowsRepresentation = structuredClone(canonical);
+  windowsRepresentation.fieldSources['market.niche'].sourceArtifactId = 'projetos\\acme\\avatar\\avatar-funil.md';
+  assert.throws(
+    () => migrateLegacyProjectBrief(windowsRepresentation),
+    /sourceArtifactId.*portable-artifact-reference/,
+  );
 });
 
 test('caminho idempotente v1 valida proveniencia e paths antes do no-op', () => {

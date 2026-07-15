@@ -53,13 +53,12 @@ function canonicalFieldPaths(schema) {
   return fields;
 }
 
-function isPortableArtifactReference(value) {
+function hasPortableReferenceSegments(value) {
   if (typeof value !== 'string' || value.length === 0 || value.length > 256) return false;
-  const normalized = value.replaceAll('\\', '/');
-  if (normalized.startsWith('/') || /^[A-Za-z]:\//.test(normalized)) return false;
-  if (/^[A-Za-z][A-Za-z0-9+.-]*:/.test(normalized)) return false;
+  if (value.startsWith('/') || /^[A-Za-z]:\//.test(value)) return false;
+  if (/^[A-Za-z][A-Za-z0-9+.-]*:/.test(value)) return false;
 
-  const segments = normalized.split('/');
+  const segments = value.split('/');
   if (segments.some((segment) => !segment || segment === '.' || segment === '..')) return false;
   for (const segment of segments) {
     if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(segment)) return false;
@@ -69,8 +68,19 @@ function isPortableArtifactReference(value) {
   return true;
 }
 
+function isPortableArtifactReference(value) {
+  return typeof value === 'string'
+    && !value.includes('\\')
+    && hasPortableReferenceSegments(value);
+}
+
+function isPortableLegacySourcePath(value) {
+  return typeof value === 'string'
+    && hasPortableReferenceSegments(value.replaceAll('\\', '/'));
+}
+
 export function normalizePortableArtifactReference(value) {
-  if (!isPortableArtifactReference(value)) {
+  if (!isPortableLegacySourcePath(value)) {
     throw new Error('Artifact reference must be a portable relative reference.');
   }
   return value.replaceAll('\\', '/');
@@ -94,6 +104,10 @@ export function createProjectBriefValidators() {
   ajv.addFormat('portable-artifact-reference', {
     type: 'string',
     validate: isPortableArtifactReference,
+  });
+  ajv.addFormat('portable-legacy-source-path', {
+    type: 'string',
+    validate: isPortableLegacySourcePath,
   });
   ajv.addSchema(legacySchema);
   const validateLegacy = ajv.getSchema(legacySchema.$id);
