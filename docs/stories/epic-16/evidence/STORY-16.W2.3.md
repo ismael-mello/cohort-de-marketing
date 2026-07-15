@@ -30,6 +30,8 @@ Data: 2026-07-15
   documentavam a assinatura anterior sem `contractRefs`.
 - Commit RED da remediação Round 3: `97f6189`.
 - Commit de remediação Round 3: `6d1f671`.
+- QG3: `PASS 98/100`, confiança alta e zero blocking findings no HEAD
+  `afd654bc30612a3aa89847e30bd0c3350930035f`.
 
 ## Provas dos acceptance criteria
 
@@ -137,4 +139,5 @@ npm audit --audit-level=high: 0 vulnerabilidades
   `SkillSurfaceContract.createReadinessContractRefs(...)`, avaliam pelo SOT e
   passam as refs para `decideNextSkill`. O teste executa o bloco, em vez de
   apenas procurar texto.
-- Não houve push, PR, merge ou deploy. O QG independente continua obrigatório.
+- Não houve push, PR, merge ou deploy. O QG independente foi satisfeito no
+  Round 3; a story está `Done` e pronta para fan-in por `@devops`.

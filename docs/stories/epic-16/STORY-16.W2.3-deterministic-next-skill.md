@@ -1,5 +1,5 @@
 ---
-status: InReview
+status: Done
 story_id: "16.W2.3"
 title: "Próxima skill determinística"
 epic: 16
@@ -8,7 +8,7 @@ parent_epic: "docs/stories/epic-16/EPIC-16-CANONICAL-PROJECT.md"
 effort: 8h
 deploy_type: none
 appetite: 1d
-hill_phase: executing
+hill_phase: done
 confidence_level: know-how
 involves_ui: true
 task_mode: CRIAR
@@ -181,8 +181,36 @@ repo_target: "cohort-de-marketing"
 - OCC/segurança: decisão não serializa valores do ProjectBrief nem paths do
   ArtifactIndex; expõe apenas nomes de requisitos e contagens sanitizadas.
 - Deploy: não aplicável (`deploy_type: none`).
-- Handoff: implementação concluída e pronta para QG independente de
-  `@sinkra-chief` Round 3; status permanece `InReview`, nunca `Done` pelo executor.
+- Fechamento: QG3 independente aprovado por `@sinkra-chief` no HEAD
+  `afd654bc30612a3aa89847e30bd0c3350930035f`; fan-in liberado para `@devops`.
+
+## QA Results
+
+### Round 1
+
+- Reviewer: `@sinkra-chief`
+- Resultado: `FAIL 48`
+- Bloqueios: versões/refs, sanitização, Blob sob CSP e desempate fora do contrato.
+- Remediação: `8f419cd` e `e5e724b`.
+
+### Round 2
+
+- Reviewer: `@sinkra-chief`
+- Resultado: `FAIL 82/100`
+- Bloqueios: um P1 no call pattern documentado por `comecar` e `status-funil`.
+- Remediação: `97f6189` e `6d1f671`.
+
+### Round 3
+
+- Reviewer: `@sinkra-chief`
+- Resultado: `PASS 98/100`
+- Confiança: alta
+- Blocking findings: 0
+- HEAD avaliado: `afd654bc30612a3aa89847e30bd0c3350930035f`
+- Evidência: 58/58 na matriz principal, 9/9 no round-trip browser,
+  golden/CSP nas quatro superfícies, probe executável dos quatro `SKILL.md`,
+  validadores públicos, preview, audit e paridade aprovados.
+- Decisão: story aceita como `Done`; nenhuma nova remediação necessária.
 
 ## Stop Conditions
 
@@ -201,3 +229,5 @@ repo_target: "cohort-de-marketing"
 | 2026-07-15 | @dev | QG1 remediado em `8f419cd`/`e5e724b`: contractRefs do SOT, fail-closed estrito, ESM same-origin sob CSP e empate somente por ID; devolvido para QG2. |
 | 2026-07-15 | @sinkra-chief | QG2 `FAIL 82/100`: um P1 nas duas skills canônicas ainda documentava a chamada sem `contractRefs`. |
 | 2026-07-15 | @dev | QG2 remediado em `97f6189`/`6d1f671`: call pattern completo nos quatro mirrors e probe executável contra o ruleset real; devolvido para QG3. |
+| 2026-07-15 | @sinkra-chief | QG3 `PASS 98/100`, confiança alta e zero blockers no HEAD `afd654b`; story aceita. |
+| 2026-07-15 | @dev | SDC fechado, story movida para `Done` e fan-in liberado para `@devops`. |
