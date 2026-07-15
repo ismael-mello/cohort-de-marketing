@@ -2,9 +2,9 @@
 
 ## Status
 
-Em progresso na W2. W1 está concluída; `17.W2.1` e `17.W2.3` estão `Ready`
-no primeiro grupo paralelo. `17.W2.2` permanece bloqueada até `17.W2.1`
-ficar `Done`; W3 continua em `Draft`.
+Em progresso na W3. W1 e W2 estão concluídas; `17.W2.1`, `17.W2.2` e
+`17.W2.3` estão `Done`. `17.W3.1` está `Ready` com implementação autorizada;
+`17.W3.2` permanece em `Draft`, sem autorização, até `17.W3.1` ficar `Done`.
 
 ## Problema
 

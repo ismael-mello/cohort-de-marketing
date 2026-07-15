@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Draft — implementação não autorizada; depende de `17.W3.1` em `Done`.
 
 ## Dependências
 
@@ -48,4 +48,3 @@ Provar contratos, skills, materiais e exemplo da Aula 4 antes da publicação.
 
 - Qualquer fonte não rastreável virar série histórica.
 - Sign-off humano pendente.
-

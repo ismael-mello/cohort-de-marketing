@@ -68,7 +68,7 @@
     {
       "wave_id": "W2",
       "name": "Leitura e decisao",
-      "status": "in_progress",
+      "status": "completed",
       "parallel_groups": [
         [
           "17.W2.1",
@@ -97,7 +97,7 @@
         {
           "story_id": "17.W2.2",
           "title": "Diagnostico decisao versus resultado",
-          "status": "Ready",
+          "status": "Done",
           "task_mode": "MODIFICAR",
           "deploy_type": "none",
           "repo_target": "marketingLendario/cohort-de-marketing",
@@ -131,7 +131,7 @@
     {
       "wave_id": "W3",
       "name": "Material e release",
-      "status": "planned",
+      "status": "in_progress",
       "parallel_groups": [
         [
           "17.W3.1"
@@ -144,7 +144,8 @@
         {
           "story_id": "17.W3.1",
           "title": "Modulo didatico e fluxo local da Aula 4",
-          "status": "Draft",
+          "status": "Ready",
+          "implementation_authorized": true,
           "depends_on": [
             "17.W2.1",
             "17.W2.2",
@@ -155,6 +156,7 @@
           "story_id": "17.W3.2",
           "title": "Gate publico da Aula 4",
           "status": "Draft",
+          "implementation_authorized": false,
           "depends_on": [
             "17.W3.1"
           ]

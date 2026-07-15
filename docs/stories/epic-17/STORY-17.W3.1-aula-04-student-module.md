@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Ready — implementação autorizada após a conclusão de W2.
 
 ## Dependências
 
@@ -51,4 +51,3 @@ Entregar ao aluno um fluxo local reproduzível para importar semanas, validar da
 
 - Material depender de asset ou serviço privado.
 - Fluxo pedir automação de publicação na Meta.
-
