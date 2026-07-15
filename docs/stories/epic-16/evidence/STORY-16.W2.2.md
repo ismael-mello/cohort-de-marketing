@@ -60,13 +60,25 @@ renderização com um único erro acionável.
   `INVALID_UNLOCK_RULES`, sem publicar dados nem estados `available`,
   `recommended` ou `done`.
 
+## Remediação do QG Round 3
+
+- O QG3 fechou o Round 2 e identificou que a função usada por `matches` também
+  permitia arrays em `equals` e arrays aninhados nos itens de `in`.
+- A gramática agora separa `validScalar` de `validMatchValue`: `equals` aceita
+  somente string, número finito ou boolean direto; `in` exige array não vazio
+  cujos itens sejam exclusivamente esses escalares diretos.
+- Foram adicionadas três regressões: `equals` com array, `in` aninhado e `in`
+  misto. A matriz passou de 32 para 35 fixtures adversariais.
+- Ambas as URLs do mapa receberam a fixture mista por HTTP e falharam com
+  `INVALID_UNLOCK_RULES`, sem `__SKILL_SURFACE_DATA` e sem estados liberados.
+
 ## Validators
 
 - `node scripts/validate-skill-catalog.mjs` — PASS; 31 skills, 41 edges e mirror canônico verificado.
 - `node scripts/validate-mapa-wiring.mjs` — PASS; 69/69 `sampleUrl` válidas e HTTP PDF válido.
 - `node scripts/validate-mapa-preview.mjs` — PASS; canvas 810x1138, screenshot gerada e zero `pageerror`.
 - `node --test scripts/skill-surface-data-driven.test.mjs` — PASS; 10/10,
-  incluindo regras oficiais + 32 fixtures adversariais e ambas as URLs do mapa.
+  incluindo regras oficiais + 35 fixtures adversariais e ambas as URLs do mapa.
 - `node --test scripts/project-artifact-index.test.mjs` — PASS; 18/18.
 - `node --test data/contracts/fixtures/project-brief/project-brief-contract.test.mjs` — PASS; 19/19 e 120 paths.
 - `node --test scripts/project-brief-io.test.mjs` — PASS; 9/9.
@@ -106,3 +118,4 @@ pasta inexistente.
 - `dfa2819` — implementação catálogo-driven (GREEN).
 - `5dbcb38` — remediação dos quatro blockers do QG Round 1.
 - `3b38c58` — remediação do blocker de verdade vacuosa do QG Round 2.
+- `26a0792` — remediação de predicados aninhados do QG Round 3.

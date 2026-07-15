@@ -136,6 +136,10 @@ a transição obrigatória `Ready` → `InReview`.
   corrigido. Regras oficiais + 32 fixtures adversariais, ambas as distribuições
   do mapa e a regressão consolidada de 56/56 casos passaram; a story permanece
   `InReview` para QG3 independente.
+- QG Round 3: predicados aninhados foram separados da gramática de `matches`;
+  `equals` aceita somente escalar direto e `in` somente escalares diretos. As
+  três novas fixtures elevaram a matriz para 35, com 56/56 regressões e ambas as
+  distribuições do mapa passando; a story permanece `InReview` para QG4.
 - OCC/segurança: nenhum segredo ou conteúdo bruto de artefato exposto; referências
   inválidas e estado local malformado falham fechado.
 - Evidência: `docs/stories/epic-16/evidence/STORY-16.W2.2.md`.
@@ -185,3 +189,4 @@ repo_target: "cohort-de-marketing"
 | 2026-07-15 | @dev | Superfícies migradas para catálogo/regras/ProjectBrief/ArtifactIndex, testes e browser smoke concluídos; handoff em InReview. |
 | 2026-07-15 | @dev | QG Round 1 remediado: validator único completo, ProjectBrief/120 refs, contagens runtime e storage rejeitado imutável; pronto para QG2. |
 | 2026-07-15 | @dev | QG Round 2 remediado: grupos anyOf efetivos, predicados XOR e 32 fixtures adversariais; pronto para QG3. |
+| 2026-07-15 | @dev | QG Round 3 remediado: equals/in restritos a escalares diretos e matriz ampliada para 35 fixtures; pronto para QG4. |
