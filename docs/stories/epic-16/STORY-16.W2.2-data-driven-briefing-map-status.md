@@ -43,6 +43,7 @@ touched_paths:
   - "scripts/skill-surface-data-driven.test.mjs"
   - "docs/stories/epic-16/STORY-16.W2.2-data-driven-briefing-map-status.md"
   - "docs/stories/epic-16/evidence/STORY-16.W2.2.md"
+  - "docs/stories/epic-16/epic-16-state.json"
 affected_paths:
   - "briefing.html"
   - "mapa-skills.html"
@@ -57,6 +58,7 @@ affected_paths:
   - "scripts/skill-surface-data-driven.test.mjs"
   - "docs/stories/epic-16/STORY-16.W2.2-data-driven-briefing-map-status.md"
   - "docs/stories/epic-16/evidence/STORY-16.W2.2.md"
+  - "docs/stories/epic-16/epic-16-state.json"
 ---
 
 # STORY-16.W2.2 - Briefing, mapa e status orientados por catálogo
@@ -97,10 +99,12 @@ affected_paths:
 - `scripts/skill-surface-data-driven.test.mjs`
 - `docs/stories/epic-16/STORY-16.W2.2-data-driven-briefing-map-status.md`
 - `docs/stories/epic-16/evidence/STORY-16.W2.2.md`
+- `docs/stories/epic-16/epic-16-state.json`
 
-Todos os paths modificados pertencem à allow-list inicial. Catálogo, regras e
+Todos os paths modificados pertencem à allow-list reconciliada. Catálogo, regras e
 validators existentes foram consumidos sem alteração; o novo teste cobre o
-contrato das duas superfícies.
+contrato das duas superfícies. O `epic-16-state.json` foi incluído na allow-list
+antes do handoff para materializar a transição obrigatória `Ready` → `InReview`.
 
 ## Dev Agent Record
 
