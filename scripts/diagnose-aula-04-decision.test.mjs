@@ -234,10 +234,13 @@ test('evidência estimada, janela incompatível, histórico insuficiente e ausê
     ['estimated', (request) => {
       request.historicalReading.series[0].samples[1].seal = 'Estimado';
       request.historicalReading.series[0].samples[1].premiseRef = { kind: 'assumption', id: 'assumption-2' };
+      request.historicalReading.entries[1].metrics[0].seal = 'Estimado';
+      request.historicalReading.entries[1].metrics[0].premiseRef = { kind: 'assumption', id: 'assumption-2' };
       request.historicalReading.series[0].bySeal = { Real: [0], Estimado: [1], nao_fornecido: [] };
     }, 'ESTIMATED_EVIDENCE'],
     ['window', (request) => {
       request.historicalReading.series[0].samples[1].attributionWindow = '1d_click';
+      request.historicalReading.entries[1].metrics[0].attributionWindow = '1d_click';
       request.historicalReading.series[0].comparison = {
         status: 'incompatible_attribution_window', requiresHumanDecision: true,
         warningCodes: ['INCOMPATIBLE_ATTRIBUTION_WINDOW'],
@@ -249,6 +252,7 @@ test('evidência estimada, janela incompatível, histórico insuficiente e ausê
         metricPresent: false, value: null, seal: 'nao_fornecido', sourceRef: null,
         attributionWindow: null, premiseRef: null, confirmedByHuman: false, cashConfirmed: false,
       });
+      request.historicalReading.entries[1].metrics = [];
       request.historicalReading.series[0].bySeal = { Real: [0], Estimado: [], nao_fornecido: [1] };
       request.historicalReading.series[0].comparison = {
         status: 'missing_or_unconfirmed', requiresHumanDecision: true,
@@ -319,6 +323,16 @@ test('decisão vazia, IDs repetidos, critérios sobrepostos e ordem forjada falh
     }],
     ['metric-mismatch', (request) => { request.sourceReconciliation.metric = 'orders'; }],
     ['pending-decision', (request) => { request.previousDecision.humanDecision.status = 'pending'; }],
+    ['project-pii', (request) => { request.historicalReading.selection.projectId = 'aluno@example.invalid'; }],
+    ['campaign-secret', (request) => { request.historicalReading.selection.campaignId = 'campaign-token-super-secreto'; }],
+    ['panel-pii', (request) => {
+      request.historicalReading.series[0].samples[0].weeklyPanelId = 'weekly-panel:phone:11999998888';
+      request.historicalReading.entries[0].weeklyPanelId = 'weekly-panel:phone:11999998888';
+    }],
+    ['source-secret', (request) => {
+      request.historicalReading.series[0].samples[0].sourceRef.id = 'token-super-secreto';
+      request.historicalReading.entries[0].metrics[0].sourceRef.id = 'token-super-secreto';
+    }],
   ];
   for (const [name, mutate] of cases) {
     const request = bundle(1100);
