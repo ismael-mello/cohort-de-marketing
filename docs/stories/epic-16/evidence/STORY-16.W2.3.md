@@ -26,6 +26,10 @@ Data: 2026-07-15
   desempate fora do contrato.
 - Commit RED da remediação: `8f419cd`.
 - Commit de remediação: `e5e724b`.
+- QG2: `FAIL 82/100`, com um P1: `comecar` e `status-funil` ainda
+  documentavam a assinatura anterior sem `contractRefs`.
+- Commit RED da remediação Round 3: `97f6189`.
+- Commit de remediação Round 3: `6d1f671`.
 
 ## Provas dos acceptance criteria
 
@@ -34,7 +38,7 @@ Data: 2026-07-15
 | AC1 | Table tests cobrem os seis estados; estado desconhecido, prioridade ausente e política malformada lançam erro tipado e falham fechado. |
 | AC2 | Arrays e objetos reordenados produzem decisão serializada idêntica; prioridade numérica decide a rota e o ID estável resolve sozinho o empate, inclusive entre estados diferentes. |
 | AC3 | A decisão contém `nextSkill` ou `null`, requisitos atendidos/ausentes, evidência categórica e razão legível. Versões, comandos, paths e listas fora dos `contractRefs` falham fechado sem ecoar o valor adversarial. |
-| AC4 | Golden matrix chama o mesmo motor para `comecar`, briefing, mapa e `status-funil`; Chromium sob CSP sem `blob:` confirma ESM same-origin, MIME correto, comando e razão idênticos nas distribuições raiz e Aula 3. |
+| AC4 | Golden matrix chama o mesmo motor para `comecar`, briefing, mapa e `status-funil`; Chromium sob CSP sem `blob:` confirma ESM same-origin, MIME correto, comando e razão idênticos nas distribuições raiz e Aula 3. Um probe adicional extrai e executa o call pattern documentado nos quatro `SKILL.md` canônico/mirror contra o ruleset real. |
 | AC5 | Fixtures de oferta própria e afiliado mudam a rota; `not_applicable` não muta o ArtifactIndex; as skills declaram explicitamente que invocação direta segue autônoma. |
 | AC6 | `cmp` confirma paridade byte a byte de `comecar` e `status-funil` entre `.claude/skills` e `.agents/skills`; as cópias HTML raiz/Aula 3 também são idênticas. |
 
@@ -56,10 +60,10 @@ node --test --test-concurrency=1 \
   scripts/project-artifact-index.test.mjs \
   data/contracts/fixtures/project-brief/project-brief-contract.test.mjs
 
-57 testes; 57 pass; 0 fail; 0 skipped.
+58 testes; 58 pass; 0 fail; 0 skipped.
 ```
 
-Essa matriz inclui dez testes do recomendador, browser golden/CSP das quatro
+Essa matriz inclui onze testes do recomendador, browser golden/CSP das quatro
 distribuições, contratos AJV, migração, ArtifactIndex confinado, catálogo/rules
 adversariais e surfaces data-driven.
 
@@ -128,4 +132,9 @@ npm audit --audit-level=high: 0 vulnerabilidades
 - O browser importa o mesmo `.mjs` diretamente por URL same-origin. Todos os
   harnesses HTTP servem `.mjs` como `application/javascript`; a regressão roda
   com `script-src 'self'` e sem `blob:` no diretivo CSP.
+- Os procedimentos de `comecar` e `status-funil` agora contêm o mesmo bloco
+  executável: derivam `contractRefs` por
+  `SkillSurfaceContract.createReadinessContractRefs(...)`, avaliam pelo SOT e
+  passam as refs para `decideNextSkill`. O teste executa o bloco, em vez de
+  apenas procurar texto.
 - Não houve push, PR, merge ou deploy. O QG independente continua obrigatório.

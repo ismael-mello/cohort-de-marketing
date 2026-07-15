@@ -172,6 +172,8 @@ repo_target: "cohort-de-marketing"
 - Implementação: `3eafe74`
 - RED da remediação QG1: `8f419cd`
 - Remediação QG1: `e5e724b`
+- RED da remediação QG2: `97f6189`
+- Remediação QG2: `6d1f671`
 - Live PR coverage: nenhum PR aberto no repositório no início da execução.
 - Evidência detalhada: `docs/stories/epic-16/evidence/STORY-16.W2.3.md`
 - Entity proof: `PublicSkillSurfaces` passou de escolha por ordem implícita para
@@ -180,7 +182,7 @@ repo_target: "cohort-de-marketing"
   ArtifactIndex; expõe apenas nomes de requisitos e contagens sanitizadas.
 - Deploy: não aplicável (`deploy_type: none`).
 - Handoff: implementação concluída e pronta para QG independente de
-  `@sinkra-chief` Round 2; status permanece `InReview`, nunca `Done` pelo executor.
+  `@sinkra-chief` Round 3; status permanece `InReview`, nunca `Done` pelo executor.
 
 ## Stop Conditions
 
@@ -197,3 +199,5 @@ repo_target: "cohort-de-marketing"
 | 2026-07-15 | @dev | Motor, prioridades declarativas, quatro superfícies, mirrors e browser smoke implementados no commit `3eafe74`; story movida para `InReview`. |
 | 2026-07-15 | @sinkra-chief | QG1 `FAIL 48`: versões/refs, sanitização, Blob sob CSP e desempate bloquearam o fechamento. |
 | 2026-07-15 | @dev | QG1 remediado em `8f419cd`/`e5e724b`: contractRefs do SOT, fail-closed estrito, ESM same-origin sob CSP e empate somente por ID; devolvido para QG2. |
+| 2026-07-15 | @sinkra-chief | QG2 `FAIL 82/100`: um P1 nas duas skills canônicas ainda documentava a chamada sem `contractRefs`. |
+| 2026-07-15 | @dev | QG2 remediado em `97f6189`/`6d1f671`: call pattern completo nos quatro mirrors e probe executável contra o ruleset real; devolvido para QG3. |
