@@ -1,5 +1,5 @@
 ---
-status: InReview
+status: Done
 story_id: "17.W2.1"
 title: "Leitura histórica sem invenção"
 epic: 17
@@ -8,7 +8,7 @@ parent_epic: "docs/stories/epic-17/EPIC-17-AULA-04-DATA-FOUNDATION.md"
 effort: 7h
 deploy_type: none
 appetite: 1d
-hill_phase: downhill
+hill_phase: done
 confidence_level: know-how
 involves_ui: false
 task_mode: CRIAR
@@ -75,7 +75,7 @@ affected_paths:
 
 ## Status
 
-InReview
+Done
 
 ## Dependências
 
@@ -167,6 +167,8 @@ completion_notes:
   - "QG2 reprovou o HEAD d689f81 com FAIL 88 porque JSON.stringify tratava apenas a ordem das chaves dos objetos do index como semântica."
   - "RED Round3 no commit d26301b reproduziu a falsa rejeição no builder e reader; o commit 975571b compartilha canonicalSerialize para igualdade estrutural preservando a ordem dos arrays."
   - "Round3 passou em 37/37 testes focais e 127/127 no gate completo controlado; story permanece InReview para QG3 independente."
+  - "QG3 independente aprovou o HEAD b2389ae com PASS 100/100, confiança 0.99 e zero blockers."
+  - "Story fechada como Done e hill phase done; epic-state e desbloqueio de W2.2 permanecem reservados ao fan-in @devops."
 file_list:
   - ".claude/skills/leitor-de-metricas/SKILL.md"
   - ".agents/skills/leitor-de-metricas/SKILL.md"
@@ -189,8 +191,10 @@ file_list:
 ```yaml
 quality_gate_report:
   story_id: "17.W2.1"
-  verdict: "FAIL"
-  score: 88
+  verdict: "PASS"
+  score: 100
+  confidence: 0.99
+  blocking_findings: 0
   rounds:
     - round: 1
       verdict: "FAIL"
@@ -205,14 +209,23 @@ quality_gate_report:
       reviewed_head: "d689f81"
       blocking_findings:
         - "A ordem das chaves de objetos do index era tratada como semântica por JSON.stringify."
+    - round: 3
+      verdict: "PASS"
+      score: 100
+      confidence: 0.99
+      blocking_findings: 0
+      reviewed_head: "b2389ae"
   remediation:
-    status: "READY_FOR_QG3"
+    status: "COMPLETE"
     round2_implementation_head: "ad63a79"
     round3:
       red_head: "d26301b"
       implementation_head: "975571b"
       focal_tests: "37/37"
       full_gate_tests: "127/127"
+  reviewed_by: "@architect"
+  reviewed_at: "2026-07-15"
+  reviewed_head: "b2389ae"
 ```
 
 ## Stop conditions
@@ -232,3 +245,5 @@ quality_gate_report:
 | 2026-07-15 | @dev | Round2 RED/GREEN concluído com digest versionado, semanas distintas e lexer numérico seguro; story mantida em `InReview` para QG2. |
 | 2026-07-15 | @architect | QG2 `FAIL 88`: igualdade via `JSON.stringify` rejeitava index semanticamente idêntico com chaves reordenadas. |
 | 2026-07-15 | @dev | Round3 usa canonicalização compartilhada para objetos e preserva arrays posicionais; 37/37 focais e 127/127 completos verdes. |
+| 2026-07-15 | @architect | QG3 `PASS 100`: confiança 0.99, zero blockers e todos os probes focais/completos verdes no HEAD `b2389ae`. |
+| 2026-07-15 | @po | Story fechada como `Done`, hill phase `done`; epic-state e desbloqueio de W2.2 reservados ao fan-in `@devops`. |

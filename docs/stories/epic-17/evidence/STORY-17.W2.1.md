@@ -21,6 +21,7 @@
 | QG2 | `d689f81` | `FAIL 88`: ordem de chaves dos objetos do index era falsamente semântica. |
 | RED Round3 | `d26301b` | Builder e reader reproduzem a rejeição ao permutar somente chaves de objetos. |
 | GREEN Round3 | `975571b` | Igualdade estrutural usa `canonicalSerialize` compartilhado; arrays permanecem ordenados. |
+| QG3 | `b2389ae` | `PASS 100/100`, confiança `0.99`, zero blockers. |
 
 ## Contrato observado
 
@@ -89,7 +90,7 @@ Os probes Round2 também confirmaram:
 
 ## Estado para handoff
 
-- Story: `InReview`.
-- QG independente: Round1 `FAIL 58`, Round2 `FAIL 88`; remediação pronta para Round3.
+- Story: `Done`.
+- QG independente: Round1 `FAIL 58`, Round2 `FAIL 88`, Round3 `PASS 100/100` com confiança `0.99` e zero blockers.
 - Deploy/push/merge: não executados.
-- `epic-17-state.json`: contém somente a materialização da W2; a transição da story pertence ao fan-in depois do QG.
+- `epic-17-state.json`: contém somente a materialização da W2; a transição de W2.1 e o desbloqueio de W2.2 pertencem ao fan-in `@devops`.
