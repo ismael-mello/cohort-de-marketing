@@ -1,5 +1,5 @@
 ---
-status: InReview
+status: Done
 story_id: "17.W3.1"
 title: "Módulo didático e fluxo local da Aula 4"
 epic: 17
@@ -64,7 +64,7 @@ affected_paths:
 
 ## Status
 
-InReview — blocker da rodada 2 remediado e evidência local concluída; aguarda QG3 rodada 3 independente `@architect`.
+Done — QG3 rodada 3 independente aprovado com `PASS 98/100`, confiança `0.99` e zero findings.
 
 ## Story
 
@@ -166,7 +166,7 @@ completion_notes:
   - "QG3 rodada 2 FAIL reproduziu dois telefones compactos ainda publicáveis: fixo com DDD em 10 dígitos e celular internacional em 13 dígitos."
   - "GREEN 7beb539 amplia apenas o padrão numérico delimitado para 10/11 e 13/14 dígitos; campos de medição continuam isentos e IDs opacos alfanuméricos canônicos seguem aceitos."
   - "Focal 10/10, adjacente W2 47/47 e gate Node completo 162/162 passaram; erros não ecoam valores e inputs permanecem imutáveis."
-  - "Story permanece InReview para QG3 rodada 3; fechamento, epic-state, fan-in, push, PR e deploy permanecem fora da autoridade do executor."
+  - "QG3 rodada 3 independente aprovou o HEAD 20249bd com PASS 98/100, confiança 0.99, matriz adversarial 24/24 e zero findings."
 file_list:
   - "aula-04/README.md"
   - "aula-04/GUIA-DO-ALUNO.html"
@@ -232,6 +232,19 @@ remediation_handoff_round_3:
     - "GREEN focal 10/10, adjacente W2 47/47 e full Node 162/162."
     - "Telefones compactos de 10 e 13 dígitos falham com código sanitizado, sem eco e sem output."
     - "IDs opacos alfanuméricos de 10/11/13/14 caracteres e campos contratuais de medição permanecem aceitos."
+quality_gate_report_round_3:
+  round: 3
+  verdict: "PASS"
+  score: 98
+  confidence: 0.99
+  blockers: []
+  findings: []
+  reviewed_by: "@architect"
+  reviewed_at: "2026-07-15"
+  reviewed_head: "20249bda5dab9fb7a1b0d7a3cfc3570dcb0a5f2d"
+  evidence:
+    - "Matriz adversarial independente 24/24, focal 10/10, adjacente 47/47 e full Node 162/162."
+    - "File List exata 14/14, node --check e git diff --check passaram em worktree limpa."
 ```
 
 ## Change Log
@@ -245,3 +258,4 @@ remediation_handoff_round_3:
 | 2026-07-15 | @dev | Rodada 1 remediada em `224b085`: PII shaped recursiva e contenção canônica/simbólica cobertas; 161/161 testes verdes e story devolvida a `InReview` para QG3 rodada 2. |
 | 2026-07-15 | @architect | QG3 rodada 2 falhou: telefones compactos de 10 e 13 dígitos ainda eram republicáveis. |
 | 2026-07-15 | @dev | Rodada 2 remediada em `7beb539`: RED conjunto cobre os dois formatos, 162/162 testes verdes e story devolvida a `InReview` para QG3 rodada 3. |
+| 2026-07-15 | @architect | QG3 rodada 3 aprovado em `20249bd`: PASS 98/100, confiança 0.99, matriz independente 24/24 e zero findings; story movida para `Done`. |

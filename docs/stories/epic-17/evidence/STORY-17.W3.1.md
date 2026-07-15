@@ -83,7 +83,7 @@ exit 0
 
 ## Handoff
 
-- Story: `InReview`.
+- Story: `Done`.
 - Implementação da remediação rodada 2: `7beb539`.
 - Focal: `10/10`; adjacente W2: `47/47`; full Node: `162/162`.
 - QG3 independente rodada 1: `FAIL 76/100`, confiança `0.98`.
@@ -91,5 +91,7 @@ exit 0
   internacional compacto ainda atravessavam o guard no HEAD `3a05a5a`.
 - Blocker da rodada 2 reproduzido e fechado: os dois probes agora falham sem eco
   e sem artefatos; métricas e IDs opacos alfanuméricos permanecem aceitos.
-- Story permanece `InReview` e está pronta para QG3 independente rodada 3.
+- QG3 independente rodada 3: `PASS 98/100`, confiança `0.99`, zero blockers e zero findings no HEAD `20249bda5dab9fb7a1b0d7a3cfc3570dcb0a5f2d`.
+- Matriz independente `24/24`, focal `10/10`, adjacente `47/47`, full Node `162/162`, File List `14/14`, `node --check` e `git diff --check` passaram em worktree limpa.
+- Story encerrada em `Done`; `17.W3.2` pode ser autorizada somente após o fan-in local e a atualização do state pelo integrador.
 - `epic-17-state.json`, fan-in, push, PR e deploy: não executados.
