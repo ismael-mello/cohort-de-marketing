@@ -2,7 +2,7 @@
 story_id: "16.W1.1"
 epic_id: "16"
 wave: "W1"
-status: Ready
+status: InReview
 executor: "@dev"
 quality_gate: "@architect"
 quality_gate_tools: ["node:test", "json-schema"]
@@ -12,7 +12,7 @@ effort: "6h"
 deploy_type: "none"
 accountable: "rafaelcosta"
 appetite: "1d"
-hill_phase: "executing"
+hill_phase: "validating"
 confidence_level: "know-how"
 task_mode: "CRIAR"
 involves_ui: false
@@ -22,7 +22,7 @@ involves_ui: false
 
 ## Status
 
-Ready
+InReview
 
 ## Dependências
 
@@ -34,19 +34,19 @@ Congelar um único contrato versionado para projeto, com envelope persistente e 
 
 ## Critérios de aceite
 
-- [ ] O schema v1 define identidade, revisão, status, dados e proveniência sem duplicar a semântica dos 120 campos.
-- [ ] A migração 0.1.0 para v1 é determinística, idempotente e preserva `not_applicable`, `pending_confirmation` e origem de campo.
-- [ ] Versão desconhecida, campo crítico inválido e downgrade implícito falham fechado.
-- [ ] Fixtures válidas, inválidas e de migração cobrem o contrato.
-- [ ] O contrato público não contém IDs, paths ou defaults específicos do Studio privado.
+- [x] O schema v1 define identidade, revisão, status, dados e proveniência sem duplicar a semântica dos 120 campos.
+- [x] A migração 0.1.0 para v1 é determinística, idempotente e preserva `not_applicable`, `pending_confirmation` e origem de campo.
+- [x] Versão desconhecida, campo crítico inválido e downgrade implícito falham fechado.
+- [x] Fixtures válidas, inválidas e de migração cobrem o contrato.
+- [x] O contrato público não contém IDs, paths ou defaults específicos do Studio privado.
 
 ## Tasks
 
-- [ ] Confirmar baseline e ausência de PR cobrindo o escopo.
-- [ ] Congelar contrato e testes antes da implementação.
-- [ ] Implementar somente dentro da File List aprovada.
-- [ ] Rodar validações incrementais e registrar evidências sanitizadas.
-- [ ] Atualizar checkboxes, File List real e state JSON.
+- [x] Confirmar baseline e ausência de PR cobrindo o escopo.
+- [x] Congelar contrato e testes antes da implementação.
+- [x] Implementar somente dentro da File List aprovada.
+- [x] Rodar validações incrementais e registrar evidências sanitizadas.
+- [x] Atualizar checkboxes, File List real e state JSON.
 
 ## File List proposta
 
@@ -70,3 +70,59 @@ atualização da story e nova validação de arquitetura.
 
 - Perda de campo ou estado válido do contrato 0.1.0.
 - Necessidade de acoplar o schema público a uma tabela privada.
+
+## Dev Agent Record
+
+### Implementação
+
+- O contrato v1 reutiliza os 120 campos do schema 0.1.0 por `$ref` e move a
+  proveniência para `fieldSources`, sem manter `fieldMeta` duplicado em `data`.
+- A migração deriva identidade e timestamps do próprio documento, aceita
+  reprocessamento de documento/resultado v1 como no-op e não altera o input.
+- Versões desconhecidas, downgrade solicitado, slug/status/proveniência
+  críticos inválidos e envelope v1 inconsistente falham fechado.
+- A busca de PRs abertos por `ProjectBrief`, `project brief` e `16.W1.1`
+  retornou lista vazia antes da implementação.
+
+### Evidências de validação
+
+- Contrato congelado primeiro no commit `f2ff135`; execução inicial: 1 teste
+  passou e 5 falharam, confirmando as lacunas do baseline.
+- `node --check scripts/migrate-project-brief.mjs`: PASS.
+- `node --test data/contracts/fixtures/project-brief/project-brief-contract.test.mjs`:
+  PASS, 7/7.
+- `node scripts/validate-project-brief-rules.mjs`: PASS, 120 campos e 31 skills.
+- AJV draft 2020-12 + `ajv-formats`: fixtures legada 0.1.0 e v1 válidas.
+- `git diff --check`: PASS.
+
+### Commits locais
+
+- `f2ff135` - `test: freeze ProjectBrief v1 contract [Story 16.W1.1]`
+- `5011ca6` - `feat: harden ProjectBrief v1 migration [Story 16.W1.1]`
+
+## File List real
+
+- `data/contracts/project-brief.v1.schema.json`
+- `data/contracts/fixtures/project-brief/legacy-0.1.0.valid.json`
+- `data/contracts/fixtures/project-brief/migrated-1.0.0.valid.json`
+- `data/contracts/fixtures/project-brief/project-brief-1.0.0.valid.json`
+- `data/contracts/fixtures/project-brief/unknown-version.invalid.json`
+- `data/contracts/fixtures/project-brief/critical-field.invalid.json`
+- `data/contracts/fixtures/project-brief/project-brief-contract.test.mjs`
+- `scripts/migrate-project-brief.mjs`
+- `docs/stories/epic-16/epic-16-state.json`
+- `docs/stories/epic-16/STORY-16.W1.1-canonical-project-brief-v1.md`
+
+## QA prep
+
+- Revisar de forma independente a semântica de identidade pública
+  (`standalone`, `project-{slug}` e revisão) e a política de idempotência.
+- Reexecutar Node tests e AJV draft 2020-12; validar especialmente que
+  `fieldMeta` não reaparece em `data` e que origem/confirmation não se perdem.
+- O status permanece `InReview`; nenhum veredito de quality gate foi
+  autoatribuído pelo executor.
+
+## Change Log
+
+- 2026-07-14: contrato e fixtures congelados, migração v1 endurecida,
+  validações registradas e story encaminhada para revisão independente.
