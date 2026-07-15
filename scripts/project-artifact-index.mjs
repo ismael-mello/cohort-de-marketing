@@ -50,13 +50,13 @@ function fail(code, message) {
   throw new ArtifactIndexError(code, message);
 }
 
-function portablePath(value) {
+export function isPortableArtifactPath(value) {
   return typeof value === 'string'
     && value.length > 0
     && !path.posix.isAbsolute(value)
     && !path.win32.isAbsolute(value)
     && !value.includes('\\')
-    && !value.includes('\0')
+    && !/[\u0000-\u001F\u007F-\u009F]/u.test(value)
     && !value.split('/').some((part) => part === '' || part === '.' || part === '..');
 }
 
@@ -86,7 +86,8 @@ export function matchArtifactSegment(value, pattern) {
 }
 
 export function matchesArtifactGlob(relativePath, pattern) {
-  if (!portablePath(relativePath) || !portablePath(pattern)
+  if (!isPortableArtifactPath(relativePath) || !isPortableArtifactPath(pattern)
+    || pattern.split('/').at(-1) === '**'
     || pattern.split('/').some((part) => part === '**' ? false : part.includes('**'))) return false;
   const valueSegments = relativePath.split('/');
   const patternSegments = pattern.split('/');
@@ -130,7 +131,9 @@ function validateRules(rules) {
       fail('INVALID_RULES', 'Uma declaração de artefato é inválida.');
     }
     for (const pattern of patterns) {
-      if (!portablePath(pattern) || pattern.split('/').some((part) => part === '**' ? false : part.includes('**'))) {
+      if (!isPortableArtifactPath(pattern)
+        || pattern.split('/').at(-1) === '**'
+        || pattern.split('/').some((part) => part === '**' ? false : part.includes('**'))) {
         fail('INVALID_GLOB', 'Um glob de artefato não é portátil ou confinado.');
       }
       assertSafeReference(pattern);
@@ -271,7 +274,7 @@ export async function buildArtifactIndex({ projectRoot, rules }) {
   for (const artifactType of Object.keys(globs).sort()) {
     for (const pattern of [...globs[artifactType]].sort()) {
       for (const match of await expandPattern(root, pattern)) {
-        if (!portablePath(match.relative)) fail('PATH_ESCAPE', 'Um artefato não pôde ser normalizado com segurança.');
+        if (!isPortableArtifactPath(match.relative)) fail('PATH_ESCAPE', 'Um artefato não pôde ser normalizado com segurança.');
         assertSafeReference(match.relative);
         const known = byPath.get(match.relative);
         if (known && known.artifactType !== artifactType) {
@@ -344,7 +347,7 @@ export function validateArtifactIndex(index, rules) {
     if (!exactKeys(entry, ENTRY_KEYS)
       || !SAFE_TYPE.test(entry.artifactType)
       || !Object.hasOwn(globs, entry.artifactType)
-      || !portablePath(entry.path)
+      || !isPortableArtifactPath(entry.path)
       || !/^[a-f0-9]{64}$/.test(entry.sha256)
       || !Number.isSafeInteger(entry.sizeBytes) || entry.sizeBytes < 0
       || !exactKeys(entry.origin, ['kind', 'rule', 'patterns'])
@@ -359,8 +362,9 @@ export function validateArtifactIndex(index, rules) {
       assertSafeReference(reference);
     }
     const canonicalPatterns = globs[entry.artifactType];
-    if (!entry.origin.patterns.every((pattern) => portablePath(pattern) && canonicalPatterns.includes(pattern))
-      || !entry.origin.patterns.some((pattern) => matchesArtifactGlob(entry.path, pattern))) {
+    if (!entry.origin.patterns.every((pattern) => isPortableArtifactPath(pattern)
+      && canonicalPatterns.includes(pattern)
+      && matchesArtifactGlob(entry.path, pattern))) {
       fail('INVALID_INDEX', 'A proveniência de uma entrada não corresponde ao path indexado.');
     }
     if (identities.has(entry.path)) fail('INVALID_INDEX', 'O ArtifactIndex contém um path global duplicado.');
@@ -377,9 +381,10 @@ export function validateArtifactIndex(index, rules) {
 
 export function confirmArtifact(index, { artifactType, path: artifactPath }, rules) {
   validateArtifactIndex(index, rules);
-  if (!SAFE_TYPE.test(artifactType || '') || !portablePath(artifactPath)) {
+  if (!SAFE_TYPE.test(artifactType || '') || !isPortableArtifactPath(artifactPath)) {
     fail('INVALID_CONFIRMATION', 'A confirmação de artefato é inválida.');
   }
+  assertSafeReference(artifactPath);
   const clone = structuredClone(index);
   const target = clone.entries.find((entry) => entry.artifactType === artifactType && entry.path === artifactPath);
   if (!target) fail('ARTIFACT_NOT_FOUND', 'O artefato solicitado não existe no índice.');

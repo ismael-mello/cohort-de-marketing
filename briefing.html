@@ -1524,12 +1524,13 @@
       byId('import-status').style.color = error ? 'var(--rose)' : 'var(--teal)';
     }
 
-    function portableArtifactPath(value) {
+    function isPortableArtifactPath(value) {
       return typeof value === 'string'
         && value.length > 0
         && !value.startsWith('/')
         && !/^[A-Za-z]:[\\/]/.test(value)
         && !value.includes('\\')
+        && !/[\u0000-\u001F\u007F-\u009F]/u.test(value)
         && !value.split('/').some((part) => !part || part === '.' || part === '..');
     }
 
@@ -1553,7 +1554,8 @@
     }
 
     function matchesArtifactGlob(relativePath, pattern) {
-      if (!portableArtifactPath(relativePath) || !portableArtifactPath(pattern)
+      if (!isPortableArtifactPath(relativePath) || !isPortableArtifactPath(pattern)
+        || pattern.split('/').at(-1) === '**'
         || pattern.split('/').some((part) => part === '**' ? false : part.includes('**'))) return false;
       const valueSegments = relativePath.split('/');
       const patternSegments = pattern.split('/');
@@ -1581,6 +1583,29 @@
       assertNoPlaintextCredentials({ artifactReference: value });
     }
 
+    function validateArtifactRulesContract(candidate) {
+      if (!candidate || typeof candidate !== 'object' || Array.isArray(candidate)
+        || !candidate.artifactGlobs || typeof candidate.artifactGlobs !== 'object' || Array.isArray(candidate.artifactGlobs)
+        || candidate.artifactIndex?.schemaVersion !== ARTIFACT_INDEX_SCHEMA_VERSION
+        || typeof candidate.artifactIndex.confirmationRequiredByDefault !== 'boolean') {
+        throw new Error('Regras de ArtifactIndex inválidas');
+      }
+      for (const [artifactType, patterns] of Object.entries(candidate.artifactGlobs)) {
+        if (!/^[A-Za-z][A-Za-z0-9]*$/.test(artifactType) || !Array.isArray(patterns) || !patterns.length) {
+          throw new Error('Declaração de artefato inválida');
+        }
+        for (const pattern of patterns) {
+          if (!isPortableArtifactPath(pattern)
+            || pattern.split('/').at(-1) === '**'
+            || pattern.split('/').some((part) => part === '**' ? false : part.includes('**'))) {
+            throw new Error('Glob de artefato inválido');
+          }
+          assertSafeArtifactReference(pattern);
+        }
+      }
+      return candidate;
+    }
+
     function exactObjectKeys(value, expected) {
       return value && typeof value === 'object' && !Array.isArray(value)
         && Object.keys(value).sort().join('|') === [...expected].sort().join('|');
@@ -1603,7 +1628,7 @@
       for (const entry of candidate.entries) {
         if (!exactObjectKeys(entry, ['artifactType', 'path', 'sha256', 'sizeBytes', 'origin', 'confirmationStatus', 'satisfiesCriticalRequirement'])
           || !Object.hasOwn(rules.artifactGlobs || {}, entry.artifactType)
-          || !portableArtifactPath(entry.path)
+          || !isPortableArtifactPath(entry.path)
           || !/^[a-f0-9]{64}$/.test(entry.sha256)
           || !Number.isSafeInteger(entry.sizeBytes) || entry.sizeBytes < 0
           || !exactObjectKeys(entry.origin, ['kind', 'rule', 'patterns'])
@@ -1618,8 +1643,9 @@
           assertSafeArtifactReference(reference);
         }
         const canonicalPatterns = rules.artifactGlobs[entry.artifactType];
-        if (!entry.origin.patterns.every((pattern) => portableArtifactPath(pattern) && canonicalPatterns.includes(pattern))
-          || !entry.origin.patterns.some((pattern) => matchesArtifactGlob(entry.path, pattern))) {
+        if (!entry.origin.patterns.every((pattern) => isPortableArtifactPath(pattern)
+          && canonicalPatterns.includes(pattern)
+          && matchesArtifactGlob(entry.path, pattern))) {
           throw new Error('Proveniência não corresponde ao path no ArtifactIndex v1');
         }
         if (paths.has(entry.path)) throw new Error('Path global duplicado no ArtifactIndex v1');
@@ -1771,6 +1797,7 @@
         schema = await schemaRes.json();
         v1Schema = await v1SchemaRes.json();
         rules = await rulesRes.json();
+        validateArtifactRulesContract(rules);
       } catch (error) {
         byId('form-body').innerHTML = `
           <div class="field-card">
