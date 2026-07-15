@@ -113,7 +113,7 @@
         {
           "story_id": "17.W2.3",
           "title": "Reconciliacao plataforma, checkout e caixa",
-          "status": "Ready",
+          "status": "Done",
           "task_mode": "CRIAR",
           "deploy_type": "none",
           "repo_target": "marketingLendario/cohort-de-marketing",
