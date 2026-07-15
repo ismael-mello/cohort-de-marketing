@@ -132,6 +132,10 @@ como única fonte dos `contractRefs` consumidos pelo motor.
 Os três harnesses HTTP existentes também entram na allow-list para servir
 `.mjs` como `application/javascript`, condição necessária ao import ESM
 same-origin exercitado nas regressões públicas.
+No QG2, a File List foi reconfirmada antes da remediação Round 3: os quatro
+`SKILL.md` canônico/mirror e `scripts/lib/skill-readiness.test.mjs` já fazem
+parte explícita da allow-list. O probe executável passa a congelar também o
+padrão de chamada documentado por essas duas skills.
 
 ## Dev Notes
 

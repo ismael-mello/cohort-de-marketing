@@ -259,6 +259,57 @@ test('contractRefs reais nascem do SOT compartilhado e só contêm identificador
   }
 });
 
+test('probes documentados por comecar e status-funil executam o call pattern público real', async () => {
+  const [catalog, rules, legacySchema, projectBriefSchema, projectBrief] = await Promise.all([
+    readFile(path.join(ROOT, 'data/skill-catalog.json'), 'utf8').then(JSON.parse),
+    readFile(path.join(ROOT, 'data/skill-unlock-rules.json'), 'utf8').then(JSON.parse),
+    readFile(path.join(ROOT, 'data/project-brief.schema.json'), 'utf8').then(JSON.parse),
+    readFile(path.join(ROOT, 'data/contracts/project-brief.v1.schema.json'), 'utf8').then(JSON.parse),
+    readFile(path.join(ROOT, 'data/contracts/fixtures/project-brief/project-brief-1.0.0.valid.json'), 'utf8').then(JSON.parse),
+  ]);
+  const artifactIndex = {
+    schemaVersion: 'artifact-index-v1',
+    project: { slug: projectBrief.data.project.slug },
+    rules: { schemaVersion: '0.1.0', confirmationRequiredByDefault: true },
+    entries: [],
+    summary: { total: 0, confirmed: 0, pendingConfirmation: 0 },
+  };
+  const decisions = [];
+  for (const relative of [
+    '.claude/skills/comecar/SKILL.md',
+    '.agents/skills/comecar/SKILL.md',
+    '.claude/skills/status-funil/SKILL.md',
+    '.agents/skills/status-funil/SKILL.md',
+  ]) {
+    const content = await readFile(path.join(ROOT, relative), 'utf8');
+    const probe = /```js skill-readiness-probe\n([\s\S]*?)```/.exec(content)?.[1];
+    assert.ok(probe, `${relative}: probe executável ausente`);
+    const executeProbe = new Function(
+      'SkillSurfaceContract',
+      'decideNextSkill',
+      'catalog',
+      'rules',
+      'legacySchema',
+      'projectBriefSchema',
+      'projectBrief',
+      'artifactIndex',
+      `'use strict';\n${probe}\nreturn decision;`,
+    );
+    decisions.push(executeProbe(
+      globalThis.SkillSurfaceContract,
+      decideNextSkill,
+      catalog,
+      rules,
+      legacySchema,
+      projectBriefSchema,
+      projectBrief,
+      artifactIndex,
+    ));
+  }
+  assert.equal(new Set(decisions.map(JSON.stringify)).size, 1);
+  assert.match(decisions[0].nextSkill.command, /^\/[a-z0-9-]+$/);
+});
+
 test('decisão explica requisitos, ausências e evidências sem copiar valores do briefing', () => {
   const decision = decide({
     rules: rulesFor({
