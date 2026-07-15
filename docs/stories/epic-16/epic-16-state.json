@@ -23,7 +23,7 @@
     {
       "wave_id": "W2",
       "name": "Artefatos e readiness",
-      "status": "in_progress",
+      "status": "completed",
       "parallel_groups": [["16.W2.1"], ["16.W2.2"], ["16.W2.3"]],
       "stories": [
         {
