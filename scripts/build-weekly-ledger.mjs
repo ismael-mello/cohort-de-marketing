@@ -8,7 +8,9 @@ import path, { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateAula04Contract } from './validate-aula-04-contracts.mjs';
 
-const LEDGER_VERSION = '1.0.0';
+const LEDGER_VERSION = '1.1.0';
+const PROJECTION_DIGEST_VERSION = '1.0.0';
+const PROJECTION_DIGEST_ALGORITHM = 'sha256';
 const LEDGER_SCHEMA_URL = new URL('../data/contracts/weekly-ledger.v1.schema.json', import.meta.url);
 const SOURCE_REFERENCE_KINDS = new Set([
   'checkout-export',
@@ -27,6 +29,8 @@ const EMPTY_LEDGER = Object.freeze({
   contract: 'WeeklyLedger',
   schemaVersion: LEDGER_VERSION,
   hashAlgorithm: 'sha256',
+  projectionDigestVersion: PROJECTION_DIGEST_VERSION,
+  projectionDigestAlgorithm: PROJECTION_DIGEST_ALGORITHM,
   entries: Object.freeze([]),
   index: Object.freeze([]),
 });
@@ -69,6 +73,49 @@ function integerOption(name, fallback, minimum) {
 
 function delay(milliseconds) {
   return new Promise((resolveDelay) => setTimeout(resolveDelay, milliseconds));
+}
+
+function numericLexemeIsSafe(lexeme) {
+  const value = Number(lexeme);
+  if (!Number.isFinite(value)) return false;
+  const mantissa = lexeme.toLowerCase().split('e')[0].replace(/^-/, '');
+  const nonZeroMantissa = /[1-9]/.test(mantissa);
+  if (value === 0 && nonZeroMantissa) return false;
+  if (Number.isInteger(value)) return Number.isSafeInteger(value);
+  const significantDigits = mantissa
+    .replace('.', '')
+    .replace(/^0+/, '')
+    .replace(/0+$/, '');
+  return significantDigits.length <= 15;
+}
+
+export function jsonHasUnsafeNumber(input) {
+  for (let index = 0; index < input.length;) {
+    if (input[index] === '"') {
+      index += 1;
+      while (index < input.length) {
+        if (input[index] === '\\') {
+          index += 2;
+        } else if (input[index] === '"') {
+          index += 1;
+          break;
+        } else {
+          index += 1;
+        }
+      }
+      continue;
+    }
+    if (input[index] === '-' || /[0-9]/.test(input[index])) {
+      const match = /^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?/.exec(input.slice(index));
+      if (match) {
+        if (!numericLexemeIsSafe(match[0])) return true;
+        index += match[0].length;
+        continue;
+      }
+    }
+    index += 1;
+  }
+  return false;
 }
 
 function lockPathFor(ledgerPath) {
@@ -367,6 +414,11 @@ export function canonicalHash(record) {
   return createHash('sha256').update(canonicalSerialize(record), 'utf8').digest('hex');
 }
 
+export function projectionDigestForEntry(entry) {
+  const { projectionDigest: _projectionDigest, ...projection } = entry;
+  return canonicalHash(projection);
+}
+
 function metricReference(metric) {
   return {
     name: metric.name,
@@ -383,7 +435,8 @@ function metricReference(metric) {
 }
 
 function ledgerEntry(panel) {
-  return {
+  const metrics = panel.metrics.map(metricReference);
+  const projection = {
     projectId: panel.projectId,
     campaignId: panel.campaignId,
     weekStart: panel.weekStart,
@@ -391,7 +444,18 @@ function ledgerEntry(panel) {
     weeklyPanelId: panel.id,
     schemaVersion: panel.schemaVersion,
     canonicalHash: canonicalHash(panel),
-    metrics: panel.metrics.map(metricReference),
+    metrics,
+  };
+  return {
+    projectId: projection.projectId,
+    campaignId: projection.campaignId,
+    weekStart: projection.weekStart,
+    revision: projection.revision,
+    weeklyPanelId: projection.weeklyPanelId,
+    schemaVersion: projection.schemaVersion,
+    canonicalHash: projection.canonicalHash,
+    projectionDigest: projectionDigestForEntry(projection),
+    metrics,
   };
 }
 
@@ -436,8 +500,8 @@ async function createLedgerValidator() {
   return ajv.compile(schema);
 }
 
-function sameJson(left, right) {
-  return JSON.stringify(left) === JSON.stringify(right);
+function sameJsonStructure(left, right) {
+  return canonicalSerialize(left) === canonicalSerialize(right);
 }
 
 async function validateExistingLedger(ledger) {
@@ -445,12 +509,16 @@ async function validateExistingLedger(ledger) {
   if (!validate(ledger)) return false;
 
   const identities = new Set();
-  for (const entry of ledger.entries) {
+  for (let index = 0; index < ledger.entries.length; index += 1) {
+    const entry = ledger.entries[index];
+    if (index > 0 && compareIdentity(ledger.entries[index - 1], entry) >= 0) return false;
     const key = identityKey(entry);
     if (identities.has(key)) return false;
     identities.add(key);
+    if (projectionDigestForEntry(entry) !== entry.projectionDigest) return false;
+    if (new Set(entry.metrics.map((metric) => metric.name)).size !== entry.metrics.length) return false;
   }
-  return sameJson(ledger.index, buildIndex(ledger.entries));
+  return sameJsonStructure(ledger.index, buildIndex(ledger.entries));
 }
 
 async function parseInput(inputPath) {
@@ -468,6 +536,9 @@ async function parseInput(inputPath) {
 
   const panels = [];
   for (let index = 0; index < lines.length; index += 1) {
+    if (jsonHasUnsafeNumber(lines[index])) {
+      return { unsafeNumberLine: index + 1 };
+    }
     let panel;
     try {
       panel = JSON.parse(lines[index]);
@@ -497,7 +568,9 @@ async function validatePanels(panels, inputPath) {
 async function readExistingLedger(ledgerPath) {
   try {
     const contents = await readFile(ledgerPath);
-    const ledger = JSON.parse(contents.toString('utf8'));
+    const text = contents.toString('utf8');
+    if (jsonHasUnsafeNumber(text)) return { invalid: true };
+    const ledger = JSON.parse(text);
     if (!await validateExistingLedger(ledger)) return { invalid: true };
     return {
       ledger,
@@ -592,12 +665,15 @@ export async function buildWeeklyLedger(panels, existingLedger) {
     byIdentity.set(key, candidate);
     added += 1;
   }
+  entries.sort(compareIdentity);
 
   return {
     ledger: {
       contract: 'WeeklyLedger',
       schemaVersion: LEDGER_VERSION,
       hashAlgorithm: 'sha256',
+      projectionDigestVersion: PROJECTION_DIGEST_VERSION,
+      projectionDigestAlgorithm: PROJECTION_DIGEST_ALGORITHM,
       entries,
       index: buildIndex(entries),
     },
@@ -624,6 +700,10 @@ async function main(args) {
   }
   if (parsed.parseError) {
     process.stderr.write(parsed.parseError);
+    return 2;
+  }
+  if (parsed.unsafeNumberLine) {
+    process.stderr.write(`Unsafe JSON number at line ${parsed.unsafeNumberLine}.\n`);
     return 2;
   }
 
