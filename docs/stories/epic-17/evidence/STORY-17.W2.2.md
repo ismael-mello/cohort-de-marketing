@@ -80,6 +80,13 @@ Hash SHA-256 dos dois mirrors:
 ## Estado para handoff
 
 - Story: `InReview`.
-- QG independente: pendente.
+- QG3 independente rodada 1: `FAIL 84/100`, confiança `0.98`.
+- Blocker: `cpa`, `roas`, `spend` e `ctr` são aceitas pelo contrato do
+  diagnóstico, mas todo request exige uma `SourceReconciliationV1` que admite
+  apenas métricas financeiras; uma leitura W2.1 válida dessas métricas não
+  consegue produzir nem mesmo `nao_mensuravel`.
+- Remediação: tornar a reconciliação condicional e determinística para métricas
+  não financeiras (com REDs explícitos) ou restringir coerentemente todo o
+  domínio às métricas financeiras; depois repetir QG independente.
 - HEAD de implementação antes do handoff documental: `a803b45`.
 - `epic-17-state.json`, merge, push e deploy: não executados; reservados ao fan-in `@devops` após QG PASS.

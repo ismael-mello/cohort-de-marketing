@@ -146,6 +146,24 @@ file_list:
   - "docs/stories/epic-17/evidence/STORY-17.W2.2.md"
 ```
 
+## QA Results
+
+```yaml
+quality_gate_report:
+  story_id: "17.W2.2"
+  round: 1
+  verdict: "FAIL"
+  score: 84
+  confidence: 0.98
+  blockers:
+    - "O diagnóstico declara cpa, roas, spend e ctr, mas exige SourceReconciliationV1 para todo request; esse contrato aceita apenas métricas financeiras, tornando leituras W2.1 não financeiras contratualmente impossíveis até mesmo para nao_mensuravel."
+  required_remediation:
+    - "Permitir diagnóstico não financeiro sem exigir uma reconciliação impossível, com reason code determinístico e testes para cpa, roas, spend e ctr, ou restringir explicitamente o domínio inteiro às métricas financeiras."
+  reviewed_by: "@architect"
+  reviewed_at: "2026-07-15"
+  reviewed_head: "cdbe081370d92bcd5589f52ce8b1311931c0b25d"
+```
+
 ## Change Log
 
 | Data | Agente | Mudança |
@@ -153,6 +171,7 @@ file_list:
 | 2026-07-15 | @dev | Escopo rematerializado sobre a baseline integrada, com dependências e PR coverage confirmados. |
 | 2026-07-15 | @dev | RED congelou quatro goldens, estados adversariais, precisão, proveniência, PII e fronteira read-only. |
 | 2026-07-15 | @dev | Implementação determinística concluída; 149/149 testes Node verdes e story movida para `InReview`. |
+| 2026-07-15 | @architect | QG3 rodada 1 falhou: métricas não financeiras de W2.1 não atravessam a reconciliação financeira obrigatória de W2.3. |
 
 ## Stop conditions adicionais
 
