@@ -158,6 +158,31 @@ function bundle(latestValue = 1100, reconciliationValue = String(latestValue)) {
   };
 }
 
+function bundleForMetric(metric, latestValue, {
+  successOperator = 'gte', successThreshold = '1000',
+  reversalOperator = 'lte', reversalThreshold = '800',
+} = {}) {
+  const request = bundle(latestValue);
+  request.previousDecision.successCriterion = {
+    ...request.previousDecision.successCriterion,
+    metric,
+    operator: successOperator,
+    threshold: successThreshold,
+  };
+  request.previousDecision.reversalCriterion = {
+    ...request.previousDecision.reversalCriterion,
+    metric,
+    operator: reversalOperator,
+    threshold: reversalThreshold,
+  };
+  request.historicalReading.series[0].name = metric;
+  request.historicalReading.entries.forEach((entry) => {
+    entry.metrics[0].name = metric;
+  });
+  delete request.sourceReconciliation;
+  return request;
+}
+
 function parseSuccess(result) {
   assert.equal(result.code, 0, result.stderr || result.stdout);
   assert.equal(result.stderr, '');
@@ -303,6 +328,68 @@ test('gap reconciliado e critérios não atingidos são inconclusivos e nunca es
   assert.deepEqual(output.proposedLevers, []);
   assert.equal(JSON.stringify(output).includes('sourceOfTruth'), false);
   assert.equal(JSON.stringify(output).includes('winner'), false);
+});
+
+test('CPA, ROAS, spend e CTR mensuráveis usam somente proveniência W2.1 sem inventar reconciliação', async (t) => {
+  const cases = [
+    ['cpa', bundleForMetric('cpa', 40, {
+      successOperator: 'lte', successThreshold: '50', reversalOperator: 'gte', reversalThreshold: '70',
+    })],
+    ['roas', bundleForMetric('roas', 3, {
+      successOperator: 'gte', successThreshold: '2', reversalOperator: 'lte', reversalThreshold: '1.5',
+    })],
+    ['spend', bundleForMetric('spend', 1100)],
+    ['ctr', bundleForMetric('ctr', 3, {
+      successOperator: 'gte', successThreshold: '2.5', reversalOperator: 'lte', reversalThreshold: '1',
+    })],
+  ];
+  for (const [metric, request] of cases) {
+    const output = parseSuccess(await run([await withBundle(t, request, `${metric}-measurable.json`)]));
+    assert.equal(output.verdict, 'sustentou', metric);
+    assert.deepEqual(output.reasonCodes, ['SUCCESS_CRITERION_MET'], metric);
+    assert.equal(output.evidence.historicalReading.metric, metric);
+    assert.equal(output.evidence.sourceReconciliation, null);
+    assert.deepEqual(output.proposedLevers, []);
+    assert.equal(JSON.stringify(output).includes('porque'), false);
+    assert.equal(JSON.stringify(output).includes('caus'), false);
+  }
+});
+
+test('CPA, ROAS, spend e CTR não mensuráveis preservam reason code W2.1 e zero alavancas', async (t) => {
+  for (const metric of ['cpa', 'roas', 'spend', 'ctr']) {
+    const request = bundleForMetric(metric, 1100);
+    request.historicalReading.series[0].samples.splice(1);
+    request.historicalReading.entries.splice(1);
+    request.historicalReading.series[0].bySeal.Real = [0];
+    request.historicalReading.series[0].comparison = {
+      status: 'insufficient_history', requiresHumanDecision: true,
+      warningCodes: ['INSUFFICIENT_HISTORY'],
+    };
+    request.historicalReading.warnings = [{ code: 'INSUFFICIENT_HISTORY', metric }];
+    const output = parseSuccess(await run([await withBundle(t, request, `${metric}-not-measurable.json`)]));
+    assert.equal(output.verdict, 'nao_mensuravel', metric);
+    assert.deepEqual(output.reasonCodes, ['INSUFFICIENT_DISTINCT_WEEKS'], metric);
+    assert.equal(output.evidence.sourceReconciliation, null);
+    assert.deepEqual(output.proposedLevers, [], metric);
+  }
+});
+
+test('métrica financeira continua exigindo reconciliação válida e métrica não financeira a rejeita', async (t) => {
+  const cases = [
+    ['financial-absent', bundle(1100), (request) => { delete request.sourceReconciliation; }],
+    ['financial-null', bundle(1100), (request) => { request.sourceReconciliation = null; }],
+    ['financial-incompatible', bundle(1100), (request) => { request.sourceReconciliation.metric = 'orders'; }],
+    ['non-financial-reconciliation', bundleForMetric('cpa', 40, {
+      successOperator: 'lte', successThreshold: '50', reversalOperator: 'gte', reversalThreshold: '70',
+    }), (request) => { request.sourceReconciliation = reconciliation('40'); }],
+  ];
+  for (const [name, request, mutate] of cases) {
+    mutate(request);
+    const result = await run([await withBundle(t, request, `${name}.json`)]);
+    assert.equal(result.code, 1, name);
+    assert.equal(result.stdout, '', name);
+    assert.equal(result.stderr, 'INVALID_EVALUATION_REQUEST\n', name);
+  }
 });
 
 test('decisão vazia, IDs repetidos, critérios sobrepostos e ordem forjada falham fechado', async (t) => {
