@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft — implementação não autorizada; depende de `17.W3.1` em `Done`.
+Ready — implementação autorizada após `17.W3.1` atingir `Done` e ser integrada localmente.
 
 ## Dependências
 

@@ -2,9 +2,9 @@
 
 ## Status
 
-Em progresso na W3. W1 e W2 estão concluídas; `17.W2.1`, `17.W2.2` e
-`17.W2.3` estão `Done`. `17.W3.1` está `Ready` com implementação autorizada;
-`17.W3.2` permanece em `Draft`, sem autorização, até `17.W3.1` ficar `Done`.
+Em progresso na W3. W1 e W2 estão concluídas; `17.W3.1` está `Done` após
+QG3 `PASS 98/100`, e `17.W3.2` está `Ready` com implementação autorizada para
+executar o gate público final.
 
 ## Problema
 

@@ -144,7 +144,7 @@
         {
           "story_id": "17.W3.1",
           "title": "Modulo didatico e fluxo local da Aula 4",
-          "status": "Ready",
+          "status": "Done",
           "implementation_authorized": true,
           "depends_on": [
             "17.W2.1",
@@ -155,8 +155,8 @@
         {
           "story_id": "17.W3.2",
           "title": "Gate publico da Aula 4",
-          "status": "Draft",
-          "implementation_authorized": false,
+          "status": "Ready",
+          "implementation_authorized": true,
           "depends_on": [
             "17.W3.1"
           ]
