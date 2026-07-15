@@ -6,7 +6,7 @@
   <title>Briefing Único • Lendár[IA] · Cohort de Marketing</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iconoir@7.11.0/css/iconoir.css">
-  <link rel="stylesheet" href="assets/al/hub-brand.css">
+  <link rel="stylesheet" href="/assets/al/hub-brand.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     :root {
@@ -346,7 +346,7 @@
       <div class="hub-header__inner">
         <div class="hub-brand">
           <div class="hub-lockup">
-            <img class="hub-lockup__mark" src="assets/al/logo/silhueta-al.svg" alt="Academia Lendária" width="42" height="42">
+            <img class="hub-lockup__mark" src="/assets/al/logo/silhueta-al.svg" alt="Academia Lendária" width="42" height="42">
             <div>
               <div class="hub-lockup__wordmark">Lendár<em>[IA]</em></div>
               <div class="hub-lockup__subtitle">Briefing Único · Cohort de Marketing</div>
@@ -354,18 +354,28 @@
           </div>
           <div class="hub-status-pill">
             <span class="hub-status-pill__dot"></span>
-            <span>25 skills · 8 etapas · autosave</span>
+            <span>31 skills · 8 etapas · autosave por projeto</span>
           </div>
         </div>
         <div class="hub-toolbar">
           <span id="save-state" class="hub-status-pill briefing-status"><i class="fa-solid fa-circle text-[7px]"></i> carregando</span>
-          <a href="mapa-skills.html" class="hub-btn">
+          <span id="import-status" class="hub-status-pill briefing-status" aria-live="polite">pronto para importar</span>
+          <a href="/mapa-skills.html" class="hub-btn">
             <i class="iconoir-map"></i>
             <span class="label-sm">Mapa</span>
           </a>
-          <button id="export-btn" class="hub-btn" type="button">
+          <input id="import-file" type="file" accept="application/json,.json" hidden>
+          <button id="import-btn" class="hub-btn" type="button">
+            <i class="iconoir-upload"></i>
+            <span class="label-sm">Importar</span>
+          </button>
+          <button id="export-json-btn" class="hub-btn" type="button">
             <i class="iconoir-download"></i>
-            <span class="label-sm">Exportar</span>
+            <span class="label-sm">JSON</span>
+          </button>
+          <button id="export-markdown-btn" class="hub-btn" type="button">
+            <i class="iconoir-page"></i>
+            <span class="label-sm">Markdown</span>
           </button>
           <button id="reset-btn" class="hub-btn" type="button">
             <i class="iconoir-undo"></i>
@@ -432,7 +442,9 @@
   </template>
 
   <script>
-    const STORAGE_KEY = 'cohort.projectBrief.current';
+    const LEGACY_STORAGE_KEY = 'cohort.projectBrief.current';
+    const STORAGE_PREFIX = 'cohort.projectBrief.v1:';
+    const ACTIVE_PROJECT_KEY = 'cohort.projectBrief.activeProject.v1';
     const SAVE_IDLE_MS = 650;
     const GROUPS = ['project', 'market', 'offer', 'brand', 'funnel', 'channels', 'data', 'integrations'];
     const STATE_LABELS = {
@@ -542,12 +554,15 @@
     };
 
     let schema;
+    let v1Schema;
     let rules;
     let steps = [];
     let fields = [];
     let activeStep = 'project';
     let selectedSkill = null;
     let saveTimer = null;
+    let currentDocument = null;
+    let importedIdentity = false;
     let state = {
       schemaVersion: '0.1.0',
       meta: {},
@@ -559,8 +574,7 @@
       channels: {},
       data: {},
       integrations: {},
-      artifacts: {},
-      fieldMeta: {}
+      artifacts: {}
     };
 
     function byId(id) { return document.getElementById(id); }
@@ -590,7 +604,15 @@
         cursor = cursor[key];
       }
       cursor[parts.at(-1)] = value;
-      state.fieldMeta[path] = { source: 'user', updatedAt: new Date().toISOString() };
+      const now = new Date().toISOString();
+      ensureCurrentDocument();
+      currentDocument.data = contractData();
+      currentDocument.updatedAt = now;
+      currentDocument.fieldSources[path] = { source: 'user', confirmation: 'confirmed', updatedAt: now };
+      if (!importedIdentity && state.project?.slug) {
+        currentDocument.projectId = `project-${state.project.slug}`;
+        currentDocument.id = `${currentDocument.projectId}:revision:${currentDocument.revision}`;
+      }
       scheduleSave();
       refreshAll();
     }
@@ -714,20 +736,163 @@
       return output;
     }
 
-    function loadDraft() {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      try {
-        const parsed = JSON.parse(raw);
-        state = {
-          ...state,
-          ...parsed,
-          artifacts: parsed.artifacts || {},
-          fieldMeta: parsed.fieldMeta || {}
-        };
-      } catch {
-        localStorage.removeItem(STORAGE_KEY);
+    function clone(value) { return structuredClone(value); }
+
+    function contractData(source = state) {
+      const data = clone(source);
+      delete data.artifacts;
+      delete data.fieldMeta;
+      return data;
+    }
+
+    function portableReference(value, allowBackslash = false) {
+      if (typeof value !== 'string' || !value || value.length > 256) return false;
+      const candidate = allowBackslash ? value.replaceAll('\\', '/') : value;
+      if (!allowBackslash && value.includes('\\')) return false;
+      if (candidate.startsWith('/') || /^[A-Za-z]:\//.test(candidate) || /^[A-Za-z][A-Za-z0-9+.-]*:/.test(candidate)) return false;
+      const sensitive = new Set(['credential', 'credentials', 'env', 'password', 'passwords', 'private', 'privado', 'secret', 'secrets', 'segredo', 'segredos', 'senha', 'senhas', 'token', 'tokens']);
+      return candidate.split('/').every((segment) => segment && segment !== '.' && segment !== '..'
+        && /^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(segment)
+        && !segment.toLowerCase().split(/[._-]+/).some((token) => sensitive.has(token)));
+    }
+
+    function typeMatches(value, type) {
+      if (type === 'object') return value !== null && typeof value === 'object' && !Array.isArray(value);
+      if (type === 'array') return Array.isArray(value);
+      if (type === 'integer') return Number.isInteger(value);
+      if (type === 'number') return typeof value === 'number' && Number.isFinite(value);
+      return typeof value === type;
+    }
+
+    function validateFormat(value, format) {
+      if (format === 'date-time') return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(value) && !Number.isNaN(Date.parse(value));
+      if (format === 'canonical-field-path') return fields.some((field) => field.path === value);
+      if (format === 'portable-artifact-reference') return portableReference(value, false);
+      if (format === 'portable-legacy-source-path') return portableReference(value, true);
+      return true;
+    }
+
+    function validateSchemaNode(value, definition, path = '$') {
+      if (definition === false) return [`${path}: campo não permitido`];
+      const errors = [];
+      if (definition.$ref === schema.$id) errors.push(...validateSchemaNode(value, schema, path));
+      if (definition.const !== undefined && value !== definition.const) errors.push(`${path}: valor deve ser ${definition.const}`);
+      if (definition.enum && !definition.enum.includes(value)) errors.push(`${path}: valor fora do enum`);
+      if (definition.type && !typeMatches(value, definition.type)) return [...errors, `${path}: tipo ${definition.type} esperado`];
+      if (typeof value === 'string') {
+        if (definition.minLength != null && value.length < definition.minLength) errors.push(`${path}: texto curto demais`);
+        if (definition.maxLength != null && value.length > definition.maxLength) errors.push(`${path}: texto longo demais`);
+        if (definition.pattern && !(new RegExp(definition.pattern)).test(value)) errors.push(`${path}: formato inválido`);
+        if (definition.format && !validateFormat(value, definition.format)) errors.push(`${path}: formato ${definition.format} inválido`);
       }
+      if (typeof value === 'number') {
+        if (definition.minimum != null && value < definition.minimum) errors.push(`${path}: abaixo do mínimo`);
+        if (definition.maximum != null && value > definition.maximum) errors.push(`${path}: acima do máximo`);
+      }
+      if (Array.isArray(value)) {
+        if (definition.minItems != null && value.length < definition.minItems) errors.push(`${path}: poucos itens`);
+        if (definition.maxItems != null && value.length > definition.maxItems) errors.push(`${path}: itens demais`);
+        value.forEach((item, index) => errors.push(...validateSchemaNode(item, definition.items || {}, `${path}[${index}]`)));
+      }
+      if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+        for (const required of definition.required || []) {
+          if (!Object.prototype.hasOwnProperty.call(value, required)) errors.push(`${path}.${required}: obrigatório`);
+        }
+        for (const key of Object.keys(value)) {
+          if (definition.propertyNames?.format && !validateFormat(key, definition.propertyNames.format)) errors.push(`${path}.${key}: nome de campo inválido`);
+          if (Object.prototype.hasOwnProperty.call(definition.properties || {}, key)) {
+            errors.push(...validateSchemaNode(value[key], definition.properties[key], `${path}.${key}`));
+          } else if (definition.additionalProperties === false) {
+            errors.push(`${path}.${key}: propriedade adicional não permitida`);
+          } else if (definition.additionalProperties && typeof definition.additionalProperties === 'object') {
+            errors.push(...validateSchemaNode(value[key], definition.additionalProperties, `${path}.${key}`));
+          }
+        }
+      }
+      return errors;
+    }
+
+    function validateLegacy(document) { return validateSchemaNode(document, schema); }
+    function validateV1(document) { return validateSchemaNode(document, v1Schema); }
+
+    function migrateLegacyDocument(input) {
+      const errors = validateLegacy(input);
+      if (errors.length) throw new Error(errors.slice(0, 3).join('; '));
+      const data = clone(input);
+      delete data.fieldMeta;
+      const fallbackTime = input.meta?.updatedAt || input.meta?.createdAt || '1970-01-01T00:00:00.000Z';
+      const fieldSources = {};
+      for (const [path, metadata] of Object.entries(input.fieldMeta || {})) {
+        fieldSources[path] = {
+          source: ['user', 'artifact', 'inferred'].includes(metadata.source) ? metadata.source : 'migration',
+          confirmation: metadata.source === 'pending_confirmation' ? 'pending' : metadata.source === 'not_applicable' ? 'not_applicable' : 'confirmed',
+          ...(metadata.sourcePath ? { sourceArtifactId: metadata.sourcePath.replaceAll('\\', '/') } : {}),
+          updatedAt: metadata.updatedAt || fallbackTime
+        };
+      }
+      const projectId = `project-${input.project.slug}`;
+      const migrated = {
+        schemaVersion: '1.0.0',
+        id: `${projectId}:revision:1`,
+        workspaceId: 'standalone',
+        projectId,
+        revision: 1,
+        status: 'active',
+        createdAt: input.meta?.createdAt || fallbackTime,
+        updatedAt: input.meta?.updatedAt || fallbackTime,
+        data,
+        fieldSources
+      };
+      const migratedErrors = validateV1(migrated);
+      if (migratedErrors.length) throw new Error(migratedErrors.slice(0, 3).join('; '));
+      return migrated;
+    }
+
+    function newDocument() {
+      const now = new Date().toISOString();
+      return {
+        schemaVersion: '1.0.0', id: 'project-draft:revision:1', workspaceId: 'standalone',
+        projectId: 'project-draft', revision: 1, status: 'draft', createdAt: now, updatedAt: now,
+        data: contractData(), fieldSources: {}
+      };
+    }
+
+    function ensureCurrentDocument() {
+      if (!currentDocument) currentDocument = newDocument();
+      if (!currentDocument.fieldSources) currentDocument.fieldSources = {};
+    }
+
+    function storageKey(projectId) { return `${STORAGE_PREFIX}${encodeURIComponent(projectId)}`; }
+
+    function loadDraft() {
+      const activeProjectId = localStorage.getItem(ACTIVE_PROJECT_KEY);
+      if (activeProjectId) {
+        try {
+          const saved = JSON.parse(localStorage.getItem(storageKey(activeProjectId)) || 'null');
+          if (saved?.document?.schemaVersion === '1.0.0') {
+            currentDocument = saved.document;
+            state = { ...clone(currentDocument.data), artifacts: saved.artifacts || {} };
+            activeStep = saved.ui?.activeStep || 'project';
+            importedIdentity = true;
+            return;
+          }
+        } catch { /* continua com recuperação legado */ }
+      }
+      const rawLegacy = localStorage.getItem(LEGACY_STORAGE_KEY);
+      if (rawLegacy) {
+        try {
+          const legacy = JSON.parse(rawLegacy);
+          const artifacts = legacy.artifacts || {};
+          delete legacy.artifacts;
+          currentDocument = migrateLegacyDocument(legacy);
+          state = { ...clone(currentDocument.data), artifacts };
+          importedIdentity = true;
+          localStorage.removeItem(LEGACY_STORAGE_KEY);
+          saveNow();
+          return;
+        } catch { /* rascunho legado inválido fica intacto para recuperação manual */ }
+      }
+      ensureCurrentDocument();
     }
 
     function scheduleSave() {
@@ -737,12 +902,16 @@
     }
 
     function saveNow() {
-      state.meta = {
-        ...(state.meta || {}),
-        updatedAt: new Date().toISOString(),
-        lastSavedAt: new Date().toISOString()
-      };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      ensureCurrentDocument();
+      currentDocument.data = contractData();
+      if (state.project?.slug || importedIdentity) {
+        localStorage.setItem(storageKey(currentDocument.projectId), JSON.stringify({
+          document: currentDocument,
+          artifacts: clone(state.artifacts || {}),
+          ui: { activeStep }
+        }));
+        localStorage.setItem(ACTIVE_PROJECT_KEY, currentDocument.projectId);
+      }
       byId('save-state').innerHTML = '<i class="fa-solid fa-circle text-[7px] text-emerald-400"></i> salvo';
     }
 
@@ -899,7 +1068,7 @@
           </section>
           <section class="field-card">
             <h2 class="font-display text-lg mb-3">JSON atual</h2>
-            <textarea readonly class="mono text-xs min-h-[260px]">${escapeHtml(JSON.stringify(state, null, 2))}</textarea>
+            <textarea readonly class="mono text-xs min-h-[260px]">${escapeHtml(JSON.stringify({ document: { ...currentDocument, data: contractData() }, artifacts: state.artifacts || {}, ui: { activeStep } }, null, 2))}</textarea>
           </section>
         </div>
       `;
@@ -1144,53 +1313,118 @@
       renderSkillsPanel();
     }
 
-    function exportJson() {
-      saveNow();
-      const slug = state.project?.slug;
-      if (!slug) {
-        alert('Preencha o slug do projeto antes de exportar.');
-        activeStep = 'project';
+    function showImportStatus(message, error = false) {
+      byId('import-status').textContent = message;
+      byId('import-status').style.color = error ? 'var(--rose)' : 'var(--teal)';
+    }
+
+    function activeStepFor(document) {
+      return ({ 'aula-1': 'project', 'aula-2': 'offer', trafego: 'channels', dados: 'data', 'nao-sei': 'project' })[document.data?.project?.currentStage] || 'project';
+    }
+
+    async function importProjectBrief(event) {
+      const file = event.target.files?.[0];
+      event.target.value = '';
+      if (!file) return;
+      try {
+        const input = JSON.parse(await file.text());
+        const candidate = input?.document?.schemaVersion === '1.0.0' ? input.document : input;
+        let imported;
+        let message;
+        if (candidate?.schemaVersion === '1.0.0') {
+          const errors = validateV1(candidate);
+          if (errors.length) throw new Error(errors.slice(0, 3).join('; '));
+          imported = clone(candidate);
+          message = 'ProjectBrief v1 importado';
+        } else if (candidate?.schemaVersion === '0.1.0') {
+          imported = migrateLegacyDocument(candidate);
+          message = 'Documento 0.1.0 migrado para ProjectBrief v1';
+        } else {
+          throw new Error(`schemaVersion ${candidate?.schemaVersion || 'ausente'} não suportada`);
+        }
+        currentDocument = imported;
+        state = { ...clone(imported.data), artifacts: {} };
+        activeStep = activeStepFor(imported);
+        importedIdentity = true;
+        saveNow();
         render();
-        return;
+        showImportStatus(message);
+      } catch (error) {
+        showImportStatus(`Importação recusada: ${error.message}. Revise o arquivo e tente novamente.`, true);
       }
-      const exportState = structuredClone(state);
-      // `artifacts` e estado de interface nao pertencem ao ProjectBrief 0.1.0.
-      // O novo produto migra artefatos para um registry separado.
-      delete exportState.artifacts;
-      const blob = new Blob([JSON.stringify(exportState, null, 2)], { type: 'application/json' });
+    }
+
+    function exportDocument() {
+      ensureCurrentDocument();
+      const document = { ...clone(currentDocument), data: contractData() };
+      const errors = validateV1(document);
+      if (errors.length) {
+        showImportStatus(`Exportação recusada: ${errors.slice(0, 3).join('; ')}`, true);
+        if (!state.project?.slug) { activeStep = 'project'; render(); }
+        return null;
+      }
+      return document;
+    }
+
+    function downloadText(contents, type, filename) {
+      const blob = new Blob([contents], { type });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${slug}-project-brief.json`;
+      a.download = filename;
       a.click();
       URL.revokeObjectURL(url);
     }
 
-    async function copySummary() {
+    function exportJson() {
+      const document = exportDocument();
+      if (!document) return;
+      downloadText(`${JSON.stringify(document, null, 2)}\n`, 'application/json', `${document.data.project.slug}-project-brief.v1.json`);
+      showImportStatus('ProjectBrief v1 validado e exportado');
+    }
+
+    function markdownSummary() {
+      const data = contractData();
       const evaluated = evaluateSkills();
       const ready = evaluated.filter((item) => ['done', 'available', 'recommended'].includes(item.state)).map((item) => item.skillId);
       const almost = evaluated.filter((item) => item.state === 'almost').map((item) => item.skillId);
-      const text = [
-        `# Briefing ${state.project?.slug || ''}`.trim(),
+      return [
+        `# Briefing ${data.project?.name || data.project?.slug || 'sem nome'}`,
         '',
-        `Skills liberadas: ${ready.join(', ') || 'nenhuma'}`,
-        `Quase liberadas: ${almost.join(', ') || 'nenhuma'}`,
+        `- Projeto: ${data.project?.slug || 'não definido'}`,
+        `- Etapa atual: ${data.project?.currentStage || 'não definida'}`,
+        `- Nicho: ${data.market?.niche || 'não definido'}`,
+        `- Oferta: ${data.offer?.name || 'não definida'}`,
         '',
-        `Projeto: ${state.project?.name || state.project?.slug || 'não definido'}`,
-        `Nicho: ${state.market?.niche || 'não definido'}`,
-        `Oferta: ${state.offer?.name || 'não definida'}`
+        '## Readiness',
+        '',
+        `- Skills liberadas: ${ready.join(', ') || 'nenhuma'}`,
+        `- Quase liberadas: ${almost.join(', ') || 'nenhuma'}`,
+        ''
       ].join('\n');
-      await navigator.clipboard.writeText(text);
+    }
+
+    function exportMarkdown() {
+      const document = exportDocument();
+      if (!document) return;
+      downloadText(markdownSummary(), 'text/markdown', `${document.data.project.slug}-briefing.md`);
+      showImportStatus('Resumo Markdown derivado e exportado');
+    }
+
+    async function copySummary() {
+      await navigator.clipboard.writeText(markdownSummary());
       byId('save-state').innerHTML = '<i class="fa-solid fa-copy text-[10px]"></i> resumo copiado';
     }
 
     async function init() {
       try {
-        const [schemaRes, rulesRes] = await Promise.all([
-          fetch('data/project-brief.schema.json'),
-          fetch('data/skill-unlock-rules.json')
+        const [schemaRes, v1SchemaRes, rulesRes] = await Promise.all([
+          fetch('/data/project-brief.schema.json'),
+          fetch('/data/contracts/project-brief.v1.schema.json'),
+          fetch('/data/skill-unlock-rules.json')
         ]);
         schema = await schemaRes.json();
+        v1Schema = await v1SchemaRes.json();
         rules = await rulesRes.json();
       } catch (error) {
         byId('form-body').innerHTML = `
@@ -1217,11 +1451,16 @@
         activeStep = steps[Math.min(steps.length - 1, idx + 1)].id;
         render();
       });
-      byId('export-btn').addEventListener('click', exportJson);
+      byId('import-btn').addEventListener('click', () => byId('import-file').click());
+      byId('import-file').addEventListener('change', importProjectBrief);
+      byId('export-json-btn').addEventListener('click', exportJson);
+      byId('export-markdown-btn').addEventListener('click', exportMarkdown);
       byId('copy-summary').addEventListener('click', copySummary);
       byId('reset-btn').addEventListener('click', () => {
         if (!confirm('Limpar o briefing salvo neste navegador?')) return;
-        localStorage.removeItem(STORAGE_KEY);
+        if (currentDocument?.projectId) localStorage.removeItem(storageKey(currentDocument.projectId));
+        localStorage.removeItem(ACTIVE_PROJECT_KEY);
+        localStorage.removeItem(LEGACY_STORAGE_KEY);
         location.reload();
       });
     }

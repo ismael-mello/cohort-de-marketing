@@ -84,6 +84,8 @@ test('ProjectBrief v1 faz round-trip JSON e Markdown sem perder metadados', asyn
 
   await page.setInputFiles('#import-file', input);
   await page.locator('#import-status').filter({ hasText: 'ProjectBrief v1 importado' }).waitFor();
+  assert.equal(await page.locator('#step-title').textContent(), 'Canais');
+  await page.locator('[data-step="project"]').click();
   assert.equal(await page.locator('[data-path="project.name"]').inputValue(), 'Acme Labs');
   assert.equal(await page.locator('[data-path="project.currentStage"]').inputValue(), 'trafego');
 
