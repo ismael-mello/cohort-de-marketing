@@ -179,7 +179,7 @@ test('duas execuções limpas são determinísticas e não alteram o exemplo', a
   assert.doesNotMatch(outputs.join('\n'), /\/Users\/|[A-Z]:\\\\|@|bearer|token|password|secret/i);
   assert.doesNotMatch(
     outputs.join('\n'),
-    /(?<![a-z0-9])(?:\d{11}|\d{14})(?![a-z0-9])|(?<![a-z0-9])\d{3}\.\d{3}\.\d{3}-\d{2}(?![a-z0-9])|(?<![a-z0-9])\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}(?![a-z0-9])|(?<![a-z0-9])\(?\d{2}\)?[ .-]\d{4,5}[ .-]\d{4}(?![a-z0-9])/i,
+    /(?<![a-z0-9])(?:\d{10,11}|\d{13,14})(?![a-z0-9])|(?<![a-z0-9])\d{3}\.\d{3}\.\d{3}-\d{2}(?![a-z0-9])|(?<![a-z0-9])\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}(?![a-z0-9])|(?<![a-z0-9])\(?\d{2}\)?[ .-]\d{4,5}[ .-]\d{4}(?![a-z0-9])/i,
   );
 });
 
@@ -228,7 +228,7 @@ test('telefone, CPF e CNPJ shaped falham fechado recursivamente sem bloquear IDs
     assert.deepEqual(await snapshotDirectory(input), before, value);
   }
 
-  for (const opaqueId of ['a1234567890', 'a1234567890123']) {
+  for (const opaqueId of ['a123456789', 'a1234567890', 'a123456789012', 'a1234567890123']) {
     const input = await temporaryDirectory(t, 'aula-04-opaque-input-');
     const output = await temporaryDirectory(t, 'aula-04-opaque-output-');
     await cp(EXAMPLE, input, { recursive: true });
@@ -240,6 +240,50 @@ test('telefone, CPF e CNPJ shaped falham fechado recursivamente sem bloquear IDs
     assert.equal(result.code, 0, result.stderr || opaqueId);
     assert.deepEqual((await readdir(output)).sort(), EXPECTED_ARTIFACTS, opaqueId);
   }
+});
+
+test('telefone fixo compacto com DDD e celular internacional compacto falham juntos sem eco', async (t) => {
+  const probes = [
+    { value: '1134567890', expectedCode: 'INVALID_PREVIOUS_DECISION', surface: 'decision' },
+    { value: '5511987654321', expectedCode: 'INVALID_WEEKLY_PANEL', surface: 'panel' },
+  ];
+  const observed = [];
+
+  for (const probe of probes) {
+    const input = await temporaryDirectory(t, 'aula-04-phone-input-');
+    const output = await temporaryDirectory(t, 'aula-04-phone-output-');
+    await cp(EXAMPLE, input, { recursive: true });
+    if (probe.surface === 'decision') {
+      const file = path.join(input, 'previous-decision.json');
+      const document = await readJson(file);
+      document.hypothesis.text = `Contato ${probe.value}`;
+      await writeFile(file, `${JSON.stringify(document, null, 2)}\n`);
+    } else {
+      const file = path.join(input, 'weekly-panels.jsonl');
+      const panels = (await readFile(file, 'utf8')).trimEnd().split('\n').map(JSON.parse);
+      panels[0].reader.note = `Contato ${probe.value}`;
+      await writeFile(file, `${panels.map(JSON.stringify).join('\n')}\n`);
+    }
+    const before = await snapshotDirectory(input);
+    const result = await run([input, output]);
+    observed.push({
+      code: result.code,
+      echoed: result.stderr.includes(probe.value),
+      immutable: JSON.stringify(await snapshotDirectory(input)) === JSON.stringify(before),
+      outputFiles: (await readdir(output)).sort(),
+      stderr: result.stderr,
+      stdoutEmpty: result.stdout === '',
+    });
+  }
+
+  assert.deepEqual(observed, probes.map(({ expectedCode }) => ({
+    code: 1,
+    echoed: false,
+    immutable: true,
+    outputFiles: [],
+    stderr: `${expectedCode}\n`,
+    stdoutEmpty: true,
+  })));
 });
 
 test('destino igual, descendente ou resolvido por symlink é rejeitado sem mutar o exemplo', async (t) => {

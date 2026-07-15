@@ -35,7 +35,7 @@ const SENSITIVE_TEXT_PATTERNS = Object.freeze([
   /(?:^|\s)[A-Z]:\\/i,
 ]);
 const PERSONAL_IDENTIFIER_PATTERNS = Object.freeze([
-  /(?<![a-z0-9])(?:\d{11}|\d{14})(?![a-z0-9])/i,
+  /(?<![a-z0-9])(?:\d{10,11}|\d{13,14})(?![a-z0-9])/i,
   /(?<![a-z0-9])\d{3}\.\d{3}\.\d{3}-\d{2}(?![a-z0-9])/i,
   /(?<![a-z0-9])\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}(?![a-z0-9])/i,
   /(?<![a-z0-9])\(?\d{2}\)?[ .-]\d{4,5}[ .-]\d{4}(?![a-z0-9])/i,
