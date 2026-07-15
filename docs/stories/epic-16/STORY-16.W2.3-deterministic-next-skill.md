@@ -1,33 +1,87 @@
+---
+status: Ready
+story_id: "16.W2.3"
+title: "Próxima skill determinística"
+epic: 16
+wave: "W2"
+parent_epic: "docs/stories/epic-16/EPIC-16-CANONICAL-PROJECT.md"
+effort: 8h
+deploy_type: none
+appetite: 1d
+hill_phase: executing
+confidence_level: know-how
+involves_ui: true
+task_mode: CRIAR
+cli: codex
+executor: "@dev"
+quality_gate: "@sinkra-chief"
+model: "opus"
+repo_target: "cohort-de-marketing"
+accountable: "Rafael Costa"
+depends_on: ["16.W2.1", "16.W2.2"]
+consumes_artifacts_of: ["16.W2.1", "16.W2.2"]
+entity_input:
+  entity_type: "PublicSkillSurfaces"
+  description: "ProjectBrief, ArtifactIndex, catálogo e regras canônicas reconciliados pela W2.2."
+  status_expected: "catalog-driven"
+entity_output:
+  entity_type: "SkillReadinessDecision"
+  description: "Único próximo passo determinístico, explicável e compartilhado por todas as superfícies."
+  status_expected: "deterministic-and-explainable"
+file_scope: shared
+touched_paths:
+  - "data/skill-unlock-rules.json"
+  - "scripts/lib/skill-readiness.mjs"
+  - "scripts/lib/skill-readiness.test.mjs"
+  - "briefing.html"
+  - "mapa-skills.html"
+  - ".claude/skills/comecar/SKILL.md"
+  - ".claude/skills/status-funil/SKILL.md"
+  - ".agents/skills/comecar/SKILL.md"
+  - ".agents/skills/status-funil/SKILL.md"
+  - "docs/stories/epic-16/STORY-16.W2.3-deterministic-next-skill.md"
+  - "docs/stories/epic-16/evidence/STORY-16.W2.3.md"
+affected_paths:
+  - "data/skill-unlock-rules.json"
+  - "scripts/lib/skill-readiness.mjs"
+  - "scripts/lib/skill-readiness.test.mjs"
+  - "briefing.html"
+  - "mapa-skills.html"
+  - ".claude/skills/comecar/SKILL.md"
+  - ".claude/skills/status-funil/SKILL.md"
+  - ".agents/skills/comecar/SKILL.md"
+  - ".agents/skills/status-funil/SKILL.md"
+  - "docs/stories/epic-16/STORY-16.W2.3-deterministic-next-skill.md"
+  - "docs/stories/epic-16/evidence/STORY-16.W2.3.md"
+---
+
 # STORY-16.W2.3 - Próxima skill determinística
 
-## Status
+> **Depends On:** `16.W2.1`, `16.W2.2`
+> **Estimated Effort:** 8h
 
-Draft
+## Story
 
-## Dependências
+**As a / Como** aluno que concluiu parte do funil
+**I want / Quero** receber um único próximo passo calculado pelas regras públicas
+**so that / Para** retomar o projeto com a mesma recomendação em `comecar`, briefing, mapa e `status-funil`.
 
-- 16.W2.1
-- 16.W2.2
+## Acceptance Criteria
 
-## Objetivo
-
-Calcular um único próximo passo a partir do ProjectBrief, artefatos verificados e regras públicas, com explicação auditável.
-
-## Critérios de aceite
-
-- [ ] Estados suportados são `available`, `recommended`, `almost`, `blocked`, `not_applicable` e `done`.
-- [ ] Empates usam prioridade declarativa e estável, nunca ordem acidental do objeto.
-- [ ] O resultado inclui requisitos atendidos, ausentes e razão da recomendação.
-- [ ] `comecar`, briefing, mapa e `status-funil` não apresentam próximos passos contraditórios.
-- [ ] Perfil e `not_applicable` alteram a rota sem apagar artefatos existentes.
+- [ ] AC1: O motor retorna exclusivamente `available`, `recommended`, `almost`, `blocked`, `not_applicable` ou `done`; estado desconhecido e regra malformada falham fechado.
+- [ ] AC2: Para a mesma entrada serializada, o motor retorna o mesmo estado e a mesma próxima skill; empate é resolvido por prioridade numérica declarada em `skill-unlock-rules.json`, nunca por ordem do objeto.
+- [ ] AC3: Cada decisão inclui skill escolhida ou ausência explícita, requisitos atendidos, requisitos ausentes, evidências consideradas e razão legível sem conteúdo sensível.
+- [ ] AC4: Golden fixtures provam que `comecar`, briefing, mapa e `status-funil` apresentam o mesmo próximo passo e a mesma razão para cada perfil e estado suportado.
+- [ ] AC5: Perfil e `not_applicable` alteram a rota conforme regra declarativa sem apagar artefatos existentes; invocação direta de uma skill continua autônoma e não é bloqueada pelo recomendador.
+- [ ] AC6: Os arquivos canônicos alterados em `.claude/skills/` e seus mirrors em `.agents/skills/` permanecem byte a byte equivalentes.
 
 ## Tasks
 
-- [ ] Confirmar baseline e ausência de PR cobrindo o escopo.
-- [ ] Congelar contrato e testes antes da implementação.
-- [ ] Implementar somente dentro da File List aprovada.
-- [ ] Rodar validações incrementais e registrar evidências sanitizadas.
-- [ ] Atualizar checkboxes, File List real e state JSON.
+- [ ] Confirmar os fan-ins de `16.W2.1` e `16.W2.2` como `Done` e ausência de PR cobrindo o escopo.
+- [ ] Congelar golden fixtures para todos os estados, perfis, empates, `not_applicable`, regra inválida e retomada parcial.
+- [ ] Implementar o motor puro e integrar as quatro superfícies somente dentro da File List aprovada.
+- [ ] Rodar table tests, golden matrix, smoke de retomada e paridade byte a byte dos mirrors.
+- [ ] Registrar evidência sanitizada, atualizar checkboxes, File List real e epic state no fan-in.
 
 ## File List proposta
 
@@ -40,20 +94,47 @@ Calcular um único próximo passo a partir do ProjectBrief, artefatos verificado
 - `.claude/skills/status-funil/SKILL.md`
 - `.agents/skills/comecar/SKILL.md`
 - `.agents/skills/status-funil/SKILL.md`
-- `docs/stories/epic-16/**`
+- `docs/stories/epic-16/STORY-16.W2.3-deterministic-next-skill.md`
+- `docs/stories/epic-16/evidence/STORY-16.W2.3.md`
 
-A File List é uma allow-list inicial. Criação ou alteração fora dela exige
-atualização da story e nova validação de arquitetura.
+A File List é a allow-list inicial e corresponde a `touched_paths` e
+`affected_paths`. Criação ou alteração fora dela exige atualizar a story e
+repetir a validação de arquitetura antes de implementar.
+
+## Dev Notes
+
+- A execução só inicia depois dos fechamentos de `16.W2.1` e `16.W2.2`; use os contratos integrados e não derive estado por scraping das telas.
+- Prioridade é dado versionado de `skill-unlock-rules.json`. O motor deve ordenar explicitamente e usar desempate documentado por ID somente se a prioridade declarada for igual.
+- A decisão deve ser função pura de ProjectBrief, ArtifactIndex, catálogo e regras. Não use data atual, ordem de leitura do filesystem ou estado transitório do DOM.
+- `comecar` e `status-funil` continuam skills canônicas em `.claude/skills/`; os arquivos em `.agents/skills/` são mirrors literais, nunca forks.
+- O escopo toca o domínio sensível `.claude/`; por CHK-3, o quality gate obrigatório é `@sinkra-chief` e não pode ser substituído pelo executor.
+- `deploy_type: none`: não há publicação externa; smoke local e mirror parity continuam obrigatórios.
+
+## Executor Assignment
+
+```yaml
+executor: "@dev"
+quality_gate: "@sinkra-chief"
+model: "opus"
+quality_gate_tools: ["node:test", "golden-fixtures", "mirror-parity", "browser-smoke"]
+repo_target: "cohort-de-marketing"
+```
 
 ## Validação
 
-- Table tests para perfis e estados.
-- Golden fixtures com próxima skill e explicação.
-- Mirror parity das skills alteradas.
-- Smoke de retomada de projeto parcialmente concluído.
+- Table tests para os seis estados, perfis, prioridades e empates.
+- Golden fixtures com próxima skill e explicação idênticas nas quatro superfícies.
+- Paridade byte a byte das duas skills canônicas e seus mirrors.
+- Smoke de retomada de projeto parcialmente concluído e invocação direta.
 
-## Stop conditions
+## Stop Conditions
 
 - Prioridade precisar ser hardcoded fora das regras.
 - Alteração quebrar a autonomia de uma skill chamada diretamente.
+- Mirror em `.agents/skills/` divergir da fonte canônica em `.claude/skills/`.
 
+## Change Log
+
+| Data | Agente | Mudança |
+|---|---|---|
+| 2026-07-15 | @po | Contrato enriquecido, CHK-3 aplicado e story validada para execução sequencial na PUB-16 W2. |

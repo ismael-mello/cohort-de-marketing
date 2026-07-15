@@ -8,7 +8,7 @@
   "created": "2026-07-14",
   "depends_on": ["GATE-0"],
   "implementation_authorized": true,
-  "baseline_ref": "wave/gate-0/public-baseline@5897897",
+  "baseline_ref": "wave/gate-0/public-baseline@06e2b64",
   "waves": [
     {
       "wave_id": "W1",
@@ -23,12 +23,51 @@
     {
       "wave_id": "W2",
       "name": "Artefatos e readiness",
-      "status": "planned",
+      "status": "in_progress",
       "parallel_groups": [["16.W2.1"], ["16.W2.2"], ["16.W2.3"]],
       "stories": [
-        { "story_id": "16.W2.1", "status": "Draft", "depends_on": ["16.W1.1"] },
-        { "story_id": "16.W2.2", "status": "Draft", "depends_on": ["16.W1.1", "16.W2.1"] },
-        { "story_id": "16.W2.3", "status": "Draft", "depends_on": ["16.W2.1", "16.W2.2"] }
+        {
+          "story_id": "16.W2.1",
+          "title": "Descoberta segura de artefatos e proveniência",
+          "status": "Ready",
+          "task_mode": "CRIAR",
+          "deploy_type": "none",
+          "repo_target": "cohort-de-marketing",
+          "effort": "8h",
+          "executor": "@dev",
+          "quality_gate": "@architect",
+          "model": "sonnet",
+          "depends_on": ["16.W1.1"],
+          "consumes_artifacts_of": ["16.W1.1"]
+        },
+        {
+          "story_id": "16.W2.2",
+          "title": "Briefing, mapa e status orientados por catálogo",
+          "status": "Ready",
+          "task_mode": "REFATORAR",
+          "deploy_type": "none",
+          "repo_target": "cohort-de-marketing",
+          "effort": "8h",
+          "executor": "@dev",
+          "quality_gate": "@qa",
+          "model": "sonnet",
+          "depends_on": ["16.W1.1", "16.W2.1"],
+          "consumes_artifacts_of": ["16.W1.1", "16.W2.1"]
+        },
+        {
+          "story_id": "16.W2.3",
+          "title": "Próxima skill determinística",
+          "status": "Ready",
+          "task_mode": "CRIAR",
+          "deploy_type": "none",
+          "repo_target": "cohort-de-marketing",
+          "effort": "8h",
+          "executor": "@dev",
+          "quality_gate": "@sinkra-chief",
+          "model": "opus",
+          "depends_on": ["16.W2.1", "16.W2.2"],
+          "consumes_artifacts_of": ["16.W2.1", "16.W2.2"]
+        }
       ]
     },
     {

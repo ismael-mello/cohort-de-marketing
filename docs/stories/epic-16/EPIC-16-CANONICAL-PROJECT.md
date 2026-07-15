@@ -2,7 +2,9 @@
 
 ## Status
 
-Draft. Depende do Gate 0 e de validação por Product Owner, Architect e QA.
+In Progress. O Gate 0 autorizou implementação local na branch de integração;
+publicação, push e merge remoto continuam fora deste gate. A W1 está concluída
+e a W2 está validada para execução sequencial.
 
 ## Problema
 
@@ -58,10 +60,20 @@ helper CLI confinado; a UI importa/exporta contratos validados.
 | W2 | 16.W2.3 | Próxima skill determinística | 16.W2.1, 16.W2.2 |
 | W3 | 16.W3.1 | Gate público de contrato e distribuição | W1 e W2 |
 
+## Contrato de execução da W2
+
+```text
+16.W2.1 -> 16.W2.2 -> 16.W2.3
+```
+
+- Cada story inicia somente depois que a dependência anterior estiver `Done`.
+- O baseline da wave é o fan-in local da W1 em `06e2b64`.
+- A W3 permanece `Draft` até todas as stories da W2 passarem pelo quality gate
+  independente e pelo fan-in local.
+
 ## Gate de conclusão
 
 A epic só pode ficar `Done` quando um ProjectBrief v1 fizer round-trip sem perda,
 um projeto legado migrar de forma determinística, todas as superfícies indicarem
 o mesmo estado para as 31 skills e a distribuição pública passar em checkout
 limpo sem conteúdo privado.
-
