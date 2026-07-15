@@ -22,15 +22,19 @@ Data: 2026-07-15
   `scripts/lib/skill-readiness.mjs`, confirmando que os fixtures foram
   congelados antes da implementação.
 - Commit de implementação: `3eafe74`.
+- QG1: `FAIL 48`, com bloqueios de versionamento/refs, sanitização, CSP/Blob e
+  desempate fora do contrato.
+- Commit RED da remediação: `8f419cd`.
+- Commit de remediação: `e5e724b`.
 
 ## Provas dos acceptance criteria
 
 | AC | Prova |
 |---|---|
 | AC1 | Table tests cobrem os seis estados; estado desconhecido, prioridade ausente e política malformada lançam erro tipado e falham fechado. |
-| AC2 | Arrays e objetos reordenados produzem decisão serializada idêntica; prioridade numérica decide a rota, estado decide empate de prioridade e ID estável resolve empate final. |
-| AC3 | A decisão contém `nextSkill` ou `null`, requisitos atendidos/ausentes, resumo de ProjectBrief/ArtifactIndex e razão legível; teste adversarial confirma ausência de valores do cliente. |
-| AC4 | Golden matrix chama o mesmo motor para `comecar`, briefing, mapa e `status-funil`; Chromium confirma comando e razão idênticos nas distribuições raiz e Aula 3. |
+| AC2 | Arrays e objetos reordenados produzem decisão serializada idêntica; prioridade numérica decide a rota e o ID estável resolve sozinho o empate, inclusive entre estados diferentes. |
+| AC3 | A decisão contém `nextSkill` ou `null`, requisitos atendidos/ausentes, evidência categórica e razão legível. Versões, comandos, paths e listas fora dos `contractRefs` falham fechado sem ecoar o valor adversarial. |
+| AC4 | Golden matrix chama o mesmo motor para `comecar`, briefing, mapa e `status-funil`; Chromium sob CSP sem `blob:` confirma ESM same-origin, MIME correto, comando e razão idênticos nas distribuições raiz e Aula 3. |
 | AC5 | Fixtures de oferta própria e afiliado mudam a rota; `not_applicable` não muta o ArtifactIndex; as skills declaram explicitamente que invocação direta segue autônoma. |
 | AC6 | `cmp` confirma paridade byte a byte de `comecar` e `status-funil` entre `.claude/skills` e `.agents/skills`; as cópias HTML raiz/Aula 3 também são idênticas. |
 
@@ -52,10 +56,10 @@ node --test --test-concurrency=1 \
   scripts/project-artifact-index.test.mjs \
   data/contracts/fixtures/project-brief/project-brief-contract.test.mjs
 
-55 testes; 55 pass; 0 fail; 0 skipped.
+57 testes; 57 pass; 0 fail; 0 skipped.
 ```
 
-Essa matriz inclui oito testes novos do recomendador, browser golden das quatro
+Essa matriz inclui dez testes do recomendador, browser golden/CSP das quatro
 distribuições, contratos AJV, migração, ArtifactIndex confinado, catálogo/rules
 adversariais e surfaces data-driven.
 
@@ -105,6 +109,7 @@ cmp canônicos/mirrors: PASS
 node --check motor e testes: PASS
 jq empty data/skill-unlock-rules.json: PASS
 git diff --check: PASS
+npm audit --audit-level=high: 0 vulnerabilidades
 ```
 
 ## Decisões de implementação
@@ -117,6 +122,10 @@ git diff --check: PASS
   o motor não salta para uma skill tardia apenas porque ela tem menos campos
   ausentes.
 - O motor é puro, não usa tempo, DOM, ordem do filesystem nem valores
-  transitórios. O browser carrega o mesmo módulo por `fetch` e Blob URL para
-  manter compatibilidade com servidores estáticos que não conhecem MIME `.mjs`.
+  transitórios. `contractRefs` são materializados exclusivamente pelo
+  `skill-surface-contract.js`, e cada consumidor falha fechado se o contrato
+  compartilhado divergir.
+- O browser importa o mesmo `.mjs` diretamente por URL same-origin. Todos os
+  harnesses HTTP servem `.mjs` como `application/javascript`; a regressão roda
+  com `script-src 'self'` e sem `blob:` no diretivo CSP.
 - Não houve push, PR, merge ou deploy. O QG independente continua obrigatório.

@@ -33,6 +33,9 @@ touched_paths:
   - "data/skill-unlock-rules.json"
   - "scripts/lib/skill-readiness.mjs"
   - "scripts/lib/skill-readiness.test.mjs"
+  - "scripts/project-artifact-index.test.mjs"
+  - "scripts/project-brief-io.test.mjs"
+  - "scripts/skill-surface-data-driven.test.mjs"
   - "skill-surface-contract.js"
   - "briefing.html"
   - "mapa-skills.html"
@@ -49,6 +52,9 @@ affected_paths:
   - "data/skill-unlock-rules.json"
   - "scripts/lib/skill-readiness.mjs"
   - "scripts/lib/skill-readiness.test.mjs"
+  - "scripts/project-artifact-index.test.mjs"
+  - "scripts/project-brief-io.test.mjs"
+  - "scripts/skill-surface-data-driven.test.mjs"
   - "skill-surface-contract.js"
   - "briefing.html"
   - "mapa-skills.html"
@@ -96,6 +102,9 @@ affected_paths:
 - `data/skill-unlock-rules.json`
 - `scripts/lib/skill-readiness.mjs`
 - `scripts/lib/skill-readiness.test.mjs`
+- `scripts/project-artifact-index.test.mjs`
+- `scripts/project-brief-io.test.mjs`
+- `scripts/skill-surface-data-driven.test.mjs`
 - `skill-surface-contract.js`
 - `briefing.html`
 - `mapa-skills.html`
@@ -120,6 +129,9 @@ entram na allow-list para preservar essa invariável sem criar um segundo motor.
 O QG1 também exigiu que versões e identificadores válidos viessem do contrato
 público compartilhado; por isso `skill-surface-contract.js` entra na allow-list
 como única fonte dos `contractRefs` consumidos pelo motor.
+Os três harnesses HTTP existentes também entram na allow-list para servir
+`.mjs` como `application/javascript`, condição necessária ao import ESM
+same-origin exercitado nas regressões públicas.
 
 ## Dev Notes
 
@@ -154,6 +166,8 @@ repo_target: "cohort-de-marketing"
 - Baseline: `4c8a605`
 - RED: `cd276ac`
 - Implementação: `3eafe74`
+- RED da remediação QG1: `8f419cd`
+- Remediação QG1: `e5e724b`
 - Live PR coverage: nenhum PR aberto no repositório no início da execução.
 - Evidência detalhada: `docs/stories/epic-16/evidence/STORY-16.W2.3.md`
 - Entity proof: `PublicSkillSurfaces` passou de escolha por ordem implícita para
@@ -162,7 +176,7 @@ repo_target: "cohort-de-marketing"
   ArtifactIndex; expõe apenas nomes de requisitos e contagens sanitizadas.
 - Deploy: não aplicável (`deploy_type: none`).
 - Handoff: implementação concluída e pronta para QG independente de
-  `@sinkra-chief`; status permanece `InReview`, nunca `Done` pelo executor.
+  `@sinkra-chief` Round 2; status permanece `InReview`, nunca `Done` pelo executor.
 
 ## Stop Conditions
 
@@ -177,3 +191,5 @@ repo_target: "cohort-de-marketing"
 | 2026-07-15 | @po | Contrato enriquecido, CHK-3 aplicado e story validada para execução sequencial na PUB-16 W2. |
 | 2026-07-15 | @dev | Golden fixtures congeladas em RED no commit `cd276ac`. |
 | 2026-07-15 | @dev | Motor, prioridades declarativas, quatro superfícies, mirrors e browser smoke implementados no commit `3eafe74`; story movida para `InReview`. |
+| 2026-07-15 | @sinkra-chief | QG1 `FAIL 48`: versões/refs, sanitização, Blob sob CSP e desempate bloquearam o fechamento. |
+| 2026-07-15 | @dev | QG1 remediado em `8f419cd`/`e5e724b`: contractRefs do SOT, fail-closed estrito, ESM same-origin sob CSP e empate somente por ID; devolvido para QG2. |
