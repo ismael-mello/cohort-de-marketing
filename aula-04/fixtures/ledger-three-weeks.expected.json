@@ -10,15 +10,18 @@
       "revision": 1,
       "weeklyPanelId": "weekly-panel:acme:2026-07-13:r1",
       "schemaVersion": "1.0.0",
-      "canonicalHash": "61ec3dfd34610d3fadad75765daea9dc20a1e955b62dd53b9facb20d09b5856a",
+      "canonicalHash": "e5b89af7293f5c94dfde9538232790dbcd24314f9e626515a9bd31fe1f92b57c",
       "metrics": [
         {
           "name": "spend",
           "value": 210,
           "seal": "Real",
-          "source": "Gerenciador colado pelo operador em 2026-07-13",
+          "sourceRef": {
+            "kind": "platform-export",
+            "id": "2026-07-13"
+          },
           "attributionWindow": "7d_click_1d_view",
-          "premise": null,
+          "premiseRef": null,
           "confirmedByHuman": true,
           "cashConfirmed": true
         }
@@ -31,15 +34,18 @@
       "revision": 2,
       "weeklyPanelId": "weekly-panel:acme:2026-07-13:r2",
       "schemaVersion": "1.0.0",
-      "canonicalHash": "3baf31fa06398930766ace31e60c37de413645745b914143327f8b4527abd061",
+      "canonicalHash": "d12078f13989160ebe22339ca0e7961ed4b9e8e335b4fbee6d5071eaa4b6cee4",
       "metrics": [
         {
           "name": "spend",
           "value": 225,
           "seal": "Real",
-          "source": "Gerenciador colado pelo operador em 2026-07-20",
+          "sourceRef": {
+            "kind": "platform-export",
+            "id": "2026-07-20"
+          },
           "attributionWindow": "7d_click_1d_view",
-          "premise": null,
+          "premiseRef": null,
           "confirmedByHuman": true,
           "cashConfirmed": true
         }
@@ -52,15 +58,18 @@
       "revision": 1,
       "weeklyPanelId": "weekly-panel:acme:2026-07-20:r1",
       "schemaVersion": "1.0.0",
-      "canonicalHash": "cea51328f693b84ba25d0db50c32ce1e7492a2b82cdf6958e24f2dce6eba1890",
+      "canonicalHash": "a35688a9ce03571f024f552c97a7271cca372e51b29779dc2803560e12e0bae0",
       "metrics": [
         {
           "name": "cpa",
           "value": null,
           "seal": "nao_fornecido",
-          "source": "Operador nao forneceu a metrica.",
+          "sourceRef": {
+            "kind": "operator-declaration",
+            "id": "not-provided"
+          },
           "attributionWindow": null,
-          "premise": null,
+          "premiseRef": null,
           "confirmedByHuman": false,
           "cashConfirmed": false
         }
@@ -73,15 +82,21 @@
       "revision": 1,
       "weeklyPanelId": "weekly-panel:acme:2026-07-27:r1",
       "schemaVersion": "1.0.0",
-      "canonicalHash": "d88ee9d1726dba53b37a1a8ffd234d19e1de0b9ab88c224977cd325557e0ccbd",
+      "canonicalHash": "eee115d440c60a13c6265d526c567bdcb7a77ef7dd2fa6364239057af4eee6c4",
       "metrics": [
         {
           "name": "revenue",
           "value": 510,
           "seal": "Estimado",
-          "source": "Checkout exportado pelo operador em 2026-07-27",
+          "sourceRef": {
+            "kind": "checkout-export",
+            "id": "2026-07-27"
+          },
           "attributionWindow": "calendar_week",
-          "premise": "Taxas ainda nao conciliadas.",
+          "premiseRef": {
+            "kind": "assumption",
+            "id": "fees-pending-reconciliation"
+          },
           "confirmedByHuman": true,
           "cashConfirmed": false
         }

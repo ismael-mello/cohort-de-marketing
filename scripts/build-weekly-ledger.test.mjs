@@ -79,7 +79,7 @@ test('constroi ledger de tres semanas conforme schema e fixture congelada', asyn
   ]);
 });
 
-test('preserva proveniencia literal e ausencia explicita sem inferir ou normalizar', async (t) => {
+test('preserva proveniencia referencial e ausencia explicita sem inferir metricas', async (t) => {
   const ledgerPath = await withLedger(t);
   await run([fixture('ledger-three-weeks.input.jsonl'), ledgerPath]);
   const ledger = JSON.parse(await readFile(ledgerPath, 'utf8'));
@@ -88,9 +88,9 @@ test('preserva proveniencia literal e ausencia explicita sem inferir ou normaliz
     name: 'cpa',
     value: null,
     seal: 'nao_fornecido',
-    source: 'Operador nao forneceu a metrica.',
+    sourceRef: { kind: 'operator-declaration', id: 'not-provided' },
     attributionWindow: null,
-    premise: null,
+    premiseRef: null,
     confirmedByHuman: false,
     cashConfirmed: false,
   });
@@ -98,9 +98,9 @@ test('preserva proveniencia literal e ausencia explicita sem inferir ou normaliz
     name: 'revenue',
     value: 510,
     seal: 'Estimado',
-    source: 'Checkout exportado pelo operador em 2026-07-27',
+    sourceRef: { kind: 'checkout-export', id: '2026-07-27' },
     attributionWindow: 'calendar_week',
-    premise: 'Taxas ainda nao conciliadas.',
+    premiseRef: { kind: 'assumption', id: 'fees-pending-reconciliation' },
     confirmedByHuman: true,
     cashConfirmed: false,
   });
@@ -326,6 +326,24 @@ test('proveniencia livre com PII, decisao ou conteudo bruto falha fechado sem cr
     field: 'source',
   });
   await assert.rejects(readFile(ledgerPath));
+
+  const estimated = JSON.parse(
+    (await readFile(fixture('ledger-three-weeks.input.jsonl'), 'utf8')).trim().split('\n')[3],
+  );
+  estimated.metrics[0].premise = 'owner@example.invalid decidiu Manter verba usando documento bruto';
+  const premiseInput = path.join(path.dirname(ledgerPath), 'sensitive-premise.jsonl');
+  await writeFile(premiseInput, `${JSON.stringify(estimated)}\n`);
+  const premiseLedger = path.join(path.dirname(ledgerPath), 'premise-ledger.json');
+  const premiseResult = await run([premiseInput, premiseLedger]);
+  assert.equal(premiseResult.code, 1);
+  assert.deepEqual(JSON.parse(premiseResult.stdout), {
+    valid: false,
+    code: 'INVALID_METRIC_PROVENANCE_REFERENCE',
+    line: 1,
+    metricIndex: 0,
+    field: 'premise',
+  });
+  await assert.rejects(readFile(premiseLedger));
 });
 
 test('ledger projeta referencias estruturadas e nunca strings brutas de source ou premise', async (t) => {
