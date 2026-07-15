@@ -369,6 +369,11 @@
             <i class="iconoir-upload"></i>
             <span class="label-sm">Importar</span>
           </button>
+          <input id="import-artifact-index-file" type="file" accept="application/json,.json" hidden>
+          <button id="import-artifact-index" class="hub-btn" type="button">
+            <i class="iconoir-folder"></i>
+            <span class="label-sm">Artefatos</span>
+          </button>
           <button id="export-json-btn" class="hub-btn" type="button">
             <i class="iconoir-download"></i>
             <span class="label-sm">JSON</span>
@@ -445,6 +450,7 @@
     const LEGACY_STORAGE_KEY = 'cohort.projectBrief.current';
     const STORAGE_PREFIX = 'cohort.projectBrief.v1:';
     const ACTIVE_PROJECT_KEY = 'cohort.projectBrief.activeProject.v1';
+    const ARTIFACT_INDEX_SCHEMA_VERSION = 'artifact-index-v1';
     const SAVE_IDLE_MS = 650;
     const SENSITIVE_CREDENTIAL_KEY = /^(?:api[_-]?key|access[_-]?token|refresh[_-]?token|auth[_-]?token|token|client[_-]?secret|secret|password|senha)$/i;
     const SENSITIVE_ASSIGNMENT_SOURCE = '\\b(api[_-]?key|access[_-]?token|refresh[_-]?token|auth[_-]?token|token|client[_-]?secret|secret|password|senha)\\s*[:=]\\s*';
@@ -586,6 +592,7 @@
     let selectedSkill = null;
     let saveTimer = null;
     let currentDocument = null;
+    let artifactIndex = null;
     let importedIdentity = false;
     let state = {
       schemaVersion: '0.1.0',
@@ -1026,6 +1033,7 @@
           if (saved?.document?.schemaVersion === '1.0.0') {
             currentDocument = saved.document;
             state = { ...clone(currentDocument.data), artifacts: saved.artifacts || {} };
+            artifactIndex = saved.artifactIndex || null;
             activeStep = saved.ui?.activeStep || 'project';
             importedIdentity = true;
             return;
@@ -1062,6 +1070,7 @@
         const payload = {
           document: currentDocument,
           artifacts: clone(state.artifacts || {}),
+          artifactIndex: artifactIndex ? clone(artifactIndex) : null,
           ui: { activeStep }
         };
         try {
@@ -1267,6 +1276,10 @@
       });
       document.querySelectorAll('[data-artifact]').forEach((btn) => {
         btn.addEventListener('click', () => {
+          if (artifactIndex) {
+            showImportStatus('Estado derivado do ArtifactIndex. Confirme pelo helper CLI e reimporte o índice.', true);
+            return;
+          }
           state.artifacts[btn.dataset.artifact] = !state.artifacts[btn.dataset.artifact];
           scheduleSave();
           render();
@@ -1481,6 +1494,85 @@
       byId('import-status').style.color = error ? 'var(--rose)' : 'var(--teal)';
     }
 
+    function portableArtifactPath(value) {
+      return typeof value === 'string'
+        && value.length > 0
+        && !value.startsWith('/')
+        && !/^[A-Za-z]:[\\/]/.test(value)
+        && !value.includes('\\')
+        && !value.split('/').some((part) => !part || part === '.' || part === '..');
+    }
+
+    function exactObjectKeys(value, expected) {
+      return value && typeof value === 'object' && !Array.isArray(value)
+        && Object.keys(value).sort().join('|') === [...expected].sort().join('|');
+    }
+
+    function validateArtifactIndexDocument(candidate) {
+      if (!exactObjectKeys(candidate, ['schemaVersion', 'project', 'rules', 'entries', 'summary'])
+        || candidate.schemaVersion !== ARTIFACT_INDEX_SCHEMA_VERSION
+        || !exactObjectKeys(candidate.project, ['slug'])
+        || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(candidate.project.slug)
+        || !exactObjectKeys(candidate.rules, ['schemaVersion', 'confirmationRequiredByDefault'])
+        || typeof candidate.rules.schemaVersion !== 'string'
+        || candidate.rules.schemaVersion !== String(rules.schemaVersion)
+        || typeof candidate.rules.confirmationRequiredByDefault !== 'boolean'
+        || !Array.isArray(candidate.entries)
+        || !exactObjectKeys(candidate.summary, ['total', 'confirmed', 'pendingConfirmation'])) {
+        throw new Error('ArtifactIndex v1 inválido');
+      }
+      const identities = new Set();
+      for (const entry of candidate.entries) {
+        if (!exactObjectKeys(entry, ['artifactType', 'path', 'sha256', 'sizeBytes', 'origin', 'confirmationStatus', 'satisfiesCriticalRequirement'])
+          || !Object.hasOwn(rules.artifactGlobs || {}, entry.artifactType)
+          || !portableArtifactPath(entry.path)
+          || !/^[a-f0-9]{64}$/.test(entry.sha256)
+          || !Number.isSafeInteger(entry.sizeBytes) || entry.sizeBytes < 0
+          || !exactObjectKeys(entry.origin, ['kind', 'rule', 'patterns'])
+          || entry.origin.kind !== 'declared_glob'
+          || entry.origin.rule !== `artifactGlobs.${entry.artifactType}`
+          || !Array.isArray(entry.origin.patterns) || !entry.origin.patterns.length
+          || !entry.origin.patterns.every((pattern) => portableArtifactPath(pattern)
+            && rules.artifactGlobs[entry.artifactType].includes(pattern))
+          || !['confirmed', 'pending_confirmation'].includes(entry.confirmationStatus)
+          || entry.satisfiesCriticalRequirement !== (entry.confirmationStatus === 'confirmed')) {
+          throw new Error('Entrada inválida no ArtifactIndex v1');
+        }
+        const identity = `${entry.artifactType}:${entry.path}`;
+        if (identities.has(identity)) throw new Error('Entrada duplicada no ArtifactIndex v1');
+        identities.add(identity);
+      }
+      const confirmed = candidate.entries.filter((entry) => entry.confirmationStatus === 'confirmed').length;
+      if (candidate.summary.total !== candidate.entries.length
+        || candidate.summary.confirmed !== confirmed
+        || candidate.summary.pendingConfirmation !== candidate.entries.length - confirmed) {
+        throw new Error('Resumo inconsistente no ArtifactIndex v1');
+      }
+      return candidate;
+    }
+
+    async function importArtifactIndex(event) {
+      const file = event.target.files?.[0];
+      event.target.value = '';
+      if (!file) return;
+      try {
+        const candidate = validateArtifactIndexDocument(JSON.parse(await file.text()));
+        if (state.project?.slug && candidate.project.slug !== state.project.slug) {
+          throw new Error('o índice pertence a outro projeto');
+        }
+        artifactIndex = clone(candidate);
+        state.artifacts = Object.fromEntries(Object.keys(rules.artifactGlobs || {}).map((type) => [type, false]));
+        for (const entry of artifactIndex.entries) {
+          if (entry.confirmationStatus === 'confirmed') state.artifacts[entry.artifactType] = true;
+        }
+        scheduleSave();
+        render();
+        showImportStatus(`ArtifactIndex v1 importado: ${artifactIndex.summary.confirmed} confirmados, ${artifactIndex.summary.pendingConfirmation} pendentes`);
+      } catch (error) {
+        showImportStatus(`ArtifactIndex recusado: ${error.message}. Gere novamente pelo helper CLI.`, true);
+      }
+    }
+
     function activeStepFor(document) {
       return ({ 'aula-1': 'project', 'aula-2': 'offer', trafego: 'channels', dados: 'data', 'nao-sei': 'project' })[document.data?.project?.currentStage] || 'project';
     }
@@ -1507,6 +1599,7 @@
           throw new Error(`schemaVersion ${candidate?.schemaVersion || 'ausente'} não suportada`);
         }
         currentDocument = imported;
+        artifactIndex = null;
         state = { ...clone(imported.data), artifacts: {} };
         activeStep = activeStepFor(imported);
         importedIdentity = true;
@@ -1624,6 +1717,8 @@
       });
       byId('import-btn').addEventListener('click', () => byId('import-file').click());
       byId('import-file').addEventListener('change', importProjectBrief);
+      byId('import-artifact-index').addEventListener('click', () => byId('import-artifact-index-file').click());
+      byId('import-artifact-index-file').addEventListener('change', importArtifactIndex);
       byId('export-json-btn').addEventListener('click', exportJson);
       byId('export-markdown-btn').addEventListener('click', exportMarkdown);
       byId('copy-summary').addEventListener('click', copySummary);

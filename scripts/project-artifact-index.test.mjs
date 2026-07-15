@@ -1,8 +1,12 @@
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, readFile, rm, symlink, writeFile } from 'node:fs/promises';
+import { execFile } from 'node:child_process';
+import { mkdtemp, mkdir, readFile, rm, stat, symlink, writeFile } from 'node:fs/promises';
+import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
+import { promisify } from 'node:util';
+import { fileURLToPath } from 'node:url';
 
 import {
   ArtifactIndexError,
@@ -23,6 +27,7 @@ const RULES = {
     confirmationRequiredByDefault: true,
   },
 };
+const execFileAsync = promisify(execFile);
 
 async function fixture(t) {
   const sandbox = await mkdtemp(path.join(os.tmpdir(), 'artifact-index-'));
@@ -33,7 +38,7 @@ async function fixture(t) {
 }
 
 test('indexa apenas globs declarados, com metadados reproduziveis e sem bytes brutos', async (t) => {
-  const { projectRoot } = await fixture(t);
+  const { sandbox, projectRoot } = await fixture(t);
   await mkdir(path.join(projectRoot, 'assets', 'batch-1', 'final'), { recursive: true });
   await writeFile(path.join(projectRoot, 'project-brief.json'), '{"safe":true}\n');
   await writeFile(path.join(projectRoot, 'avatar.md'), 'conteudo privado do avatar\n');
@@ -53,7 +58,8 @@ test('indexa apenas globs declarados, com metadados reproduziveis e sem bytes br
   assert.ok(first.entries.every((entry) => Number.isInteger(entry.sizeBytes)));
   assert.ok(first.entries.every((entry) => entry.confirmationStatus === 'pending_confirmation'));
   assert.ok(first.entries.every((entry) => entry.satisfiesCriticalRequirement === false));
-  assert.doesNotMatch(JSON.stringify(first), /conteudo privado|fora-do-contrato|artifact-index-/);
+  assert.doesNotMatch(JSON.stringify(first), /conteudo privado|fora-do-contrato/);
+  assert.ok(!JSON.stringify(first).includes(sandbox));
   assert.deepEqual(validateArtifactIndex(first), first);
 });
 
@@ -159,12 +165,97 @@ test('confirmacao recusa path absoluto, traversal e entrada inexistente', async 
   }
 });
 
+test('CLI serializa somente o contrato validado e aceita confirmacao exata', async (t) => {
+  const { sandbox, projectRoot } = await fixture(t);
+  const rulesPath = path.join(sandbox, 'rules.json');
+  await writeFile(path.join(projectRoot, 'avatar.md'), 'avatar privado');
+  await writeFile(rulesPath, JSON.stringify(RULES));
+
+  const { stdout, stderr } = await execFileAsync(process.execPath, [
+    new URL('./project-artifact-index.mjs', import.meta.url).pathname,
+    '--project', projectRoot,
+    '--rules', rulesPath,
+    '--confirm', 'avatar:avatar.md',
+  ]);
+  const index = validateArtifactIndex(JSON.parse(stdout));
+  assert.equal(stderr, '');
+  assert.equal(index.entries[0].confirmationStatus, 'confirmed');
+  assert.ok(!stdout.includes(projectRoot));
+  assert.doesNotMatch(stdout, /avatar privado/);
+});
+
 test('briefings distribuidos permanecem identicos e declaram consumo de ArtifactIndex v1', async () => {
-  const root = new URL('../', import.meta.url);
   const primary = await readFile(new URL('../briefing.html', import.meta.url), 'utf8');
   const distributed = await readFile(new URL('../aula-03/materiais/briefing.html', import.meta.url), 'utf8');
   assert.equal(primary, distributed);
   assert.match(primary, /artifact-index-v1/);
   assert.match(primary, /import-artifact-index/);
-  assert.ok(root);
+});
+
+test('smoke HTTP importa o mesmo ArtifactIndex nas duas copias sem pageerror', { timeout: 45_000 }, async (t) => {
+  const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const server = http.createServer(async (request, response) => {
+    try {
+      const pathname = decodeURIComponent(new URL(request.url, 'http://local').pathname);
+      const relative = pathname === '/' ? 'briefing.html' : pathname.slice(1);
+      const candidate = path.resolve(webRoot, relative);
+      if (!candidate.startsWith(`${webRoot}${path.sep}`)) {
+        response.writeHead(403).end();
+        return;
+      }
+      const info = await stat(candidate);
+      const target = info.isDirectory() ? path.join(candidate, 'index.html') : candidate;
+      const bytes = await readFile(target);
+      const contentType = target.endsWith('.html')
+        ? 'text/html; charset=utf-8'
+        : target.endsWith('.json') ? 'application/json' : 'application/octet-stream';
+      response.writeHead(200, { 'content-type': contentType }).end(bytes);
+    } catch {
+      response.writeHead(404).end('not found');
+    }
+  });
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => new Promise((resolve) => server.close(resolve)));
+
+  const { chromium } = await import('playwright');
+  const browser = await chromium.launch({ headless: true });
+  t.after(() => browser.close());
+  const port = server.address().port;
+  const index = {
+    schemaVersion: 'artifact-index-v1',
+    project: { slug: 'demo-seguro' },
+    rules: { schemaVersion: '0.1.0', confirmationRequiredByDefault: true },
+    entries: [{
+      artifactType: 'avatar',
+      path: 'avatar.md',
+      sha256: 'a'.repeat(64),
+      sizeBytes: 12,
+      origin: { kind: 'declared_glob', rule: 'artifactGlobs.avatar', patterns: ['avatar.md'] },
+      confirmationStatus: 'confirmed',
+      satisfiesCriticalRequirement: true,
+    }],
+    summary: { total: 1, confirmed: 1, pendingConfirmation: 0 },
+  };
+
+  for (const pathname of ['/briefing.html', '/aula-03/materiais/briefing.html']) {
+    const page = await browser.newPage();
+    const errors = [];
+    page.on('pageerror', (error) => errors.push(error.message));
+    await page.route('**/*', (route) => {
+      const url = new URL(route.request().url());
+      if (url.hostname === '127.0.0.1') route.continue();
+      else route.abort();
+    });
+    await page.goto(`http://127.0.0.1:${port}${pathname}`, { waitUntil: 'load' });
+    await page.locator('#import-artifact-index-file').setInputFiles({
+      name: 'artifact-index.json',
+      mimeType: 'application/json',
+      buffer: Buffer.from(JSON.stringify(index)),
+    });
+    await page.waitForFunction(() => document.querySelector('#import-status')?.textContent?.includes('ArtifactIndex v1 importado'));
+    await page.locator('[data-step="review"]').click();
+    assert.equal(await page.locator('[data-artifact="avatar"] input').isChecked(), true);
+    assert.deepEqual(errors, []);
+    await page.close();
+  }
 });
