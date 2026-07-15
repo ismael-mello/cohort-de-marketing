@@ -3,7 +3,9 @@ import addFormats from 'ajv-formats';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { jsonHasUnsafeNumber, projectionDigestForEntry } from './build-weekly-ledger.mjs';
+import {
+  canonicalSerialize, jsonHasUnsafeNumber, projectionDigestForEntry,
+} from './build-weekly-ledger.mjs';
 
 const READING_VERSION = '1.0.0';
 const LEDGER_VERSION = '1.1.0';
@@ -108,7 +110,7 @@ function ledgerSemanticsAreValid(ledger) {
       metricNames.add(metric.name);
     }
   }
-  return JSON.stringify(ledger.index) === JSON.stringify(expectedIndex(ledger.entries));
+  return canonicalSerialize(ledger.index) === canonicalSerialize(expectedIndex(ledger.entries));
 }
 
 function projectMetric(metric) {

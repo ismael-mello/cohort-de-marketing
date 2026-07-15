@@ -500,8 +500,8 @@ async function createLedgerValidator() {
   return ajv.compile(schema);
 }
 
-function sameJson(left, right) {
-  return JSON.stringify(left) === JSON.stringify(right);
+function sameJsonStructure(left, right) {
+  return canonicalSerialize(left) === canonicalSerialize(right);
 }
 
 async function validateExistingLedger(ledger) {
@@ -518,7 +518,7 @@ async function validateExistingLedger(ledger) {
     if (projectionDigestForEntry(entry) !== entry.projectionDigest) return false;
     if (new Set(entry.metrics.map((metric) => metric.name)).size !== entry.metrics.length) return false;
   }
-  return sameJson(ledger.index, buildIndex(ledger.entries));
+  return sameJsonStructure(ledger.index, buildIndex(ledger.entries));
 }
 
 async function parseInput(inputPath) {
