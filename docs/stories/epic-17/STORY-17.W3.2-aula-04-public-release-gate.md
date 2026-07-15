@@ -1,5 +1,5 @@
 ---
-status: InProgress
+status: InReview
 story_id: "17.W3.2"
 title: "Gate público da Aula 4"
 epic: 17
@@ -8,7 +8,7 @@ parent_epic: "docs/stories/epic-17/EPIC-17-AULA-04-DATA-FOUNDATION.md"
 effort: 8h
 deploy_type: none
 appetite: 1d
-hill_phase: uphill
+hill_phase: downhill
 confidence_level: know-how
 involves_ui: false
 task_mode: VALIDAR
@@ -57,7 +57,7 @@ fan_in_paths:
 
 ## Status
 
-InProgress — contrato e arquitetura materializados; execução autorizada após `17.W3.1` atingir `Done` e ser integrada em `d571775`.
+InReview — gate técnico local aprovado; aguarda QG independente `@architect`.
 
 ## Story
 
@@ -76,13 +76,13 @@ InProgress — contrato e arquitetura materializados; execução autorizada apó
 
 ## Acceptance Criteria
 
-- [ ] AC1: A primeira linha do exemplo W3.1 é um `WeeklyPanel 1.0.0` válido e compatível com o handoff da Aula 3: fonte opaca rastreável, janela literal, selo, confirmação humana e decisão `pending` são preservados na entrada do ledger sem inferência.
-- [ ] AC2: Um cenário de uma semana com métrica `nao_fornecido` preserva `value: null`, janela nula e confirmação falsa no `WeeklyLedger 1.1.0`; fonte, janela ou confirmação inválida falha fechado nos gates W1/W2 existentes.
-- [ ] AC3: O walkthrough público executa as três semanas sintéticas e produz exatamente seis artefatos; a decisão histórica permanece `approved`, o novo diagnóstico permanece `pending`, inconclusivo e sem alavanca ou mutação.
-- [ ] AC4: Validators de Aula 4, catálogo, mirrors canônico/Codex e suites W1/W2/W3 passam sem alteração nos validators, contratos, skills ou exemplos integrados.
-- [ ] AC5: O gate de distribuição valida links relativos, ausência de integração externa e File List exata; o scan de privacidade não encontra segredo, credencial, email, telefone/CPF/CNPJ shaped, path absoluto de máquina, payload privado ou arquivo de projeto real nos materiais liberáveis e outputs.
-- [ ] AC6: `docs/releases/aula-04-data-loop-v1.md` registra contratos/versões, compatibilidade Aula 3, comandos, limitações e rollback local, sem declarar push, publicação ou deploy.
-- [ ] AC7: Evidência sanitizada registra checkout limpo, contagens, validators, mirrors, walkthrough, scans e os vereditos sequenciais `@po READY` e `@qa PASS técnico`; a story permanece `InReview` até QG independente `@architect`.
+- [x] AC1: A primeira linha do exemplo W3.1 é um `WeeklyPanel 1.0.0` válido e compatível com o handoff da Aula 3: fonte opaca rastreável, janela literal, selo, confirmação humana e decisão `pending` são preservados na entrada do ledger sem inferência.
+- [x] AC2: Um cenário de uma semana com métrica `nao_fornecido` preserva `value: null`, janela nula e confirmação falsa no `WeeklyLedger 1.1.0`; fonte, janela ou confirmação inválida falha fechado nos gates W1/W2 existentes.
+- [x] AC3: O walkthrough público executa as três semanas sintéticas e produz exatamente seis artefatos; a decisão histórica permanece `approved`, o novo diagnóstico permanece `pending`, inconclusivo e sem alavanca ou mutação.
+- [x] AC4: Validators de Aula 4, catálogo, mirrors canônico/Codex e suites W1/W2/W3 passam sem alteração nos validators, contratos, skills ou exemplos integrados.
+- [x] AC5: O gate de distribuição valida links relativos, ausência de integração externa e File List exata; o scan de privacidade não encontra segredo, credencial, email, telefone/CPF/CNPJ shaped, path absoluto de máquina, payload privado ou arquivo de projeto real nos materiais liberáveis e outputs.
+- [x] AC6: `docs/releases/aula-04-data-loop-v1.md` registra contratos/versões, compatibilidade Aula 3, comandos, limitações e rollback local, sem declarar push, publicação ou deploy.
+- [x] AC7: Evidência sanitizada registra checkout limpo, contagens, validators, mirrors, walkthrough, scans e os vereditos sequenciais `@po READY` e `@qa PASS técnico`; a story permanece `InReview` até QG independente `@architect`.
 
 ## Arquitetura do gate
 
@@ -143,11 +143,11 @@ Os componentes acima já estão implementados e aprovados. Esta story adiciona p
 - [x] Mapear arquitetura, opções, contratos consumidores, riscos, testes e File List antes do código; registrar `@po READY`.
 - [x] Congelar RED focal do release gate antes do GREEN.
 - [x] Reproduzir RED de catálogo: hashes de `leitor-de-metricas` e `diagnosticador` divergiam nos dois source-locks apesar de mirrors byte-idênticos.
-- [ ] Implementar o teste de gate e calibrar somente os quatro hashes autorizados nos locks canônico/mirror; validators/runtime/skills permanecem read-only.
-- [ ] Produzir release manifest e evidência sanitizada dentro da File List.
-- [ ] Executar focal, adjacente, full Node, checkout limpo, walkthrough, scans, `git diff --check` e auditoria da File List.
-- [ ] Registrar `@qa PASS técnico` e mover para `InReview`; `@architect` permanece independente.
-- [ ] Não editar `epic-17-state.json`; transição/fan-in é exclusiva de `@devops` após QG.
+- [x] Implementar o teste de gate e calibrar somente os quatro hashes autorizados nos locks canônico/mirror; validators/runtime/skills permanecem read-only.
+- [x] Produzir release manifest e evidência sanitizada dentro da File List.
+- [x] Executar focal, adjacente, full Node, checkout limpo, walkthrough, scans, `git diff --check` e auditoria da File List.
+- [x] Registrar `@qa PASS técnico` e mover para `InReview`; `@architect` permanece independente.
+- [x] Não editar `epic-17-state.json`; transição/fan-in é exclusiva de `@devops` após QG.
 
 ## File List
 
@@ -208,7 +208,10 @@ Esta é a allowlist exata do executor. Validators, schemas, conteúdo das skills
 ### QA executor
 
 - Reviewer: `@qa`
-- Veredito: `PENDING`.
+- Veredito: `PASS técnico`.
+- Focal: `4/4`; Aula 4: `84/84`; full Node: `166/166`.
+- Validators: `7/7`; mirrors explícitos: `3/3`; checkout e privacy scan: `PASS`.
+- Implementação avaliada: `01059ba`.
 
 ### Architect quality gate
 
@@ -222,3 +225,46 @@ Esta é a allowlist exata do executor. Validators, schemas, conteúdo das skills
 | 2026-07-15 | @po | Preflight confirmado, arquitetura/allowlist materializadas e story movida de `Ready` para `InProgress`. |
 | 2026-07-15 | @qa | RED do catálogo encontrou somente dois hashes obsoletos; skills canônico/mirror permanecem byte-idênticos. |
 | 2026-07-15 | @po | Expansão mínima autorizada e rematerializada para calibrar somente os dois source-locks espelhados. |
+| 2026-07-15 | @qa | Gate técnico aprovado: focal 4/4, Aula 4 84/84, full Node 166/166, validators/mirrors/scans verdes; story movida para `InReview`. |
+
+## QA Results
+
+```yaml
+executor_gate:
+  reviewer: "@qa"
+  verdict: "PASS técnico"
+  implementation_head: "01059ba"
+  focal: "4/4"
+  aula_04: "84/84"
+  full_node: "166/166"
+  validators: "7/7"
+  mirrors: "3/3"
+  clean_checkout: "PASS"
+  privacy_distribution: "PASS"
+quality_gate:
+  reviewer: "@architect"
+  verdict: "PENDING"
+  independence_required: true
+```
+
+## Dev Agent Record
+
+```yaml
+agent_model: "GPT-5 Codex"
+completion_notes:
+  - "Baseline d571775, W3.1 Done, autorização e PR coverage vazio confirmados."
+  - "Contrato completo/PO READY materializados em 1402b2f antes do RED focal."
+  - "RED inicial falhou por teste ausente; GREEN parcial revelou somente source-lock drift de W2.1/W2.2."
+  - "Allowlist expandida em 3dd123c antes de calibrar os dois locks espelhados; skills e validator permaneceram imutáveis."
+  - "GREEN 01059ba entregou quatro grupos executáveis e catálogo 31 skills/41 edges."
+  - "Focal 4/4, Aula 4 84/84, full Node 166/166, sete validators, três mirrors, checkout e scans passaram."
+  - "Story InReview; Architect QG, epic-state, fan-in, push, PR, publicação e deploy não executados."
+file_list:
+  - "scripts/aula-04-release-gate.test.mjs"
+  - ".claude/skills/_shared/squad-trafego/source-lock.json"
+  - ".agents/skills/_shared/squad-trafego/source-lock.json"
+  - "docs/releases/aula-04-data-loop-v1.md"
+  - "docs/stories/epic-17/STORY-17.W3.2-aula-04-public-release-gate.md"
+  - "docs/stories/epic-17/evidence/STORY-17.W3.2.md"
+  - "docs/stories/epic-17/EPIC-17-EVIDENCE.md"
+```

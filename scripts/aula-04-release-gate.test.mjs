@@ -278,6 +278,8 @@ test('validators, catálogo, mirrors e distribuição pública passam sem mutar 
     path.join(ROOT, 'aula-04/GUIA-DO-ALUNO.html'),
     path.join(ROOT, 'aula-04/templates'),
     EXAMPLE,
+    path.join(ROOT, 'docs/releases/aula-04-data-loop-v1.md'),
+    path.join(ROOT, 'docs/stories/epic-17/evidence/STORY-17.W3.2.md'),
   ];
   const releaseFiles = (await Promise.all(releaseTargets.map(collectFiles))).flat();
   for (const file of releaseFiles) assertSanitized(await readFile(file, 'utf8'), path.relative(ROOT, file));
