@@ -1,0 +1,934 @@
+{
+  "schemaVersion": "2.0.0",
+  "artifact": "ads-creative-factory",
+  "publication": {
+    "status": "released",
+    "verdict": "PASS",
+    "reason": "All allow-listed files have verified licenses and redistribution clearance."
+  },
+  "allowList": [
+    "LICENSE",
+    "SKILL.md",
+    "THIRD_PARTY_NOTICES.md",
+    "data/archetypes.yaml",
+    "data/gate-profiles.yaml",
+    "data/hooks-library.yaml",
+    "data/ugc-scenes.yaml",
+    "data/variation-axes.yaml",
+    "fonts/InstrumentSerif-Italic.ttf",
+    "fonts/InstrumentSerif-Regular.ttf",
+    "fonts/InterTight.ttf",
+    "fonts/JetBrainsMono.ttf",
+    "licenses/OFL-1.1.txt",
+    "requirements.txt",
+    "schemas/brand-pack.v1.schema.json",
+    "schemas/creative-extension-pack.v1.schema.json",
+    "schemas/persona-pack.v1.schema.json",
+    "scripts/alib.py",
+    "scripts/anchors.py",
+    "scripts/archetype_render.py",
+    "scripts/build_brand_pack.py",
+    "scripts/build_persona_pack.py",
+    "scripts/carousel.py",
+    "scripts/carousel_copy_adapter.py",
+    "scripts/catalog_authoring.py",
+    "scripts/catalog_cli.py",
+    "scripts/catalog_loader.py",
+    "scripts/collect_finals.py",
+    "scripts/compose.py",
+    "scripts/didactic.py",
+    "scripts/doctor.py",
+    "scripts/factory.py",
+    "scripts/finish.py",
+    "scripts/formats.py",
+    "scripts/formats_hybrid.py",
+    "scripts/gate.py",
+    "scripts/generate.py",
+    "scripts/pack_loader.py",
+    "scripts/person.py",
+    "scripts/prepare_assets.py",
+    "scripts/refine.py",
+    "scripts/review.py",
+    "scripts/saturation.py",
+    "scripts/typeset.py",
+    "scripts/ugc.py",
+    "scripts/variation.py"
+  ],
+  "files": [
+    {
+      "path": "LICENSE",
+      "package": "public",
+      "kind": "license",
+      "origin": {
+        "repository": "private-upstream",
+        "commit": "747e9fe232d729157e0c172feb16677bb4f08ce5"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 1069,
+      "sha256": "28ede1e7bf2097f76b17f52e306f13730da02b3ba529cf7711b3bd026a1a29d7"
+    },
+    {
+      "path": "SKILL.md",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "story-15.W1.1"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for the 2.2.1 transparency hotfix."
+      },
+      "bytes": 11202,
+      "sha256": "3c2f0a4108424712ce65642214ab918c3dd8ea5dbb1cef5da0f2f3064d30a249"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "package": "public",
+      "kind": "notice",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 2340,
+      "sha256": "d4bef456ff5d0c1de1b1051210f8e743c2c0534f9814c9a125bf0d88c7833681"
+    },
+    {
+      "path": "data/archetypes.yaml",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 991,
+      "sha256": "73945fb958e32850940e48d85d73ee9d5be497afa95461d2829578257f9e1c53"
+    },
+    {
+      "path": "data/gate-profiles.yaml",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 826,
+      "sha256": "50eda6ed2b10bb16d53a4f44717cb6c152c44bfc8ef435f2ca77033cd03f2a0b"
+    },
+    {
+      "path": "data/hooks-library.yaml",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 4952,
+      "sha256": "5a06f6a2b3b594ca13dd36ab6452aea3047928924be1c59b9517a6f473361b46"
+    },
+    {
+      "path": "data/ugc-scenes.yaml",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 2086,
+      "sha256": "ab3e729344f50f29600349605ce7c1377a772adb6de68777283f1fb72dece536"
+    },
+    {
+      "path": "data/variation-axes.yaml",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 5909,
+      "sha256": "1c5af06f3543b12dcc0b797de7ead1c739285af8a64df91ab6a5934d94e80efa"
+    },
+    {
+      "path": "fonts/InstrumentSerif-Italic.ttf",
+      "package": "public",
+      "kind": "binary",
+      "origin": {
+        "repository": "Instrument/instrument-serif",
+        "commit": "40e3baa2b74836077f1fe1430089143f5b4dba1c"
+      },
+      "license": {
+        "spdx": "OFL-1.1",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Copyright notice and complete OFL-1.1 text are bundled."
+      },
+      "bytes": 71592,
+      "sha256": "08939b8bdf534afec24ae0ef5e03f948940cd9a8fe08e7fecbad040e62327385"
+    },
+    {
+      "path": "fonts/InstrumentSerif-Regular.ttf",
+      "package": "public",
+      "kind": "binary",
+      "origin": {
+        "repository": "Instrument/instrument-serif",
+        "commit": "40e3baa2b74836077f1fe1430089143f5b4dba1c"
+      },
+      "license": {
+        "spdx": "OFL-1.1",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Copyright notice and complete OFL-1.1 text are bundled."
+      },
+      "bytes": 70012,
+      "sha256": "498efd461f6ddfcb7a111bf9a565709d2085d48201d501ead960d93e84ffbb88"
+    },
+    {
+      "path": "fonts/InterTight.ttf",
+      "package": "public",
+      "kind": "binary",
+      "origin": {
+        "repository": "rsms/inter-tight",
+        "commit": "402edb741211e70993dbd4648e36c4cd9b7f0f69"
+      },
+      "license": {
+        "spdx": "OFL-1.1",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Copyright notice and complete OFL-1.1 text are bundled."
+      },
+      "bytes": 581588,
+      "sha256": "b81b73dcb64df3c230cabade7df6c5773bf863233f24c9ee51087519f1f88b6f"
+    },
+    {
+      "path": "fonts/JetBrainsMono.ttf",
+      "package": "public",
+      "kind": "binary",
+      "origin": {
+        "repository": "JetBrains/JetBrainsMono",
+        "commit": "61cf0cedc2d9d29efcab968e97707d6899133e68"
+      },
+      "license": {
+        "spdx": "OFL-1.1",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Copyright notice and complete OFL-1.1 text are bundled."
+      },
+      "bytes": 187208,
+      "sha256": "48715a42ec242c21e9f02692891e147d022299a52e48d5e413e1a942193ffeda"
+    },
+    {
+      "path": "licenses/OFL-1.1.txt",
+      "package": "public",
+      "kind": "license",
+      "origin": {
+        "repository": "SIL Open Font License",
+        "commit": "1.1-2007-02-26"
+      },
+      "license": {
+        "spdx": "OFL-1.1",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Canonical license text bundled for the font software."
+      },
+      "bytes": 4128,
+      "sha256": "ebc109078c06f79af74cf2b27454c262830d12a65749f0e2bf25d1ac1db7a02a"
+    },
+    {
+      "path": "requirements.txt",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 43,
+      "sha256": "5d03f62f13c3072ff60dc60f5c550829c822037a60034c68d64fde6a810094ca"
+    },
+    {
+      "path": "schemas/brand-pack.v1.schema.json",
+      "package": "public",
+      "kind": "schema",
+      "origin": {
+        "repository": "private-upstream",
+        "commit": "epic-12"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 4669,
+      "sha256": "269bd1924a7ce1c02d27fada8e375979d458f6164d39eaf205992b6353c98ef0"
+    },
+    {
+      "path": "schemas/creative-extension-pack.v1.schema.json",
+      "package": "public",
+      "kind": "schema",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 8414,
+      "sha256": "f44658b240de6fc2754bd888178f50be297497c6f195be54b17a6e7765acc1d3"
+    },
+    {
+      "path": "schemas/persona-pack.v1.schema.json",
+      "package": "public",
+      "kind": "schema",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 3489,
+      "sha256": "83732bc3a0477072cf4e5ef6608d7e9c4ffb17fcc6aa727e9546d63db6a264cb"
+    },
+    {
+      "path": "scripts/alib.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "story-15.W1.1"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for the 2.2.1 transparency hotfix."
+      },
+      "bytes": 22631,
+      "sha256": "e4299896c8a3af4c693fe8bf10c4f554261e35542f07388659e40a746ddf4f6e"
+    },
+    {
+      "path": "scripts/anchors.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 4043,
+      "sha256": "faac5ea2dc3844296d945c87374c4c6bb9c943dc1d7159caa6b0c96f4286f289"
+    },
+    {
+      "path": "scripts/archetype_render.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 11190,
+      "sha256": "94b1e8a3593529fcc209c3d29b03c38156906a7389575bfcbba72a103030b213"
+    },
+    {
+      "path": "scripts/build_brand_pack.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 16793,
+      "sha256": "5a84f0287920581a3bc9d35ee0e40e342cd3c5e20b9771b16f42daa5b30285d6"
+    },
+    {
+      "path": "scripts/build_persona_pack.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 8500,
+      "sha256": "114ac085d7c2e7646f924a98a2d09623640c03ef32584d7f9397120280c2c563"
+    },
+    {
+      "path": "scripts/carousel.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 50113,
+      "sha256": "6aececf77e98a97241b3bd0e6d73b4bcf2387139c6861116ad382f1ec84204ef"
+    },
+    {
+      "path": "scripts/carousel_copy_adapter.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 23078,
+      "sha256": "df944d551331946be95f4e368df553cfd58c45ce6ea2788777f535752424a92f"
+    },
+    {
+      "path": "scripts/catalog_authoring.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 9366,
+      "sha256": "d4e6813c41c034dbe3781e2b7d17088ce670d06fced9f34d3bb090b0bc86dcab"
+    },
+    {
+      "path": "scripts/catalog_cli.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 21783,
+      "sha256": "cf41e6792f3740038132abc05107884e331dcf99c82058610e10825000be2569"
+    },
+    {
+      "path": "scripts/catalog_loader.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "story-15.W1.1"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for the 2.2.1 transparency hotfix."
+      },
+      "bytes": 12101,
+      "sha256": "a578e5dd065f6520e84852e687488fcc072f2362856d28c79c5bd1d022051f15"
+    },
+    {
+      "path": "scripts/collect_finals.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 4540,
+      "sha256": "c4f34d367d71145915bff22f1fc28a9f1238d3cc4e3259b5c1f3fcb06b8a9882"
+    },
+    {
+      "path": "scripts/compose.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 3856,
+      "sha256": "6e4cf92a780e2c3307939c34c6490a8bcfcbac3a1fbbee7ed7f5af909b056965"
+    },
+    {
+      "path": "scripts/didactic.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 7554,
+      "sha256": "ee7053a68f0a15ba8e0350af45ef7fced392d937f656f0c5f17a3ffd1fa1c68f"
+    },
+    {
+      "path": "scripts/doctor.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 8651,
+      "sha256": "7238ec1d929d457144fae936c6b722f42da10989907259461793bd8e287cf955"
+    },
+    {
+      "path": "scripts/factory.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 25795,
+      "sha256": "bf80d497a8c1e209469440a4e3b36080551c335426afa817ccf5fad468513adb"
+    },
+    {
+      "path": "scripts/finish.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 5012,
+      "sha256": "f9a9bf7fe2fe949f7cca3b754fad51b07acdc56503830fd136fd5000e465b4bd"
+    },
+    {
+      "path": "scripts/formats.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 5496,
+      "sha256": "9517759aa30e26b93e0e1e035a92ac1a008b16f0bc3e047591d19d3122fb5d37"
+    },
+    {
+      "path": "scripts/formats_hybrid.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 4004,
+      "sha256": "998001058b28c728b422d7614134b9e1651f2ef027b48f2ba1913b9bb5b21b53"
+    },
+    {
+      "path": "scripts/gate.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 9234,
+      "sha256": "a998a82c442881c120ae69d007aa7b2a75e80d5735fc239295c315d10ed4b2f1"
+    },
+    {
+      "path": "scripts/generate.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 6597,
+      "sha256": "caaddea2a22160c21bf0f2797489adf978dba8eb14cb8b39cc275f9e09a35e7c"
+    },
+    {
+      "path": "scripts/pack_loader.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 18635,
+      "sha256": "28dc75c9efa51a62a82f2c7e045bfeb322f5dae08d2d39942c99a836424cb15e"
+    },
+    {
+      "path": "scripts/person.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 6145,
+      "sha256": "5d85ee51028ae52dc0fb079968be9c85b1d3071eba14a7af107d1fd32b4683f7"
+    },
+    {
+      "path": "scripts/prepare_assets.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 3569,
+      "sha256": "c906e1502c9a74c983bbf9e45e5b73e4a7f43ecfdbb0002ac3a1c267294db4b3"
+    },
+    {
+      "path": "scripts/refine.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 4301,
+      "sha256": "2472ba2b1a8467007152d39859ce240bdbf6a12b84ba2c87157961cb30b1ab98"
+    },
+    {
+      "path": "scripts/review.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 4811,
+      "sha256": "10aab77c3b3dfc246d29ec1bc49e463de37b158a37e920e9812f58179f91c12b"
+    },
+    {
+      "path": "scripts/saturation.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 2791,
+      "sha256": "379f79eaad6a00492d46fa3810f6e56c1e138d9c7f60aa2224721c8d94d68174"
+    },
+    {
+      "path": "scripts/typeset.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 83710,
+      "sha256": "96f4c29fa7a7b2a87b9629b0993cd3bb7599ece6557f2aca1ab07167e950ca80"
+    },
+    {
+      "path": "scripts/ugc.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "sinkra-hub",
+        "commit": "2af6ec0102c8b20ac9397c919aa71c33c648bff8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Accountable authorized MIT redistribution in Story 13.W1.2."
+      },
+      "bytes": 5288,
+      "sha256": "c1fb6e3c0dd29e77bb51e9438bdfacdd255aa8fcd83bd983ffe8900dd7b35593"
+    },
+    {
+      "path": "scripts/variation.py",
+      "package": "public",
+      "kind": "source",
+      "origin": {
+        "repository": "cohort-de-marketing",
+        "commit": "epic-14"
+      },
+      "license": {
+        "spdx": "MIT",
+        "status": "verified"
+      },
+      "redistribution": {
+        "status": "cleared",
+        "reason": "Authored in the public repository and reviewed for Epic 14."
+      },
+      "bytes": 6470,
+      "sha256": "04acd93f386aab960bf712257310faf2488c959704425d806225b9cc94504bc0"
+    }
+  ],
+  "releaseVersion": "2.2.1"
+}

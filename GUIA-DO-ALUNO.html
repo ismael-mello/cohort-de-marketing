@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia do Aluno — Cohort de Marketing · Aulas 1 e 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;600;700&family=Rajdhani:wght@600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --background: #0A0A0A;
+    --card: #0F0F0F;
+    --raised: #262626;
+    --border: #262626;
+    --foreground: #E5E5E5;
+    --muted-foreground: #999999;
+    --primary: #C9B298;
+    --primary-light: #D9CBB9;
+    --primary-deep: #8D7556;
+    --primary-foreground: #1A1A1A;
+    --status-success: #23E169;
+    --font-body: 'Source Serif 4', Georgia, serif;
+    --font-ui: Inter, 'Source Sans Pro', system-ui, sans-serif;
+    --font-display: Rajdhani, Inter, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body);
+    font-size: 19px;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+  :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px; width: 0;
+    background: var(--primary);
+    box-shadow: 0 0 15px rgba(201, 178, 152, 0.6);
+    z-index: 100;
+  }
+
+  .wrap { max-width: 920px; margin: 0 auto; padding: 64px 32px 96px; }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 32px 0 56px;
+    border-bottom: 1px solid var(--raised);
+    margin-bottom: 56px;
+  }
+  .hero .kicker {
+    display: inline-block;
+    font-family: var(--font-ui); font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--primary);
+    padding: 6px 16px;
+    border: 1px solid var(--primary-deep);
+    border-radius: 9999px;
+    margin-bottom: 32px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+  }
+  .hero h1 em {
+    font-family: var(--font-body);
+    font-style: normal;
+    font-weight: 400;
+    color: var(--primary);
+  }
+  .hero .subtitle {
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    color: var(--muted-foreground);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 0 0 24px;
+  }
+  .hero .lead {
+    font-family: var(--font-body);
+    font-style: normal;
+    font-size: 1.3rem;
+    color: var(--foreground);
+    max-width: 65ch;
+    margin: 0 auto;
+  }
+
+  /* Sumário */
+  .toc {
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 0.75rem;
+    padding: 20px 24px;
+    margin: 48px auto;
+    max-width: 720px;
+  }
+  .toc-label {
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    margin-bottom: 12px;
+  }
+  .toc ol {
+    margin: 0;
+    padding-left: 20px;
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    line-height: 1.9;
+  }
+  .toc ol li { color: var(--muted-foreground); }
+  .toc ol li a {
+    color: var(--foreground);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .toc ol li a:hover { color: var(--primary); }
+  .toc ol li .toc-sub {
+    font-size: 0.82rem;
+    color: var(--muted-foreground);
+  }
+
+  /* Section */
+  section {
+    margin: 80px 0;
+    scroll-margin-top: 32px;
+  }
+  .section-num {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  section h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0 0 24px;
+  }
+  section h2 em {
+    font-family: var(--font-body);
+    font-style: normal;
+    font-weight: 400;
+    color: var(--primary);
+  }
+  section h3 {
+    font-family: var(--font-ui);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 32px 0 12px;
+  }
+  section p { margin: 16px 0; }
+  section strong { color: var(--primary-light); font-weight: 600; }
+  section code {
+    font-family: var(--font-mono);
+    background: var(--raised);
+    color: var(--primary-light);
+    padding: 2px 8px;
+    border-radius: 0.25rem;
+    font-size: 0.85em;
+  }
+
+  /* Steps */
+  .step {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 24px;
+    margin: 32px 0;
+    padding: 24px;
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 1rem;
+    transition: border-color 0.2s ease;
+  }
+  .step:hover { border-color: var(--primary-deep); }
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .step-content h3 { margin-top: 0; margin-bottom: 8px; }
+  .step-content p {
+    margin: 8px 0;
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    color: var(--muted-foreground);
+  }
+  .step-content code {
+    font-family: var(--font-mono);
+    background: var(--raised);
+    color: var(--primary-light);
+    padding: 2px 8px;
+    border-radius: 0.25rem;
+    font-size: 0.85em;
+  }
+
+  /* Command */
+  .command-block {
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 0.75rem;
+    padding: 20px 24px;
+    margin: 16px 0;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--foreground);
+    overflow-x: auto;
+    position: relative;
+  }
+  .command-block::before {
+    content: "$";
+    color: var(--primary);
+    margin-right: 12px;
+    font-weight: 700;
+  }
+  .command-block.slash::before { content: "/"; }
+  .command-block.plain::before { content: ""; margin-right: 0; }
+
+  /* Cards de skill */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 32px 0;
+  }
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-left: 2px solid var(--primary);
+    border-radius: 0.75rem;
+    padding: 24px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .skill-card:hover { transform: translateY(-2px); border-color: var(--primary-light); }
+  .skill-card .skill-name {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .skill-card .skill-what {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    color: var(--foreground);
+    margin: 0 0 12px;
+    line-height: 1.5;
+  }
+  .skill-card .skill-what code { font-family: var(--font-mono); font-size: 0.85em; }
+  .skill-card .skill-out {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    color: var(--muted-foreground);
+    padding-top: 12px;
+    border-top: 1px solid var(--raised);
+    margin: 0;
+  }
+  .skill-card .skill-out strong { color: var(--primary); font-weight: 600; }
+  .skill-card .skill-out code { font-family: var(--font-mono); }
+  .skill-card .skill-out a { color: inherit; }
+  .skill-card.alt { border-left-color: var(--raised); opacity: 0.85; }
+  .skill-card.alt:hover { border-left-color: var(--primary-deep); opacity: 1; }
+
+  /* Blocos */
+  .bloco {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 28px;
+    margin: 24px 0;
+  }
+  .bloco .bloco-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--raised);
+  }
+  .bloco .bloco-num {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .bloco .bloco-time {
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    color: var(--muted-foreground);
+    letter-spacing: 0.06em;
+  }
+  .bloco h3 { margin: 0 0 16px; font-size: 1.4rem; }
+  .bloco .bloco-action {
+    background: rgba(201, 178, 152, 0.06);
+    border: 1px solid var(--primary-deep);
+    border-radius: 0.5rem;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+  .bloco .bloco-result {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    color: var(--muted-foreground);
+    margin: 12px 0 0;
+  }
+  .bloco .bloco-result strong { color: var(--primary); }
+  .bloco .bloco-result code { font-family: var(--font-mono); }
+
+  /* Skill passo (Aula 1) */
+  .skill-step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--primary);
+    border-radius: 0.75rem;
+    padding: 28px;
+    margin: 28px 0;
+  }
+  .skill-step .ss-tag {
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 6px;
+  }
+  .skill-step h3 {
+    margin: 0 0 8px;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--foreground);
+  }
+  .skill-step h3 code { font-family: var(--font-mono); color: var(--primary); font-size: 1.3rem; background: none; padding: 0; }
+  .skill-step .ss-what {
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    color: var(--muted-foreground);
+    margin: 0 0 16px;
+  }
+  .skill-step ul, .skill-step ol {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--muted-foreground);
+    padding-left: 20px;
+    margin: 8px 0;
+  }
+  .skill-step .ss-files { list-style: none; padding: 0; margin: 8px 0; line-height: 1.9; }
+  .skill-step .ss-files code { font-family: var(--font-mono); color: var(--primary); }
+  .skill-step .ss-label { font-family: var(--font-ui); font-weight: 600; color: var(--foreground); font-size: 0.95rem; margin: 20px 0 6px; }
+  .skill-step .ss-gate { color: var(--status-success); }
+
+  /* Regras */
+  .rule {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 20px;
+    background: var(--card);
+    border-left: 2px solid var(--primary);
+    border-radius: 0.5rem;
+    margin: 16px 0;
+  }
+  .rule-icon {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .rule h3 {
+    margin: 0 0 4px;
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  .rule p {
+    margin: 4px 0 0;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    color: var(--muted-foreground);
+    line-height: 1.5;
+  }
+  .rule code { font-family: var(--font-mono); }
+
+  /* Mapa do cohort */
+  .cohort-map {
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 1rem;
+    padding: 28px;
+    margin: 32px 0;
+  }
+  .cohort-map .aula {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    border-radius: 0.5rem;
+    margin: 6px 0;
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    transition: background 0.2s ease;
+  }
+  .cohort-map .aula.atual {
+    background: rgba(201, 178, 152, 0.08);
+    border: 1px solid var(--primary-deep);
+  }
+  .cohort-map .aula-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--primary);
+    min-width: 60px;
+  }
+  .cohort-map .aula-name { flex: 1; color: var(--foreground); font-weight: 600; }
+  .cohort-map .aula-status {
+    font-size: 0.7rem;
+    color: var(--muted-foreground);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .cohort-map .aula.atual .aula-status { color: var(--primary); font-weight: 700; }
+
+  /* Convenção */
+  .convention-box {
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 1rem;
+    padding: 28px;
+    margin: 32px 0;
+  }
+  .convention-box h3 { margin: 0 0 16px; font-family: var(--font-ui); font-size: 1.1rem; font-weight: 700; }
+  .convention-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 12px 24px;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    margin: 8px 0;
+    align-items: start;
+  }
+  .convention-row .cr-label {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--primary);
+    padding-top: 2px;
+  }
+  .convention-row .cr-desc { color: var(--muted-foreground); line-height: 1.5; }
+  .convention-row .cr-desc code { font-family: var(--font-mono); font-size: 0.9em; }
+
+  /* Tabela */
+  .skill-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    margin: 24px 0;
+  }
+  .skill-table th {
+    text-align: left;
+    padding: 10px 16px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    border-bottom: 1px solid var(--raised);
+  }
+  .skill-table td {
+    padding: 12px 16px;
+    vertical-align: top;
+    border-bottom: 1px solid rgba(38, 38, 38, 0.5);
+    color: var(--muted-foreground);
+    line-height: 1.5;
+  }
+  .skill-table td:first-child {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+  .skill-table td strong { color: var(--foreground); font-weight: 600; }
+  .skill-table td code { font-family: var(--font-mono); }
+  .skill-table tr:last-child td { border-bottom: none; }
+
+  /* Alerta */
+  .alerta {
+    background: rgba(201, 178, 152, 0.07);
+    border: 1px solid var(--primary-deep);
+    border-radius: 0.75rem;
+    padding: 20px 24px;
+    margin: 24px 0;
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+  }
+  .alerta-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+  .alerta p { margin: 8px 0 0; color: var(--foreground); line-height: 1.6; }
+  .alerta code { font-family: var(--font-mono); background: var(--raised); color: var(--primary-light); padding: 2px 8px; border-radius: 0.25rem; font-size: 0.85em; }
+  .alerta.warn { border-color: #d97706; background: rgba(217, 119, 6, 0.08); }
+  .alerta.warn .alerta-label { color: #f0a34a; }
+
+  /* Glossário */
+  .gloss-item {
+    padding: 16px 20px;
+    background: var(--card);
+    border: 1px solid var(--raised);
+    border-radius: 0.5rem;
+  }
+  .gloss-item .gloss-term {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--primary);
+    margin: 0 0 4px;
+  }
+  .gloss-item .gloss-def {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    margin: 0;
+    color: var(--muted-foreground);
+    line-height: 1.55;
+  }
+
+  /* CTA final */
+  .cta-final {
+    text-align: center;
+    margin: 96px 0 32px;
+    padding: 48px 32px;
+    background: var(--card);
+    border: 1px solid var(--primary-deep);
+    border-radius: 1.5rem;
+  }
+  .cta-final h2 { font-family: var(--font-display); font-size: 2.2rem; margin: 0 0 16px; }
+  .cta-final h2 em {
+    font-family: var(--font-body);
+    font-style: normal;
+    color: var(--primary);
+    font-weight: 400;
+  }
+  .cta-final p {
+    font-family: var(--font-body);
+    font-style: normal;
+    color: var(--muted-foreground);
+    max-width: 50ch;
+    margin: 16px auto 24px;
+  }
+  .cta-final .command-block { max-width: 400px; margin: 0 auto; text-align: left; }
+
+  @media (max-width: 640px) {
+    .convention-row { grid-template-columns: 1fr; gap: 4px; }
+    .skill-table { font-size: 0.82rem; }
+    .skill-table th, .skill-table td { padding: 10px 10px; }
+    .step { grid-template-columns: 48px 1fr; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="wrap">
+
+  <!-- Hero -->
+  <header class="hero">
+    <span class="kicker">Cohort de Marketing · Aulas 1 e 2</span>
+    <h1>Guia do <em>Aluno</em></h1>
+    <p class="subtitle">Da pesquisa ao funil completo</p>
+    <p class="lead">Um documento só, de ponta a ponta. Siga de cima para baixo: cada parte diz o <strong>comando exato</strong> a rodar. Você começa preparando o ambiente, faz a pesquisa e a oferta (Aula 1) e termina com o funil de vendas inteiro montado (Aula 2).</p>
+  </header>
+
+  <!-- TOC -->
+  <nav class="toc">
+    <div class="toc-label">As 4 partes deste guia</div>
+    <ol>
+      <li><a href="#parte-0">Parte 0 — Antes de tudo (uma vez só)</a> <span class="toc-sub">· terminal, instalar, clonar, <code>/comecar</code></span></li>
+      <li><a href="#parte-1">Parte 1 — Aula 1: Pesquisa → Oferta</a> <span class="toc-sub">· avatar, espião, trend, swipe, offerbook</span></li>
+      <li><a href="#parte-2">Parte 2 — Aula 2: Identidade → Funil completo</a> <span class="toc-sub">· design, método, página, e-mail, conteúdo…</span></li>
+      <li><a href="#parte-3">Parte 3 — Deu errado? (socorro)</a> <span class="toc-sub">· os travamentos mais comuns e a saída</span></li>
+      <li><a href="#glossario">Glossário — todos os termos num lugar</a></li>
+    </ol>
+  </nav>
+
+
+  <!-- ==================== PARTE 0 ==================== -->
+  <section id="parte-0">
+    <div class="section-num">Parte 0</div>
+    <h2>Antes de tudo <em>(uma vez só)</em></h2>
+    <p>Este bloco você faz <strong>uma vez</strong>, no primeiro dia. Prepara o computador para rodar tudo o que vem depois. Não pule nada: 90% dos travamentos do curso nascem de um passo aqui esquecido. Ao final, o comando <code>/comecar</code> confere se está tudo no lugar.</p>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>O que é o terminal e como abrir</h3>
+        <p>O <strong>terminal</strong> é a janelinha onde você digita comandos em vez de clicar em botões. É por ele que o Claude Code roda. Abrir é rápido:</p>
+        <p><strong>Windows:</strong> abra o <strong>Explorador de Arquivos</strong>, clique na barra de endereço no topo, digite <code>cmd</code> e aperte Enter. O terminal abre já dentro da pasta que estava aberta.</p>
+        <p><strong>Mac:</strong> abra o <strong>Spotlight</strong> (a lupa no canto, ou <code>Cmd + espaço</code>), digite <code>Terminal</code> e aperte Enter.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>Instale o Claude Code (ou o Codex)</h3>
+        <p>Baixe o <strong>Claude Code</strong> em <code>docs.claude.com/claude-code</code>. É um aplicativo de terminal. Se você usa o <strong>Codex</strong>, ele também funciona — a diferença é só onde a ferramenta procura as skills e se as páginas abrem sozinhas (veja o alerta no fim da Parte 2).</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>Clone o repositório do cohort (ou atualize, se já tem)</h3>
+        <p><strong>Primeira vez?</strong> No terminal, rode:</p>
+        <div class="command-block">git clone https://github.com/marketingLendario/cohort-de-marketing.git</div>
+        <div class="command-block">cd cohort-de-marketing</div>
+        <p>Se aparecer <em>"git não é reconhecido"</em>, instale o Git em <code>git-scm.com/download/win</code> (Windows) e reabra o terminal.</p>
+        <p><strong>Sem Git (alternativa ZIP):</strong> no GitHub, botão verde <em>Code → Download ZIP</em>, e descompacte. Atenção: pelo ZIP você <strong>não recebe as atualizações</strong> do curso — o <code>git pull</code> não funciona numa pasta baixada como ZIP. Prefira o <code>git clone</code> sempre que possível.</p>
+        <p><strong>Já tem a pasta da Aula 1?</strong> Não clone de novo. Entre nela e atualize:</p>
+        <div class="command-block">cd caminho/da/sua/pasta/cohort-de-marketing</div>
+        <div class="command-block">git pull</div>
+        <p>No <strong>Windows</strong>, em vez de digitar o caminho: abra a pasta <code>cohort-de-marketing</code> no Explorador, clique na barra de endereço, digite <code>cmd</code>, Enter — o terminal já abre no lugar certo. Para conferir onde você está, use <code>dir</code> (Windows) ou <code>ls</code> (Mac/Linux).</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h3>Abra o Claude na pasta</h3>
+        <p>Dentro da pasta <code>cohort-de-marketing</code>, rode:</p>
+        <div class="command-block plain">claude</div>
+        <p>As skills em <code>.claude/skills/</code> carregam automaticamente. No Codex, abra com <code>codex</code>: ele usa <code>.agents/skills/</code>, que é o espelho literal das mesmas skills.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <h3>Rode /comecar — o passo zero que confere tudo</h3>
+        <p>Com o Claude aberto, digite:</p>
+        <div class="command-block slash">comecar</div>
+        <p>É o <strong>primeiro comando do cohort</strong> e a rede de segurança do curso inteiro. Ele confere se as skills carregaram, checa a <strong>chave do Apify</strong> no <code>.env</code> (e ajuda a configurar se faltar), verifica <strong>Node e Python</strong>, resolve a <strong><code>/design-md</code> duplicada</strong> e te entrega <strong>um único próximo passo</strong>. Se algo travar em qualquer momento — na Aula 1 ou na Aula 2 — volte para ele. (No Codex, chame com <code>@comecar</code>.)</p>
+      </div>
+    </div>
+
+    <div class="alerta">
+      <div class="alerta-label">Kit de sobrevivência do terminal</div>
+      <p><strong>Esc</strong> cancela uma pergunta ou ação que o Claude deixou pendente. A <strong>seta pra cima (↑)</strong> repete o último comando. <strong>Shift+Tab</strong> liga o modo de aceitação automática (o Claude para de pedir confirmação a cada passo) — use só quando já confia no fluxo. E <strong>nunca</strong> use <code>--dangerously-skip-permissions</code> sem entender o risco: ele remove <strong>todas</strong> as proteções de uma vez.</p>
+    </div>
+
+    <div class="alerta">
+      <div class="alerta-label">Custo, modelo e sessão</div>
+      <p>As skills são roteiros prontos e <strong>rodam bem em Sonnet</strong> — não precisa de Opus pra tudo. Rodadas pesadas (coletar + gerar nos 3 formatos) consomem mais, então dá pra <strong>fazer por partes</strong>. E o mais importante: <strong>o seu progresso mora nos arquivos</strong>, não na conversa. Pode fechar ou limpar o chat entre uma skill e outra sem perder nada — pra voltar, é só abrir o Claude na pasta e rodar a próxima skill.</p>
+    </div>
+
+    <div class="convention-box">
+      <h3>Como abrir as páginas .html que as skills geram</h3>
+      <p style="font-family: var(--font-ui); font-size: 0.92rem; color: var(--muted-foreground); margin: 0 0 12px;">Quase toda skill entrega arquivos <code>.html</code>. No Claude Code eles costumam abrir sozinhos; se não abrir (ou se você usa o Codex), dê dois cliques no arquivo ou rode no terminal, conforme o seu sistema:</p>
+      <div class="command-block">macOS: open caminho/do/arquivo.html</div>
+      <div class="command-block">Windows: start "" caminho\do\arquivo.html</div>
+      <div class="command-block">Linux: xdg-open caminho/do/arquivo.html</div>
+      <p style="font-family: var(--font-ui); font-size: 0.85rem; color: var(--muted-foreground); margin: 8px 0 0;">No Windows use <strong>barra invertida</strong> (<code>\</code>) nos caminhos e mantenha as aspas vazias depois de <code>start</code>. Para copiar arquivos no Windows o comando é <code>copy</code> (no Mac/Linux é <code>cp</code>).</p>
+    </div>
+  </section>
+
+
+  <!-- ==================== PARTE 1 ==================== -->
+  <section id="parte-1">
+    <div class="section-num">Parte 1 · Aula 1</div>
+    <h2>Aula 1: <em>Pesquisa → Oferta</em></h2>
+    <p>A base de tudo. Você roda <strong>5 skills na ordem</strong> — cada uma alimenta a próxima — e sai com <strong>24 arquivos</strong>: a pesquisa de avatar, os dossiês dos concorrentes, as tendências, o swipe file e o <strong>offerbook</strong> (o Livro da Oferta), que é a matéria-prima da Aula 2. Cada entregável visual sai em três formatos: <code>.md</code> (fonte de verdade), <code>.html</code> (abre no navegador) e <code>.pdf</code>.</p>
+
+    <div class="alerta">
+      <div class="alerta-label">A regra-mãe</div>
+      <p>Pesquisa antes da oferta, oferta antes de copy, copy antes de ads. Pular essa ordem queima verba. Toda seção com dado real precisa de <strong>citação literal</strong> (verbatim); o que não tem fonte é marcado <code>[SUPOSIÇÃO]</code>, nunca inventado.</p>
+    </div>
+
+    <!-- Onde você está -->
+    <div class="cohort-map">
+      <div class="aula atual">
+        <span class="aula-num">01</span>
+        <span class="aula-name">Research Analyst — Pesquisa e Oferta</span>
+        <span class="aula-status">Aula 1</span>
+      </div>
+      <div class="aula atual">
+        <span class="aula-num">02</span>
+        <span class="aula-name">Arquiteto de Funil</span>
+        <span class="aula-status">Aula 2</span>
+      </div>
+      <div class="aula">
+        <span class="aula-num">03</span>
+        <span class="aula-name">Tráfego Pago · Media Buyer</span>
+        <span class="aula-status">Depois</span>
+      </div>
+      <div class="aula">
+        <span class="aula-num">04</span>
+        <span class="aula-name">Análise de Dados</span>
+        <span class="aula-status">Final</span>
+      </div>
+    </div>
+
+    <!-- Notas de perfil -->
+    <h3>Antes de rodar: qual é o seu caso?</h3>
+    <p>As skills funcionam para qualquer negócio. Só ajuste o ponto de partida ao seu perfil:</p>
+
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-name">Não tenho projeto ainda</div>
+        <p class="skill-what">Sem trava. Três saídas: <strong>(1)</strong> use você mesmo como projeto (se você fosse uma empresa, como seria o seu marketing?); <strong>(2)</strong> foque a pesquisa num nicho que te interessa — o <code>/avatar-funil</code> acha a brecha com você; <strong>(3)</strong> olhe pro seu contexto e resolva a dor real de quem está ao seu redor.</p>
+        <p class="skill-out"><strong>O avatar acha o nicho com você</strong> — não precisa ter produto pra começar.</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">Sou agência / atendo clientes</div>
+        <p class="skill-what">Trabalhe <strong>um cliente por vez</strong>. Rode o ciclo completo das 5 skills para um cliente, feche o offerbook dele, e só então comece o próximo. Um cliente, uma pasta, uma conversa — não misture dois na mesma sessão.</p>
+        <p class="skill-out"><strong>Um cliente por vez</strong>, do avatar ao offerbook.</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">Sou afiliado</div>
+        <p class="skill-what">Você não é o dono do produto, mas ainda precisa do offerbook. Trate a <strong>oferta do produtor</strong> como a sua: registre no offerbook o que o produtor entrega (promessa, preço, garantia, bônus) e construa a sua pesquisa de avatar e ângulo em cima disso.</p>
+        <p class="skill-out"><strong>A oferta do produtor</strong> entra registrada no offerbook.</p>
+      </div>
+    </div>
+
+    <!-- SKILL 1 -->
+    <div class="skill-step">
+      <div class="ss-tag">Skill 1 de 5</div>
+      <h3><code>/avatar-funil</code></h3>
+      <p class="ss-what">Pesquisa de avatar em 7 dimensões + focus group sintético em 3 personas testando a sua headline. Faz 4 passos: minera dor real em 3 fontes (reviews, comunidades, redes), ranqueia as dores pelos 4 critérios da "dor cara", monta o avatar ancorado na frase verbatim do lead e valida a headline nos 3 perfis antes de você gastar em mídia. Roda em modo rede (busca sozinha) ou offline (você cola o material).</p>
+      <div class="command-block slash">avatar-funil [nome do seu negócio ou nicho]</div>
+      <p class="ss-label">Arquivos que saem (3):</p>
+      <ul class="ss-files">
+        <li><code>relatorio-avatar.md</code> — fonte de verdade</li>
+        <li><code>relatorio-avatar.html</code> — versão visual (abre no navegador)</li>
+        <li><code>relatorio-avatar.pdf</code> — para imprimir ou compartilhar</li>
+      </ul>
+      <p class="ss-label ss-gate">Gate antes de avançar:</p>
+      <ul>
+        <li>Avatar tem nome, idade e frase verbatim do lead?</li>
+        <li>Headline foi validada nos 3 perfis do focus group?</li>
+        <li>Campos sem dado estão marcados <code>[SUPOSIÇÃO]</code> (e não inventados)?</li>
+      </ul>
+    </div>
+
+    <!-- SKILL 2 -->
+    <div class="skill-step">
+      <div class="ss-tag">Skill 2 de 5</div>
+      <h3><code>/espiao-do-concorrente</code></h3>
+      <p class="ss-what">Dossiê multi-fonte de <strong>um</strong> concorrente — rode uma vez para cada. Varre Meta Ad Library, Google Ads Transparency, TikTok Ads, redes orgânicas (Instagram, LinkedIn, X), o site (oferta, preço, garantia) e a reputação (reviews, menções). Devolve ganchos, ofertas, ângulos e, principalmente, as <strong>brechas</strong>. Prefira brecha de ângulo a brecha de preço: preço se copia em 30 dias, história não.</p>
+      <div class="command-block slash">espiao-do-concorrente [nome ou @ do concorrente]</div>
+      <p class="ss-label">Arquivos que saem (3 por concorrente):</p>
+      <ul class="ss-files">
+        <li><code>dossie-{concorrente}.md</code> — 9 seções (resumo, fontes, ganchos, ofertas, ângulos, formatos, reputação, brechas, 3 jogadas recomendadas)</li>
+        <li><code>dossie-{concorrente}.html</code> — o mesmo dossiê renderizado</li>
+        <li><code>dossie-{concorrente}.pdf</code> — para enviar/imprimir</li>
+      </ul>
+      <p class="ss-label ss-gate">Gate antes de avançar:</p>
+      <ul>
+        <li>Rodou para no mínimo 3 concorrentes diretos?</li>
+        <li>Cada dossiê tem pelo menos 10 peças analisadas (senão sinalize "amostra parcial")?</li>
+        <li>Cada dossiê termina com 3 jogadas acionáveis?</li>
+      </ul>
+    </div>
+
+    <!-- SETUP APIFY (antes do trend) -->
+    <div class="alerta warn">
+      <div class="alerta-label">Configure o Apify agora — a próxima skill precisa dele</div>
+      <p>A <code>/trend-hunting</code> (e depois o <code>/conteudo-funil</code> e o <code>/criativos-funil</code> na Aula 2) raspam Reels, TikTok e perfis. Para isso precisam da chave do <strong>Apify</strong>. É <strong>grátis para começar</strong>: o plano Free dá <strong>US$ 5 de crédito por mês, sem cartão</strong>. Setup em 1 vez só — <strong>sem MCP, é só a chave</strong>:</p>
+      <p style="margin: 12px 0 0;"><strong>1.</strong> Crie a conta grátis em <code>console.apify.com/sign-up</code> e copie o <strong>Personal API token</strong> (Settings → API &amp; Integrations).<br>
+      <strong>2.</strong> Cole o token no arquivo <code>.env</code> na raiz, na variável <code>APIFY_API_TOKEN</code> (<code>APIFY_API_KEY</code> também é aceito). Se não tiver <code>.env</code>, rode <code>cp .env.example .env</code> (no Windows: <code>copy .env.example .env</code>) — ou deixe o <code>/comecar</code> fazer isso por você.<br>
+      <strong>3.</strong> Pronto. A coleta roda por <strong>API direta</strong> (a skill chama <code>api.apify.com</code> com a sua chave) — nada de instalar servidor nem reiniciar. O <code>.env</code> nunca vai para o GitHub (já está no <code>.gitignore</code>).</p>
+    </div>
+
+    <!-- SKILL 3 -->
+    <div class="skill-step">
+      <div class="ss-tag">Skill 3 de 5</div>
+      <h3><code>/trend-hunting</code></h3>
+      <p class="ss-what">Identifica tendências emergentes nas fontes do nicho (X, Reels, TikTok, LinkedIn) antes da saturação e já gera variações de hook prontas para teste. Ao ativar, ela pergunta se você quer caçar tendências também a partir de concorrentes (cole os links dos perfis) — o tema do nicho é sempre varrido; concorrente é um acréscimo. <strong>Requer o Apify</strong> configurado acima.</p>
+      <div class="command-block slash">trend-hunting [seu nicho]</div>
+      <p class="ss-label">Arquivos que saem (7):</p>
+      <ul class="ss-files">
+        <li><code>trends-{nicho}-{data}.md/.html/.pdf</code> — 3-5 padrões emergentes + 2-3 em alta, por timing (3 formatos)</li>
+        <li><code>variacoes-teste-{data}.md/.html/.pdf</code> — hooks prontos com estrutura e CTA (3 formatos)</li>
+        <li><code>briefing-media-buyer.md</code> — briefing de tráfego com orçamento e métrica de validação</li>
+      </ul>
+      <p class="ss-label ss-gate">Gate antes de avançar:</p>
+      <ul>
+        <li>Pelo menos 3 padrões na fase "emergente"?</li>
+        <li>Cada variação tem hook + estrutura + CTA (não só o hook solto)?</li>
+        <li>O briefing do media buyer tem métrica de validação clara (CTR x%, CPL R$y)?</li>
+      </ul>
+    </div>
+
+    <!-- SKILL 4 -->
+    <div class="skill-step">
+      <div class="ss-tag">Skill 4 de 5</div>
+      <h3><code>/swipe-file</code></h3>
+      <p class="ss-what">Organiza os criativos vencedores que vieram do espião e do trend-hunting numa biblioteca categorizada por tipo, formato, padrão e nicho. Vira referência viva para a Copy e o Media Buyer. É <strong>inspiração, não cópia</strong>: você extrai o padrão e adapta ao seu ICP.</p>
+      <div class="command-block slash">swipe-file capturar</div>
+      <div class="command-block slash">swipe-file briefing [tipo]</div>
+      <p class="ss-label">Arquivos que saem (6):</p>
+      <ul class="ss-files">
+        <li><code>swipe-file-index.md/.html/.pdf</code> — índice master da biblioteca (3 formatos)</li>
+        <li><code>briefing-swipe-file.md/.html/.pdf</code> — handoff para Copy e Media Buyer: top padrões + adaptações ao seu ICP (3 formatos)</li>
+      </ul>
+      <p class="ss-label ss-gate">Gate antes de avançar:</p>
+      <ul>
+        <li>Capturou só criativos rodando há mais de 7 dias (com prova de performance)?</li>
+        <li>Cada criativo tem link da fonte (sem link → descarta)?</li>
+        <li>O briefing tem pelo menos 10 referências adaptadas ao seu ICP?</li>
+      </ul>
+    </div>
+
+    <!-- SKILL 5 -->
+    <div class="skill-step">
+      <div class="ss-tag">Skill 5 de 5</div>
+      <h3><code>/offerbook</code></h3>
+      <p class="ss-what">Consolida tudo num offerbook de 7 blocos (Materiais · Oferta · Avatar · História · História v2 · Análise de Cliente · Copy). É o brief de Story Selling que alimenta <strong>toda</strong> a copy depois — página, e-mails, ads. Avatar e Análise de Cliente vêm da pesquisa <strong>real</strong>; Oferta, História e Copy são escritas na voz da marca. Marca as lacunas (o que é decisão do dono vs. da equipe) e confere campo a campo antes de fechar.</p>
+      <div class="command-block slash">offerbook [nome do seu produto]</div>
+      <p class="ss-label">Arquivos que saem (4):</p>
+      <ul class="ss-files">
+        <li><code>briefing-offerbook.md</code> — gate que precisa estar aprovado antes do offerbook</li>
+        <li><code>offerbook-{produto}.md</code> — o Livro da Oferta (fonte de verdade)</li>
+        <li><code>offerbook-{produto}.docx</code> — versão Word no Template Academia Lendária</li>
+        <li><code>offerbook-{produto}.html</code> — renderizado, com TOC lateral</li>
+      </ul>
+      <p style="font-family: var(--font-ui); font-size: 0.85rem; color: var(--muted-foreground); margin: 8px 0 0;"><strong>Pré-requisito do .docx:</strong> <code>pip install python-docx</code> (instala uma vez). No Windows, se <code>pip</code> não for reconhecido: <code>py -m pip install python-docx</code>.</p>
+      <p class="ss-label ss-gate">Gate antes de fechar:</p>
+      <ul>
+        <li>Todos os 7 blocos preenchidos?</li>
+        <li>Avatar e Análise de Cliente têm citações verbatim do lead?</li>
+        <li>Dono da oferta aprovou? (sem aprovação, não libera copy)</li>
+      </ul>
+    </div>
+
+    <!-- Fechamento manual -->
+    <div class="skill-step">
+      <div class="ss-tag">Fechamento — artefato manual</div>
+      <h3><code>lacunas-aula-01.md</code></h3>
+      <p class="ss-what">O único arquivo que nenhuma skill gera: você preenche em ~30 min ao fechar a aula. Copie o template pronto para a raiz do seu projeto e preencha as 5 seções (lacunas de dado · decisão do dono · validação · backlog · handoff pra Aula 2):</p>
+      <div class="command-block">cp aula-01/docs/template-lacunas-aula-01.md ./lacunas-aula-01.md</div>
+      <p style="font-family: var(--font-ui); font-size: 0.85rem; color: var(--muted-foreground); margin: 8px 0 0;">No Windows (cmd): <code>copy aula-01\docs\template-lacunas-aula-01.md lacunas-aula-01.md</code> — barra invertida <code>\</code>, senão o cmd entende como opção e falha. Abra com <code>start</code> (Windows) ou <code>open</code> (Mac). Template completo: <a href="aula-01/docs/template-lacunas-aula-01.md" style="color: var(--primary);">aula-01/docs/template-lacunas-aula-01.md</a>.</p>
+    </div>
+
+    <div class="bloco" style="border-left: 4px solid var(--primary);">
+      <p style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--primary); margin: 0 0 8px;">Total da Aula 1: 24 arquivos</p>
+      <p style="font-family: var(--font-ui); font-size: 0.95rem; color: var(--muted-foreground); margin: 0;">3 (avatar) + 3 por concorrente (espião) + 7 (trend-hunting) + 6 (swipe file) + 4 (offerbook) + 1 (lacunas manual). Esse pacote é o input direto da Aula 2.</p>
+    </div>
+  </section>
+
+
+  <!-- ==================== PARTE 2 ==================== -->
+  <section id="parte-2">
+    <div class="section-num">Parte 2 · Aula 2</div>
+    <h2>Aula 2: <em>Identidade → Funil completo</em></h2>
+    <p>Com a pesquisa e a oferta prontas, você monta o <strong>funil de vendas ponta a ponta</strong>: identidade visual, página, e-mails, conteúdo e recuperação de quem não comprou. Cada peça é uma skill; você roda na ordem que o <code>/metodo-funil</code> mandar. Todo entregável sai em 3 formatos (<code>.md</code>, <code>.html</code> com a sua marca, <code>.pdf</code>).</p>
+
+    <!-- Retomada -->
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>Atualize o repo e rode /comecar de novo (rápido)</h3>
+        <p>As skills da Aula 2 chegaram por atualização. Na pasta do cohort, rode <code>git pull</code>, abra o <code>claude</code> e rode <code>/comecar</code> mais uma vez — dessa vez é rápido: confere as skills novas, a chave do Apify e resolve a <code>/design-md</code> duplicada, se houver.</p>
+        <div class="command-block">git pull</div>
+        <div class="command-block slash">comecar</div>
+      </div>
+    </div>
+
+    <!-- Convenção de pasta -->
+    <div class="alerta">
+      <div class="alerta-label">Onde tudo fica: uma pasta por projeto</div>
+      <p>Todo o trabalho de um nicho vive em <code>projetos/{slug}/</code> — o slug é o nome do nicho em minúsculas com hifens (ex.: <code>curso-de-ingles</code>). Se a Aula 1 ainda estiver com arquivos soltos na <strong>raiz</strong>, a primeira skill da Aula 2 que precisar do projeto (<code>/design-md</code> ou <code>/metodo-funil</code>) migra o pack inteiro para <code>projetos/{slug}/</code> antes de continuar — você não move nada à mão. Daqui pra frente cada skill só lê e grava dentro dessa pasta.</p>
+    </div>
+
+    <!-- /design-md -->
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Passo 1</span>
+        <span class="bloco-time">Identidade visual</span>
+      </div>
+      <h3>/design-md — a identidade da sua marca</h3>
+      <p style="font-family: var(--font-ui); font-size: 0.95rem; color: var(--muted-foreground);">A <strong>primeira</strong> skill da Aula 2. Cria o <code>DESIGN.md</code> — cores, fontes, logo — que toda skill de HTML/PDF usa depois. Começa perguntando <strong>qual dos 5 caminhos</strong>: usar um design pronto · extrair de um site (URL) · criar do zero pelo seu nicho/avatar · a partir de referências (prints do Pinterest, mood board) · ou neutro. Mostra o preview, se autocritica e itera até o seu ok. Se a Aula 1 ainda estiver solta na raiz, ela migra o pack pra <code>projetos/{slug}/</code>; quando o projeto já existe, salva o <code>DESIGN.md</code>, <code>tokens.json</code> e <code>preview.html</code> direto no lugar certo.</p>
+      <div class="bloco-action">/design-md</div>
+      <p class="bloco-result"><strong>Você recebe:</strong> <code>DESIGN.md</code> + <code>tokens.json</code> + <code>preview.html</code> em <code>projetos/{slug}/</code>. Guia completo dos 5 caminhos: <a href="aula-02/aula-design-md-GUIA-ALUNO.html" style="color: var(--primary);">aula-02/aula-design-md-GUIA-ALUNO.html</a>.</p>
+    </div>
+
+    <!-- /metodo-funil -->
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Passo 2</span>
+        <span class="bloco-time">Gate obrigatório · o mapa</span>
+      </div>
+      <h3>/metodo-funil — o diagnóstico e o mapa de execução</h3>
+      <p style="font-family: var(--font-ui); font-size: 0.95rem; color: var(--muted-foreground);">Não escolha o formato do funil você mesmo. Rode o <code>/metodo-funil</code>: ele lê o seu offerbook, faz até 3 perguntas (origem do público, ticket/formato, prova disponível), diagnostica o <strong>estágio de consciência</strong> (1 a 5) e devolve o <strong>mapa de execução</strong> — a lista ordenada das peças a construir, com a skill de cada uma. É o mapa que dita a ordem dali em diante.</p>
+      <div class="bloco-action">/metodo-funil</div>
+      <p class="bloco-result"><strong>Você recebe:</strong> estágio de consciência, funil prescrito, regras de anúncio por estágio e o mapa completo. Salvo em <code>funil.md</code>.</p>
+    </div>
+
+    <div class="alerta">
+      <div class="alerta-label">Negócio local? O WhatsApp assume o lugar do e-mail</div>
+      <p>Se o seu negócio é <strong>local</strong> (clínica, restaurante, serviço de bairro), o mapa troca o e-mail pelo <strong>WhatsApp</strong>: onde este guia diz <code>/email-funil</code>, você usa o <code>/whatsapp-funil</code> — mesmas etapas (confirmação, lembrete, carrinho abandonado, recuperação), no canal que o seu público realmente usa. O <code>/metodo-funil</code> te diz quando esse é o seu caso.</p>
+    </div>
+
+    <p>Do passo 3 em diante, <strong>siga o mapa</strong>. A ordem canônica das peças é esta:</p>
+
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-name">/copy-funil</div>
+        <div class="skill-what">A fundação da mensagem. Pipeline em 3 fluxos (Lançamento Completo, Tráfego Pago, Otimização), com checkpoints de revisão. Gera headline (25 opções, 5 finalistas), bullets, VSL ou carta e a auditoria. É o cérebro do qual as outras peças puxam a copy.</div>
+        <p class="skill-out"><strong>Lê:</strong> offerbook.md. <strong>Gera:</strong> copy.md</p>
+      </div>
+      <div class="skill-card alt">
+        <div class="skill-name">/quiz · /webinario · /vsl · /advertorial · /lancamento</div>
+        <div class="skill-what">Só se o mapa mandar. O <code>/metodo-funil</code> prescreve o formato de meio/topo pelo estágio: quiz (nível 4), webinário (4 e 3), VSL e advertorial (5), lançamento (5 com lista). Rode a skill correspondente — não antes do mapa pedir.</div>
+        <p class="skill-out"><strong>Gera:</strong> quiz.md · webinario.md · vsl.md · advertorial.md · lancamento.md</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">/pagina-vendas-funil</div>
+        <div class="skill-what">A página de vendas com os 16 elementos topo a fundo (headline, VSL, mecanismo, stack, ancoragem, prova, bullets, bônus, garantia, escassez, FAQ, CTA…), aplicando os tokens do seu DESIGN.md. A headline passa em 3 testes antes de avançar.</div>
+        <p class="skill-out"><strong>Lê:</strong> copy.md + DESIGN.md. <strong>Gera:</strong> pagina/</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">/email-funil</div>
+        <div class="skill-what">E-mails HTML prontos pra colar na sua ferramenta de disparo, em 6 tipos (convite, confirmação, lembrete, recap, nurture, venda). Header, cor, botão e footer saem do seu DESIGN.md. Não dispara nada — você revisa antes. <em>(Negócio local: use o <code>/whatsapp-funil</code> no lugar.)</em></div>
+        <p class="skill-out"><strong>Lê:</strong> offerbook.md + DESIGN.md. <strong>Gera:</strong> emails/</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">/conteudo-funil</div>
+        <div class="skill-what">Pergunta a plataforma (Instagram, YouTube, TikTok, X, LinkedIn) e o formato, coleta os conteúdos em alta do tema, você escolhe quais modelar e ela gera na sua voz em lote de 3 peças por nível do funil (topo, meio, fundo = 9). Carrosséis viram PNGs 1080x1350 na sua identidade. Você aprova a pauta antes.</div>
+        <p class="skill-out"><strong>Lê:</strong> offerbook.md + DESIGN.md. <strong>Gera:</strong> conteudo/ + carrossel/</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">/recuperacao-funil</div>
+        <div class="skill-what">A sequência de quem chegou no checkout e não comprou. Cada comportamento revela uma objeção: carrinho abandonado (leve), cartão recusado (urgente), boleto gerado (antes de vencer), downsell e re-elevação ao nível 4. Recuperar quem já chegou custa menos que adquirir um lead novo.</div>
+        <p class="skill-out"><strong>Lê:</strong> offerbook.md + funil.md. <strong>Gera:</strong> recuperacao.md</p>
+      </div>
+      <div class="skill-card alt">
+        <div class="skill-name">/backend-funil</div>
+        <div class="skill-what">Onde mora o lucro. Mapa ramificado (comprou → upsell 1 → upsell 2 / não comprou → downsell), janela de 3-7 segundos pós-checkout, janela de 4h da sequência, OTO de verdade e raciocínio de LTV. Rode quando o mapa incluir back-end.</div>
+        <p class="skill-out"><strong>Lê:</strong> offerbook.md + funil.md. <strong>Gera:</strong> back-end.md</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">/cro-funil</div>
+        <div class="skill-what">Fecha o ciclo: planilha de KPIs por etapa, identifica o gargalo, prioriza o teste A/B de maior alavancagem (headline primeiro), exige mínimo de 1.000 views únicos por teste e diz quando o funil está pronto pra escalar verba.</div>
+        <p class="skill-out"><strong>Lê:</strong> funil.md + copy.md. <strong>Gera:</strong> cro.md</p>
+      </div>
+    </div>
+
+    <div class="alerta">
+      <div class="alerta-label">A qualquer momento: /status-funil</div>
+      <p>Entre uma skill e outra, rode <code>/status-funil</code>. Ele lê a pasta <code>projetos/{slug}/</code>, marca <strong>[x]</strong> o que existe e <strong>[ ]</strong> o que falta, e aponta a primeira lacuna como "você está aqui". Não cria nem altera nada — só lê. É a bússola do funil.</p>
+    </div>
+
+    <!-- Book do Funil -->
+    <h3>O Book do Funil — o hub que reúne tudo</h3>
+    <p>Toda peça que a Aula 2 gera aparece no <strong>Book do Funil</strong>: o <code>index.html</code> dentro de <code>projetos/{slug}/</code>. É o painel que reúne página, e-mails, conteúdo, recuperação e as pendências num só lugar — inclusive as amostras e checkpoints, que entram como cartão e galeria, nunca como arquivo solto no chat. Abra por ele para chegar em qualquer entregável:</p>
+    <div class="command-block">macOS: open projetos/{slug}/index.html</div>
+    <div class="command-block">Windows: start "" projetos\{slug}\index.html</div>
+    <p style="font-family: var(--font-ui); font-size: 0.9rem; color: var(--muted-foreground);">As <strong>pendências</strong> (decisões do dono, dados que faltam) ficam listadas no próprio Book — é onde você vê num relance o que trava a próxima etapa.</p>
+
+    <!-- Bônus opcionais -->
+    <h3>Bônus opcionais</h3>
+    <p>Fora do núcleo do funil, três skills reforçam a oferta quando fizer sentido:</p>
+    <div class="skills-grid">
+      <div class="skill-card alt">
+        <div class="skill-name">/mockup-produto-funil</div>
+        <div class="skill-what">Prompts de geração de imagem parametrizados pelo seu DESIGN.md para cada item do offerbook: capa de ebook, tela de área de membros, box do produto, bundle de bônus. Você gera as imagens na ferramenta que quiser.</div>
+        <p class="skill-out"><strong>Gera:</strong> mockups/ (prompts)</p>
+      </div>
+      <div class="skill-card alt">
+        <div class="skill-name">/bonus-funil</div>
+        <div class="skill-what">Cria os entregáveis dos bônus de verdade (não só a lista): ebook, workbook, checklist, guia, template saem completos (md + HTML + PDF); áudio/vídeo viram roteiro pronto pra gravar. Fecha a promessa da oferta.</div>
+        <p class="skill-out"><strong>Gera:</strong> os bônus prometidos no offerbook</p>
+      </div>
+      <div class="skill-card alt">
+        <div class="skill-name">/criativos-funil</div>
+        <div class="skill-what">Espiona a Biblioteca de Anúncios do concorrente e vira criativos na sua voz: roteiros de vídeo e banners estáticos (HTML → PNG) na sua identidade, por rede e formato. Valida 1 amostra antes de gerar o lote.</div>
+        <p class="skill-out"><strong>Gera:</strong> criativos/ (roteiros + banners)</p>
+      </div>
+    </div>
+
+    <!-- Regras de ouro da Aula 2 -->
+    <h3>As regras de ouro do funil</h3>
+    <div class="rule">
+      <span class="rule-icon">1</span>
+      <div><h3>Offerbook antes de tudo</h3><p>Nenhuma skill da Aula 2 funciona sem o <code>projetos/{slug}/offerbook.md</code>. Se não existir, volte à Aula 1.</p></div>
+    </div>
+    <div class="rule">
+      <span class="rule-icon">2</span>
+      <div><h3>Rode na ordem do mapa</h3><p>Cada skill usa o output da anterior. O <code>/metodo-funil</code> devolve o mapa — siga o mapa, não pule etapas.</p></div>
+    </div>
+    <div class="rule">
+      <span class="rule-icon">3</span>
+      <div><h3>DESIGN.md antes de qualquer HTML</h3><p>Toda skill que gera HTML ou PDF precisa do <code>DESIGN.md</code>. Sem ele a skill para. Nenhuma cor ou fonte é inventada.</p></div>
+    </div>
+    <div class="rule">
+      <span class="rule-icon">4</span>
+      <div><h3>A headline é o teste mais importante</h3><p>Não teste cor de botão. O que move conversão é headline (primeiro), depois oferta e preço, depois prova casada ao estágio. Mínimo de 1.000 views únicos por teste.</p></div>
+    </div>
+    <div class="rule">
+      <span class="rule-icon">5</span>
+      <div><h3>Prova casada ao estágio</h3><p>Depoimento puro converte no nível 2 (consciente do produto). Para frio (5) ou morno (4-3) use estudo de caso ou narrativa. Casamento errado = campanha que não converte.</p></div>
+    </div>
+    <div class="rule">
+      <span class="rule-icon">6</span>
+      <div><h3>A skill estrutura, você publica</h3><p>Nenhuma skill sobe página, dispara e-mail ou publica anúncio. Ela entrega a estrutura em 3 formatos — a revisão e a publicação final são suas.</p></div>
+    </div>
+  </section>
+
+
+  <!-- ==================== PARTE 3 ==================== -->
+  <section id="parte-3">
+    <div class="section-num">Parte 3</div>
+    <h2>Deu errado? <em>(socorro)</em></h2>
+    <p>Os travamentos mais comuns e a saída de cada um. Se nenhum resolver, a regra final está no fim.</p>
+
+    <div class="alerta">
+      <div class="alerta-label">Aparecem duas <code>/design-md</code> no menu</div>
+      <p>É a versão <strong>antiga da Aula 1</strong> instalada globalmente brigando com a do projeto. Apague a antiga e reabra a sessão: no <strong>Mac/Linux</strong>, apague a pasta <code>~/.claude/skills/design-md</code>; no <strong>Windows</strong>, apague <code>C:\Users\SeuNome\.claude\skills\design-md</code>. A do projeto (dentro de <code>.claude/skills</code>) é a que fica. O <code>/comecar</code> também resolve isso.</p>
+    </div>
+
+    <div class="alerta">
+      <div class="alerta-label">As skills não aparecem quando digito <code>/</code></div>
+      <p>No <strong>Claude Code</strong> as skills ficam em <code>.claude/skills</code> e carregam sozinhas — confira que você abriu o <code>claude</code> <strong>dentro</strong> da pasta <code>cohort-de-marketing</code> (e rodou <code>git pull</code> para as skills novas da Aula 2). No <strong>Codex</strong>, <code>.agents/skills</code> já vem como espelho literal de <code>.claude/skills</code>. Se não aparecer, rode <code>/comecar</code> ou peça ao Codex para reespelhar a pasta e reabrir a sessão.</p>
+    </div>
+
+    <div class="alerta warn">
+      <div class="alerta-label">Apify: sem chave ou estourou a cota</div>
+      <p><strong>Sem chave:</strong> a skill de coleta para e pede a configuração — crie a conta grátis em <code>console.apify.com/sign-up</code>, copie o Personal API token e cole no <code>.env</code> na variável <code>APIFY_API_TOKEN</code> (ou <code>APIFY_API_KEY</code>). Sem MCP, é só a chave. <strong>Estourou os US$ 5/mês:</strong> a cota renova no mês seguinte; enquanto isso, use o modo manual (você cola o material que observou) — a análise é a mesma.</p>
+    </div>
+
+    <div class="alerta">
+      <div class="alerta-label">O PDF não gera</div>
+      <p>O PDF sai do HTML. Se o script não gerar no seu computador, abra o <code>.html</code> no navegador e use <strong>Imprimir → Salvar como PDF</strong> (<code>Ctrl+P</code> no Windows, <code>Cmd+P</code> no Mac). O conteúdo é o mesmo. Para o <code>.docx</code> do offerbook, o pré-requisito é <code>pip install python-docx</code> (ou <code>py -m pip install python-docx</code> no Windows).</p>
+    </div>
+
+    <div class="alerta">
+      <div class="alerta-label">"Não é um repositório git" (fatal: not a git repository)</div>
+      <p>Você não está dentro da pasta do cohort, ou baixou o ZIP (que não é um repositório). Entre na pasta certa com <code>cd caminho/da/pasta/cohort-de-marketing</code> e confira com <code>dir</code> (Windows) ou <code>ls</code> (Mac/Linux) que você vê as pastas <code>aula-01</code> e <code>aula-02</code>. Se veio do ZIP, refaça com <code>git clone</code> para poder receber atualizações.</p>
+    </div>
+
+    <div class="alerta">
+      <div class="alerta-label">Vou trocar de cliente ou de projeto</div>
+      <p><strong>Um funil por conversa.</strong> Não rode dois projetos na mesma conversa do Claude — os arquivos dos dois se abrem juntos e embaralham a revisão. Para trocar de cliente ou de nicho, abra uma <strong>conversa nova</strong>. Um projeto, uma conversa, uma pasta.</p>
+    </div>
+
+    <div class="alerta">
+      <div class="alerta-label">Qualquer outra coisa</div>
+      <p>Rode <code>/comecar</code> de novo. Ele reconfere o ambiente inteiro (skills, Apify, Node, Python, <code>/design-md</code> duplicada) e sempre devolve um próximo passo claro. É a rede de segurança do cohort — nunca trava.</p>
+    </div>
+  </section>
+
+
+  <!-- ==================== GLOSSÁRIO ==================== -->
+  <section id="glossario">
+    <div class="section-num">Referência</div>
+    <h2>Glossário — <em>todos os termos</em></h2>
+    <p>Não decore. Volte aqui sempre que esbarrar com um termo no resto do guia. Se você é de marketing, pode pular.</p>
+
+    <div style="display: grid; gap: 12px; margin-top: 24px;">
+      <div class="gloss-item"><p class="gloss-term">ICP (Ideal Customer Profile)</p><p class="gloss-def">O perfil do cliente ideal — quem compra rápido, paga o preço cheio e indica pra outros. Não é "todo mundo que poderia comprar".</p></div>
+      <div class="gloss-item"><p class="gloss-term">Avatar</p><p class="gloss-def">A versão "personagem" do seu ICP — com nome, idade, dor real (citação literal), desejo, medo. A pessoa que você consegue imaginar conversando.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Verbatim</p><p class="gloss-def">A frase literal do cliente, copiada como ele falou. É o que ancora avatar e copy — sem invenção. O que não tem verbatim é marcado <code>[SUPOSIÇÃO]</code>.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Headline</p><p class="gloss-def">A primeira frase que o cliente lê — no anúncio, na página, no e-mail. Define se ele continua ou fecha a aba. É o elemento nº 1 a testar.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Dossiê do concorrente</p><p class="gloss-def">Relatório que mostra tudo o que o concorrente faz: anúncios, ofertas, ângulos e onde ele é fraco (as brechas). Serve pra você não inventar do zero.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Swipe file</p><p class="gloss-def">Biblioteca de anúncios, headlines e copys que vendem bem no seu nicho. É referência pra extrair padrão, nunca pra copiar literal.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Offerbook (Livro da Oferta)</p><p class="gloss-def">O brief mestre da oferta em 7 blocos. Tudo que copy, media buyer e designer leem antes de produzir. Sem offerbook aprovado, ninguém escreve copy.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Estágio de consciência (1 a 5)</p><p class="gloss-def">O quanto o público conhece o problema e a solução: 5 inconsciente, 4 consciente do problema, 3 da solução, 2 do produto, 1 mais consciente. Decide o tipo de funil, anúncio e prova.</p></div>
+      <div class="gloss-item"><p class="gloss-term">DESIGN.md</p><p class="gloss-def">O arquivo com a identidade visual da sua marca (cores, fontes, logo). Toda skill que gera HTML ou PDF lê dele — nunca inventa cor nem fonte.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Slug / projeto</p><p class="gloss-def">O nome curto do nicho em minúsculas com hifens (ex.: <code>curso-de-ingles</code>). Nomeia a pasta <code>projetos/{slug}/</code> onde todo o funil daquele nicho vive.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Book do Funil</p><p class="gloss-def">O <code>index.html</code> dentro de <code>projetos/{slug}/</code>: o hub que reúne todas as peças do funil e as pendências num painel só.</p></div>
+      <div class="gloss-item"><p class="gloss-term">VSL (Video Sales Letter)</p><p class="gloss-def">Carta de vendas em vídeo — o vídeo que apresenta dor, mecanismo e oferta. Funil típico de público frio (nível 5).</p></div>
+      <div class="gloss-item"><p class="gloss-term">Upsell · OTO · Downsell</p><p class="gloss-def">O back-end: upsell é a oferta que sobe o ticket de quem comprou; OTO (One Time Offer) é oferta única, sem repetir; downsell é a alternativa menor pra quem recusou.</p></div>
+      <div class="gloss-item"><p class="gloss-term">CRO (otimização de conversão)</p><p class="gloss-def">Medir cada etapa do funil por KPIs, achar o gargalo e testar (A/B) o que mais move resultado, antes de escalar verba.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Recuperação</p><p class="gloss-def">A sequência para quem chegou no checkout e não comprou (carrinho abandonado, cartão recusado, boleto). Custa menos que adquirir lead novo.</p></div>
+    </div>
+  </section>
+
+
+  <!-- CTA Final -->
+  <div class="cta-final">
+    <h2>Pronto para <em>começar</em>?</h2>
+    <p>Faça a Parte 0 uma vez. Depois é só rodar, de cima para baixo. O primeiro comando dentro do Claude é sempre este:</p>
+    <div class="command-block slash">comecar</div>
+  </div>
+
+</div>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const el = document.getElementById('progress');
+    const h = document.documentElement;
+    const st = window.scrollY;
+    const sh = h.scrollHeight - h.clientHeight;
+    el.style.width = (sh > 0 ? (st / sh) * 100 : 0) + '%';
+  });
+</script>
+</body>
+</html>
