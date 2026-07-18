@@ -1,8 +1,8 @@
 # Tutorial — como obter o token da Meta (para o painel de tráfego)
 
-Este é o passo-a-passo para o **Modo API** da Aula 04: puxar os dados reais da sua conta. Se você só quer ver o painel funcionando, **não precisa disto** — rode `/analista-de-trafego` e escolha **Modo Exemplo**.
+Este é o passo-a-passo para o **Modo API** da Aula 04: puxar os dados reais da sua conta. Se você só quer ver o painel funcionando, **não precisa disto** — rode `/analista-de-dados` e escolha **Modo Exemplo**.
 
-> **Precisa de ajuda?** Rode `/analista-de-trafego`, escolha "criar o `.env` e configurar a API", e a skill caminha com você por cada passo abaixo. Você não precisa fazer nada sozinho.
+> **Precisa de ajuda?** Rode `/analista-de-dados`, escolha "criar o `.env` e configurar a API", e a skill caminha com você por cada passo abaixo. Você não precisa fazer nada sozinho.
 
 O que você vai preencher no final, no arquivo `.env` (na raiz do projeto):
 

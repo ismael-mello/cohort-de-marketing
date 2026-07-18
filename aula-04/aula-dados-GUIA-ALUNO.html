@@ -48,7 +48,7 @@ th{background:#1a1a22;color:var(--secondary);font-weight:600}
   </header>
 
   <h2>O que você vai montar</h2>
-  <p>Uma skill conduz tudo: <code>/analista-de-trafego</code>. Ela configura as chaves (ou roda em <b>Modo Exemplo</b>), puxa os dados reais da Meta, monta o painel local no estilo Grafana/Looker com a <b>sua identidade visual</b> e convoca o board de especialistas.</p>
+  <p>O <b>Squad de Dados</b> conduz tudo — uma skill por função, com porta de entrada única: <code>/analista-de-dados</code> (hub que roda coleta → board → painel → retroalimentação; cada etapa também existe como skill própria: <code>/coletor-de-dados</code>, <code>/board-de-especialistas</code>, <code>/painel-de-dados</code>, <code>/retroalimentacao</code>, <code>/gestor-de-campanhas</code>). Ela configura as chaves (ou roda em <b>Modo Exemplo</b>), puxa os dados reais da Meta, monta o painel local no estilo Grafana/Looker com a <b>sua identidade visual</b> e convoca o board de especialistas.</p>
 
   <div class="card card-accent">
     <b>A demo nunca trava.</b> Sem credenciais no <code>.env</code>, o painel roda sobre dados de exemplo (rotulados <span class="pill est">modo exemplo</span>). Com o token da Meta, ele lê a sua conta.
@@ -93,7 +93,7 @@ th{background:#1a1a22;color:var(--secondary);font-weight:600}
   <h2>Rodar agora</h2>
   <div class="card">
     <p>No terminal, na pasta do projeto:</p>
-    <p><code>/analista-de-trafego</code></p>
+    <p><code>/analista-de-dados</code></p>
     <p style="margin-bottom:0">Ou manualmente: <code>node scripts/painel-trafego-data.mjs --account --saida=projetos/&lt;slug&gt;/dados-trafego/bundle.json</code> e depois <code>node scripts/painel-trafego-render.mjs --dados=… --board=… --tokens=projetos/&lt;slug&gt;/tokens.json --projeto="Sua Marca" --saida=projetos/&lt;slug&gt;/painel-trafego.html</code></p>
   </div>
 

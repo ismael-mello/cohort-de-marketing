@@ -4,7 +4,7 @@ O painel roda **sem chave nenhuma** em Modo Exemplo. Para ler a sua conta real, 
 
 ## Modo Exemplo (zero configuração)
 
-Nada a fazer: rode `/analista-de-trafego` e o painel abre com dados fictícios rotulados "modo exemplo". Use para aprender a ler o painel antes de conectar a conta.
+Nada a fazer: rode `/analista-de-dados` e o painel abre com dados fictícios rotulados "modo exemplo". Use para aprender a ler o painel antes de conectar a conta.
 
 ## Modo API — o que você precisa
 
@@ -19,7 +19,7 @@ No arquivo `.env` (na raiz, **fora do git**), com base no [`.env.example`](../..
 
 **Escopos do token:** `ads_read` (leitura de anúncios) basta para o painel pago. Para o perfil orgânico (comentários/visualizações de posts) o token precisa de `pages_read_engagement` / `read_insights` — ver [organico-roadmap.md](./organico-roadmap.md).
 
-**Não tem o token ainda?** Siga o [tutorial passo-a-passo de como obter o token da Meta](./tutorial-token-meta.md) — ou rode `/analista-de-trafego` e escolha "criar o `.env` e configurar a API": a skill caminha com você.
+**Não tem o token ainda?** Siga o [tutorial passo-a-passo de como obter o token da Meta](./tutorial-token-meta.md) — ou rode `/analista-de-dados` e escolha "criar o `.env` e configurar a API": a skill caminha com você.
 
 ## Validar e descobrir IDs (delegado ao Zelador)
 

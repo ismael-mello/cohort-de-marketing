@@ -3,7 +3,7 @@
  * scripts/painel-trafego-render.mjs — renderiza o painel-trafego.html self-contained.
  *
  * Lê o "bundle" de dados (saída do painel-trafego-data.mjs) e o "board" (análise dos
- * 4 clones de especialistas, gerado pela skill /analista-trafego) e monta UMA página
+ * 4 clones de especialistas, gerado pela skill /board-de-especialistas) e monta UMA página
  * HTML sem dependência externa: dados embutidos inline, gráficos em SVG desenhados no
  * navegador (funciona offline e imprime em PDF), identidade visual vinda do DESIGN.md
  * do projeto (tokens.json). Look Grafana/Looker dark.
@@ -100,7 +100,7 @@ function googleFontsHref(T) {
 const boardNeutro = {
   gerado_em: '—',
   clones: [
-    { papel: 'Media Buyer', titulo: 'Board não gerado', veredito: 'Rode /analista-trafego para preencher a análise do board a partir destes dados.', alavanca: '—', evidencia: '—', selo: '—' },
+    { papel: 'Media Buyer', titulo: 'Board não gerado', veredito: 'Rode /board-de-especialistas para preencher a análise do board a partir destes dados.', alavanca: '—', evidencia: '—', selo: '—' },
   ],
   sintese: 'Board de especialistas ainda não gerado. Este painel mostra apenas os dados.',
 };
@@ -339,7 +339,7 @@ main.wrap{max-width:1200px;margin:0 auto;padding:38px 34px 90px}
     </section>
 
     <section class="view on" id="view-geral">
-      <div class="page-head"><div><span class="eyebrow">analista-trafego · aula 4</span><h1>Visão <em>geral</em></h1><p class="sub" id="escopo"></p><p class="seal" id="seloModo"></p></div></div>
+      <div class="page-head"><div><span class="eyebrow">squad de dados · aula 4</span><h1>Visão <em>geral</em></h1><p class="sub" id="escopo"></p><p class="seal" id="seloModo"></p></div></div>
       <div class="controls" id="geralControls"><label>Período</label><select id="mesSel"></select><span class="seal" id="mesNota"></span></div>
       <div class="kpis" id="kpis"></div>
       <div class="grid-2col" style="margin-top:18px">
@@ -430,7 +430,7 @@ main.wrap{max-width:1200px;margin:0 auto;padding:38px 34px 90px}
       <div class="card sintese" id="sintese"></div>
     </section>
 
-    <p class="foot">Painel gerado por <b>/analista-trafego</b> — Squad de Tráfego Lendár[IA] · Aula 4 (Dados). Selos: <span class="pill real">Real</span> pronto da Meta/caixa · <span class="pill est">Estimado</span> atribuição da plataforma · <span class="pill calc">Calculado</span> derivado de valores Real.</p>
+    <p class="foot">Painel gerado pelo <b>Squad de Dados Lendár[IA]</b> (/analista-de-dados) · Aula 4 (Dados). Selos: <span class="pill real">Real</span> pronto da Meta/caixa · <span class="pill est">Estimado</span> atribuição da plataforma · <span class="pill calc">Calculado</span> derivado de valores Real.</p>
   </main></div>
 </div>
 <div class="lc-tip" id="glossTip" role="tooltip"></div>
@@ -869,7 +869,7 @@ function drawPerfil(){
     if(s.destaques&&s.destaques.length)h+=s.destaques.slice(0,3).map(d=>'<p class="ev" style="border-left:2px solid var(--'+(d.tom==='positivo'?'pos':(d.tom==='negativo'?'neg':'muted'))+');padding-left:10px;font-style:italic">"'+d.texto+'"</p>').join('');
     h+='</div>';
   } else if((p.comentarios||[]).length){
-    h+='<div class="card"><p class="ev">'+p.comentarios.length+' comentários coletados. Rode <b>/analista-de-trafego</b> para a leitura de sentimento (o Analista classifica em PT-BR).</p></div>';
+    h+='<div class="card"><p class="ev">'+p.comentarios.length+' comentários coletados. Rode <b>/board-de-especialistas</b> para a leitura de sentimento (classificada em PT-BR).</p></div>';
   }
   // posts: tabela ordenável + filtro de período + limite (padrão da tabela de campanhas)
   if((p.top_posts||[]).length){
@@ -961,7 +961,7 @@ function drawCliente(){
   }
   if(!partes.length){el.innerHTML='<div class="roadmap">Sem dados suficientes — rode a coleta (Modo API) para a síntese de cliente.</div>';return;}
   el.innerHTML='<div class="grid-2col">'+partes.join('')+'</div>'
-    +'<div class="card" style="margin-top:14px"><div class="mini-h">Retroalimentação (Aulas 1 e 2)</div><p class="ev">Estes achados alimentam o avatar (Aula 1) e a oferta/copy (Aula 2): a skill grava <code>projetos/{slug}/dados-trafego/retroalimentacao.md</code> com este cruzamento — rode <b>/analista-de-trafego</b> (ou <b>/gestor-de-campanhas</b>) para atualizar.</p></div>';
+    +'<div class="card" style="margin-top:14px"><div class="mini-h">Retroalimentação (Aulas 1 e 2)</div><p class="ev">Estes achados alimentam o avatar (Aula 1) e a oferta/copy (Aula 2): a skill grava <code>projetos/{slug}/dados-trafego/retroalimentacao.md</code> com este cruzamento — rode <b>/retroalimentacao</b> (ou <b>/gestor-de-campanhas</b>) para atualizar.</p></div>';
 }
 // ---------- audiência paga (demografia via breakdowns) ----------
 // malha geográfica das 27 UFs (IBGE, malhas v3, qualidade mínima — dado público; projetada e compactada em build-time)
@@ -1370,7 +1370,7 @@ document.getElementById('mmBtn').addEventListener('click',function(){mmOn=!mmOn;
 })();
 document.getElementById('editBtn').addEventListener('click',function(){const s=document.getElementById('editSec');const on=s.style.display==='none';s.style.display=on?'block':'none';this.classList.toggle('on',on);document.body.classList.toggle('editing',on);if(on)drawEdit();});
 document.getElementById('saveCfgBtn').addEventListener('click',()=>{const b=new Blob([JSON.stringify(mergedConfig(),null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='painel-config.json';a.click();flashBtn('saveCfgBtn','baixado ✓');});
-document.getElementById('copyCfgBtn').addEventListener('click',async()=>{const txt='Atualize o painel-config.json com esta config (skill /analista-de-trafego):\n'+JSON.stringify(mergedConfig(),null,2);try{await navigator.clipboard.writeText(txt);flashBtn('copyCfgBtn','copiado ✓');}catch(e){flashBtn('copyCfgBtn','veja o console');console.log(txt);}});
+document.getElementById('copyCfgBtn').addEventListener('click',async()=>{const txt='Atualize o painel-config.json com esta config (skill /coletor-de-dados):\n'+JSON.stringify(mergedConfig(),null,2);try{await navigator.clipboard.writeText(txt);flashBtn('copyCfgBtn','copiado ✓');}catch(e){flashBtn('copyCfgBtn','veja o console');console.log(txt);}});
 sel.addEventListener('change',()=>{metric=sel.value;drawLine();});
 
 // roteador de abas (sidebar → telas)

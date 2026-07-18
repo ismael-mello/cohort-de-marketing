@@ -1006,50 +1006,18 @@
       }
     },
     {
-      "id": "analista-de-trafego",
-      "title": "Analista de Trafego",
-      "command": "/analista-de-trafego",
-      "description": "Monta o painel de dados (series por dia/mes/quarter, comparacao de periodos e campanhas) e roda o board de clones de especialistas sobre os numeros.",
-      "phase": "Dados",
-      "phaseColor": "#38bdf8",
-      "order": 32,
-      "kind": "data",
-      "level": "Aula 4",
-      "skillPath": ".claude/skills/analista-de-trafego/SKILL.md",
-      "prerequisites": [
-        "leitor-de-metricas",
-        "operacao de trafego da Aula 3"
-      ],
-      "outputs": [
-        "painel-trafego.html",
-        "weekly-panel.analysisA4"
-      ],
-      "primaryArtifacts": [
-        "trafficAnalyticsPanel"
-      ],
-      "feeds": [
-        "decisao do aluno"
-      ],
-      "guard": "Nao-inferir; ROAS Estimado; trimestre nao recalcula taxas; board recomenda, aluno decide.",
-      "artifactSummary": "Painel de dados e board de especialistas",
-      "execution": {
-        "mode": "local_skill",
-        "requiresHumanReview": true
-      }
-    },
-    {
       "id": "gestor-de-campanhas",
       "title": "Gestor de Campanhas",
       "command": "/gestor-de-campanhas",
       "description": "Compara o realizado dos ultimos 7 e 30 dias com a campanha planejada (PAINEL-DA-SEMANA) e retroalimenta as Aulas 1 e 2 com os dados reais (avatar, oferta, copy).",
       "phase": "Dados",
       "phaseColor": "#38bdf8",
-      "order": 33,
+      "order": 37,
       "kind": "data",
       "level": "Aula 4",
       "skillPath": ".claude/skills/gestor-de-campanhas/SKILL.md",
       "prerequisites": [
-        "analista-de-trafego"
+        "coletor-de-dados"
       ],
       "outputs": [
         "gestao-campanhas.md",
@@ -1070,6 +1038,166 @@
         "mode": "local_skill",
         "requiresHumanReview": true
       }
+    },
+    {
+      "phase": "Dados",
+      "phaseColor": "#38bdf8",
+      "kind": "data",
+      "level": "Aula 4",
+      "execution": {
+        "mode": "local_skill",
+        "requiresHumanReview": true
+      },
+      "id": "analista-de-dados",
+      "title": "Analista de Dados",
+      "command": "/analista-de-dados",
+      "order": 32,
+      "description": "Hub do Squad de Dados: orquestra a Central de Dados de ponta a ponta (coleta, board, painel, retroalimentacao) e configura as chaves da Meta/Hotmart ou cai no Modo Exemplo.",
+      "skillPath": ".claude/skills/analista-de-dados/SKILL.md",
+      "prerequisites": [
+        "leitor-de-metricas",
+        "operacao de trafego da Aula 3"
+      ],
+      "outputs": [
+        "orquestracao do squad de dados"
+      ],
+      "primaryArtifacts": [],
+      "feeds": [
+        "coletor-de-dados",
+        "board-de-especialistas",
+        "painel-de-dados",
+        "retroalimentacao",
+        "gestor-de-campanhas"
+      ],
+      "guard": "Nunca escolhe o modo sozinho (pergunta); nunca trava (Modo Exemplo); contrato nao-inferir em todas as etapas.",
+      "artifactSummary": "Orquestrador do Squad de Dados"
+    },
+    {
+      "phase": "Dados",
+      "phaseColor": "#38bdf8",
+      "kind": "data",
+      "level": "Aula 4",
+      "execution": {
+        "mode": "local_skill",
+        "requiresHumanReview": true
+      },
+      "id": "coletor-de-dados",
+      "title": "Coletor de Dados",
+      "command": "/coletor-de-dados",
+      "order": 33,
+      "description": "Coleta o bundle da Central de Dados: Meta (series, campanhas, funil, heatmap, demografia, engajamento) + Hotmart (caixa real, sem PII), com config de periodo/produtos/expurgo.",
+      "skillPath": ".claude/skills/coletor-de-dados/SKILL.md",
+      "prerequisites": [
+        "analista-de-dados"
+      ],
+      "outputs": [
+        "dados-trafego/bundle.json",
+        "dados-trafego/vendas.json"
+      ],
+      "primaryArtifacts": [
+        "trafficDataBundle"
+      ],
+      "feeds": [
+        "board-de-especialistas",
+        "painel-de-dados"
+      ],
+      "guard": "So leitura; sem PII; segredos no scrubber; sem credenciais cai na fixture rotulada.",
+      "artifactSummary": "Bundle de dados Meta + caixa Hotmart"
+    },
+    {
+      "phase": "Dados",
+      "phaseColor": "#38bdf8",
+      "kind": "data",
+      "level": "Aula 4",
+      "execution": {
+        "mode": "local_skill",
+        "requiresHumanReview": true
+      },
+      "id": "board-de-especialistas",
+      "title": "Board de Especialistas",
+      "command": "/board-de-especialistas",
+      "order": 34,
+      "description": "Autora o sentimento dos comentarios e convoca os 6 clones de mercado (Media Buyer, Analista de Dados, Criativos, CRO, Audiencia, Social) sobre o bundle inteiro.",
+      "skillPath": ".claude/skills/board-de-especialistas/SKILL.md",
+      "prerequisites": [
+        "coletor-de-dados"
+      ],
+      "outputs": [
+        "dados-trafego/board.json",
+        "weekly-panel.analysisA4"
+      ],
+      "primaryArtifacts": [
+        "specialistBoardReading"
+      ],
+      "feeds": [
+        "painel-de-dados",
+        "decisao do aluno"
+      ],
+      "guard": "Toda afirmacao ancora num numero com selo; uma alavanca por clone; board recomenda, aluno decide.",
+      "artifactSummary": "Leitura dos 6 especialistas + sintese"
+    },
+    {
+      "phase": "Dados",
+      "phaseColor": "#38bdf8",
+      "kind": "data",
+      "level": "Aula 4",
+      "execution": {
+        "mode": "local_skill",
+        "requiresHumanReview": true
+      },
+      "id": "painel-de-dados",
+      "title": "Painel de Dados",
+      "command": "/painel-de-dados",
+      "order": 35,
+      "description": "Renderiza o painel self-contained na identidade da marca (7 telas interativas) + PDF + card no Book do Funil.",
+      "skillPath": ".claude/skills/painel-de-dados/SKILL.md",
+      "prerequisites": [
+        "coletor-de-dados",
+        "board-de-especialistas"
+      ],
+      "outputs": [
+        "painel-trafego.html",
+        "painel-trafego.pdf"
+      ],
+      "primaryArtifacts": [
+        "trafficAnalyticsPanel"
+      ],
+      "feeds": [
+        "decisao do aluno"
+      ],
+      "guard": "Sempre tokens da marca (nunca tema generico); painel e espelho do dado, com selos.",
+      "artifactSummary": "Painel navegavel da Central de Dados"
+    },
+    {
+      "phase": "Dados",
+      "phaseColor": "#38bdf8",
+      "kind": "data",
+      "level": "Aula 4",
+      "execution": {
+        "mode": "local_skill",
+        "requiresHumanReview": true
+      },
+      "id": "retroalimentacao",
+      "title": "Retroalimentacao",
+      "command": "/retroalimentacao",
+      "order": 36,
+      "description": "Devolve os dados reais para o inicio do funil: demografia/linguagem para o avatar (Aula 1); produtos, prova social e objecoes para a copy (Aula 2).",
+      "skillPath": ".claude/skills/retroalimentacao/SKILL.md",
+      "prerequisites": [
+        "coletor-de-dados"
+      ],
+      "outputs": [
+        "dados-trafego/retroalimentacao.md"
+      ],
+      "primaryArtifacts": [
+        "feedbackLoopReport"
+      ],
+      "feeds": [
+        "avatar-funil",
+        "copy-funil"
+      ],
+      "guard": "Insumo, nao execucao: nao reescreve avatar/copy; sem PII; audiencia paga nao vira perfil de comprador.",
+      "artifactSummary": "Retroalimentacao para as Aulas 1 e 2"
     }
   ],
   "edges": [
@@ -1280,18 +1408,48 @@
     },
     {
       "from": "leitor-de-metricas",
-      "to": "analista-de-trafego",
+      "to": "analista-de-dados",
       "type": "dependency"
     },
     {
       "from": "diagnosticador",
-      "to": "analista-de-trafego",
+      "to": "analista-de-dados",
       "type": "dependency"
     },
     {
-      "from": "analista-de-trafego",
+      "from": "analista-de-dados",
+      "to": "coletor-de-dados",
+      "type": "dependency"
+    },
+    {
+      "from": "coletor-de-dados",
+      "to": "board-de-especialistas",
+      "type": "dependency"
+    },
+    {
+      "from": "board-de-especialistas",
+      "to": "painel-de-dados",
+      "type": "dependency"
+    },
+    {
+      "from": "coletor-de-dados",
+      "to": "retroalimentacao",
+      "type": "dependency"
+    },
+    {
+      "from": "coletor-de-dados",
       "to": "gestor-de-campanhas",
       "type": "dependency"
+    },
+    {
+      "from": "retroalimentacao",
+      "to": "avatar-funil",
+      "type": "feedback"
+    },
+    {
+      "from": "retroalimentacao",
+      "to": "copy-funil",
+      "type": "feedback"
     },
     {
       "from": "gestor-de-campanhas",

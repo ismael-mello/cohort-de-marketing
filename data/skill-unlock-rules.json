@@ -135,6 +135,16 @@
     "campaignManagementReport": [
       "dados-trafego/gestao-campanhas.md",
       "dados-trafego/retroalimentacao.md"
+    ],
+    "trafficDataBundle": [
+      "dados-trafego/bundle.json",
+      "dados-trafego/vendas.json"
+    ],
+    "specialistBoardReading": [
+      "dados-trafego/board.json"
+    ],
+    "feedbackLoopReport": [
+      "dados-trafego/retroalimentacao.md"
     ]
   },
   "skills": {
@@ -1075,26 +1085,6 @@
       ],
       "panelHint": "Recomenda uma alavanca com sucesso e reversao; nunca executa."
     },
-    "analista-de-trafego": {
-      "type": "data",
-      "command": "/analista-de-trafego",
-      "primaryArtifacts": [
-        "trafficAnalyticsPanel"
-      ],
-      "requiredFields": [
-        "project.slug"
-      ],
-      "recommendedFields": [
-        "data.dataSourceNotes"
-      ],
-      "requiredArtifacts": [],
-      "recommendedArtifacts": [
-        "trafficMetricReading",
-        "design"
-      ],
-      "availableWhen": "Roda em Modo Exemplo mesmo sem dados reais; com histórico do Leitor/operação de tráfego, analisa a conta real.",
-      "panelHint": "Painel de dados (dia/mês/quarter) + board de especialistas; ROAS Estimado, trimestre não recalcula taxas."
-    },
     "gestor-de-campanhas": {
       "type": "data",
       "command": "/gestor-de-campanhas",
@@ -1111,8 +1101,97 @@
       "recommendedArtifacts": [
         "trafficAnalyticsPanel"
       ],
-      "availableWhen": "Depois da Central de Dados (/analista-de-trafego); compara 7/30 dias com o plano e devolve retroalimentacao para avatar e copy.",
+      "availableWhen": "Depois da Central de Dados (/analista-de-dados); compara 7/30 dias com o plano e devolve retroalimentacao para avatar e copy.",
       "panelHint": "Fecha o ciclo: realizado x planejado + retroalimentacao das Aulas 1 e 2."
+    },
+    "analista-de-dados": {
+      "type": "data",
+      "command": "/analista-de-dados",
+      "primaryArtifacts": [],
+      "requiredFields": [
+        "project.slug"
+      ],
+      "recommendedFields": [
+        "data.dataSourceNotes"
+      ],
+      "requiredArtifacts": [],
+      "recommendedArtifacts": [
+        "trafficMetricReading",
+        "design"
+      ],
+      "availableWhen": "Porta de entrada da Aula 4; orquestra o Squad de Dados de ponta a ponta (roda em Modo Exemplo sem dados reais).",
+      "panelHint": "Hub do Squad de Dados — um comando roda coleta, board, painel e retroalimentacao."
+    },
+    "coletor-de-dados": {
+      "type": "data",
+      "command": "/coletor-de-dados",
+      "primaryArtifacts": [
+        "trafficDataBundle"
+      ],
+      "requiredFields": [
+        "project.slug"
+      ],
+      "recommendedFields": [
+        "data.dataSourceNotes"
+      ],
+      "requiredArtifacts": [],
+      "recommendedArtifacts": [],
+      "availableWhen": "Sempre que o bundle estiver desatualizado ou o periodo/produtos mudarem.",
+      "panelHint": "Coleta Meta + Hotmart no bundle (sem PII)."
+    },
+    "board-de-especialistas": {
+      "type": "data",
+      "command": "/board-de-especialistas",
+      "primaryArtifacts": [
+        "specialistBoardReading"
+      ],
+      "requiredFields": [
+        "project.slug"
+      ],
+      "recommendedFields": [],
+      "requiredArtifacts": [],
+      "recommendedArtifacts": [
+        "trafficDataBundle"
+      ],
+      "availableWhen": "Com bundle coletado; re-roda sem recoletar.",
+      "panelHint": "6 clones + sentimento + sintese sobre o bundle."
+    },
+    "painel-de-dados": {
+      "type": "data",
+      "command": "/painel-de-dados",
+      "primaryArtifacts": [
+        "trafficAnalyticsPanel"
+      ],
+      "requiredFields": [
+        "project.slug"
+      ],
+      "recommendedFields": [],
+      "requiredArtifacts": [],
+      "recommendedArtifacts": [
+        "trafficDataBundle",
+        "specialistBoardReading",
+        "design"
+      ],
+      "availableWhen": "Com bundle + board; renderiza na identidade da marca.",
+      "panelHint": "Painel self-contained + PDF + Book do Funil."
+    },
+    "retroalimentacao": {
+      "type": "data",
+      "command": "/retroalimentacao",
+      "primaryArtifacts": [
+        "feedbackLoopReport"
+      ],
+      "requiredFields": [
+        "project.slug"
+      ],
+      "recommendedFields": [],
+      "requiredArtifacts": [],
+      "recommendedArtifacts": [
+        "trafficDataBundle",
+        "specialistBoardReading"
+      ],
+      "availableWhen": "Depois de coleta+board; devolve os dados para avatar (Aula 1) e copy (Aula 2).",
+      "panelHint": "Fecha o loop O.F.T.R. com dados reais."
     }
   }
 }

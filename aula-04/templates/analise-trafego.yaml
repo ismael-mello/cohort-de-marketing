@@ -1,5 +1,5 @@
 # Template — bloco analise_a4 para o PAINEL-DA-SEMANA.yaml
-# Gerado por /analista-de-trafego. Faça APPEND (nunca sobrescreva o histórico da semana).
+# Gerado por /analista-de-dados. Faça APPEND (nunca sobrescreva o histórico da semana).
 
 analise_a4:
   gerado_em: "AAAA-MM-DD"

@@ -2,7 +2,7 @@
 
 Conectar a Hotmart faz o painel deixar de mostrar só o **ROAS estimado da Meta** (atribuição) e passar a mostrar o **caixa real** — quanto entrou de fato — atribuindo cada venda à campanha que a gerou.
 
-> **Precisa de ajuda?** Rode `/analista-de-trafego`, escolha "conectar plataforma de vendas", e a skill caminha com você por cada passo abaixo. Sem conectar, o painel continua funcionando — só sem a seção de Vendas.
+> **Precisa de ajuda?** Rode `/analista-de-dados`, escolha "conectar plataforma de vendas", e a skill caminha com você por cada passo abaixo. Sem conectar, o painel continua funcionando — só sem a seção de Vendas.
 
 O que você vai preencher no `.env` (na raiz do projeto):
 
@@ -39,7 +39,7 @@ O painel atribui cada venda a uma campanha por uma **cascata de confiança**:
 Além de ler o caixa, vale confirmar se a **Hotmart já manda as compras para a Meta** (evento `Purchase` via CAPI):
 
 - Na Hotmart: **Ferramentas → Pixel de rastreamento** → escolha enviar por **Conversions API** (ou "ambos") e cole o **access token** gerado no Gerenciador de Eventos da Meta.
-- O `/zelador` e o `/analista-de-trafego` conferem se há evento `Purchase` **server-side** chegando. Se não houver, o painel usa a atribuição externa (UTM/SCK) que você configurou aqui.
+- O `/zelador` e o `/analista-de-dados` conferem se há evento `Purchase` **server-side** chegando. Se não houver, o painel usa a atribuição externa (UTM/SCK) que você configurou aqui.
 - **Pegadinha do boleto/Pix:** pagamento não imediato dispara `Payment Generated` (não `Purchase`); o `Purchase` só sai quando aprova — e só com a CAPI ligada.
 
 ---

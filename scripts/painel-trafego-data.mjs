@@ -371,7 +371,7 @@ async function perfilOrganico(ctx) {
     compartilhamentos: posts.reduce((s, p) => s + p.compartilhamentos, 0),
     comentarios_coletados: comentarios.length,
   };
-  // sentimento fica null aqui — a skill /analista-de-trafego lê `comentarios` e preenche (leitura por IA).
+  // sentimento fica null aqui — a skill /board-de-especialistas lê `comentarios` e preenche (leitura por IA).
   return { disponivel: true, resumo, top_posts: top, comentarios, sentimento: null, selo: 'Real', fonte: `API Graph ${GRAPH_VERSION} (page posts+comments)` };
 }
 
