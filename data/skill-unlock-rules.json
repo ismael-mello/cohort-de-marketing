@@ -15,7 +15,9 @@
     "requiredArtifacts": "Arquivos que precisam existir em projetos/{slug}/ para a skill estar realmente liberada.",
     "recommendedArtifacts": "Arquivos que melhoram qualidade ou reduzem perguntas.",
     "anyOf": "Pelo menos um grupo precisa ser satisfeito.",
-    "notApplicableWhen": "Condicoes que transformam a skill em nao aplicavel."
+    "notApplicableWhen": "Condicoes que transformam a skill em nao aplicavel.",
+    "priority": "Ordem numerica declarada da rota; menor vem antes e empate usa exclusivamente o ID estavel da skill.",
+    "recommendationEligible": "Define explicitamente se a skill pode ser escolhida como proximo passo."
   },
   "artifactGlobs": {
     "projectBrief": [
@@ -147,10 +149,16 @@
       "dados-trafego/retroalimentacao.md"
     ]
   },
+  "artifactIndex": {
+    "schemaVersion": "artifact-index-v1",
+    "confirmationRequiredByDefault": true
+  },
   "skills": {
     "comecar": {
       "type": "utility",
       "command": "/comecar",
+      "priority": 0,
+      "recommendationEligible": false,
       "primaryArtifacts": [],
       "requiredFields": [],
       "recommendedFields": [
@@ -166,6 +174,8 @@
     "avatar-funil": {
       "type": "research",
       "command": "/avatar-funil",
+      "priority": 1,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "avatar"
       ],
@@ -210,6 +220,8 @@
     "espiao-do-concorrente": {
       "type": "research",
       "command": "/espiao-do-concorrente",
+      "priority": 2,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "competitorDossier"
       ],
@@ -245,6 +257,8 @@
     "trend-hunting": {
       "type": "research",
       "command": "/trend-hunting",
+      "priority": 3,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "trendReport"
       ],
@@ -280,6 +294,8 @@
     "swipe-file": {
       "type": "research",
       "command": "/swipe-file",
+      "priority": 4,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "swipeBrief"
       ],
@@ -316,6 +332,8 @@
     "offerbook": {
       "type": "strategy",
       "command": "/offerbook",
+      "priority": 5,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "offerbook"
       ],
@@ -356,6 +374,8 @@
     "design-md": {
       "type": "foundation",
       "command": "/design-md",
+      "priority": 6,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "design"
       ],
@@ -429,6 +449,8 @@
     "metodo-funil": {
       "type": "foundation",
       "command": "/metodo-funil",
+      "priority": 7,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "funnel"
       ],
@@ -458,6 +480,8 @@
     "copy-funil": {
       "type": "foundation",
       "command": "/copy-funil",
+      "priority": 8,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "copy"
       ],
@@ -489,6 +513,8 @@
     "quiz-funil": {
       "type": "funnel",
       "command": "/quiz-funil",
+      "priority": 9,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "quiz"
       ],
@@ -528,6 +554,8 @@
     "webinario-funil": {
       "type": "funnel",
       "command": "/webinario-funil",
+      "priority": 9,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "webinar"
       ],
@@ -558,6 +586,8 @@
     "vsl-funil": {
       "type": "funnel",
       "command": "/vsl-funil",
+      "priority": 9,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "vsl"
       ],
@@ -606,6 +636,8 @@
     "advertorial-funil": {
       "type": "funnel",
       "command": "/advertorial-funil",
+      "priority": 9,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "advertorial"
       ],
@@ -633,6 +665,8 @@
     "lancamento-funil": {
       "type": "funnel",
       "command": "/lancamento-funil",
+      "priority": 9,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "launch"
       ],
@@ -664,6 +698,8 @@
     "pagina-vendas-funil": {
       "type": "asset",
       "command": "/pagina-vendas-funil",
+      "priority": 9,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "salesPage"
       ],
@@ -695,6 +731,8 @@
     "email-funil": {
       "type": "asset",
       "command": "/email-funil",
+      "priority": 11,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "emails"
       ],
@@ -722,6 +760,8 @@
     "whatsapp-funil": {
       "type": "asset",
       "command": "/whatsapp-funil",
+      "priority": 11,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "whatsapp"
       ],
@@ -749,6 +789,8 @@
     "conteudo-funil": {
       "type": "asset",
       "command": "/conteudo-funil",
+      "priority": 10,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "content"
       ],
@@ -777,6 +819,8 @@
     "criativos-funil": {
       "type": "asset",
       "command": "/criativos-funil",
+      "priority": 10,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "creatives"
       ],
@@ -807,6 +851,8 @@
     "mockup-produto-funil": {
       "type": "asset",
       "command": "/mockup-produto-funil",
+      "priority": 12,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "mockups"
       ],
@@ -828,6 +874,8 @@
     "bonus-funil": {
       "type": "asset",
       "command": "/bonus-funil",
+      "priority": 12,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "bonuses"
       ],
@@ -851,6 +899,8 @@
     "backend-funil": {
       "type": "asset",
       "command": "/backend-funil",
+      "priority": 14,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "backend"
       ],
@@ -883,6 +933,8 @@
     "recuperacao-funil": {
       "type": "asset",
       "command": "/recuperacao-funil",
+      "priority": 13,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "recovery"
       ],
@@ -909,6 +961,8 @@
     "cro-funil": {
       "type": "optimization",
       "command": "/cro-funil",
+      "priority": 15,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "cro"
       ],
@@ -940,6 +994,8 @@
     "status-funil": {
       "type": "utility",
       "command": "/status-funil",
+      "priority": 99,
+      "recommendationEligible": false,
       "primaryArtifacts": [],
       "requiredFields": [
         "project.slug"
@@ -953,6 +1009,8 @@
     "zelador": {
       "type": "traffic",
       "command": "/zelador",
+      "priority": 26,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "trafficTrackingAudit"
       ],
@@ -974,6 +1032,8 @@
     "briefista": {
       "type": "traffic",
       "command": "/briefista",
+      "priority": 27,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "trafficCreativeBattery"
       ],
@@ -1001,6 +1061,8 @@
     "estruturador": {
       "type": "traffic",
       "command": "/estruturador",
+      "priority": 28,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "trafficCampaignPlan"
       ],
@@ -1024,6 +1086,8 @@
     "ads-creative-factory": {
       "type": "traffic",
       "command": "/ads-creative-factory",
+      "priority": 31,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "creativeFactoryBatch"
       ],
@@ -1049,6 +1113,8 @@
     "leitor-de-metricas": {
       "type": "traffic",
       "command": "/leitor-de-metricas",
+      "priority": 29,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "trafficMetricReading"
       ],
@@ -1067,6 +1133,8 @@
     "diagnosticador": {
       "type": "traffic",
       "command": "/diagnosticador",
+      "priority": 30,
+      "recommendationEligible": true,
       "primaryArtifacts": [
         "trafficDiagnosis"
       ],
