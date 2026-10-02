@@ -2,7 +2,7 @@
 
 > **Estou perdido em:** "a skill gerou a página, mas ela só abre no MEU computador — como isso vira um site de verdade?"
 > **O que você vai ter no final:** a sua `pagina/index.html` acessível numa URL pública (ex.: `seuprojeto.vercel.app`) — o pré-requisito do pixel e do anúncio (anúncio não aponta pra arquivo local). E, se quiser, a IA fazendo isso POR você daqui pra frente (CLI + token).
-> **Fontes:** as aulas do **AIOX** no [portal de cursos](https://membros.academialendaria.ai/m/courses?tenant=1749742382792) — o caminho de estudo RECOMENDADO em vídeo (atenção: a publicação é uma das **últimas** aulas da trilha do AIOX, não a primeira) · o Fundamentals também mostra publicação (existe lá, mas não é o clique a clique recomendado) · docs da Vercel (CLI e tokens).
+> **Fontes cruzadas:** as aulas do **AIOX** no [portal de cursos](https://membros.academialendaria.ai/m/courses?tenant=1749742382792) — o caminho de estudo RECOMENDADO em vídeo (atenção: a publicação é uma das **últimas** aulas da trilha do AIOX, não a primeira) · o Fundamentals também mostra publicação (existe lá, mas não é o clique a clique recomendado) · docs da Vercel (CLI e tokens).
 
 ## ⚠️ A ordem certa (pixel e página andam juntos)
 

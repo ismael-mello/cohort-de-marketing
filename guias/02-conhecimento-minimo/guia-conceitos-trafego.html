@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<!-- Gerado por scripts/gerar-guias-html.py a partir de guias/02-conhecimento-minimo/guia-conceitos-trafego.md. Não edite este arquivo: edite o .md e rode o script. -->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CONCEITOS · Guias · Cohort de Marketing</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0d;--card:#111115;--raised:#26262b;--fg:#EFEBE4;--muted:#A09A92;--gold:#C9B298;--gold-hi:#E9DFD0;--gold-lo:#8D7556;--warn:#d97706;
+--sans:'Inter Tight',system-ui,sans-serif;--serif:'Instrument Serif',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--gold-hi);text-decoration-color:var(--gold-lo);text-underline-offset:3px}a:hover{color:var(--gold)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.topo{position:sticky;top:0;z-index:10;display:flex;gap:18px;align-items:center;padding:12px 28px;background:rgba(10,10,13,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--raised);font-size:.85rem}
+.topo a{color:var(--muted);text-decoration:none}.topo a:hover{color:var(--gold)}.topo .area{margin-left:auto;color:var(--muted);font-family:var(--mono);font-size:.75rem}
+.wrap{max-width:980px;margin:0 auto;padding:48px 28px 96px}
+.cabeca{padding-bottom:28px;margin-bottom:32px;border-bottom:1px solid var(--raised)}
+.cabeca .kicker{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);padding:5px 14px;border:1px solid var(--gold-lo);border-radius:999px;margin-bottom:22px}
+.cabeca h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.3rem,5.5vw,3.6rem);line-height:1.04;letter-spacing:-.01em;margin:0}
+.cabeca h1 em{color:var(--gold)}
+main > h1{display:none}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.7rem,3.4vw,2.3rem);line-height:1.1;margin:56px 0 16px;scroll-margin-top:70px}
+h3{font-size:1.12rem;font-weight:600;margin:36px 0 10px;scroll-margin-top:70px}
+h4{font-size:1rem;margin:28px 0 8px;color:var(--gold-hi)}
+p{margin:14px 0}strong{color:var(--gold-hi);font-weight:600}
+code{font-family:var(--mono);background:var(--raised);color:var(--gold-hi);padding:2px 7px;border-radius:4px;font-size:.84em;word-break:break-word}
+blockquote{margin:22px 0;padding:14px 22px;background:var(--card);border-left:3px solid var(--gold);border-radius:8px}
+blockquote p{margin:8px 0}blockquote.aviso{border-left-color:var(--warn);background:rgba(217,119,6,.07)}
+.tabela{overflow-x:auto;margin:20px 0;border:1px solid var(--raised);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{text-align:left;padding:10px 14px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--card);border-bottom:1px solid var(--raised)}
+td{padding:10px 14px;vertical-align:top;border-bottom:1px solid rgba(38,38,43,.7);line-height:1.5}
+tr:last-child td{border-bottom:0}tbody tr:hover td{background:rgba(201,178,152,.04)}
+td:first-child{color:var(--gold-hi)}
+ul,ol{padding-left:24px}li{margin:6px 0}.caixa{color:var(--gold)}
+.code{position:relative;margin:18px 0}
+pre{margin:0;background:var(--card);border:1px solid var(--raised);border-radius:10px;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:.82rem;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+pre code{background:none;padding:0;color:var(--fg);font-size:inherit}
+.copiar{position:absolute;top:8px;right:8px;font:600 .7rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:var(--bg);border:1px solid var(--gold-lo);border-radius:999px;padding:4px 12px;cursor:pointer}
+.copiar:hover{border-color:var(--gold)}
+hr{border:0;border-top:1px solid var(--raised);margin:40px 0}
+.rodape{margin-top:72px;padding-top:20px;border-top:1px solid var(--raised);color:var(--muted);font-size:.85rem}
+.busca{width:100%;margin:8px 0 4px;padding:14px 18px;font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--raised);border-radius:10px}
+.busca:focus{border-color:var(--gold);outline:none}
+.busca-dica{color:var(--muted);font-size:.85rem;margin:0 0 24px}
+@media (max-width:700px){body{font-size:16px}.wrap{padding:32px 16px 72px}.topo{padding:10px 16px}.topo .area{display:none}}
+</style>
+</head>
+<body>
+<nav class="topo"><a href="../index.html">Todos os guias</a><a href="../../GUIA-DO-ALUNO.html">Guia do Aluno</a><span class="area">02-conhecimento-minimo</span></nav>
+<main class="wrap">
+<header class="cabeca"><span class="kicker">CONCEITOS</span><h1>O repertório mínimo de tráfego (o que é cada coisa, sem jargão)</h1></header>
+
+<h1 id="guia-conceitos-o-repertório-mínimo-de-tráfego-o-que-é-cada-coisa-sem-jargão">GUIA CONCEITOS — o repertório mínimo de tráfego (o que é cada coisa, sem jargão)</h1>
+<blockquote><p><strong>Estou perdido em:</strong> "todo mundo fala BM, pixel, CAPI, GTM... e eu não sei nem o que são essas coisas".</p><p><strong>O que você vai ter no final:</strong> o vocabulário inteiro da Aula 3/4 traduzido — cada termo em 2 frases + uma analogia + ONDE você mexe nele no curso. Leia uma vez antes da Aula 3; volte sempre que esbarrar num termo.</p><p><strong>Fontes cruzadas:</strong> docs do repo (zelador, rastreamento, tutoriais da aula-03/04) + Central de Ajuda da Meta. Sem opinião — só o que cada coisa É.</p></blockquote>
+<hr>
+<h2 id="pré-requisitos-confira-antes">Pré-requisitos (confira ANTES)</h2>
+<p><strong>Nenhum — este é o guia de ENTRADA do tráfego.</strong> Se você só sabe que "vai anunciar na Meta" e mais nada, começa aqui. Reserve ~15 minutos de leitura corrida (ou use como dicionário: Ctrl+F no termo que travou você).</p>
+<h2 id="o-mundo-das-contas-quem-é-quem-na-meta">O mundo das CONTAS (quem é quem na Meta)</h2>
+<p><strong>Perfil pessoal</strong> — a sua conta de gente no Facebook. Tudo na Meta pendura nela. <em>Analogia: o seu CPF.</em> → Onde mexe: login em tudo; precisa estar "aquecida" (uso real) pra não levantar suspeita.</p>
+<p><strong>Página (Fan Page)</strong> — a presença pública da marca no Facebook. Todo anúncio sai EM NOME de uma Página, nunca do perfil. <em>Analogia: a fachada da loja.</em> → Onde mexe: criada na fundação (<a href="../03-conexoes-e-apis/guia-meta-fundacao.html">guia-meta-fundacao</a>); selecionada no nível "anúncio" do Gerenciador.</p>
+<p><strong>Business Manager (BM) / Gerenciador de Negócios / "portfólio empresarial"</strong> — o cofre corporativo que agrupa e controla os ativos do negócio: Páginas, contas de anúncios, pixels, apps e as PESSOAS com acesso a cada um. Três nomes, a mesma coisa. <em>Analogia: o CNPJ + o chaveiro de todas as chaves da empresa.</em> → Onde mexe: <code>business.facebook.com/settings</code> — a tela mais importante do curso fora do Gerenciador.</p>
+<p><strong>Conta de anúncios</strong> — onde o dinheiro acontece: verba, campanhas, faturas. Vive dentro do BM. Tem fuso e moeda IMUTÁVEIS. <em>Analogia: o cartão corporativo com extrato próprio.</em> → Onde mexe: criada na fundação; usada no Gerenciador; o ID dela (<code>act_...</code>) vai no <code>.env</code>.</p>
+<p><strong>Gerenciador de Anúncios (Ads Manager)</strong> — a ferramenta onde campanhas são criadas e monitoradas (<code>adsmanager.facebook.com</code>). Não confunda: BM = cofre de ativos; Ads Manager = mesa de operação. → Onde mexe: <a href="../04-operacao/guia-campanha-no-ar.html">guia-campanha-no-ar</a>.</p>
+<p><strong>Instagram profissional</strong> — a conta do IG convertida pra modo empresa e vinculada à Página. Sem isso, anúncio não sai no Instagram em nome da marca. → Onde mexe: fundação, passo 3.</p>
+<h2 id="o-mundo-do-rastreamento-como-a-meta-vê-o-que-acontece-fora-dela">O mundo do RASTREAMENTO (como a Meta "vê" o que acontece fora dela)</h2>
+<p><strong>Pixel (hoje "Conjunto de dados")</strong> — um código invisível na sua página que avisa a Meta o que o visitante fez ("viu a página", "clicou em comprar"). É o GPS que liga o clique no anúncio ao resultado. <em>Analogia: a catraca que conta quem entrou e o que fez na loja.</em> → Onde mexe: criado no Events Manager; plugado na página (o famoso <code>[PLUG: SEU_PIXEL_ID]</code>) e no checkout via Hotmart — <a href="../03-conexoes-e-apis/guia-pixel-capi.html">guia-pixel-capi</a>.</p>
+<p><strong>Evento</strong> — cada "aviso" que o pixel manda, com nome padronizado: <code>PageView</code> (abriu a página), <code>ViewContent</code> (viu o conteúdo), <code>Lead</code> (cadastrou), <code>InitiateCheckout</code> (foi pro carrinho), <code>Purchase</code> (comprou). A campanha OTIMIZA para um evento — por isso o evento certo importa mais que tudo. → Onde mexe: escolhido no conjunto de anúncios ("evento de conversão").</p>
+<p><strong>CAPI (API de Conversões)</strong> — o irmão do pixel que avisa a Meta PELO SERVIDOR, sem depender do navegador do cliente (que bloqueia cookies, fecha aba, usa iOS...). Pixel = aviso pelo navegador; CAPI = aviso por trás. Os dois juntos = máxima precisão. <em>Analogia: além da catraca, o caixa também reporta a venda.</em> → Onde mexe: a Hotmart liga pra você (Ferramentas → Pixel de rastreamento → "Conversions API").</p>
+<p><strong>Deduplicação (event_id)</strong> — quando pixel E CAPI avisam a MESMA compra, a Meta precisa saber que é uma só (senão conta 2). O <code>event_id</code> igual nos dois avisos é o que permite isso. → Onde mexe: automático via Hotmart; o <code>/zelador</code> confere.</p>
+<p><strong>GTM (Google Tag Manager)</strong> — um "porta-códigos": em vez de colar pixel, analytics etc. um por um no site, você instala SÓ o GTM e gerencia todos os códigos por um painel, sem mexer no site de novo. NÃO é obrigatório no curso (a página das skills já vem com o slot do pixel pronto) — é o caminho de quem tem site próprio/programador. <em>Analogia: a régua de tomadas onde você pluga os aparelhos.</em> → Onde mexe: só se seu site já usa; as páginas do cohort têm snippet direto.</p>
+<p><strong>Verificação de domínio</strong> — provar pra Meta que o site é SEU (um código TXT no DNS do domínio). Dá autoridade sobre os eventos daquele domínio e evita que terceiros anunciem com ele. → Onde mexe: fundação, passo 7 (business settings → Segurança da marca → Domínios). Não bloqueia começar — vira pendência.</p>
+<p><strong>UTM</strong> — etiquetas que você pendura no link (<code>?utm_source=meta&amp;utm_campaign=...</code>) pra saber DE ONDE veio cada visita/venda em qualquer ferramenta de analytics. → Onde mexe: no link do anúncio.</p>
+<p><strong>sck (Hotmart)</strong> — a "UTM da Hotmart": um código curto no link do checkout (<code>?sck=meta-c1-frio</code>, máx. 30 caracteres, sem underscore) que volta junto com a venda — é o que casa venda ↔ campanha no painel da Aula 4. → Onde mexe: <a href="../03-conexoes-e-apis/guia-hotmart.html">guia-hotmart</a>.</p>
+<h2 id="o-mundo-das-campanhas-a-hierarquia-de-3-andares">O mundo das CAMPANHAS (a hierarquia de 3 andares)</h2>
+<p><strong>Campanha → Conjunto de anúncios → Anúncio</strong> — os 3 andares do Gerenciador: a campanha define o OBJETIVO (Vendas/Cadastro); o conjunto define QUEM vê, QUANTO gasta por dia e QUAL evento otimizar; o anúncio é a PEÇA (criativo + texto + link). Default sagrado do curso: 1 campanha → 1 conjunto → 2–3 anúncios. <em>Analogia: pasta → subpasta → arquivos.</em></p>
+<p><strong>CBO vs ABO</strong> — onde vive a verba: CBO = orçamento na campanha (a Meta distribui entre conjuntos); ABO = orçamento em cada conjunto. O método usa <strong>orçamento no conjunto</strong> (com 1 conjunto só, dá no mesmo).</p>
+<p><strong>Advantage+</strong> — o "modo automático" da Meta: ela escolhe posicionamentos (feed, stories, reels...) e expande o público sozinha. O default sagrado ACEITA (iniciante segmentando à mão erra mais que o algoritmo).</p>
+<p><strong>Público frio / morno / quente</strong> — frio: nunca te viu (anúncio pra desconhecidos); morno: já interagiu (viu vídeo, visitou página); quente: quase comprou (carrinho, lista). Cada temperatura = campanha separada. O curso começa 100% no FRIO.</p>
+<p><strong>Fase de aprendizado</strong> — os primeiros dias em que o algoritmo está descobrindo pra quem entregar. Toda edição RESETA essa fase — por isso a regra dos 7 dias sem mexer (<a href="../04-operacao/guia-e-depois.html">guia-e-depois</a>).</p>
+<p><strong>Campanha PAUSADA ("posso testar sem gastar?" — SIM)</strong> — criar campanha, subir criativo e ver tudo no Gerenciador não custa NADA enquanto o status for Pausado: só anúncio ATIVO rodando gasta. E nenhuma skill do curso ativa nada sozinha — o <code>/estruturador</code> cria tudo pausado e a ativação (Gate 3) é decisão explícita SUA. <em>Analogia: o carro na garagem com o tanque cheio — só gasta quando VOCÊ dirige.</em> → Onde vê: <a href="../04-operacao/guia-campanha-no-ar.html">guia-campanha-no-ar</a>.</p>
+<p><strong>Painel da Semana (PAINEL-DA-SEMANA.yaml)</strong> — o caderno de bordo da operação: um arquivo no seu projeto onde CADA semana registra o planejado (verba, critérios de sucesso e reversão), o realizado (as 8 métricas com selo) e a decisão tomada. É a memória que o <code>/leitor-de-metricas</code>, o <code>/diagnosticador</code> e a Aula 4 inteira leem. <em>Analogia: o prontuário do paciente — sem ele, cada consulta começa do zero.</em> → Onde vê um PREENCHIDO: <code>aula-03/exemplos/painel-semana-exemplo.yaml</code>.</p>
+<p><strong>Criativo</strong> — a peça visual do anúncio (imagem/vídeo). "Hook" é a primeira frase/imagem que segura a atenção. → Onde mexe: <a href="../04-operacao/guia-criativos.html">guia-criativos</a>.</p>
+<h2 id="o-mundo-das-métricas-as-6-que-importam-agora">O mundo das MÉTRICAS (as 6 que importam agora)</h2>
+<p><strong>CTR</strong> — % de quem VIU e clicou. Termômetro do criativo (regra de bolso do método: &lt;0,5% em campanha fria = criativo fraco). · <strong>CPM</strong> — custo por mil exibições (termômetro de leilão/concorrência). · <strong>CPA</strong> — custo por resultado (a métrica-rainha: quanto custou cada venda/lead). · <strong>ROAS</strong> — retorno sobre gasto (receita ÷ gasto). ⚠️ O ROAS do Gerenciador é ATRIBUIÇÃO (estimativa) — dinheiro de verdade é o caixa da Hotmart. E <strong>ROAS ≠ ROI</strong>: o ROAS ignora os SEUS custos (produto, taxas, ferramentas) — dá pra ter ROAS 2 e ainda estar no prejuízo; quem fecha a conta é a sua margem (a pegadinha nº 1 do novato — referência de mercado). · <strong>Frequência</strong> — quantas vezes a MESMA pessoa viu (alta = saturou). · <strong>Conversões</strong> — o evento otimizado acontecendo; com menos de ~10 na janela, nenhuma conclusão vale.</p>
+<h2 id="o-mundo-da-api-a-aula-34-por-trás">O mundo da API (a Aula 3/4 "por trás")</h2>
+<p><strong>API</strong> — a porta de serviço de um site: programas entram por ela e pegam dados direto, sem clicar em tela. <strong>Graph API</strong> é a API da Meta. → <strong>App</strong> — o seu "crachá de desenvolvedor" registrado na Meta; é dele que saem tokens. → <strong>Token</strong> — a senha comprida que autoriza um programa a agir na sua conta (trate como senha de banco). → <strong>Escopo</strong> — o que o token PODE fazer (<code>ads_read</code> = só ler). → <strong>Usuário do Sistema</strong> — um "usuário robô" do BM, dono de tokens que não expiram (o jeito profissional). → <strong>Webhook</strong> — o inverso da API: em vez de você perguntar, o serviço te AVISA quando algo acontece (é como a Hotmart avisa a venda). → Onde mexe em tudo isso: <a href="../03-conexoes-e-apis/guia-meta-api.html">guia-meta-api</a>.</p>
+<p><strong>GitHub ≠ VS Code ≠ terminal</strong> — três coisas que todo mundo confunde: <strong>GitHub</strong> é o SITE onde o material do curso mora (é de lá que o <code>git pull</code> puxa); <strong>VS Code</strong> é um EDITOR de arquivos no seu computador; o <strong>terminal</strong> é onde você digita comandos (e onde o Claude Code roda). Você pode nunca abrir o GitHub — o <code>git pull</code> no terminal já traz tudo (<a href="../01-pre-requisitos/guia-atualizar-projeto.html">guia-atualizar-projeto</a>).</p>
+<hr>
+<h2 id="teste-de-sucesso-autoavaliação-de-60-segundos">Teste de sucesso (autoavaliação de 60 segundos)</h2>
+<p>Você consegue completar de cabeça? — "O anúncio sai em nome da ___, pago pela ___ que vive dentro do ___. Quem avisa a Meta que houve venda é o ___ (pelo navegador) e a ___ (pelo servidor), sem contar duas vezes graças ao ___. A campanha define o ___, o conjunto define ___ e ___, e o anúncio é a ___." <em>(Página · conta de anúncios · BM · pixel · CAPI · event_id · objetivo · público/verba · evento · peça.)</em> Errou dois ou mais? Releia a seção correspondente — 5 min.</p>
+<h2 id="possíveis-erros-catálogo-as-confusões-mais-comuns">POSSÍVEIS ERROS — catálogo (as confusões mais comuns)</h2>
+<div class="tabela"><table><thead><tr><th>#</th><th>Sintoma (a confusão)</th><th>Por que está errado</th><th>O certo</th></tr></thead><tbody><tr><td>CT1</td><td>"BM e Gerenciador de Anúncios são a mesma coisa"</td><td>são duas telas com papéis diferentes</td><td>BM (<code>business.facebook.com/settings</code>) = o cofre dos ativos e das pessoas · Ads Manager (<code>adsmanager.facebook.com</code>) = a mesa onde a campanha é criada</td></tr><tr><td>CT2</td><td>"Vou anunciar pelo meu perfil"</td><td>todo anúncio sai em nome de uma <strong>Página</strong>, nunca do perfil</td><td>crie a Página na fundação (<a href="../03-conexoes-e-apis/guia-meta-fundacao.html">guia-meta-fundacao</a>); o perfil só faz o login</td></tr><tr><td>CT3</td><td>"Já tenho pixel, CAPI é opcional" — ou "a mesma venda apareceu duas vezes"</td><td>o navegador perde avisos (cookies, iOS, aba fechada); e pixel + CAPI sem <code>event_id</code> igual contam em dobro</td><td>os dois juntos, deduplicados pelo <code>event_id</code> (automático via Hotmart; o <code>/zelador</code> confere) — <a href="../03-conexoes-e-apis/guia-pixel-capi.html">guia-pixel-capi</a></td></tr><tr><td>CT4</td><td>"ROAS 2 = estou lucrando"</td><td>ROAS ignora os SEUS custos e, no Gerenciador, é atribuição (estimativa)</td><td>lucro quem fecha é a margem; dinheiro de verdade é o caixa da Hotmart</td></tr><tr><td>CT5</td><td>"No dia 2 vou editar a campanha pra melhorar"</td><td>toda edição reseta a fase de aprendizado</td><td>regra dos 7 dias sem mexer (<a href="../04-operacao/guia-e-depois.html">guia-e-depois</a>)</td></tr><tr><td>CT6</td><td>"Se eu criar a campanha, já começo a gastar"</td><td>só anúncio ATIVO rodando gasta</td><td>crie e revise PAUSADO; ativar é decisão sua (Gate 3) — <a href="../04-operacao/guia-campanha-no-ar.html">guia-campanha-no-ar</a></td></tr><tr><td>CT7</td><td>"Preciso instalar o GTM"</td><td>o GTM não é obrigatório no curso</td><td>a página das skills já vem com o slot do pixel; GTM só se o seu site já usa</td></tr><tr><td>CT8</td><td>"GitHub, VS Code e terminal são a mesma coisa"</td><td>site × editor × janela de comandos</td><td>o <code>git pull</code> no terminal já traz o material; você pode nunca abrir o GitHub (<a href="../01-pre-requisitos/guia-atualizar-projeto.html">guia-atualizar-projeto</a>)</td></tr></tbody></table></div>
+<p>Termo que não está aqui: pergunte na conversa "o que é X no contexto de tráfego? explique como pra leigo" — e avise no PS para entrar neste guia.</p>
+<h2 id="pronto-próximos-passos">Pronto. Próximos passos</h2>
+<div class="tabela"><table><thead><tr><th>Agora</th><th>O quê</th></tr></thead><tbody><tr><td>▶️ Fazer</td><td>o teste de autoavaliação acima — errou 2+? releia a seção correspondente (5 min)</td></tr><tr><td>📖 Ler (a cadeia)</td><td><a href="guia-gerenciador-de-anuncios.html">guia-gerenciador-de-anuncios.md</a> (conhecer a ferramenta) → <a href="../03-conexoes-e-apis/guia-meta-fundacao.html">guia-meta-fundacao.md</a> (montar a base) → <a href="../03-conexoes-e-apis/guia-meta-api.html">guia-meta-api.md</a> (conectar)</td></tr><tr><td>🚑 Se travar</td><td>confusões CT1–CT8 acima · esbarrou num termo que não está aqui? pergunte na conversa: "o que é X no contexto de tráfego? explique como pra leigo" — e avise no PS pra entrar neste guia</td></tr></tbody></table></div>
+<p class="rodape">Este guia também existe em markdown, para a IA ler: <a href="guia-conceitos-trafego.md">guia-conceitos-trafego.md</a>. No Claude Code: <code>@guias/02-conhecimento-minimo/guia-conceitos-trafego.md</code>.</p>
+</main>
+<script>
+document.querySelectorAll('.copiar').forEach(function(b){b.addEventListener('click',function(){
+var t=b.parentNode.querySelector('code').innerText;navigator.clipboard.writeText(t).then(function(){b.textContent='copiado';setTimeout(function(){b.textContent='copiar'},1600)})})});
+var q=document.getElementById('busca');if(q){q.addEventListener('input',function(){var v=q.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+document.querySelectorAll('tbody tr').forEach(function(tr){var s=tr.innerText.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');tr.style.display=!v||s.indexOf(v)>-1?'':'none'})})}
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!-- Gerado por scripts/gerar-guias-html.py a partir de guias/03-conexoes-e-apis/guia-organico-tokens.md. Não edite este arquivo: edite o .md e rode o script. -->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOKENS DO ORGÂNICO · Guias · Cohort de Marketing</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0d;--card:#111115;--raised:#26262b;--fg:#EFEBE4;--muted:#A09A92;--gold:#C9B298;--gold-hi:#E9DFD0;--gold-lo:#8D7556;--warn:#d97706;
+--sans:'Inter Tight',system-ui,sans-serif;--serif:'Instrument Serif',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--gold-hi);text-decoration-color:var(--gold-lo);text-underline-offset:3px}a:hover{color:var(--gold)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.topo{position:sticky;top:0;z-index:10;display:flex;gap:18px;align-items:center;padding:12px 28px;background:rgba(10,10,13,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--raised);font-size:.85rem}
+.topo a{color:var(--muted);text-decoration:none}.topo a:hover{color:var(--gold)}.topo .area{margin-left:auto;color:var(--muted);font-family:var(--mono);font-size:.75rem}
+.wrap{max-width:980px;margin:0 auto;padding:48px 28px 96px}
+.cabeca{padding-bottom:28px;margin-bottom:32px;border-bottom:1px solid var(--raised)}
+.cabeca .kicker{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);padding:5px 14px;border:1px solid var(--gold-lo);border-radius:999px;margin-bottom:22px}
+.cabeca h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.3rem,5.5vw,3.6rem);line-height:1.04;letter-spacing:-.01em;margin:0}
+.cabeca h1 em{color:var(--gold)}
+main > h1{display:none}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.7rem,3.4vw,2.3rem);line-height:1.1;margin:56px 0 16px;scroll-margin-top:70px}
+h3{font-size:1.12rem;font-weight:600;margin:36px 0 10px;scroll-margin-top:70px}
+h4{font-size:1rem;margin:28px 0 8px;color:var(--gold-hi)}
+p{margin:14px 0}strong{color:var(--gold-hi);font-weight:600}
+code{font-family:var(--mono);background:var(--raised);color:var(--gold-hi);padding:2px 7px;border-radius:4px;font-size:.84em;word-break:break-word}
+blockquote{margin:22px 0;padding:14px 22px;background:var(--card);border-left:3px solid var(--gold);border-radius:8px}
+blockquote p{margin:8px 0}blockquote.aviso{border-left-color:var(--warn);background:rgba(217,119,6,.07)}
+.tabela{overflow-x:auto;margin:20px 0;border:1px solid var(--raised);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{text-align:left;padding:10px 14px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--card);border-bottom:1px solid var(--raised)}
+td{padding:10px 14px;vertical-align:top;border-bottom:1px solid rgba(38,38,43,.7);line-height:1.5}
+tr:last-child td{border-bottom:0}tbody tr:hover td{background:rgba(201,178,152,.04)}
+td:first-child{color:var(--gold-hi)}
+ul,ol{padding-left:24px}li{margin:6px 0}.caixa{color:var(--gold)}
+.code{position:relative;margin:18px 0}
+pre{margin:0;background:var(--card);border:1px solid var(--raised);border-radius:10px;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:.82rem;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+pre code{background:none;padding:0;color:var(--fg);font-size:inherit}
+.copiar{position:absolute;top:8px;right:8px;font:600 .7rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:var(--bg);border:1px solid var(--gold-lo);border-radius:999px;padding:4px 12px;cursor:pointer}
+.copiar:hover{border-color:var(--gold)}
+hr{border:0;border-top:1px solid var(--raised);margin:40px 0}
+.rodape{margin-top:72px;padding-top:20px;border-top:1px solid var(--raised);color:var(--muted);font-size:.85rem}
+.busca{width:100%;margin:8px 0 4px;padding:14px 18px;font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--raised);border-radius:10px}
+.busca:focus{border-color:var(--gold);outline:none}
+.busca-dica{color:var(--muted);font-size:.85rem;margin:0 0 24px}
+@media (max-width:700px){body{font-size:16px}.wrap{padding:32px 16px 72px}.topo{padding:10px 16px}.topo .area{display:none}}
+</style>
+</head>
+<body>
+<nav class="topo"><a href="../index.html">Todos os guias</a><a href="../../GUIA-DO-ALUNO.html">Guia do Aluno</a><span class="area">03-conexoes-e-apis</span></nav>
+<main class="wrap">
+<header class="cabeca"><span class="kicker">TOKENS DO ORGÂNICO</span><h1>Página e Instagram no painel (avançado, 100% opcional)</h1></header>
+
+<h1 id="guia-tokens-do-orgânico-página-e-instagram-no-painel-avançado-100-opcional">GUIA TOKENS DO ORGÂNICO — Página e Instagram no painel (avançado, 100% opcional)</h1>
+<blockquote><p><strong>Estou perdido em:</strong> "a aba de engajamento do painel está 'em breve' — quero comentários/curtidas/sentimento da minha Página e do IG lá dentro".</p><p><strong>O que você vai ter no final:</strong> <code>META_PAGE_ACCESS_TOKEN</code> (Facebook) e/ou <code>META_INSTAGRAM_TOKEN</code> (Instagram) no <code>.env</code>, com o teste <code>--perfil</code> respondendo. <strong>Sem eles o painel funciona normalmente</strong> — a aba fica "em breve" e nada mais muda.</p><p><strong>Fontes cruzadas:</strong> super-guia B.6 + <code>aula-04/docs/tutorial-token-meta.md</code> Caminho A (repo) · <code>scripts/painel-trafego-data.mjs --perfil</code> (código real) · docs/tutoriais da API do Instagram (convite de testador em "Apps e sites"; token longo ~60 dias — consultados 22/07).</p><p><strong>Aviso honesto:</strong> é o setup mais chato da Meta, validade ~60 dias, e ler Página em produção exigiria App Review (semanas). No modo dev funciona só na SUA conta — que é exatamente o caso do curso. Baixa prioridade de verdade.</p></blockquote>
+<h2 id="pré-requisitos-confira-antes">Pré-requisitos (confira ANTES)</h2>
+<div class="tabela"><table><thead><tr><th>Tipo</th><th>Pré-requisito</th><th>Não tem? Faça isso</th></tr></thead><tbody><tr><td>🔑 Conta</td><td>App da Meta + fundação prontos (você é admin do app E da Página)</td><td><a href="guia-meta-api.html">guia-meta-api</a> · <a href="guia-meta-fundacao.html">guia-meta-fundacao</a></td></tr><tr><td>🔑 Conta</td><td>Instagram <strong>Profissional (Empresa)</strong> vinculado à Página</td><td><a href="guia-meta-fundacao.html">guia-meta-fundacao</a>, passo 3</td></tr><tr><td>📄 Artefato</td><td>O resto da Aula 4 já rodando (este é o ÚLTIMO enfeite, não o começo)</td><td><a href="../05-metricas/guia-central-de-dados.html">guia-central-de-dados</a></td></tr></tbody></table></div>
+<h2 id="facebook-meta_page_access_token">Facebook (<code>META_PAGE_ACCESS_TOKEN</code>)</h2>
+<ol><li>No app (<code>developers.facebook.com</code> → seu app → <strong>Casos de uso</strong>): caso <strong>"Gerenciar tudo na sua Página"</strong> → <strong>Personalizar</strong> → adicione <strong><code>pages_read_engagement</code></strong> e <strong><code>pages_read_user_content</code></strong>.</li><li><strong>Graph API Explorer</strong> (<code>developers.facebook.com/tools/explorer</code>) → selecione o app → <strong>"Get User Access Token"</strong> → marque <code>pages_read_engagement</code>, <code>pages_read_user_content</code>, <code>pages_show_list</code> → <strong>Generate</strong>.</li><li><strong>Estenda a validade:</strong> copie o token → <strong>Access Token Debugger</strong> (<code>developers.facebook.com/tools/debug/accesstoken</code>) → cole → <strong>"Estender token de acesso"</strong> (~60 dias) → copie o LONGO.</li><li><code>.env</code>: <code>META_PAGE_ACCESS_TOKEN=...</code> → teste: <code>node scripts/painel-trafego-data.mjs --account --perfil</code> → <code>perfil.disponivel: true</code>.</li></ol>
+<h2 id="instagram-meta_instagram_token-a-api-nova-login-do-instagram">Instagram (<code>META_INSTAGRAM_TOKEN</code>) — a API nova ("login do Instagram")</h2>
+<ol><li>Confira se é o seu caso: no app aparecem escopos <code>instagram_business_basic</code> / <code>instagram_business_manage_comments</code> (e não <code>instagram_manage_comments</code>).</li><li>App → <strong>Casos de uso → API do Instagram → Personalizar → aba Funções</strong> → adicione a sua conta @ como <strong>"Testador do Instagram"</strong>.</li><li>⚠️ <strong>Aceite o convite DENTRO do Instagram</strong> — app do Instagram → Configurações → <strong>"Apps e sites" → Convites de testador → Aceitar</strong> (ou toque na notificação). <em>Este passo esquecido é a causa nº 1 de falha.</em></li><li>De volta ao app → seção <strong>"Gerar tokens de acesso"</strong> → <strong>Adicionar conta</strong> → selecione o @ → "Add all required permissions" → <strong>gerar token</strong> (já sai de longa duração).</li><li><code>.env</code>: <code>META_INSTAGRAM_TOKEN=...</code> → teste com <code>--perfil</code>.</li></ol>
+<h2 id="teste-de-sucesso">Teste de sucesso</h2>
+<p><code>node scripts/painel-trafego-data.mjs --account --perfil</code> responde <code>perfil.disponivel: true</code> — e no próximo <code>/analista-de-dados</code>, a aba de engajamento deixa de ser "em breve".</p>
+<h2 id="possíveis-erros-catálogo">POSSÍVEIS ERROS — catálogo</h2>
+<div class="tabela"><table><thead><tr><th>#</th><th>Sintoma</th><th>Causa</th><th>O que fazer (em ordem)</th></tr></thead><tbody><tr><td>OT1</td><td>Token gerado mas <code>perfil.disponivel: false</code></td><td>escopo faltando, ou token curto que já expirou</td><td>refaça com os 3 escopos do passo 2; estenda no Debugger; confira se colou o LONGO</td></tr><tr><td>OT2</td><td>Instagram: geração falha / conta não aparece</td><td>o convite de testador não foi ACEITO dentro do Instagram</td><td>passo 3 do bloco Instagram ("Apps e sites" → aceitar) e gere de novo</td></tr><tr><td>OT3</td><td>"Apps e sites" não aparece no Instagram</td><td>conta não é Profissional, não está vinculada à Página, ou app desatualizado</td><td>mude pra Profissional + vincule (<a href="guia-meta-fundacao.html">guia-meta-fundacao</a> passo 3); atualize o app do Instagram</td></tr><tr><td>OT4</td><td>Token <strong>morreu em ~60 dias</strong></td><td>é a validade normal do modo dev</td><td>regenere (passos 2–3 de cada bloco); anote no calendário — ou aceite a aba "em breve" e viva feliz</td></tr><tr><td>OT5</td><td>"Preciso disso pro curso?"</td><td>não — é o opcional mais opcional do arsenal</td><td>o painel, o board e as decisões funcionam SEM; faça só se o engajamento orgânico importa pra você</td></tr></tbody></table></div>
+<h2 id="pronto-próximos-passos">Pronto. Próximos passos</h2>
+<div class="tabela"><table><thead><tr><th>Agora</th><th>O quê</th></tr></thead><tbody><tr><td>▶️ Fazer</td><td>rode <code>/analista-de-dados</code> de novo — a aba de engajamento acende com o token no lugar</td></tr><tr><td>📖 Ler</td><td><a href="../05-metricas/guia-como-ler-os-numeros.html">guia-como-ler-os-numeros</a> (o que fazer com os números novos)</td></tr><tr><td>🚑 Se travar</td><td>o catálogo OT1–OT5 acima (convite não aceito, token curto, aba apagada...)</td></tr></tbody></table></div>
+<p class="rodape">Este guia também existe em markdown, para a IA ler: <a href="guia-organico-tokens.md">guia-organico-tokens.md</a>. No Claude Code: <code>@guias/03-conexoes-e-apis/guia-organico-tokens.md</code>.</p>
+</main>
+<script>
+document.querySelectorAll('.copiar').forEach(function(b){b.addEventListener('click',function(){
+var t=b.parentNode.querySelector('code').innerText;navigator.clipboard.writeText(t).then(function(){b.textContent='copiado';setTimeout(function(){b.textContent='copiar'},1600)})})});
+var q=document.getElementById('busca');if(q){q.addEventListener('input',function(){var v=q.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+document.querySelectorAll('tbody tr').forEach(function(tr){var s=tr.innerText.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');tr.style.display=!v||s.indexOf(v)>-1?'':'none'})})}
+</script>
+</body>
+</html>

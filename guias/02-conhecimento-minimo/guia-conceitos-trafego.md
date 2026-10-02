@@ -2,7 +2,7 @@
 
 > **Estou perdido em:** "todo mundo fala BM, pixel, CAPI, GTM... e eu não sei nem o que são essas coisas".
 > **O que você vai ter no final:** o vocabulário inteiro da Aula 3/4 traduzido — cada termo em 2 frases + uma analogia + ONDE você mexe nele no curso. Leia uma vez antes da Aula 3; volte sempre que esbarrar num termo.
-> **Fontes:** docs do repo (zelador, rastreamento, tutoriais da aula-03/04) + Central de Ajuda da Meta. Sem opinião — só o que cada coisa É.
+> **Fontes cruzadas:** docs do repo (zelador, rastreamento, tutoriais da aula-03/04) + Central de Ajuda da Meta. Sem opinião — só o que cada coisa É.
 
 ---
 
@@ -77,10 +77,25 @@
 Você consegue completar de cabeça? — "O anúncio sai em nome da ___, pago pela ___ que vive dentro do ___. Quem avisa a Meta que houve venda é o ___ (pelo navegador) e a ___ (pelo servidor), sem contar duas vezes graças ao ___. A campanha define o ___, o conjunto define ___ e ___, e o anúncio é a ___."
 *(Página · conta de anúncios · BM · pixel · CAPI · event_id · objetivo · público/verba · evento · peça.)* Errou dois ou mais? Releia a seção correspondente — 5 min.
 
+## POSSÍVEIS ERROS — catálogo (as confusões mais comuns)
+
+| # | Sintoma (a confusão) | Por que está errado | O certo |
+|---|---|---|---|
+| CT1 | "BM e Gerenciador de Anúncios são a mesma coisa" | são duas telas com papéis diferentes | BM (`business.facebook.com/settings`) = o cofre dos ativos e das pessoas · Ads Manager (`adsmanager.facebook.com`) = a mesa onde a campanha é criada |
+| CT2 | "Vou anunciar pelo meu perfil" | todo anúncio sai em nome de uma **Página**, nunca do perfil | crie a Página na fundação ([guia-meta-fundacao](../03-conexoes-e-apis/guia-meta-fundacao.md)); o perfil só faz o login |
+| CT3 | "Já tenho pixel, CAPI é opcional" — ou "a mesma venda apareceu duas vezes" | o navegador perde avisos (cookies, iOS, aba fechada); e pixel + CAPI sem `event_id` igual contam em dobro | os dois juntos, deduplicados pelo `event_id` (automático via Hotmart; o `/zelador` confere) — [guia-pixel-capi](../03-conexoes-e-apis/guia-pixel-capi.md) |
+| CT4 | "ROAS 2 = estou lucrando" | ROAS ignora os SEUS custos e, no Gerenciador, é atribuição (estimativa) | lucro quem fecha é a margem; dinheiro de verdade é o caixa da Hotmart |
+| CT5 | "No dia 2 vou editar a campanha pra melhorar" | toda edição reseta a fase de aprendizado | regra dos 7 dias sem mexer ([guia-e-depois](../04-operacao/guia-e-depois.md)) |
+| CT6 | "Se eu criar a campanha, já começo a gastar" | só anúncio ATIVO rodando gasta | crie e revise PAUSADO; ativar é decisão sua (Gate 3) — [guia-campanha-no-ar](../04-operacao/guia-campanha-no-ar.md) |
+| CT7 | "Preciso instalar o GTM" | o GTM não é obrigatório no curso | a página das skills já vem com o slot do pixel; GTM só se o seu site já usa |
+| CT8 | "GitHub, VS Code e terminal são a mesma coisa" | site × editor × janela de comandos | o `git pull` no terminal já traz o material; você pode nunca abrir o GitHub ([guia-atualizar-projeto](../01-pre-requisitos/guia-atualizar-projeto.md)) |
+
+Termo que não está aqui: pergunte na conversa "o que é X no contexto de tráfego? explique como pra leigo" — e avise no PS para entrar neste guia.
+
 ## Pronto. Próximos passos
 
 | Agora | O quê |
 |---|---|
 | ▶️ Fazer | o teste de autoavaliação acima — errou 2+? releia a seção correspondente (5 min) |
 | 📖 Ler (a cadeia) | [guia-gerenciador-de-anuncios.md](guia-gerenciador-de-anuncios.md) (conhecer a ferramenta) → [guia-meta-fundacao.md](../03-conexoes-e-apis/guia-meta-fundacao.md) (montar a base) → [guia-meta-api.md](../03-conexoes-e-apis/guia-meta-api.md) (conectar) |
-| 🚑 Se travar | esbarrou num termo que não está aqui? pergunte na conversa: "o que é X no contexto de tráfego? explique como pra leigo" — e avise no PS pra entrar neste guia |
+| 🚑 Se travar | confusões CT1–CT8 acima · esbarrou num termo que não está aqui? pergunte na conversa: "o que é X no contexto de tráfego? explique como pra leigo" — e avise no PS pra entrar neste guia |

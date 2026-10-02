@@ -74,10 +74,25 @@ Abra `adsmanager.facebook.com` → aba Campanhas: a sua campanha aparece com **1
 
 No `PAINEL-DA-SEMANA.yaml` do seu projeto: data da subida, verba, criativos, **critério de sucesso** (ex.: ≥1 venda ou CPA ≤ R$X em 7 dias) e **critério de reversão** (ex.: R$210 gastos sem venda = pausa).
 
+## POSSÍVEIS ERROS — catálogo
+
+| # | Sintoma | Causa | O que fazer (em ordem) |
+|---|---|---|---|
+| CA1 | O `/zelador` deu **CRÍTICO** e o `/estruturador` se recusa a seguir | bloqueio de propósito: falta algo da fundação (conta, pixel, CAPI, pagamento…) | conserte o item que o zelador apontou e rode o `/zelador` de novo (Passo 1) |
+| CA2 | O `/estruturador` não oferece o Modo API | a escrita pela API não foi testada (`api_escrita_habilitada` não está `true`) | rode `/zelador --testar-escrita`; sem API, siga pelo Modo Manual (Passo 3) |
+| CA3 | No conjunto, o evento **Comprar** aparece cinza | o pixel nunca registrou esse evento | volte ao trackeamento ([guia-pixel-capi](../03-conexoes-e-apis/guia-pixel-capi.md)) antes de subir |
+| CA4 | Escolhi "Impulsionar", ou o Gerenciador pôs o orçamento na campanha (Advantage/CBO) | fora do default sagrado | refaça com objetivo **Vendas** (ou Cadastro) e orçamento **no conjunto**, R$ 30/dia com término em 7 dias (Passo 3) |
+| CA5 | O link do anúncio é a página do MEU computador, ou está sem `sck`/UTM | página não publicada ou link sem rastreio | publique a página ([guia-publicar-pagina](../03-conexoes-e-apis/guia-publicar-pagina.md)) e use o checkout com `?sck=` ([guia-hotmart](../03-conexoes-e-apis/guia-hotmart.md)); revise caractere a caractere (Passo 4) |
+| CA6 | Publiquei e a campanha ficou ATIVA antes da revisão | esqueceu de pausar logo após publicar | toggle azul → Pausado, faça o checklist do Passo 4 e só então ative |
+| CA7 | Anúncio rejeitado, "Em análise" por mais de ~2 dias úteis, ou conta restrita | revisão da Meta (inclui a página de destino) | G5/G9 do [guia-gerenciador](../02-conhecimento-minimo/guia-gerenciador-de-anuncios.md) |
+| CA8 | A campanha não aparece no Gerenciador | conta de anúncios errada, filtro ou período | G1 do [guia-gerenciador](../02-conhecimento-minimo/guia-gerenciador-de-anuncios.md) |
+
+Se nada resolver: print da tela + "pesquise esse erro do Gerenciador da Meta" no Claude ou no Codex, ou leve ao PS.
+
 ## Pronto. Próximos passos
 
 | Agora | O quê |
 |---|---|
 | ▶️ Fazer | registre no `PAINEL-DA-SEMANA.yaml` (seção acima) — 1 min agora poupa a semana inteira; e anote no calendário o DIA 7 (o ritual) |
 | 📖 Ler | **[guia-e-depois.md](guia-e-depois.md)** (spoiler: o próximo passo é NÃO mexer por 7 dias) |
-| 🚑 Se travar | anúncio rejeitado / "em análise" eterno / conta restrita / pagamento → catálogo G1–G9 do [guia-gerenciador](../02-conhecimento-minimo/guia-gerenciador-de-anuncios.md) |
+| 🚑 Se travar | catálogo CA1–CA8 acima · anúncio rejeitado / "em análise" eterno / conta restrita / pagamento → catálogo G1–G9 do [guia-gerenciador](../02-conhecimento-minimo/guia-gerenciador-de-anuncios.md) |

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!-- Gerado por scripts/gerar-guias-html.py a partir de guias/01-pre-requisitos/guia-git-clonar-e-atualizar.md. Não edite este arquivo: edite o .md e rode o script. -->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIT · Guias · Cohort de Marketing</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0d;--card:#111115;--raised:#26262b;--fg:#EFEBE4;--muted:#A09A92;--gold:#C9B298;--gold-hi:#E9DFD0;--gold-lo:#8D7556;--warn:#d97706;
+--sans:'Inter Tight',system-ui,sans-serif;--serif:'Instrument Serif',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--gold-hi);text-decoration-color:var(--gold-lo);text-underline-offset:3px}a:hover{color:var(--gold)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.topo{position:sticky;top:0;z-index:10;display:flex;gap:18px;align-items:center;padding:12px 28px;background:rgba(10,10,13,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--raised);font-size:.85rem}
+.topo a{color:var(--muted);text-decoration:none}.topo a:hover{color:var(--gold)}.topo .area{margin-left:auto;color:var(--muted);font-family:var(--mono);font-size:.75rem}
+.wrap{max-width:980px;margin:0 auto;padding:48px 28px 96px}
+.cabeca{padding-bottom:28px;margin-bottom:32px;border-bottom:1px solid var(--raised)}
+.cabeca .kicker{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);padding:5px 14px;border:1px solid var(--gold-lo);border-radius:999px;margin-bottom:22px}
+.cabeca h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.3rem,5.5vw,3.6rem);line-height:1.04;letter-spacing:-.01em;margin:0}
+.cabeca h1 em{color:var(--gold)}
+main > h1{display:none}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.7rem,3.4vw,2.3rem);line-height:1.1;margin:56px 0 16px;scroll-margin-top:70px}
+h3{font-size:1.12rem;font-weight:600;margin:36px 0 10px;scroll-margin-top:70px}
+h4{font-size:1rem;margin:28px 0 8px;color:var(--gold-hi)}
+p{margin:14px 0}strong{color:var(--gold-hi);font-weight:600}
+code{font-family:var(--mono);background:var(--raised);color:var(--gold-hi);padding:2px 7px;border-radius:4px;font-size:.84em;word-break:break-word}
+blockquote{margin:22px 0;padding:14px 22px;background:var(--card);border-left:3px solid var(--gold);border-radius:8px}
+blockquote p{margin:8px 0}blockquote.aviso{border-left-color:var(--warn);background:rgba(217,119,6,.07)}
+.tabela{overflow-x:auto;margin:20px 0;border:1px solid var(--raised);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{text-align:left;padding:10px 14px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--card);border-bottom:1px solid var(--raised)}
+td{padding:10px 14px;vertical-align:top;border-bottom:1px solid rgba(38,38,43,.7);line-height:1.5}
+tr:last-child td{border-bottom:0}tbody tr:hover td{background:rgba(201,178,152,.04)}
+td:first-child{color:var(--gold-hi)}
+ul,ol{padding-left:24px}li{margin:6px 0}.caixa{color:var(--gold)}
+.code{position:relative;margin:18px 0}
+pre{margin:0;background:var(--card);border:1px solid var(--raised);border-radius:10px;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:.82rem;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+pre code{background:none;padding:0;color:var(--fg);font-size:inherit}
+.copiar{position:absolute;top:8px;right:8px;font:600 .7rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:var(--bg);border:1px solid var(--gold-lo);border-radius:999px;padding:4px 12px;cursor:pointer}
+.copiar:hover{border-color:var(--gold)}
+hr{border:0;border-top:1px solid var(--raised);margin:40px 0}
+.rodape{margin-top:72px;padding-top:20px;border-top:1px solid var(--raised);color:var(--muted);font-size:.85rem}
+.busca{width:100%;margin:8px 0 4px;padding:14px 18px;font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--raised);border-radius:10px}
+.busca:focus{border-color:var(--gold);outline:none}
+.busca-dica{color:var(--muted);font-size:.85rem;margin:0 0 24px}
+@media (max-width:700px){body{font-size:16px}.wrap{padding:32px 16px 72px}.topo{padding:10px 16px}.topo .area{display:none}}
+</style>
+</head>
+<body>
+<nav class="topo"><a href="../index.html">Todos os guias</a><a href="../../GUIA-DO-ALUNO.html">Guia do Aluno</a><span class="area">01-pre-requisitos</span></nav>
+<main class="wrap">
+<header class="cabeca"><span class="kicker">GIT</span><h1>Clonar o projeto (1ª vez) e mantê-lo atualizado</h1></header>
+
+<h1 id="guia-git-clonar-o-projeto-1ª-vez-e-mantê-lo-atualizado">GUIA GIT — clonar o projeto (1ª vez) e mantê-lo atualizado</h1>
+<blockquote><p><strong>Estou perdido em:</strong> "como baixo o projeto pro meu computador? / o git pediu senha e não aceita / criei uma pasta e virou pasta dentro de pasta".</p><p><strong>O que você vai ter no final:</strong> o projeto <code>cohort-de-marketing</code> clonado no lugar certo, com credencial que funciona (PAT), sabendo a diferença entre clonar (1ª vez) e atualizar (sempre).</p><p><strong>Fontes cruzadas:</strong> <code>GUIA-DO-ALUNO.html</code> Parte 0 (repo) · <a href="guia-atualizar-projeto.html">guia-atualizar-projeto</a> (a metade do update, já auditada) · doc oficial do GitHub sobre Personal Access Tokens (<a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens">docs.github.com — Managing your personal access tokens</a>, consultada 22/07) · caso real da Aula 1 ("criar uma pasta para depois clonar… gera erro, porque cria uma pasta dentro da pasta").</p></blockquote>
+<h2 id="clonar-vs-atualizar-1-frase-cada">Clonar vs atualizar (1 frase cada)</h2>
+<ul><li><strong>Clonar</strong> = baixar o projeto pela primeira vez (<code>git clone ...</code>) — faz UMA vez na vida por máquina.</li><li><strong>Atualizar</strong> = puxar as novidades (<code>git pull</code>) — faz sempre que avisarem que saiu atualização (<a href="guia-atualizar-projeto.html">guia-atualizar-projeto</a>, erros U1–U5).</li></ul>
+<h2 id="pré-requisitos-confira-antes">Pré-requisitos (confira ANTES)</h2>
+<div class="tabela"><table><thead><tr><th>Tipo</th><th>Pré-requisito</th><th>Não tem? Faça isso</th></tr></thead><tbody><tr><td>🧰 Ferramenta</td><td>Git instalado (<code>git --version</code> responde)</td><td>Windows: <code>git-scm.com/download/win</code> → instale → REABRA o terminal; Mac: o terminal oferece instalar sozinho</td></tr><tr><td>📖 Conhecimento</td><td>Abrir o terminal na pasta certa</td><td><a href="guia-terminal-e-pastas.html">guia-terminal-e-pastas.md</a></td></tr><tr><td>🔑 Conta</td><td>Conta no GitHub <strong>com acesso ao repositório do curso</strong> (você recebeu o convite)</td><td>aceite o convite que chegou no seu e-mail do GitHub</td></tr></tbody></table></div>
+<h2 id="passo-1-onde-clonar-o-erro-nº-1-antes-de-qualquer-comando">Passo 1 — Onde clonar (o erro nº 1, antes de qualquer comando)</h2>
+<p>⚠️ <strong>NÃO crie uma pasta <code>cohort-de-marketing</code> antes.</strong> O <code>git clone</code> <strong>JÁ cria a pasta</strong> — quem cria antes acaba com <code>cohort-de-marketing/cohort-de-marketing</code> (pasta dentro de pasta, caso real de aula). Abra o terminal na pasta-MÃE onde você guarda projetos (ex.: <code>Documentos</code>) e clone dali.</p>
+<h2 id="passo-2-o-pat-a-senha-de-programa-do-github">Passo 2 — O PAT (a "senha de programa" do GitHub)</h2>
+<p>O GitHub <strong>não aceita a sua senha normal</strong> no terminal — precisa de um <strong>Personal Access Token (PAT)</strong>:</p>
+<ol><li><code>github.com</code> → seu avatar → <strong>Settings</strong> → <strong>Developer settings</strong> → <strong>Personal access tokens</strong> → <strong>Fine-grained tokens</strong> → <strong>Generate new token</strong>.</li><li>Nome (<code>cohort</code>), validade (90 dias+), <strong>Repository access</strong>: só o repositório do curso → <strong>Permissions</strong>: Repository permissions → <strong>Contents: Read-only</strong> basta pra clonar/atualizar.</li><li><strong>Generate</strong> → o token aparece <strong>uma vez</strong> → copie e guarde como senha (gerenciador de senhas; NUNCA em grupo/print).</li></ol>
+<h2 id="passo-3-clonar">Passo 3 — Clonar</h2>
+<div class="code"><button class="copiar" type="button">copiar</button><pre data-lang=""><code>git clone https://github.com/marketingLendario/cohort-de-marketing.git</code></pre></div>
+<p>Quando pedir:</p>
+<ul><li><strong>Username:</strong> seu usuário do GitHub;</li><li><strong>Password:</strong> <strong>cole o PAT</strong> (não a senha do site!). No Windows pode abrir uma janelinha de login do GitHub — entrar por ela também vale (e salva a credencial). Depois: <code>cd cohort-de-marketing</code> → <code>dir</code>/<code>ls</code> confere o conteúdo.</li></ul>
+<h2 id="teste-de-sucesso">Teste de sucesso</h2>
+<p>Dentro da pasta clonada, <code>git pull</code> responde <strong><code>Already up to date.</code></strong> — prova que o clone é um repositório git de verdade, conectado e autenticado. E <code>/</code> + "funil" no Claude lista as skills (a pasta oculta <code>.claude</code> veio junto).</p>
+<h2 id="possíveis-erros-catálogo">POSSÍVEIS ERROS — catálogo</h2>
+<div class="tabela"><table><thead><tr><th>#</th><th>Sintoma</th><th>Causa</th><th>O que fazer (em ordem)</th></tr></thead><tbody><tr><td>R1</td><td><strong>"Support for password authentication was removed"</strong></td><td>você digitou a senha do site — o GitHub só aceita PAT no terminal</td><td>gere o PAT (passo 2) e use ELE no campo de senha</td></tr><tr><td>R2</td><td><strong>Pasta dentro de pasta</strong> (<code>cohort-de-marketing/cohort-de-marketing</code>)</td><td>criou a pasta antes de clonar</td><td>apague a de fora (ou mova a de dentro pro lugar certo) e lembre: o clone cria a pasta sozinho</td></tr><tr><td>R3</td><td><strong>"Repository not found"</strong> ou 403</td><td>sem acesso ao repositório privado, ou PAT sem a permissão/repositório certo</td><td>1) aceite o convite do GitHub (e-mail); 2) confira que o fine-grained token inclui O repositório do curso com Contents: Read; 3) URL digitada certinha?</td></tr><tr><td>R4</td><td>Pede usuário/senha <strong>toda vez</strong></td><td>a credencial não ficou salva</td><td>Windows: deixe o Gerenciador de Credenciais salvar (a janelinha do GitHub); Mac: <code>git config --global credential.helper osxkeychain</code> → o próximo login fica guardado</td></tr><tr><td>R5</td><td>Baixou o <strong>ZIP</strong> pelo site em vez de clonar</td><td>sem git = sem <code>git pull</code> (e o ZIP pode vir sem ajustes de ocultos)</td><td>apague e clone com git — é o único caminho que se mantém atualizado</td></tr><tr><td>R6</td><td>Já clonado, quer <strong>atualizar</strong></td><td>—</td><td>é outro guia (uma linha: <code>git pull</code>): <a href="guia-atualizar-projeto.html">guia-atualizar-projeto.md</a>, erros U1–U5</td></tr></tbody></table></div>
+<h2 id="pronto-próximos-passos">Pronto. Próximos passos</h2>
+<div class="tabela"><table><thead><tr><th>Agora</th><th>O quê</th></tr></thead><tbody><tr><td>▶️ Fazer</td><td><code>cd cohort-de-marketing</code> → abra o <code>claude</code> → rode <code>/comecar</code></td></tr><tr><td>📖 Ler</td><td><a href="guia-env-e-chaves.html">guia-env-e-chaves.md</a> (o próximo passo do chão)</td></tr><tr><td>🚑 Se travar</td><td>o catálogo R1–R6 acima (senha recusada, pasta dupla, 403...)</td></tr></tbody></table></div>
+<p class="rodape">Este guia também existe em markdown, para a IA ler: <a href="guia-git-clonar-e-atualizar.md">guia-git-clonar-e-atualizar.md</a>. No Claude Code: <code>@guias/01-pre-requisitos/guia-git-clonar-e-atualizar.md</code>.</p>
+</main>
+<script>
+document.querySelectorAll('.copiar').forEach(function(b){b.addEventListener('click',function(){
+var t=b.parentNode.querySelector('code').innerText;navigator.clipboard.writeText(t).then(function(){b.textContent='copiado';setTimeout(function(){b.textContent='copiar'},1600)})})});
+var q=document.getElementById('busca');if(q){q.addEventListener('input',function(){var v=q.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+document.querySelectorAll('tbody tr').forEach(function(tr){var s=tr.innerText.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');tr.style.display=!v||s.indexOf(v)>-1?'':'none'})})}
+</script>
+</body>
+</html>

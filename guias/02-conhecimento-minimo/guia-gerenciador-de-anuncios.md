@@ -2,7 +2,7 @@
 
 > **Estou perdido em:** "abri o Gerenciador e não sei onde estou, o que cada status significa, nem que números olhar".
 > **O que você vai ter no final:** você navega o Ads Manager sem medo — sabe onde cada coisa fica, o que cada status quer dizer, que colunas configurar e o que NUNCA tocar.
-> **Fontes:** Gerenciador real (`adsmanager.facebook.com`) · método do curso (default sagrado + regra dos 7 dias) · Central de Ajuda da Meta · pesquisa web 22/07 (análise travada >48 h, conta restrita ao publicar — Central de Ajuda + blogs de tráfego BR) · referências de mercado reescritas. Conceitos dos termos: [guia-conceitos-trafego.md](guia-conceitos-trafego.md).
+> **Fontes cruzadas:** Gerenciador real (`adsmanager.facebook.com`) · método do curso (default sagrado + regra dos 7 dias) · Central de Ajuda da Meta · pesquisa web 22/07 (análise travada >48 h, conta restrita ao publicar — Central de Ajuda + blogs de tráfego BR) · referências de mercado reescritas. Conceitos dos termos: [guia-conceitos-trafego.md](guia-conceitos-trafego.md).
 
 ---
 
