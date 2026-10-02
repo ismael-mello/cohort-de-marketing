@@ -1,9 +1,9 @@
 # GUIA META API — do zero absoluto ao token funcionando
 
 > **Estou perdido em:** "preciso conectar a conta de anúncios da Meta (app, token, IDs) e nunca fiz isso".
-> **Meta deste guia:** alguém que NUNCA pegou nisso termina com `META_ACCESS_TOKEN` + IDs no `.env` e o teste respondendo `"modo":"api"`. Sem pulo lógico. Com TODOS os erros conhecidos catalogados no fim.
+> **O que você vai ter no final:** alguém que NUNCA pegou nisso termina com `META_ACCESS_TOKEN` + IDs no `.env` e o teste respondendo `"modo":"api"`. Sem pulo lógico. Com TODOS os erros conhecidos catalogados no fim.
 >
-> **Fontes cruzadas (por que confiar):** `aula-04/docs/tutorial-token-meta.md` e `configurar-chaves-meta.md` (repo) · `scripts/zelador-audit.mjs` e `painel-trafego-data.mjs` (código real) · guia visual `aula-03/materiais/guia-app-meta-integracoes.html` · 3 tutoriais externos em vídeo (integração Claude+Meta Ads via API; token permanente App+System User; criação de app na Meta do zero) · e os erros REAIS registrados no PS de 21/07.
+> **Fontes cruzadas:** (por que confiar) `aula-04/docs/tutorial-token-meta.md` e `configurar-chaves-meta.md` (repo) · `scripts/zelador-audit.mjs` e `painel-trafego-data.mjs` (código real) · guia visual `aula-03/materiais/guia-app-meta-integracoes.html` · 3 tutoriais externos em vídeo (integração Claude+Meta Ads via API; token permanente App+System User; criação de app na Meta do zero) · e os erros REAIS registrados no PS de 21/07.
 > **Regra de leitura:** a Meta muda telas conforme a época E a conta (dois apps criados em meses diferentes têm menus diferentes — confirmado em fonte externa). Se o nome não bater, procure o equivalente; o caminho lógico não muda.
 
 ---

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!-- Gerado por scripts/gerar-guias-html.py a partir de guias/05-metricas/guia-central-de-dados.md. Não edite este arquivo: edite o .md e rode o script. -->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CENTRAL DE DADOS · Guias · Cohort de Marketing</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0d;--card:#111115;--raised:#26262b;--fg:#EFEBE4;--muted:#A09A92;--gold:#C9B298;--gold-hi:#E9DFD0;--gold-lo:#8D7556;--warn:#d97706;
+--sans:'Inter Tight',system-ui,sans-serif;--serif:'Instrument Serif',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--gold-hi);text-decoration-color:var(--gold-lo);text-underline-offset:3px}a:hover{color:var(--gold)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.topo{position:sticky;top:0;z-index:10;display:flex;gap:18px;align-items:center;padding:12px 28px;background:rgba(10,10,13,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--raised);font-size:.85rem}
+.topo a{color:var(--muted);text-decoration:none}.topo a:hover{color:var(--gold)}.topo .area{margin-left:auto;color:var(--muted);font-family:var(--mono);font-size:.75rem}
+.wrap{max-width:980px;margin:0 auto;padding:48px 28px 96px}
+.cabeca{padding-bottom:28px;margin-bottom:32px;border-bottom:1px solid var(--raised)}
+.cabeca .kicker{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);padding:5px 14px;border:1px solid var(--gold-lo);border-radius:999px;margin-bottom:22px}
+.cabeca h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.3rem,5.5vw,3.6rem);line-height:1.04;letter-spacing:-.01em;margin:0}
+.cabeca h1 em{color:var(--gold)}
+main > h1{display:none}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.7rem,3.4vw,2.3rem);line-height:1.1;margin:56px 0 16px;scroll-margin-top:70px}
+h3{font-size:1.12rem;font-weight:600;margin:36px 0 10px;scroll-margin-top:70px}
+h4{font-size:1rem;margin:28px 0 8px;color:var(--gold-hi)}
+p{margin:14px 0}strong{color:var(--gold-hi);font-weight:600}
+code{font-family:var(--mono);background:var(--raised);color:var(--gold-hi);padding:2px 7px;border-radius:4px;font-size:.84em;word-break:break-word}
+blockquote{margin:22px 0;padding:14px 22px;background:var(--card);border-left:3px solid var(--gold);border-radius:8px}
+blockquote p{margin:8px 0}blockquote.aviso{border-left-color:var(--warn);background:rgba(217,119,6,.07)}
+.tabela{overflow-x:auto;margin:20px 0;border:1px solid var(--raised);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{text-align:left;padding:10px 14px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--card);border-bottom:1px solid var(--raised)}
+td{padding:10px 14px;vertical-align:top;border-bottom:1px solid rgba(38,38,43,.7);line-height:1.5}
+tr:last-child td{border-bottom:0}tbody tr:hover td{background:rgba(201,178,152,.04)}
+td:first-child{color:var(--gold-hi)}
+ul,ol{padding-left:24px}li{margin:6px 0}.caixa{color:var(--gold)}
+.code{position:relative;margin:18px 0}
+pre{margin:0;background:var(--card);border:1px solid var(--raised);border-radius:10px;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:.82rem;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+pre code{background:none;padding:0;color:var(--fg);font-size:inherit}
+.copiar{position:absolute;top:8px;right:8px;font:600 .7rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:var(--bg);border:1px solid var(--gold-lo);border-radius:999px;padding:4px 12px;cursor:pointer}
+.copiar:hover{border-color:var(--gold)}
+hr{border:0;border-top:1px solid var(--raised);margin:40px 0}
+.rodape{margin-top:72px;padding-top:20px;border-top:1px solid var(--raised);color:var(--muted);font-size:.85rem}
+.busca{width:100%;margin:8px 0 4px;padding:14px 18px;font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--raised);border-radius:10px}
+.busca:focus{border-color:var(--gold);outline:none}
+.busca-dica{color:var(--muted);font-size:.85rem;margin:0 0 24px}
+@media (max-width:700px){body{font-size:16px}.wrap{padding:32px 16px 72px}.topo{padding:10px 16px}.topo .area{display:none}}
+</style>
+</head>
+<body>
+<nav class="topo"><a href="../index.html">Todos os guias</a><a href="../../GUIA-DO-ALUNO.html">Guia do Aluno</a><span class="area">05-metricas</span></nav>
+<main class="wrap">
+<header class="cabeca"><span class="kicker">CENTRAL DE DADOS</span><h1>Rodar a Aula 4 no SEU projeto (com ou sem dados próprios)</h1></header>
+
+<h1 id="guia-central-de-dados-rodar-a-aula-4-no-seu-projeto-com-ou-sem-dados-próprios">GUIA CENTRAL DE DADOS — rodar a Aula 4 no SEU projeto (com ou sem dados próprios)</h1>
+<blockquote><p><strong>Estou perdido em:</strong> "vi o painel rodando na conta do professor… mas como eu rodo no MEU projeto? E se eu não tenho 30 dias de dados?"</p><p><strong>O que você vai ter no final:</strong> o <code>/analista-de-dados</code> rodado no seu projeto — no modo certo pra sua situação — com o <code>painel-trafego.html</code> aberto, o board de especialistas lido e a retroalimentação devolvendo aprendizado pro seu avatar e copy.</p><p><strong>Fontes cruzadas:</strong> <code>aula-04/docs/fluxo-da-aula-04.md</code> + <code>regras-de-dados.md</code> (repo) · SKILL.md do squad de dados: <code>/analista-de-dados</code>, <code>/coletor-de-dados</code>, <code>/board-de-especialistas</code>, <code>/painel-de-dados</code>, <code>/retroalimentacao</code>, <code>/gestor-de-campanhas</code> (código real) · limitação REAL registrada no PS (sem filtro por projeto — B3) · o critério dos 30 dias dito em aula.</p></blockquote>
+<h2 id="pré-requisitos-confira-antes">Pré-requisitos (confira ANTES)</h2>
+<div class="tabela"><table><thead><tr><th>Tipo</th><th>Pré-requisito</th><th>Não tem? Faça isso</th></tr></thead><tbody><tr><td>📖 Conhecimento</td><td>O que o painel coleta (e o que NÃO)</td><td>leia <a href="guia-o-que-e-coletado.html">guia-o-que-e-coletado.md</a> (5 min)</td></tr><tr><td>🔑 Chave</td><td><em>(SÓ pro Modo API)</em> <code>META_ACCESS_TOKEN</code> + <code>META_AD_ACCOUNT_ID</code> no <code>.env</code></td><td><a href="../03-conexoes-e-apis/guia-meta-api.html">guia-meta-api</a>; <strong>sem chaves o Modo Exemplo roda mesmo assim</strong></td></tr><tr><td>🔑 Chave</td><td><em>(Opcional)</em> Hotmart conectada — liga a seção de Vendas/caixa</td><td><a href="../03-conexoes-e-apis/guia-hotmart.html">guia-hotmart</a></td></tr><tr><td>📄 Artefato</td><td><em>(Pra dados que valham DECISÃO)</em> campanha própria com histórico</td><td>ainda sem? leia "E se eu não tenho 30 dias?" abaixo — dá pra rodar HOJE mesmo assim</td></tr></tbody></table></div>
+<h2 id="passo-1-escolha-o-modo-a-decisão-honesta">Passo 1 — Escolha o modo (a decisão honesta)</h2>
+<div class="tabela"><table><thead><tr><th>Modo</th><th>Precisa</th><th>O que sai</th></tr></thead><tbody><tr><td><strong>API</strong></td><td>chaves no <code>.env</code></td><td>os números da SUA conta, com selo Real/Estimado</td></tr><tr><td><strong>Exemplo</strong></td><td>nada</td><td>dados FICTÍCIOS de demonstração — perfeito pra aprender a ferramenta, <strong>inútil pra decidir</strong></td></tr></tbody></table></div>
+<p>Regra de honestidade (a lição da própria aula): Modo Exemplo é treino ROTULADO — nunca trate número de exemplo como se fosse seu.</p>
+<h2 id="passo-2-rode-o-hub">Passo 2 — Rode o hub</h2>
+<div class="code"><button class="copiar" type="button">copiar</button><pre data-lang=""><code>/analista-de-dados</code></pre></div>
+<p>Ele confere modo/chaves (delegando ao <code>/zelador</code>) e orquestra as etapas em sequência — cada uma também roda sozinha:</p>
+<div class="tabela"><table><thead><tr><th>Etapa</th><th>Skill</th><th>O que faz</th></tr></thead><tbody><tr><td>1</td><td><code>/coletor-de-dados</code></td><td>coleta Meta (+Hotmart se conectada) num bundle sem dado pessoal</td></tr><tr><td>2</td><td><code>/board-de-especialistas</code></td><td>6 "clones" (verba, séries, criativo, conversão, audiência, comunidade) — cada um entrega 1 veredito + 1 alavanca + 1 evidência COM selo</td></tr><tr><td>3</td><td><code>/painel-de-dados</code></td><td>gera o <code>projetos/{slug}/painel-trafego.html</code> (abre offline, identidade do seu DESIGN.md, imprime em PDF)</td></tr><tr><td>4</td><td><code>/retroalimentacao</code></td><td>devolve o que os dados ensinaram pro <code>avatar.md</code> e pra copy — o loop fecha</td></tr><tr><td>5</td><td><code>/gestor-de-campanhas</code></td><td>compara o realizado (7/30 dias) com o que você planejou no PAINEL-DA-SEMANA</td></tr></tbody></table></div>
+<p>O fecho é sempre o gate <strong>VOCÊ REVISA</strong>: o board recomenda, você decide.</p>
+<h2 id="passo-3-abra-e-leia-o-painel">Passo 3 — Abra e leia o painel</h2>
+<p>Abra <code>projetos/{slug}/painel-trafego.html</code> (dois cliques; Windows: <code>start "" projetos\{slug}\painel-trafego.html</code>). Leia com as 3 regras de confiança do <a href="guia-o-que-e-coletado.html">guia-o-que-e-coletado</a>: selo em tudo; "não fornecido" ≠ zero; ROAS só vira Real no caixa.</p>
+<h2 id="e-se-eu-não-tenho-30-dias-de-dados-a-pergunta-da-turma-inteira">E se eu NÃO tenho 30 dias de dados? (a pergunta da turma inteira)</h2>
+<p>Os 3 caminhos honestos, do imediato ao completo:</p>
+<ol><li><strong>Hoje, sem nada:</strong> rode em <strong>Modo Exemplo</strong> e aprenda a ferramenta (onde fica cada aba, o que o board entrega). Custo zero, expectativa rotulada.</li><li><strong>Com a primeira campanha do método:</strong> 7 dias de R$30/dia JÁ geram sinal — o painel roda com o que houver. Só respeite o limiar: com &lt;10 conversões, nenhuma conclusão de CPA vale (<a href="../04-operacao/guia-e-depois.html">guia-e-depois</a>); use pra ver o CICLO funcionando, não pra veredito.</li><li><strong>O quadro completo:</strong> 30 dias de histórico é o critério dito em aula pra análise robusta — chega sozinho se você mantiver o ciclo semanal rodando. A Central é mensal por natureza: rode de novo a cada ciclo.</li></ol>
+<h2 id="teste-de-sucesso">Teste de sucesso</h2>
+<p><code>projetos/{slug}/painel-trafego.html</code> existe e abre no navegador com o SEU nome de projeto e as cores do seu DESIGN.md; e <code>node scripts/painel-trafego-data.mjs --account</code> responde com o modo que você ESCOLHEU (<code>"api"</code> ou <code>"exemplo"</code> — o susto é quando vem "exemplo" sem querer, erro CD1).</p>
+<h2 id="possíveis-erros-catálogo">POSSÍVEIS ERROS — catálogo</h2>
+<div class="tabela"><table><thead><tr><th>#</th><th>Sintoma</th><th>Causa</th><th>O que fazer (em ordem)</th></tr></thead><tbody><tr><td>CD1</td><td>Queria Modo API e veio <strong>"modo": "exemplo"</strong></td><td>falta <code>META_AD_ACCOUNT_ID</code> (ou token) no <code>.env</code></td><td>é o erro E13 do <a href="../03-conexoes-e-apis/guia-meta-api.html">guia-meta-api</a>: preencha os IDs (passo 8 de lá) e rode de novo</td></tr><tr><td>CD2</td><td>O painel <strong>mistura campanhas</strong> que não são deste projeto (conta compartilhada/cliente)</td><td>⚠️ limitação CONHECIDA desta versão: a coleta é da CONTA inteira, sem filtro por projeto (registrada no PS; correção é dos donos da Aula 4)</td><td>contorno: nomeie SUAS campanhas com marca+data (<code>[MARCA] ... 2026-07</code>) e leia o painel filtrando pelo nome no olho; não tire conclusão de agregados que misturam projetos</td></tr><tr><td>CD3</td><td>Aba de engajamento/orgânico <strong>"em breve"</strong></td><td>falta o token de página/IG (opcional)</td><td>quiser: <a href="../03-conexoes-e-apis/guia-organico-tokens.html">guia-organico-tokens</a>; sem ele o resto do painel funciona 100%</td></tr><tr><td>CD4</td><td>Painel <strong>sem seção de Vendas</strong></td><td>Hotmart não conectada</td><td><a href="../03-conexoes-e-apis/guia-hotmart.html">guia-hotmart</a>; sem ela o ROAS fica todo Estimado (atribuição)</td></tr><tr><td>CD5</td><td>Números do painel <strong>≠ Gerenciador</strong></td><td>período diferente, atribuição da Meta, fuso — e atribuição ERRA mesmo</td><td>iguale o período antes de comparar; lembre: Gerenciador = atribuição (Estimado), caixa = Hotmart (G2 do <a href="../02-conhecimento-minimo/guia-gerenciador-de-anuncios.html">guia-gerenciador</a>)</td></tr><tr><td>CD6</td><td>Mudou campanha/oferta <strong>no meio do ciclo</strong> e a análise ficou sem pé nem cabeça</td><td>mudança no meio quebra a comparabilidade (resposta honesta dada em aula)</td><td>feche ciclos de 7 dias sem mexer (<a href="../04-operacao/guia-e-depois.html">guia-e-depois</a>); registre TODA mudança no PAINEL-DA-SEMANA — o histórico explica os saltos</td></tr></tbody></table></div>
+<h2 id="pronto-próximos-passos">Pronto. Próximos passos</h2>
+<div class="tabela"><table><thead><tr><th>Agora</th><th>O quê</th></tr></thead><tbody><tr><td>▶️ Fazer</td><td>rode <code>/analista-de-dados</code> AGORA no modo que a sua situação permite — Exemplo já ensina a ferramenta</td></tr><tr><td>📖 Ler</td><td><a href="guia-como-ler-os-numeros.html">guia-como-ler-os-numeros.md</a> (a árvore de decisão das métricas)</td></tr><tr><td>🚑 Se travar</td><td>o catálogo CD1–CD6 acima (modo exemplo sem querer, campanhas misturadas, abas vazias...)</td></tr></tbody></table></div>
+<p class="rodape">Este guia também existe em markdown, para a IA ler: <a href="guia-central-de-dados.md">guia-central-de-dados.md</a>. No Claude Code: <code>@guias/05-metricas/guia-central-de-dados.md</code>.</p>
+</main>
+<script>
+document.querySelectorAll('.copiar').forEach(function(b){b.addEventListener('click',function(){
+var t=b.parentNode.querySelector('code').innerText;navigator.clipboard.writeText(t).then(function(){b.textContent='copiado';setTimeout(function(){b.textContent='copiar'},1600)})})});
+var q=document.getElementById('busca');if(q){q.addEventListener('input',function(){var v=q.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+document.querySelectorAll('tbody tr').forEach(function(tr){var s=tr.innerText.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');tr.style.display=!v||s.indexOf(v)>-1?'':'none'})})}
+</script>
+</body>
+</html>

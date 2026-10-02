@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!-- Gerado por scripts/gerar-guias-html.py a partir de guias/01-pre-requisitos/guia-env-e-chaves.md. Não edite este arquivo: edite o .md e rode o script. -->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>.ENV E CHAVES · Guias · Cohort de Marketing</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0d;--card:#111115;--raised:#26262b;--fg:#EFEBE4;--muted:#A09A92;--gold:#C9B298;--gold-hi:#E9DFD0;--gold-lo:#8D7556;--warn:#d97706;
+--sans:'Inter Tight',system-ui,sans-serif;--serif:'Instrument Serif',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--gold-hi);text-decoration-color:var(--gold-lo);text-underline-offset:3px}a:hover{color:var(--gold)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.topo{position:sticky;top:0;z-index:10;display:flex;gap:18px;align-items:center;padding:12px 28px;background:rgba(10,10,13,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--raised);font-size:.85rem}
+.topo a{color:var(--muted);text-decoration:none}.topo a:hover{color:var(--gold)}.topo .area{margin-left:auto;color:var(--muted);font-family:var(--mono);font-size:.75rem}
+.wrap{max-width:980px;margin:0 auto;padding:48px 28px 96px}
+.cabeca{padding-bottom:28px;margin-bottom:32px;border-bottom:1px solid var(--raised)}
+.cabeca .kicker{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);padding:5px 14px;border:1px solid var(--gold-lo);border-radius:999px;margin-bottom:22px}
+.cabeca h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.3rem,5.5vw,3.6rem);line-height:1.04;letter-spacing:-.01em;margin:0}
+.cabeca h1 em{color:var(--gold)}
+main > h1{display:none}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.7rem,3.4vw,2.3rem);line-height:1.1;margin:56px 0 16px;scroll-margin-top:70px}
+h3{font-size:1.12rem;font-weight:600;margin:36px 0 10px;scroll-margin-top:70px}
+h4{font-size:1rem;margin:28px 0 8px;color:var(--gold-hi)}
+p{margin:14px 0}strong{color:var(--gold-hi);font-weight:600}
+code{font-family:var(--mono);background:var(--raised);color:var(--gold-hi);padding:2px 7px;border-radius:4px;font-size:.84em;word-break:break-word}
+blockquote{margin:22px 0;padding:14px 22px;background:var(--card);border-left:3px solid var(--gold);border-radius:8px}
+blockquote p{margin:8px 0}blockquote.aviso{border-left-color:var(--warn);background:rgba(217,119,6,.07)}
+.tabela{overflow-x:auto;margin:20px 0;border:1px solid var(--raised);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{text-align:left;padding:10px 14px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--card);border-bottom:1px solid var(--raised)}
+td{padding:10px 14px;vertical-align:top;border-bottom:1px solid rgba(38,38,43,.7);line-height:1.5}
+tr:last-child td{border-bottom:0}tbody tr:hover td{background:rgba(201,178,152,.04)}
+td:first-child{color:var(--gold-hi)}
+ul,ol{padding-left:24px}li{margin:6px 0}.caixa{color:var(--gold)}
+.code{position:relative;margin:18px 0}
+pre{margin:0;background:var(--card);border:1px solid var(--raised);border-radius:10px;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:.82rem;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+pre code{background:none;padding:0;color:var(--fg);font-size:inherit}
+.copiar{position:absolute;top:8px;right:8px;font:600 .7rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:var(--bg);border:1px solid var(--gold-lo);border-radius:999px;padding:4px 12px;cursor:pointer}
+.copiar:hover{border-color:var(--gold)}
+hr{border:0;border-top:1px solid var(--raised);margin:40px 0}
+.rodape{margin-top:72px;padding-top:20px;border-top:1px solid var(--raised);color:var(--muted);font-size:.85rem}
+.busca{width:100%;margin:8px 0 4px;padding:14px 18px;font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--raised);border-radius:10px}
+.busca:focus{border-color:var(--gold);outline:none}
+.busca-dica{color:var(--muted);font-size:.85rem;margin:0 0 24px}
+@media (max-width:700px){body{font-size:16px}.wrap{padding:32px 16px 72px}.topo{padding:10px 16px}.topo .area{display:none}}
+</style>
+</head>
+<body>
+<nav class="topo"><a href="../index.html">Todos os guias</a><a href="../../GUIA-DO-ALUNO.html">Guia do Aluno</a><span class="area">01-pre-requisitos</span></nav>
+<main class="wrap">
+<header class="cabeca"><span class="kicker">.ENV E CHAVES</span><h1>O cofrinho único de todas as senhas de programa</h1></header>
+
+<h1 id="guia-env-e-chaves-o-cofrinho-único-de-todas-as-senhas-de-programa">GUIA .ENV E CHAVES — o cofrinho único de todas as senhas de programa</h1>
+<blockquote><p><strong>Estou perdido em:</strong> "que negócio é esse de .env? é um programa que tem que instalar? / colei a chave e nada funciona".</p><p><strong>O que você vai ter no final:</strong> o <code>.env</code> criado na raiz do projeto, você sabendo colar QUALQUER chave nele do jeito certo e conferir que salvou — o mesmo ritual serve pra Apify, Meta, Hotmart e o que vier.</p><p><strong>Fontes cruzadas:</strong> super-guia Parte A (repo — o texto-base, agora em guia próprio) · <code>.env.example</code> + o jeito como os scripts leem as chaves (código real) · dúvida REAL de aluno na Aula 1 ("É um outro programa que tem que instalar?" — não é!).</p></blockquote>
+<h2 id="o-que-é-o-env-2-frases">O que é o <code>.env</code> (2 frases)</h2>
+<p>O <code>.env</code> <strong>não é programa — é um arquivo de TEXTO</strong> simples, na raiz do projeto, onde vivem as suas chaves (as "senhas de programa"). As skills leem ele automaticamente; você nunca cola chave no chat, em grupo ou em planilha — só ali. <em>Analogia: o chaveiro da casa — uma argola só, num lugar só.</em></p>
+<h2 id="as-4-regras-de-ouro-de-toda-chave">As 4 regras de ouro de TODA chave</h2>
+<ol><li><strong>A chave aparece UMA vez só</strong> na maioria dos sites (Meta, OpenAI...). Copie na hora, cole no <code>.env</code>, salve. Perdeu? Revogue no site e gere outra — nunca "procure onde ficou". <em>(Exceção boa: o token do Apify fica sempre visível lá.)</em></li><li><strong>Nunca em lugar público</strong> (grupo, print, planilha). Chave vazou? Revogue na origem e gere outra.</li><li><strong>O <code>.env</code> nunca sobe pro GitHub</strong> — o <code>.gitignore</code> do projeto já garante.</li><li><p><strong>Colou errado é o erro nº 1 do curso inteiro.</strong> Sem espaços em volta do <code>=</code>, sem aspas, a chave INTEIRA numa linha:</p><ul><li>✅ <code>APIFY_API_TOKEN=apify_api_abc123</code></li><li>❌ <code>APIFY_API_TOKEN = "apify_api_abc123"</code></li></ul></li></ol>
+<h2 id="pré-requisitos-confira-antes">Pré-requisitos (confira ANTES)</h2>
+<div class="tabela"><table><thead><tr><th>Tipo</th><th>Pré-requisito</th><th>Não tem? Faça isso</th></tr></thead><tbody><tr><td>🧰 Ferramenta</td><td>Projeto clonado + terminal abrindo NA raiz</td><td><a href="guia-git-clonar-e-atualizar.html">guia-git-clonar-e-atualizar</a> · <a href="guia-terminal-e-pastas.html">guia-terminal-e-pastas</a></td></tr></tbody></table></div>
+<h2 id="passo-a-passo-criar-1-na-vida">Passo a passo (criar 1× na vida)</h2>
+<ol><li>Terminal na raiz do <code>cohort-de-marketing</code>.</li><li>Copie o modelo: Windows <code>copy .env.example .env</code> · Mac/Linux <code>cp .env.example .env</code>.</li><li>Abra pra editar: Windows <code>notepad .env</code> · Mac <code>open -e .env</code> · ou pelo VS Code.</li><li>⚠️ <strong>A pegadinha do Windows/Bloco de Notas:</strong> ao salvar, "Tipo" = <strong>Todos os arquivos</strong> e o nome exatamente <code>.env</code> — se virar <strong><code>.env.txt</code>, NADA funciona</strong>. Pra enxergar a diferença: Explorador → Exibir → marque <strong>"Extensões de nomes de arquivo"</strong>.</li><li>Cole cada chave na linha da sua variável (regra 4) e salve.</li><li><strong>O jeito mais fácil de todos:</strong> rode <code>/comecar</code> no Claude — ele cria o <code>.env</code> e cola as chaves COM você, conferindo no final.</li></ol>
+<h2 id="teste-de-sucesso">Teste de sucesso</h2>
+<p>No terminal, na raiz: <code>findstr "APIFY" .env</code> (Windows) ou <code>grep APIFY .env</code> (Mac/Linux) → <strong>imprime a linha</strong> com a chave. Não imprimiu = não salvou (ou é <code>.env.txt</code>). Serve pra qualquer chave: troque o nome da variável.</p>
+<h2 id="possíveis-erros-catálogo">POSSÍVEIS ERROS — catálogo</h2>
+<div class="tabela"><table><thead><tr><th>#</th><th>Sintoma</th><th>Causa</th><th>O que fazer (em ordem)</th></tr></thead><tbody><tr><td>Z1</td><td>Salvou e virou <strong><code>.env.txt</code></strong> (a praga)</td><td>o Bloco de Notas acrescentou <code>.txt</code></td><td>ligue "Extensões de nomes de arquivo" no Explorador → renomeie pra <code>.env</code> exato → confirme o aviso do Windows</td></tr><tr><td>Z2</td><td>O teste <strong>não imprime a linha</strong></td><td>arquivo na pasta errada, nome errado, ou a linha não foi salva</td><td>confira que o <code>.env</code> está NA RAIZ (junto do <code>.env.example</code>); reabra e salve de novo</td></tr><tr><td>Z3</td><td>Chave colada mas a skill diz que <strong>falta</strong></td><td>espaço em volta do <code>=</code>, aspas, chave quebrada em 2 linhas, ou NOME da variável diferente do esperado</td><td>compare com o <code>.env.example</code> (o nome literal da variável importa) e aplique a regra 4</td></tr><tr><td>Z4</td><td>"<strong>É um programa?</strong> Precisa instalar algo?"</td><td>não — é só um arquivo de texto</td><td>releia "O que é o <code>.env</code>" acima; se o <code>notepad .env</code> abriu, você já está editando ele</td></tr><tr><td>Z5</td><td>Medo de ter <strong>vazado</strong> uma chave</td><td>colou em chat público/print</td><td>revogue a chave NO SITE de origem e gere outra; troque no <code>.env</code>; o <code>.env</code> em si nunca sai da sua máquina</td></tr></tbody></table></div>
+<h2 id="pronto-próximos-passos">Pronto. Próximos passos</h2>
+<div class="tabela"><table><thead><tr><th>Agora</th><th>O quê</th></tr></thead><tbody><tr><td>▶️ Fazer</td><td>cole a primeira chave real: <a href="../03-conexoes-e-apis/guia-apify.html">guia-apify</a> (a da Aula 1, grátis e sem espera)</td></tr><tr><td>📖 Ler</td><td>quando chegar na Aula 3: <a href="../03-conexoes-e-apis/guia-meta-api.html">guia-meta-api</a> · Aula 4: <a href="../03-conexoes-e-apis/guia-hotmart.html">guia-hotmart</a></td></tr><tr><td>🚑 Se travar</td><td>o catálogo Z1–Z5 acima (<code>.env.txt</code>, linha que não imprime, "é um programa?"...)</td></tr></tbody></table></div>
+<p class="rodape">Este guia também existe em markdown, para a IA ler: <a href="guia-env-e-chaves.md">guia-env-e-chaves.md</a>. No Claude Code: <code>@guias/01-pre-requisitos/guia-env-e-chaves.md</code>.</p>
+</main>
+<script>
+document.querySelectorAll('.copiar').forEach(function(b){b.addEventListener('click',function(){
+var t=b.parentNode.querySelector('code').innerText;navigator.clipboard.writeText(t).then(function(){b.textContent='copiado';setTimeout(function(){b.textContent='copiar'},1600)})})});
+var q=document.getElementById('busca');if(q){q.addEventListener('input',function(){var v=q.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+document.querySelectorAll('tbody tr').forEach(function(tr){var s=tr.innerText.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');tr.style.display=!v||s.indexOf(v)>-1?'':'none'})})}
+</script>
+</body>
+</html>

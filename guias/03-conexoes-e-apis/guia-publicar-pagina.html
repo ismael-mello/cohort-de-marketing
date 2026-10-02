@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- Gerado por scripts/gerar-guias-html.py a partir de guias/03-conexoes-e-apis/guia-publicar-pagina.md. Não edite este arquivo: edite o .md e rode o script. -->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia · Guias · Cohort de Marketing</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0d;--card:#111115;--raised:#26262b;--fg:#EFEBE4;--muted:#A09A92;--gold:#C9B298;--gold-hi:#E9DFD0;--gold-lo:#8D7556;--warn:#d97706;
+--sans:'Inter Tight',system-ui,sans-serif;--serif:'Instrument Serif',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--gold-hi);text-decoration-color:var(--gold-lo);text-underline-offset:3px}a:hover{color:var(--gold)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.topo{position:sticky;top:0;z-index:10;display:flex;gap:18px;align-items:center;padding:12px 28px;background:rgba(10,10,13,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--raised);font-size:.85rem}
+.topo a{color:var(--muted);text-decoration:none}.topo a:hover{color:var(--gold)}.topo .area{margin-left:auto;color:var(--muted);font-family:var(--mono);font-size:.75rem}
+.wrap{max-width:980px;margin:0 auto;padding:48px 28px 96px}
+.cabeca{padding-bottom:28px;margin-bottom:32px;border-bottom:1px solid var(--raised)}
+.cabeca .kicker{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);padding:5px 14px;border:1px solid var(--gold-lo);border-radius:999px;margin-bottom:22px}
+.cabeca h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.3rem,5.5vw,3.6rem);line-height:1.04;letter-spacing:-.01em;margin:0}
+.cabeca h1 em{color:var(--gold)}
+main > h1{display:none}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.7rem,3.4vw,2.3rem);line-height:1.1;margin:56px 0 16px;scroll-margin-top:70px}
+h3{font-size:1.12rem;font-weight:600;margin:36px 0 10px;scroll-margin-top:70px}
+h4{font-size:1rem;margin:28px 0 8px;color:var(--gold-hi)}
+p{margin:14px 0}strong{color:var(--gold-hi);font-weight:600}
+code{font-family:var(--mono);background:var(--raised);color:var(--gold-hi);padding:2px 7px;border-radius:4px;font-size:.84em;word-break:break-word}
+blockquote{margin:22px 0;padding:14px 22px;background:var(--card);border-left:3px solid var(--gold);border-radius:8px}
+blockquote p{margin:8px 0}blockquote.aviso{border-left-color:var(--warn);background:rgba(217,119,6,.07)}
+.tabela{overflow-x:auto;margin:20px 0;border:1px solid var(--raised);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{text-align:left;padding:10px 14px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--card);border-bottom:1px solid var(--raised)}
+td{padding:10px 14px;vertical-align:top;border-bottom:1px solid rgba(38,38,43,.7);line-height:1.5}
+tr:last-child td{border-bottom:0}tbody tr:hover td{background:rgba(201,178,152,.04)}
+td:first-child{color:var(--gold-hi)}
+ul,ol{padding-left:24px}li{margin:6px 0}.caixa{color:var(--gold)}
+.code{position:relative;margin:18px 0}
+pre{margin:0;background:var(--card);border:1px solid var(--raised);border-radius:10px;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:.82rem;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+pre code{background:none;padding:0;color:var(--fg);font-size:inherit}
+.copiar{position:absolute;top:8px;right:8px;font:600 .7rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:var(--bg);border:1px solid var(--gold-lo);border-radius:999px;padding:4px 12px;cursor:pointer}
+.copiar:hover{border-color:var(--gold)}
+hr{border:0;border-top:1px solid var(--raised);margin:40px 0}
+.rodape{margin-top:72px;padding-top:20px;border-top:1px solid var(--raised);color:var(--muted);font-size:.85rem}
+.busca{width:100%;margin:8px 0 4px;padding:14px 18px;font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--raised);border-radius:10px}
+.busca:focus{border-color:var(--gold);outline:none}
+.busca-dica{color:var(--muted);font-size:.85rem;margin:0 0 24px}
+@media (max-width:700px){body{font-size:16px}.wrap{padding:32px 16px 72px}.topo{padding:10px 16px}.topo .area{display:none}}
+</style>
+</head>
+<body>
+<nav class="topo"><a href="../index.html">Todos os guias</a><a href="../../GUIA-DO-ALUNO.html">Guia do Aluno</a><span class="area">03-conexoes-e-apis</span></nav>
+<main class="wrap">
+<header class="cabeca"><span class="kicker">Guia</span><h1>Publicar a sua página na internet (rápido, de graça)</h1></header>
+
+<h1 id="guia-publicar-a-sua-página-na-internet-rápido-de-graça">GUIA — Publicar a sua página na internet (rápido, de graça)</h1>
+<blockquote><p><strong>Estou perdido em:</strong> "a skill gerou a página, mas ela só abre no MEU computador — como isso vira um site de verdade?"</p><p><strong>O que você vai ter no final:</strong> a sua <code>pagina/index.html</code> acessível numa URL pública (ex.: <code>seuprojeto.vercel.app</code>) — o pré-requisito do pixel e do anúncio (anúncio não aponta pra arquivo local). E, se quiser, a IA fazendo isso POR você daqui pra frente (CLI + token).</p><p><strong>Fontes cruzadas:</strong> as aulas do <strong>AIOX</strong> no <a href="https://membros.academialendaria.ai/m/courses?tenant=1749742382792">portal de cursos</a> — o caminho de estudo RECOMENDADO em vídeo (atenção: a publicação é uma das <strong>últimas</strong> aulas da trilha do AIOX, não a primeira) · o Fundamentals também mostra publicação (existe lá, mas não é o clique a clique recomendado) · docs da Vercel (CLI e tokens).</p></blockquote>
+<h2 id="a-ordem-certa-pixel-e-página-andam-juntos">⚠️ A ordem certa (pixel e página andam juntos)</h2>
+<p>O pixel tem <strong>3 momentos</strong>, e este guia fica no meio deles:</p>
+<ol><li><strong>CRIAR o pixel</strong> (Events Manager — <a href="super-guia-apis-e-ads.html">super-guia C.1</a>) — só precisa da conta Meta; faça ANTES.</li><li><strong>PLUGAR o ID no HTML</strong> da página (<a href="super-guia-apis-e-ads.html">C.2.5</a> — o <code>[PLUG: SEU_PIXEL_ID]</code>) — de preferência ANTES de publicar (poupa uma republicação).</li><li><strong>Publicar</strong> (este guia) → e só então <strong>TESTAR o disparo</strong> (<a href="super-guia-apis-e-ads.html">C.3</a>) — o teste exige a página NO AR.</li></ol>
+<p>Publicou sem plugar? Não quebrou nada — pluga e republica (erro H3). Mas a ordem redonda é: <strong>criar pixel → plugar → publicar → testar</strong>.</p>
+<h2 id="pré-requisitos-confira-antes">Pré-requisitos (confira ANTES)</h2>
+<div class="tabela"><table><thead><tr><th>Tipo</th><th>Pré-requisito</th><th>Não tem? Faça isso</th></tr></thead><tbody><tr><td>📄 Artefato</td><td><code>projetos/{seu-slug}/pagina/index.html</code> existe (a página gerada na Aula 2)</td><td>rode <code>/pagina-vendas-funil</code></td></tr><tr><td>🔑 Conta</td><td>Uma conta na Vercel (grátis; entre com o GitHub se tiver)</td><td><code>vercel.com</code> → Sign Up</td></tr><tr><td>🧰 Ferramenta</td><td><em>(só pro caminho 1B, o da IA)</em> Node/npm instalado — você JÁ tem (é o mesmo que roda as skills)</td><td><code>node -v</code> responde? então está ok</td></tr><tr><td>📖 Conhecimento</td><td><em>(recomendado)</em> as aulas do <strong>AIOX</strong> no portal — a trilha em vídeo recomendada (a publicação é uma das ÚLTIMAS aulas dela; não precisa esperar a trilha inteira pra publicar por este guia)</td><td>assista no <a href="https://membros.academialendaria.ai/m/courses?tenant=1749742382792">portal de cursos</a></td></tr><tr><td>🔑 Conta</td><td><em>(recomendado — ver "A ordem certa" acima)</em> Pixel criado e ID plugado no HTML antes de publicar</td><td><a href="super-guia-apis-e-ads.html">super-guia C.1 + C.2.5</a>; publicou sem? H3 resolve</td></tr><tr><td>🔑 Conta</td><td>Domínio próprio — <strong>OPCIONAL agora</strong>: pra TESTAR, o subdomínio grátis (<code>*.vercel.app</code>) serve perfeitamente</td><td>quando for pra valer: compre (ex.: registro.br, ~R$40/ano) e conecte (seção "Domínio" abaixo)</td></tr></tbody></table></div>
+<h2 id="as-3-opções-escolha-uma">As 3 opções (escolha UMA)</h2>
+<div class="tabela"><table><thead><tr><th>Opção</th><th>Pra quem</th><th>Custo</th></tr></thead><tbody><tr><td><strong>1. Vercel direto</strong> — em duas versões: <strong>1A</strong> pelo site (mouse) ou <strong>1B</strong> pelo CLI com a IA fazendo por você</td><td>todo mundo que quer a página NO AR hoje</td><td>R$0</td></tr><tr><td><strong>2. Pelo AIOX</strong> — o pipeline profissional: repositório no GitHub conectado à Vercel, deploy automático a cada merge (<code>*environment-bootstrap</code> → <code>*setup-github</code>). <strong>As aulas do AIOX no portal são o caminho de estudo recomendado</strong> (a publicação é uma das últimas aulas da trilha — não vamos duplicar aqui); esta opção é pra quem JÁ está com o AIOX rodando</td><td>quem segue a trilha do AIOX e quer a página versionada com o resto</td><td>R$0</td></tr><tr><td><strong>3. Hospedagem contratada</strong> (Hostinger e similares) — painel tradicional, sobe os arquivos por lá</td><td>quem já TEM site/hospedagem paga e quer tudo no mesmo lugar</td><td>~R$10–20/mês</td></tr></tbody></table></div>
+<blockquote><p>Tanto faz a opção — o que importa é o RESULTADO: uma URL pública que abre a sua página. O resto do método não muda.</p></blockquote>
+<h2 id="caminho-1a-pelo-site-da-vercel-5-min-sem-terminal">Caminho 1A — pelo site da Vercel (~5 min, sem terminal)</h2>
+<ol><li><code>vercel.com</code> → login → <strong>Add New → Project</strong>.</li><li>Suba a pasta <code>projetos/{seu-slug}/pagina/</code> (arraste/importe).</li><li><strong>Deploy</strong> → a Vercel te dá a URL: <code>https://alguma-coisa.vercel.app</code>. <strong>Copie e guarde.</strong></li><li>Republicar depois de mudar a página = subir de novo (a URL continua a mesma).</li></ol>
+<h2 id="caminho-1b-pelo-cli-com-a-ia-fazendo-por-você-o-jeito-do-cohort">Caminho 1B — pelo CLI, com a IA fazendo por você (o jeito do cohort)</h2>
+<p>A Vercel tem um programa de terminal (CLI). Instalado uma vez, <strong>a IA publica e republica a página sozinha</strong> — você nunca mais abre o site da Vercel. É o caminho natural pra quem já vive no Claude Code.</p>
+<p><strong>O que acontece por baixo (pra você entender o que a IA vai rodar):</strong></p>
+<ol><li>Instalar o CLI (1× na vida): <code>npm i -g vercel</code></li><li>Entrar na sua conta (1× na vida): <code>vercel login</code> → ele abre o navegador/manda link pro seu e-mail → você confirma → o terminal fica autorizado.</li><li>Publicar: dentro da pasta <code>pagina/</code>, rodar <code>vercel</code> (primeira vez ele faz 3–4 perguntas de setup — pode aceitar as sugestões) e depois <code>vercel --prod</code> → sai a URL pública.</li><li>Republicar depois de qualquer mudança: <code>vercel --prod</code> de novo. Mesma URL.</li></ol>
+<p><strong>Mas você não precisa decorar nada disso — peça (seção de prompts abaixo).</strong></p>
+<h2 id="o-token-da-vercel-opcional-pra-ia-trabalhar-sem-pedir-login">O token da Vercel (opcional — pra IA trabalhar SEM pedir login)</h2>
+<p>O <code>vercel login</code> resolve pra você usando o SEU terminal. Se você quiser que a IA publique <strong>sem depender do login interativo</strong> (ou rodando de outro lugar), aí entra o <strong>token</strong> — a "senha de programa" da Vercel, igual às outras chaves do curso:</p>
+<ol><li><strong>Onde pegar:</strong> <code>vercel.com</code> → clique no seu avatar (canto superior direito) → <strong>Account Settings</strong> → <strong>Tokens</strong> → <strong>Create Token</strong>.</li><li>Dê um nome (ex.: <code>cohort-marketing</code>), escopo na sua conta, validade (pode deixar sem expirar ou 1 ano) → <strong>Create</strong>.</li><li>O token aparece <strong>UMA vez só</strong> → copie na hora.</li><li><p><strong>Guarde no <code>.env</code></strong> do projeto (mesma regra de todas as chaves — <a href="../01-pre-requisitos/guia-env-e-chaves.html">guia-env-e-chaves</a>):</p><div class="code"><button class="copiar" type="button">copiar</button><pre data-lang=""><code>VERCEL_TOKEN=seu_token_aqui</code></pre></div></li><li>Com ele no <code>.env</code>, a IA consegue rodar <code>vercel --prod --token $VERCEL_TOKEN</code> sem nenhuma interação. ⚠️ Regra de sempre: token é senha — nunca em print, grupo ou GitHub.</li></ol>
+<p><strong>Precisa do token?</strong> Na prática do curso: <strong>não</strong> — o <code>vercel login</code> (1×) basta. O token é o upgrade de conforto/automação.</p>
+<h2 id="prompts-prontos-copie-e-cole-na-conversa">💬 Prompts prontos (copie e cole na conversa)</h2>
+<div class="tabela"><table><thead><tr><th>Situação</th><th>Cole isto</th></tr></thead><tbody><tr><td><strong>Publicar pela primeira vez</strong></td><td>"Instale o CLI da Vercel (<code>npm i -g vercel</code>), me guie no <code>vercel login</code>, e depois publique a pasta <code>projetos/MEU-SLUG/pagina/</code> em produção. No final, me devolva a URL pública e grave ela no meu <code>PAINEL-DA-SEMANA.yaml</code> como <code>pagina_url</code>."</td></tr><tr><td><strong>Republicar (mudei a página)</strong></td><td>"Atualizei a página de vendas. Republique na Vercel em produção mantendo a mesma URL e confirme que a mudança está no ar."</td></tr><tr><td><strong>Configurar o token</strong></td><td>"Criei um token na Vercel. Grave como <code>VERCEL_TOKEN</code> no <code>.env</code> (vou colar em seguida, não registre em mais lugar nenhum) e passe a usar <code>--token</code> nos deploys pra não depender de login."</td></tr><tr><td><strong>Deu erro</strong></td><td>"O deploy na Vercel falhou. Aqui está a saída do terminal: [cole]. Diagnostique, PESQUISE se precisar, e me guie passo a passo."</td></tr><tr><td><strong>Conectar domínio</strong></td><td>"Comprei o domínio X. Conecte ele ao projeto da Vercel e me diga exatamente o que configurar no painel do registro.br (registros DNS)."</td></tr><tr><td><strong>Conferir que está tudo certo</strong></td><td>"Abra/verifique a URL pública da minha página: o <code>index.html</code> responde? O pixel está no HTML (procure <code>fbq(</code> ou <code>[PLUG:</code>)? Me dê um checklist do que está ok e do que falta."</td></tr></tbody></table></div>
+<h2 id="domínio-próprio-quando-for-pra-valer">Domínio próprio (quando for pra valer)</h2>
+<ol><li>Compre o domínio (registro.br pra <code>.com.br</code>, ou qualquer registrador).</li><li>Na Vercel: projeto → <strong>Settings → Domains → Add</strong> → digite o domínio → a Vercel mostra os registros DNS (A/CNAME) pra criar no painel do registrador.</li><li>Propagação leva de minutos a ~24 h. O https é automático (a Vercel emite o certificado sozinha).</li><li>Depois de trocar: atualize o <code>pagina_url</code> no Painel e <strong>verifique o domínio na Meta</strong> (<a href="guia-meta-fundacao.html">guia-meta-fundacao</a>, passo 7 — deixa de ser pendência).</li></ol>
+<h2 id="teste-de-sucesso">Teste de sucesso</h2>
+<p>Abra a URL <strong>no seu celular, fora do wifi de casa</strong> (4G). Abriu a página certa, com <code>https://</code> na barra? Publicado de verdade. <em>(Se só abre no seu computador, você está abrindo o arquivo local — <code>file:///</code> não é site.)</em></p>
+<h2 id="possíveis-erros-catálogo">POSSÍVEIS ERROS — catálogo</h2>
+<div class="tabela"><table><thead><tr><th>#</th><th>Sintoma</th><th>Causa</th><th>O que fazer</th></tr></thead><tbody><tr><td>H1</td><td>O link que você guardou começa com <code>file:///C:/...</code></td><td>isso é o arquivo LOCAL, não o site</td><td>use a URL <code>https://...vercel.app</code> que a Vercel mostrou no fim do deploy</td></tr><tr><td>H2</td><td>Publicou mas a URL abre <strong>404</strong></td><td>o arquivo principal não se chama <code>index.html</code>, ou subiu a pasta errada (a pasta-mãe em vez da <code>pagina/</code>)</td><td>garanta que DENTRO do que você subiu existe um <code>index.html</code> na raiz; no CLI, rode o <code>vercel</code> DENTRO da pasta <code>pagina/</code></td></tr><tr><td>H3</td><td>Página no ar, mas o <strong>pixel não dispara</strong></td><td>publicar não instala o pixel — são dois passos</td><td>siga o <a href="guia-pixel-capi.html">guia-pixel-capi</a> (passo 2: destravar o <code>[PLUG: SEU_PIXEL_ID]</code> no HTML) e <strong>republique</strong> (mudou o HTML = novo deploy)</td></tr><tr><td>H4</td><td><code>vercel: command not found</code> (ou "não é reconhecido") logo após instalar</td><td>o terminal aberto ainda não enxerga o programa novo</td><td>feche e reabra o terminal e tente de novo; persiste → <code>npm i -g vercel</code> de novo e cole a saída pra IA</td></tr><tr><td>H5</td><td><code>vercel login</code> não completa (link não chega / navegador não abre)</td><td>e-mail errado na conta, ou bloqueio do navegador</td><td>confira o e-mail da conta Vercel; tente o login pelo site primeiro e repita; alternativa definitiva: crie o <strong>token</strong> (seção acima) e pule o login</td></tr><tr><td>H6</td><td>Deploy ok, mas a página no ar está DESATUALIZADA</td><td>você editou o arquivo local e não republicou (ou republicou a pasta errada)</td><td><code>vercel --prod</code> de novo na pasta certa; confirme com Ctrl+F5 (ignora o cache do navegador)</td></tr></tbody></table></div>
+<h2 id="pronto-próximos-passos">Pronto. Próximos passos</h2>
+<div class="tabela"><table><thead><tr><th>Agora</th><th>O quê</th></tr></thead><tbody><tr><td>▶️ Fazer</td><td>guarde a URL pública — ela é o <code>pagina_url</code> do seu <code>PAINEL-DA-SEMANA.yaml</code> e o destino do seu anúncio</td></tr><tr><td>📖 Ler</td><td>próximo da cadeia: <a href="guia-pixel-capi.html">guia-pixel-capi.md</a> — se você seguiu a ordem redonda (pixel já plugado), vá direto ao <strong>passo 5 de lá: testar o disparo</strong> com a página no ar; se publicou sem pixel, siga o guia do começo</td></tr><tr><td>🚑 Se travar</td><td>catálogo H1–H6 acima; fora dele → print + "estou preso publicando a página, pesquise e me guie" na conversa — e em vídeo, a referência recomendada são as <strong>aulas do AIOX</strong> no portal (publicação = uma das últimas da trilha)</td></tr></tbody></table></div>
+<p class="rodape">Este guia também existe em markdown, para a IA ler: <a href="guia-publicar-pagina.md">guia-publicar-pagina.md</a>. No Claude Code: <code>@guias/03-conexoes-e-apis/guia-publicar-pagina.md</code>.</p>
+</main>
+<script>
+document.querySelectorAll('.copiar').forEach(function(b){b.addEventListener('click',function(){
+var t=b.parentNode.querySelector('code').innerText;navigator.clipboard.writeText(t).then(function(){b.textContent='copiado';setTimeout(function(){b.textContent='copiar'},1600)})})});
+var q=document.getElementById('busca');if(q){q.addEventListener('input',function(){var v=q.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+document.querySelectorAll('tbody tr').forEach(function(tr){var s=tr.innerText.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');tr.style.display=!v||s.indexOf(v)>-1?'':'none'})})}
+</script>
+</body>
+</html>

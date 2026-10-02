@@ -1,7 +1,7 @@
 # GUIA — Campanha no ar... e DEPOIS? O que fazer?
 
 > **Estou perdido em:** "subiu, está rodando. E agora, eu fico olhando? Mexo? Quando? No quê?"
-> **A resposta curta (o que você vai ter no final):** dias 1–7 você NÃO mexe. Dia 7 você lê, decide UMA coisa e registra. Toda semana repete — e o `PAINEL-DA-SEMANA.yaml` vira o histórico que a Aula 4 usa. É isso.
+> **O que você vai ter no final:** (a resposta curta) dias 1–7 você NÃO mexe. Dia 7 você lê, decide UMA coisa e registra. Toda semana repete — e o `PAINEL-DA-SEMANA.yaml` vira o histórico que a Aula 4 usa. É isso.
 > **Fontes cruzadas:** SKILL.md do `/leitor-de-metricas` e do `/diagnosticador` + circuit breaker (código real) · `aula-03/exemplos/painel-semana-exemplo.yaml` (repo) · referências de mercado reescritas (regra dos 7 dias, escala gradual, erros clássicos de otimização) · pedidos reais de PS ("uma alavanca por vez").
 
 ## Pré-requisitos (confira ANTES)

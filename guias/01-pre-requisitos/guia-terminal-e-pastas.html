@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!-- Gerado por scripts/gerar-guias-html.py a partir de guias/01-pre-requisitos/guia-terminal-e-pastas.md. Não edite este arquivo: edite o .md e rode o script. -->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TERMINAL E PASTAS · Guias · Cohort de Marketing</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0d;--card:#111115;--raised:#26262b;--fg:#EFEBE4;--muted:#A09A92;--gold:#C9B298;--gold-hi:#E9DFD0;--gold-lo:#8D7556;--warn:#d97706;
+--sans:'Inter Tight',system-ui,sans-serif;--serif:'Instrument Serif',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--gold-hi);text-decoration-color:var(--gold-lo);text-underline-offset:3px}a:hover{color:var(--gold)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.topo{position:sticky;top:0;z-index:10;display:flex;gap:18px;align-items:center;padding:12px 28px;background:rgba(10,10,13,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--raised);font-size:.85rem}
+.topo a{color:var(--muted);text-decoration:none}.topo a:hover{color:var(--gold)}.topo .area{margin-left:auto;color:var(--muted);font-family:var(--mono);font-size:.75rem}
+.wrap{max-width:980px;margin:0 auto;padding:48px 28px 96px}
+.cabeca{padding-bottom:28px;margin-bottom:32px;border-bottom:1px solid var(--raised)}
+.cabeca .kicker{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);padding:5px 14px;border:1px solid var(--gold-lo);border-radius:999px;margin-bottom:22px}
+.cabeca h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.3rem,5.5vw,3.6rem);line-height:1.04;letter-spacing:-.01em;margin:0}
+.cabeca h1 em{color:var(--gold)}
+main > h1{display:none}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.7rem,3.4vw,2.3rem);line-height:1.1;margin:56px 0 16px;scroll-margin-top:70px}
+h3{font-size:1.12rem;font-weight:600;margin:36px 0 10px;scroll-margin-top:70px}
+h4{font-size:1rem;margin:28px 0 8px;color:var(--gold-hi)}
+p{margin:14px 0}strong{color:var(--gold-hi);font-weight:600}
+code{font-family:var(--mono);background:var(--raised);color:var(--gold-hi);padding:2px 7px;border-radius:4px;font-size:.84em;word-break:break-word}
+blockquote{margin:22px 0;padding:14px 22px;background:var(--card);border-left:3px solid var(--gold);border-radius:8px}
+blockquote p{margin:8px 0}blockquote.aviso{border-left-color:var(--warn);background:rgba(217,119,6,.07)}
+.tabela{overflow-x:auto;margin:20px 0;border:1px solid var(--raised);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{text-align:left;padding:10px 14px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--card);border-bottom:1px solid var(--raised)}
+td{padding:10px 14px;vertical-align:top;border-bottom:1px solid rgba(38,38,43,.7);line-height:1.5}
+tr:last-child td{border-bottom:0}tbody tr:hover td{background:rgba(201,178,152,.04)}
+td:first-child{color:var(--gold-hi)}
+ul,ol{padding-left:24px}li{margin:6px 0}.caixa{color:var(--gold)}
+.code{position:relative;margin:18px 0}
+pre{margin:0;background:var(--card);border:1px solid var(--raised);border-radius:10px;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:.82rem;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+pre code{background:none;padding:0;color:var(--fg);font-size:inherit}
+.copiar{position:absolute;top:8px;right:8px;font:600 .7rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:var(--bg);border:1px solid var(--gold-lo);border-radius:999px;padding:4px 12px;cursor:pointer}
+.copiar:hover{border-color:var(--gold)}
+hr{border:0;border-top:1px solid var(--raised);margin:40px 0}
+.rodape{margin-top:72px;padding-top:20px;border-top:1px solid var(--raised);color:var(--muted);font-size:.85rem}
+.busca{width:100%;margin:8px 0 4px;padding:14px 18px;font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--raised);border-radius:10px}
+.busca:focus{border-color:var(--gold);outline:none}
+.busca-dica{color:var(--muted);font-size:.85rem;margin:0 0 24px}
+@media (max-width:700px){body{font-size:16px}.wrap{padding:32px 16px 72px}.topo{padding:10px 16px}.topo .area{display:none}}
+</style>
+</head>
+<body>
+<nav class="topo"><a href="../index.html">Todos os guias</a><a href="../../GUIA-DO-ALUNO.html">Guia do Aluno</a><span class="area">01-pre-requisitos</span></nav>
+<main class="wrap">
+<header class="cabeca"><span class="kicker">TERMINAL E PASTAS</span><h1>O chão de tudo (sem isso, nada roda)</h1></header>
+
+<h1 id="guia-terminal-e-pastas-o-chão-de-tudo-sem-isso-nada-roda">GUIA TERMINAL E PASTAS — o chão de tudo (sem isso, nada roda)</h1>
+<blockquote><p><strong>Estou perdido em:</strong> "não entendi o que é pra fazer nesse terminal / abri e as skills não aparecem / arrastei a pasta e sumiu tudo".</p><p><strong>O que você vai ter no final:</strong> você abre o terminal JÁ NA PASTA CERTA do projeto, sabe conferir onde está, conhece as teclas de sobrevivência e entende por que NUNCA se arrasta a pasta do projeto no Explorador.</p><p><strong>Fontes cruzadas:</strong> <code>GUIA-DO-ALUNO.html</code> Parte 0 (repo — o texto-base) · o funcionamento real do Claude Code (só enxerga a pasta onde foi aberto) · travadas REAIS da Aula 1 ("não entendi o que é para fazer"; a pasta oculta <code>.claude</code> perdida ao arrastar no Finder — debugado ao vivo) · pesquisa web 22/07 (Explorador sem barra de endereço/travado — Microsoft Support/Q&amp;A).</p></blockquote>
+<h2 id="pré-requisitos-confira-antes">Pré-requisitos (confira ANTES)</h2>
+<p><strong>Nenhum — este é o guia de entrada do ambiente.</strong> Se "terminal" é uma palavra nova pra você, começa exatamente aqui (10 min).</p>
+<h2 id="1-o-que-é-o-terminal-2-frases">1. O que é o terminal (2 frases)</h2>
+<p>O <strong>terminal</strong> é a janelinha onde você digita comandos em vez de clicar em botões — é por ele que o Claude Code roda. <em>Analogia: o balcão de pedidos do computador — você fala o que quer por escrito, ele executa.</em></p>
+<h2 id="2-abrir-o-terminal-na-pasta-certa-a-regra-de-ouro">2. Abrir o terminal NA PASTA CERTA (a regra de ouro)</h2>
+<p>O Claude Code <strong>só enxerga a pasta onde foi aberto</strong>. Abriu no lugar errado = skills "somem". Por isso, o jeito certo de abrir já elimina o erro:</p>
+<ul><li><strong>Windows:</strong> abra o <strong>Explorador de Arquivos</strong> → navegue até a pasta <code>cohort-de-marketing</code> → clique na <strong>barra de endereço</strong> no topo → digite <code>cmd</code> → Enter. O terminal abre JÁ DENTRO da pasta.</li><li><strong>Mac:</strong> Spotlight (<code>Cmd + espaço</code>) → digite <code>Terminal</code> → Enter → digite <code>cd </code> (com espaço) e <strong>arraste a pasta</strong> <code>cohort-de-marketing</code> pra janela → Enter.</li></ul>
+<p><strong>Conferir onde você está</strong> (faça sempre que desconfiar): digite <code>dir</code> (Windows) ou <code>ls</code> (Mac/Linux) — deve listar as pastas do projeto (<code>aula-01</code>, <code>guias</code>, <code>projetos</code>...). Não listou? Você está na pasta errada.</p>
+<h2 id="3-a-pasta-oculta-claude-o-segredo-que-quebra-tudo">3. A pasta oculta <code>.claude</code> (o segredo que quebra tudo)</h2>
+<p>Dentro do projeto existe a pasta <strong><code>.claude</code></strong> — é onde vivem as skills. Ela é <strong>OCULTA</strong>: o Explorador/Finder não mostra por padrão, mas ela ESTÁ lá.</p>
+<ul><li><strong>Ver ocultos:</strong> Windows: Explorador → <strong>Exibir → Mostrar → Itens ocultos</strong>. Mac: <code>Cmd + Shift + .</code> no Finder.</li><li>⚠️ <strong>NUNCA copie o projeto arrastando a pasta</strong> no Finder/Explorador: em algumas situações os ocultos ficam pra trás e as skills somem (caso real, debugado ao vivo em aula). Precisa do projeto em outro lugar/máquina? <strong>Clone de novo com git</strong> (<a href="guia-git-clonar-e-atualizar.html">guia-git-clonar-e-atualizar</a>) — nunca arraste.</li></ul>
+<h2 id="4-kit-de-sobrevivência-as-4-teclas-que-resolvem-90">4. Kit de sobrevivência (as 4 teclas que resolvem 90%)</h2>
+<div class="tabela"><table><thead><tr><th>Tecla</th><th>O que faz</th></tr></thead><tbody><tr><td><strong>Esc</strong></td><td>cancela uma pergunta/ação pendente do Claude</td></tr><tr><td><strong>↑</strong> (seta pra cima)</td><td>repete o último comando digitado</td></tr><tr><td><strong>Shift+Tab</strong></td><td>liga o modo de aceitação automática (o Claude para de pedir confirmação a cada passo) — use só quando já confia no fluxo</td></tr><tr><td><strong>Ctrl+C</strong></td><td>interrompe um comando travado no terminal</td></tr></tbody></table></div>
+<p>E <strong>nunca</strong> use <code>--dangerously-skip-permissions</code> sem entender o risco — remove TODAS as proteções de uma vez.</p>
+<h2 id="5-abrir-os-html-que-as-skills-geram">5. Abrir os <code>.html</code> que as skills geram</h2>
+<p>No Claude Code costumam abrir sozinhos. Se não abrir (ou no Codex): dois cliques no arquivo, ou no terminal:</p>
+<ul><li>Windows: <code>start "" caminho\do\arquivo.html</code> (barra invertida <code>\</code>, aspas vazias depois do start)</li><li>Mac: <code>open caminho/do/arquivo.html</code> · Linux: <code>xdg-open caminho/do/arquivo.html</code></li></ul>
+<h2 id="teste-de-sucesso">Teste de sucesso</h2>
+<p>Abra o terminal pelo caminho da seção 2 e digite <code>dir</code> (ou <code>ls</code>): a lista mostra <code>aula-01</code>, <code>guias</code>, <code>projetos</code>... Depois abra o <code>claude</code> e digite <code>/</code> + "funil": as skills aparecem na lista. Os dois verdes = seu chão está pronto.</p>
+<h2 id="possíveis-erros-catálogo">POSSÍVEIS ERROS — catálogo</h2>
+<div class="tabela"><table><thead><tr><th>#</th><th>Sintoma</th><th>Causa</th><th>O que fazer (em ordem)</th></tr></thead><tbody><tr><td>W1</td><td><code>git não é reconhecido</code> / <code>command not found</code></td><td>o Git não está instalado</td><td>Windows: instale de <code>git-scm.com/download/win</code> → feche e REABRA o terminal; Mac: aceite a instalação que o próprio terminal oferece</td></tr><tr><td>W2</td><td><strong>Skills não aparecem</strong> no Claude/Codex</td><td>abriu a IA fora da raiz do projeto (ou numa subpasta)</td><td>feche → abra o terminal DENTRO da pasta <code>cohort-de-marketing</code> (seção 2) → reabra a IA → <code>/</code> + "funil"</td></tr><tr><td>W3</td><td>Copiei/arrastei o projeto e <strong>as skills sumiram</strong></td><td>o arraste perdeu a pasta oculta <code>.claude</code></td><td>não tente consertar na mão: clone o projeto de novo com git na pasta nova (<a href="guia-git-clonar-e-atualizar.html">guia-git-clonar-e-atualizar</a>); seu trabalho em <code>projetos/</code> pode ser copiado por cima depois</td></tr><tr><td>W4</td><td>O <code>cmd</code> abriu em <code>C:\Windows\System32</code> (pasta errada)</td><td>você abriu o terminal pelo menu Iniciar, não pela pasta</td><td>use o caminho da seção 2 (barra de endereço do Explorador → <code>cmd</code>); ou digite <code>cd C:\caminho\ate\cohort-de-marketing</code></td></tr><tr><td>W5</td><td>"Não vejo a pasta <code>.claude</code>"</td><td>ela é oculta (é normal!)</td><td>Exibir → Itens ocultos (Windows) ou <code>Cmd+Shift+.</code> (Mac); e mesmo invisível ela funciona — não precisa vê-la pra usar</td></tr><tr><td>W6</td><td>O <code>.html</code> da skill <strong>não abriu sozinho</strong></td><td>comportamento normal fora do Claude Code</td><td>dois cliques no arquivo, ou os comandos da seção 5 — o arquivo NÃO está quebrado</td></tr><tr><td>W7</td><td>A <strong>barra de endereço do Explorador sumiu</strong>/o Explorador travou (não dá pra digitar <code>cmd</code>)</td><td>o processo do Explorador bugou (acontece após atualização do Windows)</td><td>Ctrl+Shift+Esc (Gerenciador de Tarefas) → ache <strong>"Windows Explorer"</strong> → botão direito → <strong>Reiniciar</strong> (fonte: Microsoft Support); alternativa: Shift + clique direito DENTRO da pasta → "Abrir janela do PowerShell aqui"</td></tr></tbody></table></div>
+<h2 id="pronto-próximos-passos">Pronto. Próximos passos</h2>
+<div class="tabela"><table><thead><tr><th>Agora</th><th>O quê</th></tr></thead><tbody><tr><td>▶️ Fazer</td><td>ainda sem o Claude instalado? é o próximo guia; já tem tudo? rode <code>/comecar</code> — ele confere o ambiente inteiro</td></tr><tr><td>📖 Ler</td><td><a href="guia-instalar-claude-e-codex.html">guia-instalar-claude-e-codex.md</a> → <a href="guia-git-clonar-e-atualizar.html">guia-git-clonar-e-atualizar.md</a> → <a href="guia-env-e-chaves.html">guia-env-e-chaves.md</a></td></tr><tr><td>🚑 Se travar</td><td>o catálogo W1–W7 acima (git não reconhecido, skills sumidas, pasta errada, Explorador travado...)</td></tr></tbody></table></div>
+<p class="rodape">Este guia também existe em markdown, para a IA ler: <a href="guia-terminal-e-pastas.md">guia-terminal-e-pastas.md</a>. No Claude Code: <code>@guias/01-pre-requisitos/guia-terminal-e-pastas.md</code>.</p>
+</main>
+<script>
+document.querySelectorAll('.copiar').forEach(function(b){b.addEventListener('click',function(){
+var t=b.parentNode.querySelector('code').innerText;navigator.clipboard.writeText(t).then(function(){b.textContent='copiado';setTimeout(function(){b.textContent='copiar'},1600)})})});
+var q=document.getElementById('busca');if(q){q.addEventListener('input',function(){var v=q.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+document.querySelectorAll('tbody tr').forEach(function(tr){var s=tr.innerText.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');tr.style.display=!v||s.indexOf(v)>-1?'':'none'})})}
+</script>
+</body>
+</html>

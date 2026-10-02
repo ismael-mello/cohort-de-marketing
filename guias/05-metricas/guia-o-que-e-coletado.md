@@ -2,7 +2,7 @@
 
 > **Estou perdido em:** "o painel da Aula 4 pega o quê, de onde? Posso confiar? Por que falta métrica X?"
 > **O que você vai ter no final:** o mapa exato do que entra no seu painel — métrica por métrica, com o selo de confiança de cada uma — e a lista honesta do que NÃO entra (e onde ver na mão se precisar).
-> **Fontes:** o próprio código do coletor (`scripts/painel-trafego-data.mjs`, `scripts/lib/hotmart.mjs`) · as regras de dados da Aula 4 (`aula-04/docs/regras-de-dados.md`) · referência de mercado (os limites da atribuição — por que Gerenciador ≠ caixa).
+> **Fontes cruzadas:** o próprio código do coletor (`scripts/painel-trafego-data.mjs`, `scripts/lib/hotmart.mjs`) · as regras de dados da Aula 4 (`aula-04/docs/regras-de-dados.md`) · referência de mercado (os limites da atribuição — por que Gerenciador ≠ caixa).
 
 ## Pré-requisitos (confira ANTES)
 
@@ -51,10 +51,24 @@
 ## Teste de sucesso
 `node scripts/painel-trafego-data.mjs --account` → `"modo": "api"` = coletando da sua conta. `"modo": "exemplo"` = sem chaves (guia da conexão: [../03-conexoes-e-apis/guia-meta-api.md](../03-conexoes-e-apis/guia-meta-api.md)).
 
+## POSSÍVEIS ERROS — catálogo
+
+| # | Sintoma | Causa | O que fazer (em ordem) |
+|---|---|---|---|
+| OC1 | O painel responde `"modo": "exemplo"` e mostra números que não são meus | faltam `META_ACCESS_TOKEN` e/ou `META_AD_ACCOUNT_ID` no `.env` | siga o [guia-meta-api](../03-conexoes-e-apis/guia-meta-api.md) (erro E13); até lá, trate tudo como exemplo |
+| OC2 | O ROAS do painel não bate com a receita da Hotmart | o ROAS da Meta é atribuição (selo **Estimado**); a Hotmart é o caixa | para decidir, vale o caixa; o ROAS só vira Real quando você confere a venda na Hotmart |
+| OC3 | Uma métrica aparece "não fornecido" em vez de 0 | a fonte não entregou o dado (regra 2: ausente nunca vira zero) | é proposital; se precisar do número, veja na fonte (tabela "O que NÃO entra") |
+| OC4 | Procuro desempenho por posicionamento, métricas de vídeo, rankings de qualidade ou CPA por anúncio e não acho | não coletados nesta versão | olhe no Gerenciador com a coluna certa (tabela "O que NÃO entra") e cole no `/leitor-de-metricas` |
+| OC5 | A aba Orgânico diz "Em breve" | sem o token de página | opcional e avançado: [guia-organico-tokens](../03-conexoes-e-apis/guia-organico-tokens.md) |
+| OC6 | A tela de Vendas está vazia | a Hotmart é opcional e não está conectada | [guia-hotmart](../03-conexoes-e-apis/guia-hotmart.md) |
+| OC7 | No trimestre, o CTR não é a soma dos meses | taxa não se soma (regra do coletor: trimestre só soma o que é somável) | correto; compare as taxas mês a mês, não somadas |
+
+Se nada resolver: print do painel + "confira contra o guia o-que-e-coletado" no Claude ou no Codex, ou leve ao PS.
+
 ## Pronto. Próximos passos
 
 | Agora | O quê |
 |---|---|
 | ▶️ Fazer | rode `/analista-de-dados` e abra o `painel-trafego.html` — as 7 telas mostram exatamente o que está listado aqui |
 | 📖 Ler | os próximos guias de métricas desta pasta ([README](README.md)) conforme forem publicados |
-| 🚑 Se travar | painel respondeu `"modo": "exemplo"` sem você querer → falta chave/ID: [guia-meta-api](../03-conexoes-e-apis/guia-meta-api.md) (erro E13) |
+| 🚑 Se travar | catálogo OC1–OC7 acima · painel respondeu `"modo": "exemplo"` sem você querer → falta chave/ID: [guia-meta-api](../03-conexoes-e-apis/guia-meta-api.md) (erro E13) |

@@ -28,7 +28,7 @@
 | **Criar o `.env` / colar uma chave** | [01-pre-requisitos/guia-env-e-chaves.md](01-pre-requisitos/guia-env-e-chaves.md) (erros Z1–Z5) |
 | **Não sei o que PEDIR pra IA / ficar sendo guiado** | [01-pre-requisitos/guia-como-ser-guiado.md](01-pre-requisitos/guia-como-ser-guiado.md) (os 4 prompts) |
 | **Quanto isso tudo CUSTA? Vou ser cobrado?** | [02-conhecimento-minimo/guia-quanto-custa.md](02-conhecimento-minimo/guia-quanto-custa.md) (erros Q1–Q5) |
-| **Não entendo os TERMOS: BM, pixel, CAPI, GTM, CBO, domínio…** | [02-conhecimento-minimo/guia-conceitos-trafego.md](02-conhecimento-minimo/guia-conceitos-trafego.md) |
+| **Não entendo os TERMOS: BM, pixel, CAPI, GTM, CBO, domínio…** | [02-conhecimento-minimo/guia-conceitos-trafego.md](02-conhecimento-minimo/guia-conceitos-trafego.md) (confusões CT1–CT8) |
 | **O Gerenciador de Anúncios em si: onde clico, status, colunas** | [02-conhecimento-minimo/guia-gerenciador-de-anuncios.md](02-conhecimento-minimo/guia-gerenciador-de-anuncios.md) |
 | **Minha página só existe no MEU computador — como vira site?** | [03-conexoes-e-apis/guia-publicar-pagina.md](03-conexoes-e-apis/guia-publicar-pagina.md) |
 | **Meta do ZERO: BM, Página, conta, pagamento** | [03-conexoes-e-apis/guia-meta-fundacao.md](03-conexoes-e-apis/guia-meta-fundacao.md) (erros F1–F12) |
@@ -43,10 +43,10 @@
 | **TODAS as chaves/APIs de uma vez (o índice clique a clique)** | [03-conexoes-e-apis/super-guia-apis-e-ads.md](03-conexoes-e-apis/super-guia-apis-e-ads.md) (Partes A–D; cada pedaço também tem guia próprio acima) |
 | **Gerar os CRIATIVOS (e saírem bons)** | [04-operacao/guia-criativos.md](04-operacao/guia-criativos.md) |
 | **Criativo de IMAGEM por IA (avançado, exige assinatura ChatGPT)** | [04-operacao/guia-ads-creative-factory.md](04-operacao/guia-ads-creative-factory.md) (erros CF1–CF8) |
-| **Colocar a campanha NO AR** | [04-operacao/guia-campanha-no-ar.md](04-operacao/guia-campanha-no-ar.md) |
+| **Colocar a campanha NO AR** | [04-operacao/guia-campanha-no-ar.md](04-operacao/guia-campanha-no-ar.md) (erros CA1–CA8) |
 | **Campanha no ar… e AGORA?** | [04-operacao/guia-e-depois.md](04-operacao/guia-e-depois.md) |
 | **Rodar a Aula 4 no MEU projeto (com ou sem 30 dias de dados)** | [05-metricas/guia-central-de-dados.md](05-metricas/guia-central-de-dados.md) (erros CD1–CD6) |
-| **O painel da Aula 4: o que ele coleta (e o que NÃO)** | [05-metricas/guia-o-que-e-coletado.md](05-metricas/guia-o-que-e-coletado.md) |
+| **O painel da Aula 4: o que ele coleta (e o que NÃO)** | [05-metricas/guia-o-que-e-coletado.md](05-metricas/guia-o-que-e-coletado.md) (erros OC1–OC7) |
 | **Como LER os números sem me enganar** | [05-metricas/guia-como-ler-os-numeros.md](05-metricas/guia-como-ler-os-numeros.md) (erros LN1–LN6) |
 | **O Marketing Studio (painel visual): tela por tela + o comando equivalente** | [06-studio/guia-studio-como-funciona.md](06-studio/guia-studio-como-funciona.md) (erros ST1–ST9) |
 | **Entender o projeto/repositório inteiro** | [../mapa-guiado-do-projeto.html](../mapa-guiado-do-projeto.html) |
